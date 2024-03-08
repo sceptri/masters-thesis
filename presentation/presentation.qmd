@@ -1,0 +1,252 @@
+---
+title: Computational analysis in neuroscience
+subtitle: All things neuron! # TODO: Change this
+author:
+  - name: Štěpán Zapadlo
+    orcid: 0009-0008-7823-6239
+    email: stepan@zapadlo.name
+    affiliations: Masaryk University
+date: last-modified
+
+format:
+  clean-revealjs:
+    logo: ustavmatematikyastat-lg-cze-rgb.png
+    css: style.css
+    html-math-method: mathjax
+
+jupyter: julia-local-1.10
+---
+
+## Going from 36 hours to **95 seconds** *(and more)*
+
+:::: {.columns .center}
+::: {.column width="35%"}
+![](images/pastebin/2024-03-07-08-28-31.png)
+:::
+
+::: {.column width="10%"}
+[→]{.r-fit-text}
+:::
+
+
+::: {.column width="55%"}
+![](images/opt_diff_spiral_naive_history_indexed_start_mt_650_tspan_1000_shift_from_07_norm_metric.png)
+:::
+::::
+
+## Contents
+
+:::{.hidden}
+{{< include mathematics.qmd >}}
+:::
+
+- polynomial approximation of the Morris-Lecar Neuron model using SINDy
+- computation of phase/anti-phase tongue in 2 Interneuron models connected by a delayed gap-junction coupling
+  - iteration over the parameter-delay space
+  - starters, indexers & instability
+  - period searching methods
+  - shift searching methods
+- `NeuronToolbox.jl` - a Julia package to ease working with (coupled) neuron models, their simulations etc.
+  - *work in progress*
+
+## Polynomial Morris-Lecar model
+
+### Such a form would be more tractable for analysis
+
+Morris-Lecar is a strongly nonlinear system
+\begin{align*}
+\dot V &= \frac 1 C (\begin{aligned}[t] I_e &- g_L \cdot (V - V_L) \\
+  &- g_{Ca} \cdot O_{\beta_1, \beta_2}(V) (V - V_{Ca}) - g_K \cdot n \cdot (V - V_K))
+\end{aligned} \\
+\dot n &= \vf \cdot \frac {O_{\beta_3, \beta_4}(V) - n} {\tau_{\beta_3, \beta_4}(V)}
+\end{align*} 
+where functions $m_i, n_i,$ and $\tau_n$ are defined as
+$$
+\begin{gathered}
+O_{\alpha, \beta}(V) = \frac 1 2 \brackets{1 + \tanh\brackets{\frac {V - \alpha} {\beta}}}, \quad \tau_{\alpha, \beta}(V) = \frac 1 {\cosh\brackets{\frac {V - \alpha} {2 \beta}}}
+\end{gathered}
+$$ 
+
+## Polynomial Morris-Lecar model
+
+### SINDy to the rescue!
+
+We can use *Sparse Identification of Nonlinear Dynamics (SINDy)* -- a *regularized* $l$-dimensional linear model that is the result of 
+$$
+\min_{\vi \Xi} \brackets{\frac 1 2 \norm{\dvi X  - \vi \Theta(\vi X) \vi \Xi}_2^2 + \mu R(\vi \Xi)},
+$$ 
+where $R$ is a *parsimony (sparsity)* promoting regularizer. Using a proposed DSTLS optimizer, the problem becomes
+$$
+\begin{gathered}
+\min_{\vi \xi_k} \frac 1 2 \norm{\dvi X_{\cdot, k} - \vi \Theta(\vi X)\vi \xi_k}_2^2\\
+\constraint \forall i \in \set{1, \dots, p}: \quad \absval{{\xi_k}_i} \geq \tau \cdot \max \absval{\vi \xi_k}
+\end{gathered}
+$$ 
+for $k$-th state variable (read *column in* $\dvi X$).
+
+---
+
+![Phase portraits for varying parameters](images/custom_phase_space_dataset_hash=14344998010859595969_library_power=9_optimizer_name=DSTLS_optimizer_threshold=1e-5_ridge_parameter=1000.0_rng_seed=123_vis_dataset_hash=5234844309226244414.gif){.r-stretch}
+
+## Tongue computation
+
+We have 2 interneuron models connected by a gap-junction coupling with delay
+\begin{align*}
+\dot V(t) &= \frac 1 C \big(I_e \begin{aligned}[t] &- g_L \cdot (V(t) - E_L) \\
+  &- \frac {g_{Na}} {(1 + \exp(-0.08 V(t) - 2.08))^3} \cdot h(t) \cdot (V(t) \\
+  &- E_{Na}) - g_K \cdot n(t)^4 \cdot (V(t) - E_k) \\
+  &+ \sigma (V(t) - V_o(t - \tau))\big)
+  \end{aligned} \\
+\dot h(t) &= \frac 5 3\brackets{\frac {1 + \exp(-0.12 V - 8.04) - h} {1 + \exp(0.13 V + 4.93)}} \\
+\dot n(t) &= \frac 1 {1 + \exp(-0.045 V - 0.45)} / \brackets{0.5 + \frac 2 {1 + \exp(0.045 V - 2.25)}}
+\end{align*} 
+
+## Tongue computation
+### Seems easy enough...
+
+We surely can just write
+```{.julia code-line-numbers="|12,13|15,16"}
+alg = MethodOfSteps(Tsit5())
+x0 = h = [-16.34, 0.06, 0.55, -33.4, 0.49, 0.4]
+
+couplings = range(min_coupling; stop = max_coupling, length = length_coupling)
+Cs = range(min_C1; stop = max_C1, length = length_C1)
+
+for coupling in couplings
+  for C1 in Cs	
+		problem = DDEProblem(interneuron, x0, h, tspan; constant_lags=[τ])
+		sol = solve(problem, alg, saveat=Δt)
+
+	  	# The question is *how*
+		period = find_period(sol)
+
+		# And what should *this* be?
+		difference[] = dissimilarity_metric(sol, period)
+	end
+end
+```
+
+## Tongue computation
+### Period searching
+
+Given a simulated trajectory by the DDE-solving algorithm, we try to estimate the length of its period
+
+- `optimal_period` - the optimal shift such that the norm between the shifted and original trajectory is minimal
+- `diff_period` - the average distance between points when the $V_1$​ part of the trajectory changes monotony
+
+## Tongue computation
+### Shift searching
+
+Shift searching methods strive to find the shift between $V_1$ and $V_2$ parts of the simulated trajectories:
+
+- `period_shift` - uses the entire trajectory to try to find this shift by minimizing a metric of the difference between one shifted and one left alone
+- `partial_shift` - uses only a part of this trajectory, but the rest of the algorithm is the same as `period_shift`
+
+The metric can either be a norm or a maximal/supremum metric of the absolute value of the difference.
+
+## Tongue computation
+### Not great, not terrible...
+
+![Comparison of different period searching methods](images/opt_diff_shift.png){.r-stretch}
+
+## Tongue computation
+### Inherent instability of the tongue
+
+The tongue, i.e. the anti-phase synchronized situation, is inherently unstable -- once we "fall off" of the tongue, we can't get back. 
+
+Thus it might be better to start from the transients of already computed trajectories, which remained on the tongue.
+
+At the same time, we need to start computing the tongue somewhere on the parameter-coupling space where it is the most stable.
+
+Solution? *Starters*, *Indexers*, and *Iterators* (and also *Histories*).
+
+## Tongue computation
+### Starters & Indexers
+
+Starters determine which (if any) already calculated result is used for the history:
+
+- `cold_start` -- always starts the solving of the DDE problem with the initial guess
+- `warm_start` -- searches the whole already-computed space and finds such point (and its history), such that it minimizes some loss function
+- `indexed_start` -- searches only indices given by the indexer to find the minimizer point of a given loss function
+  - `diagonal_indexer`
+  
+$$
+\mathrm{loss}(x_{i_1, i_2}, y_{j_1, j_2}) = \norm{(i_1, i_2) - (j_1, j_2)} \cdot \brackets{\absval{x_{i_1, i_2} - y_{j_1, j_2} - 0.5} + 0.5}
+$$
+
+## Tongue computation
+### Iterators
+Iterators determine the way our method steps through the whole parameter-coupling space in which we want to calculate the tongue:
+
+- `line_enumerator` -- enumerates the space in rows from the bottom left iterating through the row and up,
+- `spiral_enumerator` -- enumerates the space in a spiral from the "center"
+  - it can be used in a multi-threaded setup to speed up the computation
+  - it allows effective reusing of nearby histories (= already computed results)
+  - as such we shouldn't fall off of the attractor too soon
+
+## Tongue computation
+### Results? Better!
+
+![Comparison of cold and warm starting](images/opt_diff_shift_cold_warm_spiral.png){.r-stretch}
+
+## Tongue computation
+### And with multithreading and 8 hours...
+
+![Tongue computed using 8 threads](images/opt_diff_spiral_naive_history_indexed_start_mt_650_tspan_1000_shift_from_07_norm_metric.png)
+
+## `NeuronToolbox.jl`
+
+### Because wouldn't be nice to just...
+
+:::{.incremental}
+- Neuron simulations are a lot of work
+- An easier setup would speed up the work significantly
+:::
+
+```{.julia code-line-numbers="|3,4|6,7|9|11"}
+using NeuronToolbox
+
+ml_params = [1, 8, -80, 2, -60, 4, 120, -1.2, 18, 10, 17.4, 1 / 15, 70]
+hh_params = [1, 9, 120, 115, 36, -12, 0.3, 10.6]
+
+ml = Models.MorrisLecar(ml_params)
+hh = Models.HodgkinHuxley(hh_params)
+
+coupling = Couplings.FirstVarDifference(0.5)
+
+ml_with_hh = Networks.CoupledPair(ml, hh, coupling; split_vars=[1:2, 3:6])
+```
+
+## `NeuronToolbox.jl`
+### And then run it like a normal ODE...
+
+```{julia}
+#| echo: false
+using NeuronToolbox
+
+ml_params = [1, 8, -80, 2, -60, 4, 120, -1.2, 18, 10, 17.4, 1 / 15, 70]
+hh_params = [1, 9, 120, 115, 36, -12, 0.3, 10.6]
+
+ml = Models.MorrisLecar(ml_params)
+hh = Models.HodgkinHuxley(hh_params)
+
+coupling = Couplings.FirstVarDifference(0.5)
+ml_with_hh = Networks.CoupledPair(ml, hh, coupling; split_vars=[1:2, 3:6])
+
+using DifferentialEquations, Plots
+#u0 = [-16.34, 0.06, 0.55, -33.4, 0.49, 0.4]
+u0 = [15, 0.5, 15, 0.5, 0.5, 0.5]
+tspan = (0.0, 100.0)
+prob = ODEProblem(ml_with_hh, u0, tspan)
+sol = solve(prob, alg_hints = [:stiff])
+
+plot(sol)
+```
+
+## `NeuronToolbox.jl`
+
+### And then run it like a normal ODE...
+
+```{julia}
+plot(map(x -> x[1], sol.u), map(x -> x[3], sol.u))
+```

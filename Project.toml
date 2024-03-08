@@ -1,0 +1,4 @@
+[deps]
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+NeuronToolbox = "435c7341-2adf-4c69-883b-9023f0b26b4d"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"

@@ -1,0 +1,33 @@
+\ExplSyntaxOn
+\AtBeginDocument{\NewCommandCopy{\Symbfit}{\schmidt_Symbfit:n}}
+
+\cs_new_protected:Nn \schmidt_Symbfit:n
+ {
+  \str_case:nnF { #1 }
+   {
+    {0}{\symbf{0}}
+    {1}{\symbf{1}}
+    {2}{\symbf{2}}
+    {3}{\symbf{3}}
+    {4}{\symbf{4}}
+    {5}{\symbf{5}}
+    {6}{\symbf{6}}
+    {7}{\symbf{7}}
+    {8}{\symbf{8}}
+    {9}{\symbf{9}}
+   }
+   {\symbfit{#1}}
+ }
+
+\ExplSyntaxOff
+
+\renewcommand{\vi}[1]{\Symbfit{#1}}
+\renewcommand{\rnd}[1]{\symup{#1}}
+\renewcommand{\vr}[1]{\symbfup{#1}}
+\renewcommand{\vrr}[1]{\symbfup{#1}}
+\renewcommand{\oper}[1]{\symsf{#1}}
+
+\renewcommand{\AA}{\vi A}
+\renewcommand{\Avg}[1]{\overline{#1}}
+
+\renewcommand{\loglikely}{\mathscr l}

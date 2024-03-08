@@ -1,0 +1,11 @@
+\newcommand{\LetThereBe}[2]{\newcommand{#1}{#2}}
+\newcommand{\letThereBe}[3]{\newcommand{#1}[#2]{#3}}
+% Declare mathematics (so they can be overwritten for PDF)
+\newcommand{\declareMathematics}[2]{\DeclareMathOperator{#1}{#2}}
+\newcommand{\declareMathematicsStar}[2]{\DeclareMathOperator*{#1}{#2}}
+
+% striked integral
+\newcommand{\avint}{\mathop{\mathchoice{\,\rlap{-}\!\!\int}
+                              {\rlap{\raise.15em{\scriptstyle -}}\kern-.2em\int}
+                              {\rlap{\raise.09em{\scriptscriptstyle -}}\!\int}
+                              {\rlap{-}\!\int}}\nolimits}

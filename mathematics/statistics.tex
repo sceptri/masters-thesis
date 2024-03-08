@@ -1,0 +1,87 @@
+% Statistics
+\LetThereBe{\noise}{\mathscr{N}}
+\LetThereBe{\normalDist}{\mathcal N}
+\letThereBe{\normalD}{1}{\normalDist \brackets{#1}}
+\letThereBe{\NormalD}{2}{\normalDist \brackets{#1, #2}}
+\LetThereBe{\iid}{\overset{\text{iid}}{\sim}}
+\LetThereBe{\ind}{\overset{\text{ind}}{\sim}}
+\LetThereBe{\condp}{\,\vert\,}
+
+\LetThereBe{\acov}{\gamma}
+\LetThereBe{\acf}{\rho}
+
+\LetThereBe{\stdev}{\sigma}
+\LetThereBe{\procMean}{\mu}
+\LetThereBe{\procVar}{\stdev^2}
+
+\declareMathematics{\variance}{var}
+\letThereBe{\Variance}{1}{\variance \brackets{#1}}
+\declareMathematics{\cov}{cov}
+\declareMathematics{\corr}{cor}
+
+\declareMathematics{\expectedValue}{\mathbb{E}}
+\letThereBe{\expect}{1}{\expectedValue #1}
+\letThereBe{\Expect}{1}{\expectedValue \brackets{#1}}
+
+\letThereBe{\WN}{2}{\mathrm{WN}\brackets{#1,#2}}
+\declareMathematics{\uniform}{Unif}
+
+\LetThereBe{\att}{_t} %at time 
+\letThereBe{\estim}{1}{\hat{#1}}
+\letThereBe{\predict}{3}{\estim {\rnd #1}_{#2 | #3}}
+\letThereBe{\periodPart}{3}{#1+#2-\ceil{#2/#3}#3}
+\letThereBe{\infEstim}{1}{\tilde{#1}}
+
+\LetThereBe{\backs}{\oper B}
+\LetThereBe{\diff}{\oper \Delta}
+\LetThereBe{\BLP}{\oper P}
+
+\LetThereBe{\arPoly}{\Phi}
+\letThereBe{\ArPoly}{1}{\arPoly\brackets{#1}}
+\LetThereBe{\maPoly}{\Theta}
+\letThereBe{\MaPoly}{1}{\maPoly\brackets{#1}}
+
+\letThereBe{\ARmod}{1}{\mathrm{AR}\brackets{#1}}
+\letThereBe{\MAmod}{1}{\mathrm{MA}\brackets{#1}}
+\letThereBe{\ARMA}{2}{\mathrm{ARMA}\brackets{#1, #2}}
+\letThereBe{\sARMA}{3}{\mathrm{ARMA}\brackets{#1}\brackets{#2}_{#3}}
+\letThereBe{\SARIMA}{3}{\mathrm{ARIMA}\brackets{#1}\brackets{#2}_{#3}}
+\letThereBe{\ARIMA}{3}{\mathrm{ARIMA}\brackets{#1, #2, #3}}
+
+\LetThereBe{\pacf}{\alpha}
+\letThereBe{\parcorr}{3}{\rho_{#1 #2 | #3}}
+
+\LetThereBe{\likely}{\mcal L}
+\letThereBe{\Likely}{1}{\likely\brackets{#1}}
+\LetThereBe{\loglikely}{\mcal l}
+\letThereBe{\Loglikely}{1}{\loglikely \brackets{#1}}
+
+\LetThereBe{\CovMat}{\Gamma}
+\LetThereBe{\covMat}{\vi \CovMat}
+\LetThereBe{\rcovMat}{\vrr \CovMat}
+
+\LetThereBe{\AIC}{\mathrm{AIC}}
+\LetThereBe{\BIC}{\mathrm{BIC}}
+\LetThereBe{\AICc}{\mathrm{AIC}_c}
+
+\LetThereBe{\nullHypo}{H_0}
+\LetThereBe{\altHypo}{H_1}
+
+\LetThereBe{\rve}{\rnd \ve}
+\LetThereBe{\rtht}{\rnd \theta}
+\LetThereBe{\rX}{\rnd X}
+\LetThereBe{\rY}{\rnd Y}
+\LetThereBe{\rZ}{\rnd Z}
+\LetThereBe{\vrZ}{\vr Z}
+\LetThereBe{\vrY}{\vr Y}
+\LetThereBe{\vrX}{\vr X}
+
+% Different types of convergence
+\LetThereBe{\inDist}{\onTop{\to}{d}}
+\letThereBe{\inDistWhen}{1}{\onBottom{\onTop{\longrightarrow}{d}}{#1}}
+\LetThereBe{\inProb}{\onTop{\to}{P}}
+\letThereBe{\inProbWhen}{1}{\onBottom{\onTop{\longrightarrow}{P}}{#1}}
+\LetThereBe{\inMeanSq}{\onTop{\to}{L^2}}
+\letThereBe{\inMeanSqWhen}{1}{\onBottom{\onTop{\longrightarrow}{L^2}}{#1}}
+\LetThereBe{\convergeAS}{\tOnTop{\to}{a.s.}}
+\letThereBe{\convergeASWhen}{1}{\onBottom{\tOnTop{\longrightarrow}{a.s.}}{#1}}

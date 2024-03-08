@@ -1,0 +1,28 @@
+%\usepackage{mathtools}
+
+% ProvideMathOperator similar to providecommand
+\newcommand{\ProvideMathOperator}[2]{\ifdefined#1\else\DeclareMathOperator{#1}{#2}\fi}
+\newcommand{\ProvideMathOperatorStar}[2]{\ifdefined#1\else\DeclareMathOperator*{#1}{#2}\fi}
+
+\newcommand{\LetThereBe}[2]{\providecommand{#1}{#2}}
+\newcommand{\letThereBe}[3]{\providecommand{#1}[#2]{#3}}
+\newcommand{\declareMathematics}[2]{\ProvideMathOperator{#1}{#2}}
+\newcommand{\declareMathematicsStar}[2]{\ProvideMathOperatorStar{#1}{#2}}
+
+% PDEs
+\newcommand{\Xint}[1]{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}\!\int}
+
+\newcommand{\XXint}[3]{{\setbox0=\hbox{$#1{#2#3}{\int}$ }\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
+\newcommand\avint{\Xint{-}}
+
+
+\renewenvironment{quote}{
+	\list{}{\leftmargin=2
+	cm\rightmargin=2cm\topsep=0pt}
+	\item\relax\small\itshape
+}
+{\endlist}
