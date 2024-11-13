@@ -17,7 +17,7 @@ format:
     self-contained-math: true
     embed-resources: true
 
-jupyter: julia-local-1.10
+engine: julia
 ---
 
 ## Going from 36 hours to **95 seconds** *(and more)*
