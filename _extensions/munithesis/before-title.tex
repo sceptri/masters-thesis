@@ -1,0 +1,52 @@
+% #TODO: Organize this mess
+
+%% Encoding
+%\usepackage{fontspec}
+
+% Probably will be handled by Quarto
+%\usepackage[czech]{babel}
+
+
+%% Fonts
+%\emergencystretch=15pt
+
+% Needed for template
+\usepackage{lipsum}
+
+%% PAGE BREAKING to avoid widows and orphans
+\clubpenalty = 2000
+\widowpenalty = 2000
+%\usepackage{microtype}
+
+\usepackage{bigfoot}
+\interfootnotelinepenalty=10000
+
+%\usepackage{hyperref}
+
+
+%% MUNI Thesis
+\usepackage[$thesis.type$,$thesis.coloring$]{sci.muni.thesis}
+
+\NazevUstavu{$thesis.affiliation.cz$}{$thesis.affiliation.en$}
+
+\RokOdevzdaniPrace{$thesis.submitted$}
+\AkademickyRok{$thesis.academic-year$}
+
+\Autor{$author$}{$author$}
+
+\NazevPrace{$thesis.title.cz$}{$thesis.title.bookmarks$}{$thesis.title.en$}
+
+\VedouciPraceSTituly{$thesis.supervisor$}
+
+\StudijniProgram{$thesis.studies.program.cz$}{$thesis.studies.program.en$}
+\StudijniObor{$thesis.studies.field.cz$}{$thesis.studies.field.en$}
+
+\PocetStran{$thesis.page-count$}
+
+\KlicovaSlova{$thesis.keywords.cz$}{$thesis.keywords.en$}
+\Abstrakty{$thesis.abstract.cz$}{$thesis.abstract.en$}
+
+\TextPodekovani{$thesis.acknowledgement.cz$}
+
+\TextProhlaseni{$thesis.declaration.cz$}
+\DatumProhlaseni{$thesis.declaration.date$}

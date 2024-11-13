@@ -13,6 +13,9 @@ format:
     logo: ustavmatematikyastat-lg-cze-rgb.png
     css: style.css
     html-math-method: mathjax
+    standalone: true
+    self-contained-math: true
+    embed-resources: true
 
 jupyter: julia-local-1.10
 ---
@@ -93,8 +96,8 @@ for $k$-th state variable (read *column in* $\dvi X$).
 We have 2 interneuron models connected by a gap-junction coupling with delay
 \begin{align*}
 \dot V(t) &= \frac 1 C \big(I_e \begin{aligned}[t] &- g_L \cdot (V(t) - E_L) \\
-  &- \frac {g_{Na}} {(1 + \exp(-0.08 V(t) - 2.08))^3} \cdot h(t) \cdot (V(t) \\
-  &- E_{Na}) - g_K \cdot n(t)^4 \cdot (V(t) - E_k) \\
+  &- \frac {g_{Na}} {(1 + \exp(-0.08 V(t) - 2.08))^3} \cdot h(t) \cdot (V(t) - E_{Na}) \\
+  &- g_K \cdot n(t)^4 \cdot (V(t) - E_k) \\
   &+ \sigma (V(t) - V_o(t - \tau))\big)
   \end{aligned} \\
 \dot h(t) &= \frac 5 3\brackets{\frac {1 + \exp(-0.12 V - 8.04) - h} {1 + \exp(0.13 V + 4.93)}} \\
@@ -114,15 +117,15 @@ Cs = range(min_C1; stop = max_C1, length = length_C1)
 
 for coupling in couplings
   for C1 in Cs	
-		problem = DDEProblem(interneuron, x0, h, tspan; constant_lags=[τ])
-		sol = solve(problem, alg, saveat=Δt)
+        problem = DDEProblem(interneuron, x0, h, tspan; constant_lags=[τ])
+        sol = solve(problem, alg, saveat=Δt)
 
-	  	# The question is *how*
-		period = find_period(sol)
+          # The question is *how*
+        period = find_period(sol)
 
-		# And what should *this* be?
-		difference[] = dissimilarity_metric(sol, period)
-	end
+        # And what should *this* be?
+        difference[] = dissimilarity_metric(sol, period)
+    end
 end
 ```
 

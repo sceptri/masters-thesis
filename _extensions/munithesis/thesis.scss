@@ -1,0 +1,30 @@
+/*-- scss:defaults --*/
+$headings-color: #00af3f;
+$primary: #00af3f;	
+
+$body-bg: #fafafa;
+
+$popover-bg: #dcdcdc;
+
+/*-- scss:rules --*/
+@font-face {
+	font-family: 'Muni';
+	src: url("https://sablony.muni.cz/muniweb/fonts/muni-bold-webfont.woff2") format("woff2"),
+		url("https://sablony.muni.cz/muniweb/fonts/muni-bold-webfont.woff") format("woff");
+	font-weight: 700;
+	font-style: normal
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.sidebar-title {
+	font-family: "Muni";
+}
+
+.sidebar-title {
+	color: $primary;
+}

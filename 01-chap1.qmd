@@ -1,0 +1,70 @@
+:::{.content-visible when-format="pdf"}
+\let\standardclearpage\clearpage
+\let\clearpage\relax 
+\relax \pagenumbering{arabic}\setcounter{page}{1}
+
+\let\clearpage\standardclearpage
+:::
+
+:::{.hidden}
+{{< include mathematics.qmd >}}
+:::
+
+# Introduction {#sec-intro}
+
+Synchronization is a phenomenon commonly found in nature and, as is often the case, it takes many shapes and forms. From the coordination between neurons in our brains or fire-fly lights, to synchronization found in electrical grids and financial markets. What started in the 17th century with Huygens' investigation into the behavior of two weakly interacting pendulum clocks through a heavy beam [see @Willms2017] has since evolved into a field rich with both theory and applications.
+
+The key application and motivation of this thesis lies, as the name may suggest, in brain dynamics. Several studies
+<!-- TODO: Add citations (from Interneuron or Antiphase articles) -->
+have shown that high-frequency oscillations (HFOs), very high-frequency oscillations (VHFOs), and even ultra-fast oscillations (UFOs) in electroencephalographic (EEG) recordings measured deep in the brain could be potentially used as biomarkers of epileptogenic zones of focal epilepsy. Furthermore, there is also evidence they correlate with the severity of epilepsy. Research suggests that higher frequencies oscillations (VFHOs and UFOs) are more local, i.e. spatially restricted, than traditional HFOs, thus providing better a guidance in locating the areas of epilepsy. Fast oscillations lie outside the realm of physiologically possible frequencies of single neurons. This indicates another mechanism must be at play, but its identification is an open question in neuroscience.
+
+<!-- Maybe also cite @LUO20091901? -->
+Primary goal of this thesis is to provide an insight into a small part of computational analysis in neuroscience -- the phase synchronization[^phase] of small networks of neurons, behaviors arising from this phenomenon and techniques used in its exploration. Nonetheless, other models and applications will be considered when appropriate.
+
+[^phase]: By phase synchronization we mean the state when the difference in phase of the oscillators remains bounded while e.g. their amplitudes may differ [@Pikovsky2001].
+<!-- TODO: Maybe cite our article? -->
+
+## Approaches
+
+Simulation v. Bifurcations
+
+## Structure
+
+1. Introduction of the importance of synchronization on (multiple) examples
+   1. biomarker for epilepsy
+   2. in other fields...
+   3. And explanation that we will mainly focus on comparison of simulation vs bifurcations (not anything else, though it is a vast topic)
+      - It is NOT a frequency analysis thesis 
+2. Theoretical introduction to ODEs and DDEs and 1D optimization methods
+   1. ODE, DDE, limit cycle
+   2. introduce numerical solvers of ODEs (RK45, Euler-Maruyama)
+   3. introduce method of steps
+   4. introduce basic 1D optimization methods
+3. Introduction to neuron models (and mathematical modeling in neuroscience in general)
+   1. probably Interneuron, VdP, but possibly others (Hodgkin-Huxley formalism, HH type models)
+   2. explain types of coupling
+   3. Showcase of NeuronToolbox.jl
+      - how it simplifies the code and makes it more readable
+      - TODO: improve the usefulness and the code
+      - TODO: add support for DDEs
+      - TODO: rework all the examples to use this library
+      - TODO: publish it :)
+4. Simulation approach
+   1. first start with the intuitive approach
+   2. each time show its "performance" (and time/memory complexity)
+   3. introduce different period & shift searching techniques
+   4. introduce different starters, indexers and iterators (and really explain the need for all of these concepts)
+   5. introduce periodicity checkers
+   6. briefly mention multithreading, metacentrum and cloud computing?
+5. Bifurcations approach
+   1. introduce bifurcation theory with emphasis on DDEs and mainly continuations of periodic orbits
+      1. include a treatment of collocations, newtons method, basic continuation description
+   2. describe theory and numerical method for computing Floquet multipliers
+   3. explain/show implementation for DDEBifurcationKit.jl
+      - TODO: Actually do the implementation 
+   4. show the same example as in Simulation approach computed with bifurcations
+6. Compare Simulations vs Bifurcations
+   1. compare the time/memory/theory/implementation complexity
+   2. compare the parametric dependence
+   3. compare the accuracy
+7. Conclusion

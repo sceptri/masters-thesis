@@ -1,0 +1,55 @@
+::: {.content-visible when-format="html"}
+A thesis submitted for the {{< meta thesis.degree >}} degree at {{< meta thesis.affiliation.university >}}, {{< meta thesis.affiliation.en >}}, {{< meta thesis.affiliation.location >}}.
+
+<!-- TODO: Rework all of this -->
+
+# Copyright notice {- .content-visible when-format="html"}
+
+```{r}
+#| output: asis
+cat("Produced on",format(Sys.Date(), "%e %B %Y.\n\n"))
+cat("© {{< meta author >}} (",format(Sys.Date(), "%Y"),").", sep="")
+```
+
+# Abstract {-}
+
+::: {.panel-tabset}
+## English
+
+{{< meta thesis.abstract.en >}}
+## Czech
+
+{{< meta thesis.abstract.cz >}}
+:::
+
+# Declaration {-}
+
+::: {.panel-tabset}
+## English
+
+{{< meta thesis.declaration.en >}}
+## Czech
+
+{{< meta thesis.declaration.cz >}}
+:::
+
+
+#### Reproducibility statement
+
+<!-- TODO: Change this -->
+This thesis is written using Quarto with renv [@renv] and Julia to create a reproducible environment. All materials (including the data sets and source files) required to reproduce this document can be found at the GitLab repository [`gitlab.com/sceptri-university/muni-thesis`](https://gitlab.com/sceptri-university/muni-thesis).
+
+This work is licensed under a [Creative Commons  Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+
+# Acknowledgements {-}
+
+::: {.panel-tabset}
+## English
+
+{{< meta thesis.acknowledgement.en >}}
+## Czech
+
+{{< meta thesis.acknowledgement.cz >}}
+:::
+:::

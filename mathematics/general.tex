@@ -3,12 +3,14 @@
 
 % Font styles
 \letThereBe{\mcal}{1}{\mathcal{#1}}
+\letThereBe{\chem}{1}{\mathrm{#1}}
 
 % Sets
 \LetThereBe{\C}{\mathbb{C}}
 \LetThereBe{\R}{\mathbb{R}}
 \LetThereBe{\Z}{\mathbb{Z}}
 \LetThereBe{\N}{\mathbb{N}}
+\LetThereBe{\im}{\mathrm{i}}
 \LetThereBe{\Im}{\mathrm{Im}}
 \LetThereBe{\Re}{\mathrm{Re}}
 
@@ -42,16 +44,22 @@
 
 % Basic notation - general
 \letThereBe{\set}{1}{\left\{#1\right\}}
+\letThereBe{\seqnc}{4}{\set{#1_{#2}}_{#2 = #3}^{#4}}
+\letThereBe{\Seqnc}{3}{\set{#1}_{#2}^{#3}}
 \letThereBe{\brackets}{1}{\left( #1 \right)}
 \letThereBe{\parentheses}{1}{\left[ #1 \right]}
 \letThereBe{\dom}{1}{\mcal{D}\, \brackets{#1}}
 \letThereBe{\complexConj}{1}{\overline{#1}}
 
 % Special symbols
+\LetThereBe{\const}{\mathrm{const}}
+\LetThereBe{\konst}{\mathrm{konst.}}
 \LetThereBe{\vf}{\varphi}
 \LetThereBe{\ve}{\varepsilon}
 \LetThereBe{\tht}{\theta}
+\LetThereBe{\Tht}{\Theta}
 \LetThereBe{\after}{\circ}
+\LetThereBe{\lmbd}{\lambda}
 
 % Shorthands
 \LetThereBe{\xx}{\vi x}
@@ -72,25 +80,17 @@
 \declareMathematics{\tg}{tg}
 \declareMathematics{\sign}{sign}
 \declareMathematics{\card}{card} %cardinality
+\letThereBe{\setSize}{1}{\left| #1 \right|}
 \declareMathematics{\exp}{exp}
+\letThereBe{\Exp}{1}{\exp\brackets{#1}}
 \letThereBe{\indicator}{1}{\mathbb{1}_{#1}}
 \declareMathematics{\arccot}{arccot}
 \declareMathematics{\complexArg}{arg}
+\declareMathematics{\gcd}{gcd} % Greatest Common Divisor
+\declareMathematics{\lcm}{lcm} % Least Common Multiple
 
-% Operators - Analysis
-\LetThereBe{\hess}{\nabla^2}
-\LetThereBe{\lagr}{\mcal L}
-\LetThereBe{\lapl}{\Delta}
-\declareMathematics{\grad}{grad}
-\declareMathematics{\Dgrad}{D}
-\LetThereBe{\gradient}{\nabla}
-\LetThereBe{\jacobi}{\nabla}
-\LetThereBe{\d}{\mathrm{d}}
-\LetThereBe{\dd}{\,\mathrm{d}}
-\letThereBe{\partialDeriv}{2}{\frac {\partial #1} {\partial #2}}
-\letThereBe{\partialOp}{1}{\frac {\partial} {\partial #1}}
-\letThereBe{\deriv}{2}{\frac {\d #1} {\d #2}}
-\letThereBe{\derivOp}{1}{\frac {\d} {\d #1}\,}
+\letThereBe{\limInfty}{1}{\lim_{#1 \to \infty}}
+\letThereBe{\limInftyM}{1}{\lim_{#1 \to -\infty}}
 
 % Useful commands
 \letThereBe{\onTop}{2}{\mathrel{\overset{#2}{#1}}}
@@ -99,39 +99,15 @@
 \LetThereBe{\EQ}{\onTop{=}{!}}
 \LetThereBe{\letDef}{:=} %#TODO: change the symbol
 \LetThereBe{\isPDef}{\onTop{\succ}{?}}
-
+\LetThereBe{\inductionStep}{\tOnTop{=}{induct. step}}
 
 % Optimization
 \declareMathematicsStar{\argmin}{argmin}
 \declareMathematicsStar{\argmax}{argmax}
+\letThereBe{\maxOf}{1}{\max\set{#1}}
+\letThereBe{\minOf}{1}{\min\set{#1}}
 \declareMathematics{\prox}{prox}
 \declareMathematics{\loss}{loss}
 \declareMathematics{\supp}{supp}
 \letThereBe{\Supp}{1}{\supp\brackets{#1}}
-\LetThereBe{\Koop}{\mcal K}
-\letThereBe{\oneToN}{1}{\left[#1\right]}
 \LetThereBe{\constraint}{\text{s.t.}\;}
-
-% PDEs
-% \avint -- defined in format-respective tex files
-
-\LetThereBe{\fundamental}{\Phi}
-\LetThereBe{\fund}{\fundamental}
-\letThereBe{\normaDeriv}{1}{\partialDeriv{#1}{\vec{n}}}
-\letThereBe{\volAvg}{2}{\avint_{\ball{#1}{#2}}}
-\LetThereBe{\VolAvg}{\volAvg{x}{\ve}}
-\letThereBe{\surfAvg}{2}{\avint_{\boundary \ball{#1}{#2}}}
-\LetThereBe{\SurfAvg}{\surfAvg{x}{\ve}}
-\LetThereBe{\corrF}{\varphi^{\times}}
-\LetThereBe{\greenF}{G}
-\letThereBe{\reflect}{1}{\tilde{#1}}
-\letThereBe{\unitBall}{1}{\alpha(#1)}
-\LetThereBe{\conv}{*}
-\letThereBe{\dotP}{2}{#1 \cdot #2}
-\letThereBe{\translation}{1}{\tau_{#1}}
-\declareMathematics{\dist}{dist}
-\letThereBe{\regularizef}{1}{\eta_{#1}}
-\letThereBe{\fourier}{1}{\widehat{#1}}
-\letThereBe{\ifourier}{1}{\check{#1}}
-\LetThereBe{\fourierOp}{\mcal F}
-\letThereBe{\Norm}{1}{\absval{#1}}

@@ -1,0 +1,60 @@
+title: MUNI Thesis Format Template
+author: Štěpán Zapadlo
+version: 0.1.0
+contributes:
+  filters: 
+    - scripts/ignore_index.lua
+    - scripts/metadata_read.lua
+    - scripts/metadata_thesis_type.lua
+  formats:
+    common:
+      date-format: "DD MMMM YYYY"
+      number-depth: 2
+      toc-depth: 2
+      number-sections: true
+      fig-height: 5
+      fig-width: 8
+      knitr:
+        opts_chunk:
+          echo: false
+          warning: false
+          message: false
+    pdf:
+      documentclass: book
+      pdf-engine: lualatex
+      papersize: a4
+      fontsize: 12pt
+      geometry:
+      - top=22mm
+      - bottom=24mm
+      - left=34mm
+      - right=25mm
+      - headsep=6mm
+      - includeheadfoot
+      - headheight=12pt
+      block-headings: false
+      colorlinks: true
+      format-resources:
+        - "sci.muni.thesis.sty"
+        - "assets/MUNI_(black).pdf"
+        - "assets/SCI_(black).pdf"
+      template-partials:
+        - "before-title.tex"
+        #- "title.tex"
+        - "before-body.tex"
+    html:
+      theme:
+        light: 
+          - cerulean
+          - thesis.scss
+        dark: darkly
+      fontsize: 16px
+      # mainfont: "Merriweather, serif"
+      code-link: true
+      toc-title: "<b>Sections</b>"
+      html-math-method: mathjax
+      published-title: "Last updated"
+      # format-resources:
+      #   - fonts.html
+      # include-in-header:
+      #   file: fonts.html

@@ -1,4 +1,3 @@
-
 % Game Theory
 \LetThereBe{\doms}{\succ}
 \LetThereBe{\isdom}{\prec}
@@ -35,3 +34,58 @@
 \LetThereBe{\linDifOp}{\mathsf{L}}
 \LetThereBe{\Hurwitz}{\vi H}
 \letThereBe{\hurwitz}{1}{\Hurwitz \brackets{#1}}
+
+% Cont. Models
+\LetThereBe{\dirac}{\delta}
+
+% PDEs
+% \avint -- defined in format-respective tex files
+
+\LetThereBe{\fundamental}{\Phi}
+\LetThereBe{\fund}{\fundamental}
+\letThereBe{\normaDeriv}{1}{\partialDeriv{#1}{\vec{n}}}
+\letThereBe{\volAvg}{2}{\avint_{\ball{#1}{#2}}}
+\LetThereBe{\VolAvg}{\volAvg{x}{\ve}}
+\letThereBe{\surfAvg}{2}{\avint_{\boundary \ball{#1}{#2}}}
+\LetThereBe{\SurfAvg}{\surfAvg{x}{\ve}}
+\LetThereBe{\corrF}{\varphi^{\times}}
+\LetThereBe{\greenF}{G}
+\letThereBe{\reflect}{1}{\tilde{#1}}
+\letThereBe{\unitBall}{1}{\alpha(#1)}
+\LetThereBe{\conv}{*}
+\letThereBe{\dotP}{2}{#1 \cdot #2}
+\letThereBe{\translation}{1}{\tau_{#1}}
+\declareMathematics{\dist}{dist}
+\letThereBe{\regularizef}{1}{\eta_{#1}}
+
+\letThereBe{\fourier}{1}{\widehat{#1}}
+\letThereBe{\ifourier}{1}{\check{#1}}
+\LetThereBe{\fourierOp}{\mcal F}
+\LetThereBe{\ifourierOp}{\mcal F^{-1}}
+\letThereBe{\FourierOp}{1}{\fourierOp\set{#1}}
+\letThereBe{\iFourierOp}{1}{\ifourierOp\set{#1}}
+\LetThereBe{\laplaceOp}{\mcal L}
+\letThereBe{\LaplaceOp}{1}{\laplaceOp\set{#1}}
+
+\letThereBe{\Norm}{1}{\absval{#1}}
+
+% SINDy
+\LetThereBe{\Koop}{\mcal K}
+\letThereBe{\oneToN}{1}{\left[#1\right]}
+\LetThereBe{\meas}{\mathrm{m}}
+\LetThereBe{\stateLoss}{\mcal J}
+\LetThereBe{\lagrm}{p}
+
+% Stochastic analysis
+\LetThereBe{\RiemannInt}{(\mcal R)}
+\LetThereBe{\RiemannStieltjesInt}{(\mcal {R_S})}
+\LetThereBe{\LebesgueInt}{(\mcal L)}
+\LetThereBe{\ItoInt}{(\mcal I)}
+\LetThereBe{\Stratonovich}{\circ}
+
+\LetThereBe{\infMean}{\alpha}
+\LetThereBe{\infVar}{\beta}
+
+% Dynamical systems
+\LetThereBe{\nUnit}{\mathrm N}
+\LetThereBe{\timeUnit}{\mathrm T}

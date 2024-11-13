@@ -2,3 +2,11 @@ old/
 
 *.html
 *_files/
+
+files/
+_book/
+
+*.xdp*
+*.log
+
+Manifest.toml

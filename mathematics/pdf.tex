@@ -19,6 +19,7 @@
 \newcommand{\XXint}[3]{{\setbox0=\hbox{$#1{#2#3}{\int}$ }\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
 \newcommand\avint{\Xint{-}}
 
+\AtBeginDocument{\renewcommand{\d}{\mathrm d}}
 
 \renewenvironment{quote}{
 	\list{}{\leftmargin=2

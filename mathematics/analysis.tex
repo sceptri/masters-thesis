@@ -1,0 +1,22 @@
+% Operators - Analysis
+\LetThereBe{\hess}{\nabla^2}
+\LetThereBe{\lagr}{\mcal L}
+\LetThereBe{\lapl}{\Delta}
+\declareMathematics{\grad}{grad}
+\declareMathematics{\Dgrad}{D}
+\LetThereBe{\gradient}{\nabla}
+\LetThereBe{\jacobi}{\nabla}
+\LetThereBe{\Jacobi}{\mathrm J}
+\letThereBe{\jacobian}{2}{D_{#1}\brackets{#2}}
+\LetThereBe{\d}{\mathrm{d}}
+\LetThereBe{\dd}{\,\mathrm{d}}
+\letThereBe{\partialDeriv}{2}{\frac {\partial #1} {\partial #2}}
+\letThereBe{\npartialDeriv}{3}{\partialDeriv{^{#1} #2} {#3^{#1}}}
+\letThereBe{\partialOp}{1}{\frac {\partial} {\partial #1}}
+\letThereBe{\npartialOp}{2}{\frac {\partial^{#1}} {\partial #2^{#1}}}
+\letThereBe{\pDeriv}{2}{\partialDeriv{#1}{#2}}
+\letThereBe{\npDeriv}{3}{\npartialDeriv{#1}{#2}{#3}}
+\letThereBe{\deriv}{2}{\frac {\d #1} {\d #2}}
+\letThereBe{\nderiv}{3}{\frac {\d^{#1} #2} {\d #3^{#1}}}
+\letThereBe{\derivOp}{1}{\frac {\d} {\d #1}\,}
+\letThereBe{\nderivOp}{2}{\frac {\d^{#1}} {\d #2^{#1}}\,}

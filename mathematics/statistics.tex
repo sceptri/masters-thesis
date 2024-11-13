@@ -1,11 +1,8 @@
 % Statistics
-\LetThereBe{\noise}{\mathscr{N}}
-\LetThereBe{\normalDist}{\mathcal N}
-\letThereBe{\normalD}{1}{\normalDist \brackets{#1}}
-\letThereBe{\NormalD}{2}{\normalDist \brackets{#1, #2}}
-\LetThereBe{\iid}{\overset{\text{iid}}{\sim}}
+\LetThereBe{\iid}{\overset{\text{i.i.d.}}{\sim}}
 \LetThereBe{\ind}{\overset{\text{ind}}{\sim}}
 \LetThereBe{\condp}{\,\vert\,}
+\letThereBe{\complement}{1}{\overline{#1}}
 
 \LetThereBe{\acov}{\gamma}
 \LetThereBe{\acf}{\rho}
@@ -19,18 +16,36 @@
 \declareMathematics{\cov}{cov}
 \declareMathematics{\corr}{cor}
 
+\letThereBe{\sampleVar}{1}{\rnd S^2_{#1}}
+\letThereBe{\populationVar}{1}{V_{#1}}
+
 \declareMathematics{\expectedValue}{\mathbb{E}}
+\declareMathematics{\rndMode}{Mode}
+\letThereBe{\RndMode}{1}{\rndMode\brackets{#1}}
 \letThereBe{\expect}{1}{\expectedValue #1}
 \letThereBe{\Expect}{1}{\expectedValue \brackets{#1}}
+\letThereBe{\expectIn}{2}{\expectedValue_{#1} #2}
+\letThereBe{\ExpectIn}{2}{\expectedValue_{#1} \brackets{#2}}
 
-\letThereBe{\WN}{2}{\mathrm{WN}\brackets{#1,#2}}
-\declareMathematics{\uniform}{Unif}
+\LetThereBe{\betaF}{\mathrm B}
+\LetThereBe{\fisherMat}{J}
+\LetThereBe{\mutInfo}{I}
+\LetThereBe{\expectedGain}{I_e}
+\letThereBe{\KLDiv}{2}{D\brackets{#1 \parallel #2}}
+\LetThereBe{\entropy}{H}
+\LetThereBe{\diffEntropy}{h}
+\LetThereBe{\probF}{\pi}
+\LetThereBe{\densF}{\vf}
 
 \LetThereBe{\att}{_t} %at time 
 \letThereBe{\estim}{1}{\hat{#1}}
+\letThereBe{\estimML}{1}{\hat{#1}_{\mathrm{ML}}}
+\letThereBe{\estimOLS}{1}{\hat{#1}_{\mathrm{OLS}}}
+\letThereBe{\estimMAP}{1}{\hat{#1}_{\mathrm{MAP}}}
 \letThereBe{\predict}{3}{\estim {\rnd #1}_{#2 | #3}}
 \letThereBe{\periodPart}{3}{#1+#2-\ceil{#2/#3}#3}
 \letThereBe{\infEstim}{1}{\tilde{#1}}
+\letThereBe{\predictDist}{1}{{#1}^*}
 
 \LetThereBe{\backs}{\oper B}
 \LetThereBe{\diff}{\oper \Delta}
@@ -50,6 +65,9 @@
 
 \LetThereBe{\pacf}{\alpha}
 \letThereBe{\parcorr}{3}{\rho_{#1 #2 | #3}}
+
+\LetThereBe{\noise}{\mathscr{N}}
+\LetThereBe{\jeffreys}{\mathcal J}
 
 \LetThereBe{\likely}{\mcal L}
 \letThereBe{\Likely}{1}{\likely\brackets{#1}}
@@ -72,9 +90,16 @@
 \LetThereBe{\rX}{\rnd X}
 \LetThereBe{\rY}{\rnd Y}
 \LetThereBe{\rZ}{\rnd Z}
+\LetThereBe{\rA}{\rnd A}
+\LetThereBe{\rB}{\rnd B}
 \LetThereBe{\vrZ}{\vr Z}
 \LetThereBe{\vrY}{\vr Y}
 \LetThereBe{\vrX}{\vr X}
+
+% Bayesian inference
+\LetThereBe{\paramSet}{\mcal T}
+\LetThereBe{\sampleSet}{\mcal Y}
+\LetThereBe{\bayesSigmaAlg}{\mcal B}
 
 % Different types of convergence
 \LetThereBe{\inDist}{\onTop{\to}{d}}

@@ -1,27 +1,44 @@
 let
   pkgs = import <nixpkgs> {};
-  unstablePkgs = import <nixos-unstable> {};
   lib = import <lib> {};
   config = import <config> {};
+  configPath = builtins.getEnv "NIXOS_CONFIGURATION_DIR" + "/.";
+  quartoPreRelease = extraRPackages:
+    pkgs.callPackage (configPath + "/packages/quarto/preRelease.nix")
+    (with pkgs lib config; {extraRPackages = extraRPackages;});
 
-  configPath = /home/sceptri/Documents/Dev/homelab/.;
+  rPackages = with pkgs.rPackages; [
+    quarto
+    tidyverse
+    tsibble
+    feasts
+    fable
+    magick
+    here
+    readr
+    knitr
+    kableExtra
+    languageserver
+    downlit
+    xml2
+  ];
 in
   pkgs.mkShell {
     buildInputs = with pkgs; [
-      (unstablePkgs.julia.withPackages
-        [
-          "DrWatson"
-          "Revise"
-          "DifferentialEquations"
-          "Plots"
-          "IJulia"
-        ])
-      gnumake
-      imagemagick
-      jupyter-all
+      pkgs.texlive.combined.scheme-full
+      pandoc
+      xclip
+      (
+        rWrapper.override {
+          packages = rPackages;
+        }
+      )
+      (
+        quartoPreRelease rPackages
+      )
     ];
+
     shellHook = ''
-      julia -e 'using Pkg, IJulia; IJulia.installkernel("julia-env"; julia=`$(Sys.which("julia"))`); Pkg.activate("."); IJulia.installkernel("julia-local", "--project=$(Base.active_project())"; julia=`$(Sys.which("julia"))`);'
-      echo "Welcome to Master Thesis shell"
+      echo "Welcome to Masters Thesis shell"
     '';
   }

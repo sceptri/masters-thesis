@@ -1,0 +1,99 @@
+project:
+  type: book
+  post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
+
+book:
+  title: "Computational analysis in neuroscience"
+  author: "Štěpán Zapadlo"
+  chapters:
+    - text: "Front matter"
+      file: index.qmd
+    - "01-chap1.qmd"
+    - "refs.qmd"
+  sidebar:
+    style: "docked"
+
+  repo-url: https://gitlab.com/sceptri-university/courses/m9121-time-series # TODO: Change this
+
+  license: MIT
+  page-footer:
+    right: 
+      - text: "License"
+        href: LICENSE
+
+  downloads: [pdf]
+
+bibliography: bibliography.bib
+nocite: |
+  @*
+
+thesis:
+  coloring: Barevne # Barevne | Tisk
+  type: Mgr # Bc | Mgr | RNDr
+  degree: "Master's"
+  submitted: 2025
+  academic-year: 2024/2025
+  affiliation: 
+    university: Masaryk University
+    location: Brno
+    cz: Ústav matematiky a statistiky
+    en: Department of Mathematics and Statistics
+  title:
+    cz: Computational analysis in neuroscience
+    bookmarks: Computational analysis in neuroscience
+    en: Computational analysis in neuroscience
+  supervisor: doc. RNDr. Lenka Přibylová, Ph.D.
+  studies:
+    program:
+      cz: Matematika
+      en: Mathematics
+    field:
+      cz: Modelování a výpočty
+      en: Modelling and computations
+  keywords:
+    cz: "Práce; Něco; Klíčové slovo" # TODO: Do this
+    en: "Thesis; Keyword; Long word" # TODO: Do this
+  page-count: "xv + 91" # TODO: Try and remove this...
+  abstract:
+    cz: "partials/abstrakt.qmd"
+    en: "partials/abstract.qmd"
+  acknowledgement: 
+    cz: "partials/podekovani.qmd"
+    en: "partials/acknowledgement.qmd"
+  declaration: 
+    cz: "partials/prohlaseni.qmd"
+    en: "partials/declaration.qmd"
+    date: 24.09.2024 # FIXME: Something like `last-modified`
+  assignment: "assets/assignment.pdf" # TODO: Change name
+
+format:
+  munithesis-html:
+    mainfont: Tex Gyre Heros
+  munithesis-pdf:
+    mainfont: "Tex Gyre Pagella" # Maybe fix xelatex compilation?
+    mathfont: "TeX Gyre Pagella Math"
+    monofont: "Latin Modern Mono"
+
+    keep-tex: true
+    include-in-header:
+      - mathematics/pdf.tex
+      - mathematics/general.tex
+      - mathematics/analysis.tex
+      - mathematics/linear-algebra.tex
+      - mathematics/statistics.tex
+      - mathematics/distributions.tex
+      - mathematics/special.tex
+      - mathematics/overrides.tex
+
+    toc: true
+    number-sections: true
+
+    fig-align: center
+    fig-pos: H
+    fig-asp: 0.5
+    
+    fig-format: png
+    mermaid-format: png
+    df-print: tibble
+filters:
+ - munithesis
