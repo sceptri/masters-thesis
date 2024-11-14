@@ -4,16 +4,22 @@ project:
 
 book:
   title: "Computational analysis in neuroscience"
-  author: "Štěpán Zapadlo"
+  author:
+    - name: Štěpán Zapadlo
+      orcid: 0009-0008-7823-6239
+      email: stepan@zapadlo.name
+      affiliations: Masaryk University
   chapters:
     - text: "Front matter"
       file: index.qmd
-    - "01-chap1.qmd"
+    - "introduction.qmd"
+    - "general-theory.qmd"
     - "refs.qmd"
   sidebar:
     style: "docked"
 
-  repo-url: https://gitlab.com/sceptri-university/courses/m9121-time-series # TODO: Change this
+  repo-url: https://github.com/sceptri/masters-thesis
+  repo-actions: [edit, source, issue] # TODO: For Codeberg hopefully will be fixed soon (or will probably need to use a custom Quarto with some patch)
 
   license: MIT
   page-footer:

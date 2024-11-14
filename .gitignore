@@ -10,3 +10,4 @@ _book/
 *.log
 
 Manifest.toml
+/.quarto/

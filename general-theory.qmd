@@ -1,0 +1,6 @@
+:::{.hidden}
+{{< include mathematics.qmd >}}
+:::
+
+# A primer on dynamical systems {#dynamical-systems-theory}
+
