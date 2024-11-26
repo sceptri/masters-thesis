@@ -4,3 +4,125 @@
 
 # A primer on dynamical systems {#dynamical-systems-theory}
 
+In the [Introduction @sec-intro], we have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. But we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
+
+This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model evolves in time, e.g. a model of neuron starts spiking, we usually call this model a dynamical system.
+
+:::{#def-dynamical-system}
+##### Dynamical system
+
+A *dynamical system* is a triple $\set{\timeSet, \stateSpace, \evolOp^t}$, where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a subgroup of $(\R, +)$, $\stateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \stateSpace \to \stateSpace$ maps a certain point $x_0 \in \stateSpace$ to some other state $x_t = \evolOp^t x_0 \in \stateSpace$.
+:::
+
+In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \N_0$ or $\timeSet = \Z$ representing a yearly interval between measurements of our system. On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ as we are concerted with even the shortest time intervals and associated changes. Similarly, the exact choice of the state space $\stateSpace$ is dependent of the system in question, but typically we use $\R^n$.
+
+Right now, nothing in the @def-dynamical-system guarantees the system does not abruptly change state, because in general $x \neq \evolOp^0 x$. If this equality does not hold for at least one $x \in \stateSpace$, then such system is called *stochastic*.
+
+:::{#def-deterministic-dynamical-system}
+##### Deterministic dynamical system
+
+A dynamical system, see @def-dynamical-system, is called *deterministic* if and only if the following condition is fulfilled
+$$
+\evolOp^0 = \id,
+$$ {#eq-det-dyn-sys}
+in other words $\forall x \in \stateSpace: x = \evolOp^0 x$.
+:::
+
+Onwards, we will predominantly use deterministic dynamical systems. Another assumption we shall make throughout this thesis is that the "laws of nature" do not change in time, i.e., we presume the dynamical system in question is autonomous (although it may depend on the past).
+
+:::{#def-autonomous-dynamical-system}
+##### Autonomous dynamical system
+
+A deterministic dynamical system, see @def-deterministic-dynamical-system, is called *autonomous* if and only if the following condition is fulfilled
+$$
+\forall t,s \in \timeSet: \evolOp^{t+s} = \evolOp^{t} \circ \evolOp^{s},
+$$ {#eq-autonomous-dyn-sys}
+in other words $\forall x \in \stateSpace \, \forall t,s \in \timeSet: \evolOp^{t+s} x = \evolOp^t (\evolOp^s x)$.
+:::
+
+Most often, a dynamical system is given implicitly by some differential equation, be it an ordinary differential equation (ODE), e.g.[^verhulst]
+$$
+\dot{x}(t) = \deriv {x(t)} t = x(t) \cdot r_0 \cdot \brackets{1 - \frac {x(t)} K},
+$$ {#eq-ode-verhulst}
+or a delay differential equation (DDE), for example a modified ([-@eq-ode-verhulst])
+$$
+\dot{x}(t) = x(t - \tau) \cdot r_0 \cdot \brackets{1 - \frac {x(t)} K},
+$$
+where $\tau > 0$.
+
+
+[^verhulst]: The equation ([-@eq-ode-verhulst]) describes the [Verhulst](https://en.wikipedia.org/wiki/Pierre_Fran%C3%A7ois_Verhulst) model of a population (and its growth, characterized by $r_0$) in some closed environment with some finite capacity (controlled by $K$).
+
+## Basic concepts
+
+In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in 
+<!-- TODO: Add citations -->
+
+:::{#def-orbit}
+##### Orbit
+
+An *orbit (trajectory)* with an *initial point* $x_0 \in \stateSpace$ is an ordered subset of the state space $\stateSpace$,
+$$
+\Orbit{x_0} = \set{x \in \stateSpace \divider x = \evolOp^t x_0, \forall t \in \timeSet \text{ such that } \evolOp^t x_0 \text{ is defined}}
+$$
+
+In the case of a continuous dynamical system, the orbits are *oriented curves* in the state space. For a discrete dynamical systems, they become sequences of points in $\stateSpace$.
+:::
+
+:::{#def-phase-portrait}
+##### Phase portrait
+A *phase portrait* of a dynamical system is a partitioning of the state space into trajectories.
+:::
+
+:::{#def-equilibrium}
+##### Equilibrium
+
+A point $x_0 \in \stateSpace$ is called an *equilibrium* (fixed point) if $\evolOp^t x_0 = x_0$ for all $t \in \timeSet$.
+:::
+
+:::{#def-cycle}
+##### Cycle
+
+A *cycle* is a periodic orbit, namely a non-equilibrium orbit $L$, such that each point $x_0 \in L$ satisfies $\evolOp^{t + T} x_0 = \evolOp^{t} x_0$ with some $T > 0$, for all $t \in \timeSet$. The smallest admissible $T$ is called the *period* of the cycle $L$.
+:::
+
+:::{#def-invariant-set}
+##### Invariant set
+
+An *invariant set* of a dynamical system $\set{\timeSet, \stateSpace, \evolOp^t}$ is a subset $\obj S \subset \stateSpace$ which satisfies
+$$
+x \in \obj{S} \implies \evolOp^t x \in \obj{S} \; \forall t \in \timeSet.
+$$
+:::
+
+:::{#def-limit-point}
+##### $\omega$-limit and $\alpha$-limit point
+
+A point $x_* \in \stateSpace$ is called an *$\omega$-limit point* (resp. $\alpha$-limit point) of the orbit $\Orbit{x_0}$ starting at $x_0 \in \stateSpace$ if their exists a sequence of times $\seqnc{t}{k}{1}{\infty} \subseteq \timeSet$ with $t_k \to \infty$ (resp. $t_k \to - \infty$), such that
+$$
+\evolOp^{t_k} x_0 \onBottom{\longrightarrow}{k \to \infty} x_*.
+$$
+:::
+
+:::{#def-limit-set}
+##### $\omega$-limit and $\alpha$-limit set
+
+A set $\obj \Omega(\Orbit{x_0})$ of all $\omega$-limit points of the orbit $\Orbit{x_0}$, see @def-limit-point, is called an $\omega$-limit set. Similarly, a set $\obj A(\Orbit{x_0})$ of all $\alpha$-limit points of the orbit $\Orbit{x_0}$ is called an $\alpha$-limit set.
+
+Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Orbit{x_0})$ of all limit points of the orbit $\Orbit{x_0}$ is called its *limit set*.
+:::
+
+<!--  FIXME: Add, but I am not sure of the translation
+:::{#def-limit-invariant-loop}
+##### Limit invariant loop
+
+::: -->
+
+<!-- FIXME: Be more precise -->
+:::{#def-limit-cycle}
+##### Limit cycle
+
+A *limit cycle* is a cycle of a dynamical system, see @def-cycle, which is also a limit set, see @def-limit-set, of neighboring orbits.
+:::
+
+<!-- TODO: Add citations (use files/, Kuznetsov...) -->

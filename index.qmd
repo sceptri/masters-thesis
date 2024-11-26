@@ -5,7 +5,7 @@ A thesis submitted for the {{< meta thesis.degree >}} degree at {{< meta thesis.
 
 # Copyright notice {- .content-visible when-format="html"}
 
-```{r}
+```r
 #| output: asis
 cat("Produced on",format(Sys.Date(), "%e %B %Y.\n\n"))
 cat("© {{< meta author >}} (",format(Sys.Date(), "%Y"),").", sep="")

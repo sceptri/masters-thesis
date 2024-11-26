@@ -80,7 +80,7 @@ format:
     mathfont: "TeX Gyre Pagella Math"
     monofont: "Latin Modern Mono"
 
-    keep-tex: true
+    keep-tex: false
     include-in-header:
       - mathematics/pdf.tex
       - mathematics/general.tex

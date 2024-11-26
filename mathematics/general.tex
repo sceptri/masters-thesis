@@ -50,6 +50,7 @@
 \letThereBe{\parentheses}{1}{\left[ #1 \right]}
 \letThereBe{\dom}{1}{\mcal{D}\, \brackets{#1}}
 \letThereBe{\complexConj}{1}{\overline{#1}}
+\LetThereBe{\divider}{\; \vert \;}
 
 % Special symbols
 \LetThereBe{\const}{\mathrm{const}}
@@ -96,6 +97,7 @@
 \letThereBe{\onTop}{2}{\mathrel{\overset{#2}{#1}}}
 \letThereBe{\onBottom}{2}{\mathrel{\underset{#2}{#1}}}
 \letThereBe{\tOnTop}{2}{\mathrel{\overset{\text{#2}}{#1}}}
+\letThereBe{\tOnBottom}{2}{\mathrel{\underset{\text{#2}}{#1}}}
 \LetThereBe{\EQ}{\onTop{=}{!}}
 \LetThereBe{\letDef}{:=} %#TODO: change the symbol
 \LetThereBe{\isPDef}{\onTop{\succ}{?}}
