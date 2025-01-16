@@ -103,3 +103,6 @@ format:
     df-print: tibble
 filters:
  - munithesis
+
+profiles:
+  efault: basic

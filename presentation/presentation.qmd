@@ -89,7 +89,7 @@ for $k$-th state variable (read *column in* $\dvi X$).
 
 ---
 
-![Phase portraits for varying parameters](images/custom_phase_space_dataset_hash=14344998010859595969_library_power=9_optimizer_name=DSTLS_optimizer_threshold=1e-5_ridge_parameter=1000.0_rng_seed=123_vis_dataset_hash=5234844309226244414.gif){.r-stretch}
+![Phase portraits for varying parameters](images/phase_space_fit.gif){.r-stretch}
 
 ## Tongue computation
 
@@ -195,7 +195,7 @@ Iterators determine the way our method steps through the whole parameter-couplin
 ## Tongue computation
 ### And with multithreading and 8 hours...
 
-![Tongue computed using 8 threads](images/opt_diff_spiral_naive_history_indexed_start_mt_650_tspan_1000_shift_from_07_norm_metric.png)
+![Tongue computed using 8 threads](images/spiral_warm_start.png)
 
 ## `NeuronToolbox.jl`
 

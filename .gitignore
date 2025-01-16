@@ -2,6 +2,7 @@ old/
 
 *.html
 *_files/
+*_libs/
 
 files/
 _book/
