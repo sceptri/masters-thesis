@@ -47,7 +47,7 @@ $$ {#eq-ode-verhulst}
 or a delay differential equation (DDE), for example a modified ([-@eq-ode-verhulst])
 $$
 \dot{x}(t) = x(t - \tau) \cdot r_0 \cdot \brackets{1 - \frac {x(t)} K},
-$$
+$$ {#eq-dde-verhulst}
 where $\tau > 0$.
 
 
@@ -122,7 +122,61 @@ Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Or
 :::{#def-limit-cycle}
 ##### Limit cycle
 
-A *limit cycle* is a cycle of a dynamical system, see @def-cycle, which is also a limit set, see @def-limit-set, of neighboring orbits.
+A cycle of a continuous-time dynamical system, in a neighborhood of which there are no other cycles, is called a *limit cycle*.
 :::
 
 <!-- TODO: Add citations (use files/, Kuznetsov...) -->
+
+:::{#def-invariant-set-stable}
+
+An invariant set $S_0$ is called *stable* if 
+
+1. for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp^t x \in U$ for all $x \in V$ and all $t > 0$ (called *Lyapunov stability*);
+2. there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp^t x \to S_0$ for all $x \in U_0$, as $t \to +\infty$ (called *asymptotic stability*).
+:::
+
+### Differential equations
+
+We have already shown in ([-@eq-ode-verhulst]) that one can define a continuous-time dynamical system with (a system of) differential equations. Most often, these come in form of a system of $n$ autonomous ordinary differential equations, ODEs for short, i.e. for a state space $\stateSpace = \R^n$ we have
+$$
+\dvi x = \vi f(\vi x),
+$$ {#eq-dyn-sys-ode}
+where the vector-valued function $\vi f: \R^n \to \R^n$ is *sufficiently smooth*. The function $\vi f$ is called a *vector field*, as it maps a vector $\vi f(\vi x)$ to each point $\vi x$ of the state space.
+
+<!-- TODO: Add a vector field illustration figure -->
+
+Analogously, one could use a system of **delay** differential equations, e.g. ([-@eq-dde-verhulst]), to implicitly define an autonomous dynamical system, see @Feng2019, @Nelson2013 and @Richard2003. In general, delay differential equations (DDEs) are differential equations whose solution depends on a certain past history of the system, as opposed to ODEs where the history is a singular starting time $t = t_0$. Hence, the DDEs are a class of *functional differential equations*, where the state is a function on the relevant past history. As an example, for ([-@eq-dde-verhulst]) the past history, which is required to be known, is $[t-\tau, t]$ at any point in time $t \in \timeSet$. It also implies that the state space is *infinite-dimensional* for DDEs.
+
+For the purpose of this thesis, we shall consider primarily an **autonomous discrete-delay differential equation** with **constant** delays $\tau_1, \dots, \tau_k$ of form
+$$
+\dvi x(t) = \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_k)).
+$$ {#eq-discrete-dde}
+Relatively commonly also appear *continuous-delay differential equation*
+$$
+\dot x(t) = \vi f\brackets{t, x(t), \int_0^{\infty} x(t - \tau) g(\tau) \dd \tau},
+$$
+where $x(t)$ is for simplicity a scalar state, or *state-dependent DDEs*, see @BifurcationKit, e.g. the Humphries model, see @RHumphries2012,
+$$
+\dot x(t) = - \gamma x(t) - \kappa_1 x(t - a_1 - cx(t)) - \kappa_2 x(t - a_2 - cx(t)).
+$$ {#eq-humphries}
+
+#### Delayed differential dynamics {#sec-delayed-differential-dynamics}
+
+Let us denote by $\contf {[a,b], \R^n} 0$ the space of all continuous functions from $[a,b]$ to $\R^n$. Moreover, let $\Contf 1$ be the set of all *continuously differentiable* functions and $\histories {\tau} := \contf {[-\tau, 0], \R^n} 0$ be the set of all possible histories for a positive constant $\tau$ (and the time $0$).
+
+We shall consider a class of dynamical systems which are governed by a system of DDEs of type ([-@eq-discrete-dde]), i.e. *autonomous discrete-constant-delay differential equations*
+$$
+\begin{cases}
+	\dvi x(t) = \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_k)), & t \in [0, \infty) \\
+	\vi x(t) = \vi \phi(t), & t \in [\tau_k, 0],
+\end{cases}
+$$ {#eq-delayed-diff-dynamics}
+where $\vi x \in \R^n$ is the time-dependent state vector. The constant discrete delays are assumed to be ordered as $\tau_k > \dots > \tau_1 > 0$, and the initial states are specified by a vector-valued **history** function $\vi \phi(t) \in \histories {\tau_k}$.
+
+If $\vi f \in \contf {\R^{(k+1)n}, \R^n} 1$ is a Lipschitz-continuous function, then the system ([-@eq-delayed-diff-dynamics]) has a unique solution, i.e. *orbit*, from a given initial condition $\vi \phi \in \histories {\tau_k}$, denoted as $\Orbit{\vi \phi}: [-\tau_k, \infty) \to \R^n$.
+
+<!-- TODO: Maybe add Jacobian notation with respect to various delays -->
+<!-- TODO: Add topological equivalence -->
+<!-- TODO: Hyperbolic equlibrium, Lyapunov theorem, Grobman-Hartman -->
+<!-- TODO: Add Lyapunov function -->
+<!-- TODO: Add discrete dynamical systems -->

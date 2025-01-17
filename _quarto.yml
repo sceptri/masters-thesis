@@ -1,5 +1,7 @@
 project:
   type: book
+  # LuaLaTeX fonts are often broken on NixOS
+  pre-render: luaotfload-tool --cache=erase --flush-lookups --force
   post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
 
 book:
@@ -75,6 +77,11 @@ thesis:
 format:
   munithesis-html:
     mainfont: Tex Gyre Heros
+
+    toc: true
+    toc-depth: 3
+    toc-expand: 3
+    number-depth: 3
   munithesis-pdf:
     mainfont: "Tex Gyre Pagella" # Maybe fix xelatex compilation?
     mathfont: "TeX Gyre Pagella Math"

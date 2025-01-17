@@ -9,6 +9,8 @@ _book/
 
 *.xdp*
 *.log
+# Bada Bib backup
+*.bak
 
 Manifest.toml
 /.quarto/

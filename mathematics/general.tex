@@ -17,7 +17,8 @@
 % Sets from PDEs
 \LetThereBe{\boundary}{\partial}
 \letThereBe{\closure}{1}{\overline{#1}}
-\letThereBe{\contf}{2}{C^{#2}(#1)}
+\letThereBe{\Contf}{1}{C^{#1}}
+\letThereBe{\contf}{2}{\Contf{#2}(#1)}
 \letThereBe{\compactContf}{2}{C_c^{#2}(#1)}
 \letThereBe{\ball}{2}{B\brackets{#1, #2}}
 \letThereBe{\closedBall}{2}{B\parentheses{#1, #2}}
