@@ -11,8 +11,10 @@
 \LetThereBe{\Z}{\mathbb{Z}}
 \LetThereBe{\N}{\mathbb{N}}
 \LetThereBe{\im}{\mathrm{i}}
-\LetThereBe{\Im}{\mathrm{Im}}
-\LetThereBe{\Re}{\mathrm{Re}}
+\declareMathematics{\Im}{Im}
+\declareMathematics{\Re}{Re}
+\letThereBe{\ImOf}{1}{\Im \brackets{#1}}
+\letThereBe{\IeOf}{1}{\Re \brackets{#1}}
 
 % Sets from PDEs
 \LetThereBe{\boundary}{\partial}

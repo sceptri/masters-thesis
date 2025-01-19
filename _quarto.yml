@@ -76,7 +76,7 @@ thesis:
 
 format:
   munithesis-html:
-    mainfont: Merriweather # TODO: Change me later
+    mainfont: Merriweather # Use et-book instead: https://github.com/edwardtufte/et-book
 
     toc: true
     toc-depth: 3
