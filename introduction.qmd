@@ -14,7 +14,7 @@
 
 Synchronization is a phenomenon commonly found in nature and, as is often the case, it takes many shapes and forms. From the coordination between neurons in our brains or fire-fly lights, to synchronization found in electrical grids and financial markets. What started in the 17th century with Huygens' investigation into the behavior of two weakly interacting pendulum clocks through a heavy beam [see @Willms2017] has since evolved into a field rich with both theory and applications.
 
-The key application and motivation of this thesis lies, as the name may suggest, in brain dynamics. Several studies
+The key application and motivation of this thesis lies, as the name may suggest, in physiological models of neurons in the brain. Several studies
 <!-- TODO: Add citations (from Interneuron or Antiphase articles) -->
 have shown that high-frequency oscillations (HFOs), very high-frequency oscillations (VHFOs), and even ultra-fast oscillations (UFOs) in electroencephalographic (EEG) recordings measured deep in the brain could be potentially used as biomarkers of epileptogenic zones of focal epilepsy. Furthermore, there is also evidence they correlate with the severity of epilepsy. Research suggests that higher frequencies oscillations (VFHOs and UFOs) are more local, i.e. spatially restricted, than traditional HFOs, thus providing better a guidance in locating the areas of epilepsy. Fast oscillations lie outside the realm of physiologically possible frequencies of single neurons. This indicates another mechanism must be at play, but its identification is an open question in neuroscience.
 

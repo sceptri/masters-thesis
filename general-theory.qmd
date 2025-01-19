@@ -53,7 +53,7 @@ where $\tau > 0$.
 
 [^verhulst]: The equation ([-@eq-ode-verhulst]) describes the [Verhulst](https://en.wikipedia.org/wiki/Pierre_Fran%C3%A7ois_Verhulst) model of a population (and its growth, characterized by $r_0$) in some closed environment with some finite capacity (controlled by $K$).
 
-## Basic concepts
+## Basic concepts of dynamical systems
 
 In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in 
 <!-- TODO: Add citations -->
@@ -118,7 +118,6 @@ Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Or
 
 ::: -->
 
-<!-- FIXME: Be more precise -->
 :::{#def-limit-cycle}
 ##### Limit cycle
 
@@ -129,10 +128,36 @@ A cycle of a continuous-time dynamical system, in a neighborhood of which there 
 
 :::{#def-invariant-set-stable}
 
-An invariant set $S_0$ is called *stable* if 
+An invariant set $S_0$ is called 
 
-1. for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp^t x \in U$ for all $x \in V$ and all $t > 0$ (called *Lyapunov stability*);
-2. there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp^t x \to S_0$ for all $x \in U_0$, as $t \to +\infty$ (called *asymptotic stability*).
+1. **Lyapunov stable** if for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp^t x \in U$ for all $x \in V$ and all $t > 0$;
+2. **asymptotically stable** there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp^t x \to S_0$ for all $x \in U_0$, as $t \to +\infty$;
+3. **stable** if it is both *Lyapunov* and *asymptotically stable*;
+4. **unstable** if it is not *stable*.
+:::
+
+
+#### Topologically equivalent dynamical systems
+
+<!-- TODO: Add citation to section -->
+So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
+
+:::{#def-topological-equivalence}
+##### Topological equivalence
+
+A dynamical system $\obj D_1 = \set{\timeSet, \stateSpace, \evolOp^t}$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = \set{\timeSet, \stateSpace, \oper{\psi}^t}$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
+:::
+
+[^homeomorphism]: In the context of topology, a *homeomorphism* (also called a *bicontinuous function*) is a bijective and continuous function, such that its inverse is also continuous.
+
+:::{#def-local-topological-equivalence}
+##### Local topological equivalence
+
+A dynamical system $\obj D_1 = \set{\timeSet, \stateSpace, \evolOp^t}$ is said to be *locally topologically equivalent* in the neighborhood of its equilibrium $\vi x_*$ to a dynamical system $\obj D_2 = \set{\timeSet, \stateSpace, \oper{\psi}^t}$ in the neighborhood of its equilibrium $\vi y_*$, if there exists a *homeomorphism* $\vi h: \R^n \to \R^n$, such that
+
+1. $\vi h$ is defined on a (small) neighborhood $\neigh{\vi x_0} \subset \R^n$,
+2. satisfies $\vi y_* = \vi h(\vi x_*)$ and
+3. maps orbits of dynamical system $\obj D_1$ in the neighborhood $\neigh{\vi x_0}$ to orbits of system $\obj D_2$ in the neighborhood $\neigh{\vi y_*}$, such that their orientation is kept.
 :::
 
 ### Differential equations
@@ -175,8 +200,14 @@ where $\vi x \in \R^n$ is the time-dependent state vector. The constant discrete
 
 If $\vi f \in \contf {\R^{(k+1)n}, \R^n} 1$ is a Lipschitz-continuous function, then the system ([-@eq-delayed-diff-dynamics]) has a unique solution, i.e. *orbit*, from a given initial condition $\vi \phi \in \histories {\tau_k}$, denoted as $\Orbit{\vi \phi}: [-\tau_k, \infty) \to \R^n$.
 
+### Continuous-time autonomous systems
+
+
+
+
+
 <!-- TODO: Maybe add Jacobian notation with respect to various delays -->
 <!-- TODO: Add topological equivalence -->
-<!-- TODO: Hyperbolic equlibrium, Lyapunov theorem, Grobman-Hartman -->
+<!-- TODO: Hyperbolic equilibrium, Lyapunov theorem, Grobman-Hartman -->
 <!-- TODO: Add Lyapunov function -->
 <!-- TODO: Add discrete dynamical systems -->
