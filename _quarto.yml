@@ -32,8 +32,6 @@ book:
   downloads: [pdf]
 
 bibliography: bibliography.bib
-nocite: |
-  @*
 
 thesis:
   coloring: Barevne # Barevne | Tisk
@@ -79,9 +77,7 @@ format:
     mainfont: Merriweather # Use et-book instead: https://github.com/edwardtufte/et-book
 
     toc: true
-    toc-depth: 3
     toc-expand: 3
-    number-depth: 3
 
     header-includes: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,7 +86,7 @@ format:
   munithesis-pdf:
     mainfont: "Tex Gyre Pagella" # Maybe fix xelatex compilation?
     mathfont: "TeX Gyre Pagella Math"
-    monofont: "Latin Modern Mono"
+    monofont: "TeX Gyre Cursor" # or Latin Modern Mono
 
     keep-tex: false
     include-in-header:
@@ -108,7 +104,6 @@ format:
 
     fig-align: center
     fig-pos: H
-    fig-asp: 0.5
     
     fig-format: png
     mermaid-format: png
@@ -117,4 +112,4 @@ filters:
  - munithesis
 
 profiles:
-  efault: basic
+  default: basic

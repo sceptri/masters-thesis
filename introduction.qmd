@@ -1,18 +1,14 @@
 :::{.content-visible when-format="pdf"}
-\let\standardclearpage\clearpage
-\let\clearpage\relax 
-\relax \pagenumbering{arabic}\setcounter{page}{1}
-
-\let\clearpage\standardclearpage
+\HeaderUnnumbered
 :::
 
 :::{.hidden}
 {{< include mathematics.qmd >}}
 :::
 
-# Introduction {#sec-intro}
+# Introduction {#sec-intro .unnumbered}
 
-Synchronization is a phenomenon commonly found in nature and, as is often the case, it takes many shapes and forms. From the coordination between neurons in our brains or fire-fly lights, to synchronization found in electrical grids and financial markets. What started in the 17th century with Huygens' investigation into the behavior of two weakly interacting pendulum clocks through a heavy beam [see @Willms2017] has since evolved into a field rich with both theory and applications.
+Synchronization is a phenomenon commonly found in nature and, as is often the case, it takes many shapes and forms. From the coordination between neurons in our brains or fire-fly lights, to synchronization found in electrical grids and financial markets. What started in the 17th century with Huygens' investigation into the behavior of two weakly interacting pendulum clocks through a heavy beam, see @Willms2017, has since evolved into a field rich with both theory and applications.
 
 The key application and motivation of this thesis lies, as the name may suggest, in physiological models of neurons in the brain. Several studies
 <!-- TODO: Add citations (from Interneuron or Antiphase articles) -->

@@ -1,3 +1,8 @@
+:::{.content-visible when-format="pdf"}
+\HeaderNumbered
+:::
+
+
 :::{.hidden}
 {{< include mathematics.qmd >}}
 :::
@@ -172,7 +177,7 @@ A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *l
 ### Continuous-time autonomous systems
 
 :::{#def-autonomous-ode-system}
-An *autonomous system of (ordinary) differential equations* is said to a system
+An *autonomous system of (ordinary) differential equations* is a system of form
 $$
 \dvi x = \vi f(\vi x),
 $$ {#eq-autonomous-ode-system}
@@ -187,13 +192,13 @@ The system of ODEs ([-@eq-autonomous-ode-system]) induces a *continuous-time aut
 Consider a dynamical system ([-@eq-autonomous-ode-system]) with an equilibrium $\vi x^*$. Let
 $$
 \Jacobi^* = \jacobi \vi f(\vi x^*) = \mtr{
-	\pDeriv {f_1} {x_1} (\vi x^*) & \pDeriv {f_1} {x_2} (\vi x^*) & \dots \pDeriv {f_1} {x_n} (\vi x^*) \\
-	\pDeriv {f_2} {x_1} (\vi x^*) & \pDeriv {f_2} {x_2} (\vi x^*) & \dots \pDeriv {f_2} {x_n} (\vi x^*) \\
+	\pDeriv {f_1} {x_1} (\vi x^*) & \pDeriv {f_1} {x_2} (\vi x^*) & \dots & \pDeriv {f_1} {x_n} (\vi x^*) \\
+	\pDeriv {f_2} {x_1} (\vi x^*) & \pDeriv {f_2} {x_2} (\vi x^*) & \dots & \pDeriv {f_2} {x_n} (\vi x^*) \\
 	\vdots & \vdots & \ddots & \vdots \\
-	\pDeriv {f_n} {x_1} (\vi x^*) & \pDeriv {f_n} {x_2} (\vi x^*) & \dots \pDeriv {f_n} {x_n} (\vi x^*)
+	\pDeriv {f_n} {x_1} (\vi x^*) & \pDeriv {f_n} {x_2} (\vi x^*) & \dots & \pDeriv {f_n} {x_n} (\vi x^*)
 }
 $$
-denote a Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\Re \lmbd_i < 0$.
+denote a Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\reOf \lmbd_i < 0$.
 :::
 
 :::{.proof}

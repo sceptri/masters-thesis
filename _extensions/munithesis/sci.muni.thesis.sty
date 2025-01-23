@@ -730,29 +730,18 @@ pr{\'{a}}ce bez podpis\r{u}.}}
   \fi
 }
 
-\newcommand{\HlavickaUvod}{
+\newcommand{\HeaderUnnumbered}{
 \pagestyle{fancy}%
 \fancyhf{}%
   \if@twoside
-    \fancyhead[CO]{\small\it {\'{U}}vod\ \hrulefill\ \thepage}% TWOSIDE
-    \fancyhead[CE]{\small\it\thepage\ \hrulefill\ {\'{U}}vod}% TWOSIDE
+    \fancyhead[CO]{\small\it \leftmark\ \hrulefill\ \thepage}% TWOSIDE
+    \fancyhead[CE]{\small\it\thepage\ \hrulefill\ \leftmark}% TWOSIDE
   \else
-    \fancyhead[C]{\small\it {\'{U}}vod\ \hrulefill\ \thepage}% ONESIDE
+    \fancyhead[C]{\small\it \leftmark\ \hrulefill\ \thepage}% ONESIDE
   \fi
 }
 
-\newcommand{\HlavickaZnaceni}{
-\pagestyle{fancy}%
-\fancyhf{}%
-  \if@twoside
-    \fancyhead[CO]{\small\it P{\v{r}}ehled pou{\v{z}}it{\'{e}}ho zna{\v{c}}en{\'{i}}\ \hrulefill\ \thepage}% TWOSIDE
-    \fancyhead[CE]{\small\it\thepage\ \hrulefill\ P{\v{r}}ehled pou{\v{z}}it{\'{e}}ho zna{\v{c}}en{\'{i}}}% TWOSIDE
-  \else
-    \fancyhead[C]{\small\it P{\v{r}}ehled pou{\v{z}}it{\'{e}}ho zna{\v{c}}en{\'{i}}\ \hrulefill\ \thepage}% ONESIDE
-  \fi
-}
-
-\newcommand{\HlavickaKapitoly}{%
+\newcommand{\HeaderNumbered}{
 \pagestyle{fancy}%
 \fancyhf{}%
   \if@twoside
@@ -763,30 +752,7 @@ pr{\'{a}}ce bez podpis\r{u}.}}
   \fi
 }
 
-\newcommand{\HlavickaZaver}{
-\pagestyle{fancy}%
-\fancyhf{}%
-  \if@twoside
-    \fancyhead[CO]{\small\it Z{\'{a}}v{\v{e}}r\ \hrulefill\ \thepage}% TWOSIDE
-    \fancyhead[CE]{\small\it\thepage\ \hrulefill\ Z{\'{a}}v{\v{e}}r}% TWOSIDE
-   \else
-    \fancyhead[C]{\small\it Z{\'{a}}v{\v{e}}r\ \hrulefill\ \thepage}% ONESIDE
-  \fi
-}
-
-\newcommand{\HlavickaPriloha}{
-\pagestyle{fancy}%
-\fancyhf{}%
-  \if@twoside
-    \fancyhead[CO]{\small\it P{\v{r}}{\'{i}}lohy\ \hrulefill\ \thepage}% TWOSIDE
-    \fancyhead[CE]{\small\it\thepage\ \hrulefill\ P{\v{r}}{\'{i}}lohy}% TWOSIDE
-   \else
-    \fancyhead[C]{\small\it P{\v{r}}{\'{i}}lohy\ \hrulefill\ \thepage}% ONESIDE
-  \fi
-}
-
-
-\newcommand{\HlavickaLiteratura}{
+\newcommand{\HeaderBibliography}{
 \pagestyle{plain}%
 \fancyhf{}%
   \if@twoside
@@ -797,7 +763,7 @@ pr{\'{a}}ce bez podpis\r{u}.}}
   \fi
 }
 
-\newcommand{\HlavickaRejstrik}{
+\newcommand{\HeaderIndex}{
 \pagestyle{plain}%
 \fancyhf{}%
   \if@twoside
