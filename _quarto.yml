@@ -89,6 +89,8 @@ format:
     monofont: "TeX Gyre Cursor" # or Latin Modern Mono
 
     keep-tex: false
+    hyperrefoptions:
+      - hyperfootnotes=false
     include-in-header:
       - mathematics/pdf.tex
       - mathematics/general.tex

@@ -17,7 +17,7 @@ have shown that high-frequency oscillations (HFOs), very high-frequency oscillat
 <!-- Maybe also cite @LUO20091901? -->
 Primary goal of this thesis is to provide an insight into a small part of computational analysis in neuroscience -- the phase synchronization[^phase] of small networks of neurons, behaviors arising from this phenomenon and techniques used in its exploration. Nonetheless, other models and applications will be considered when appropriate. To be more precisely, we will mainly be concerned with different methods of the computation exploration of this phenomenon in various models.
 
-[^phase]: By phase synchronization we mean the state when the difference in phase of the oscillators remains bounded while e.g. their amplitudes may differ [@Pikovsky2001].
+[^phase]: By phase synchronization we mean the state when the difference in phase of the oscillators remains bounded while e.g. their amplitudes may differ @Pikovsky2001.
 <!-- TODO: Maybe cite our article? -->
 
 ## Approaches

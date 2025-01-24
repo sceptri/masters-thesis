@@ -1,3 +1,7 @@
+:::{.content-visible when-format="pdf"}
+\HeaderUnnumbered
+:::
+
 # Bibliography {-}
 
 ::: {#refs}

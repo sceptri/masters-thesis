@@ -12,8 +12,6 @@ contributes:
       toc-depth: 3
       number-depth: 3
       number-sections: true
-      fig-height: 5
-      fig-width: 8
       knitr:
         opts_chunk:
           echo: false

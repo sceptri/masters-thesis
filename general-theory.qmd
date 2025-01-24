@@ -7,18 +7,18 @@
 {{< include mathematics.qmd >}}
 :::
 
-# A primer on dynamical systems {#dynamical-systems-theory}
+# A Primer on Dynamical Systems {#dynamical-systems-theory}
 
-In the [Introduction @sec-intro], we have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
+We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
 
 This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, a *semidynamical system* is usually a "better" mathematical model.
 
-## Dynamical systems
+## Dynamical Systems
 
-First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties.
+First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021.
 
 :::{#def-dynamical-system}
-##### Dynamical system
+##### Dynamical System
 
 A *dynamical system* is a triple $\set{\timeSet, \stateSpace, \evolOp^t}$, where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a subgroup of $(\R, +)$, $\stateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \stateSpace \to \stateSpace$ maps a certain point $x^0 \in \stateSpace$ to some other state $x_t = \evolOp^t x^0 \in \stateSpace$.
 :::
@@ -28,7 +28,7 @@ In the @def-dynamical-system, the time set $\timeSet$ can take on various forms.
 Right now, nothing in the @def-dynamical-system guarantees the system does not abruptly change state, because in general $x \neq \evolOp^0 x$. If this equality does not hold for at least one $x \in \stateSpace$, then such system is called *stochastic*.
 
 :::{#def-deterministic-dynamical-system}
-##### Deterministic dynamical system
+##### Deterministic Dynamical System
 
 A dynamical system, see @def-dynamical-system, is called *deterministic* if and only if the following condition is fulfilled
 $$
@@ -40,7 +40,7 @@ in other words $\forall x \in \stateSpace: x = \evolOp^0 x$.
 Onwards, we will predominantly use deterministic dynamical systems. Another assumption we shall make throughout this thesis is that the "laws of nature" do not change in time, i.e., we presume the dynamical system in question is autonomous (although it may depend on the past).
 
 :::{#def-autonomous-dynamical-system}
-##### Autonomous dynamical system
+##### Autonomous Dynamical System
 
 A deterministic dynamical system, see @def-deterministic-dynamical-system, is called *autonomous* if and only if the following condition is fulfilled
 $$
@@ -60,7 +60,7 @@ $$ {#eq-difference-verhulst}
 
 [^verhulst]: The equation ([-@eq-ode-verhulst]) describes the [Verhulst](https://en.wikipedia.org/wiki/Pierre_Fran%C3%A7ois_Verhulst) model of a population (and its growth, characterized by $r_0$) in some closed environment with some finite capacity (controlled by $K$).
 
-### Basic concepts
+### Basic Concepts
 
 In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in 
 <!-- TODO: Add citations -->
@@ -77,7 +77,7 @@ In the case of a continuous dynamical system, the orbits are *oriented curves* i
 :::
 
 :::{#def-phase-portrait}
-##### Phase portrait
+##### Phase Portrait
 A *phase portrait* of a dynamical system is a partitioning of the state space into trajectories.
 :::
 
@@ -94,7 +94,7 @@ A *cycle* is a periodic orbit, namely a non-equilibrium orbit $L$, such that eac
 :::
 
 :::{#def-invariant-set}
-##### Invariant set
+##### Invariant Set
 
 An *invariant set* of a dynamical system $\set{\timeSet, \stateSpace, \evolOp^t}$ is a subset $\obj S \subset \stateSpace$ which satisfies
 $$
@@ -103,7 +103,7 @@ $$
 :::
 
 :::{#def-limit-point}
-##### $\omega$-limit and $\alpha$-limit point
+##### $\omega$-limit and $\alpha$-limit Point
 
 A point $x_* \in \stateSpace$ is called an *$\omega$-limit point* (resp. $\alpha$-limit point) of the orbit $\Orbit{x_0}$ starting at $x_0 \in \stateSpace$ if their exists a sequence of times $\seqnc{t}{k}{1}{\infty} \subseteq \timeSet$ with $t_k \to \infty$ (resp. $t_k \to - \infty$), such that
 $$
@@ -112,7 +112,7 @@ $$
 :::
 
 :::{#def-limit-set}
-##### $\omega$-limit and $\alpha$-limit set
+##### $\omega$-limit and $\alpha$-limit Set
 
 A set $\obj \Omega(\Orbit{x_0})$ of all $\omega$-limit points of the orbit $\Orbit{x_0}$, see @def-limit-point, is called an $\omega$-limit set. Similarly, a set $\obj A(\Orbit{x_0})$ of all $\alpha$-limit points of the orbit $\Orbit{x_0}$ is called an $\alpha$-limit set.
 
@@ -126,13 +126,13 @@ Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Or
 ::: -->
 
 :::{#def-limit-cycle}
-##### Limit cycle
+##### Limit Cycle
 
 A cycle of a continuous-time dynamical system, in a neighborhood of which there are no other cycles, is called a *limit cycle*.
 :::
 
 ::: {.callout-note #nte-limit-cycle}
-##### Equivalent definition of a limit cycle
+##### Equivalent Definition of a Limit Cycle
 
 Equivalently to @def-limit-cycle, one can define a *limit cycle* as a cycle, which is the limit set, see @def-limit-set, of orbits in its neighborhood.
 :::
@@ -151,13 +151,13 @@ An invariant set $S_0$ is called
 
 Stable invariant set is called an *attractor*, whereas if the invariant set is unstable it is called a *repeller*.
 
-#### Topologically equivalent dynamical systems
+#### Topologically Equivalent Dynamical Systems
 
-<!-- TODO: Add citation to section -->
+<!-- TODO: Add refs to section -->
 So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
 
 :::{#def-topological-equivalence}
-##### Topological equivalence
+##### Topological Equivalence
 
 A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
 :::
@@ -165,7 +165,7 @@ A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *t
 [^homeomorphism]: In the context of topology, a *homeomorphism* (also called a *bicontinuous function*) is a bijective and continuous function, such that its inverse is also continuous.
 
 :::{#def-local-topological-equivalence}
-##### Local topological equivalence
+##### Local Topological Equivalence
 
 A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *locally topologically equivalent* in the neighborhood of its equilibrium $\vi x^*$ to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$ in the neighborhood of its equilibrium $\vi y^*$, if there exists a *homeomorphism* $\vi h: \R^n \to \R^n$, such that
 
@@ -174,7 +174,7 @@ A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *l
 3. maps orbits of dynamical system $\obj D_1$ in the neighborhood $\neigh{\vi x_0}$ to orbits of system $\obj D_2$ in the neighborhood $\neigh{\vi y^*}$, such that their orientation is kept.
 :::
 
-### Continuous-time autonomous systems
+### Continuous-time Autonomous Systems
 
 :::{#def-autonomous-ode-system}
 An *autonomous system of (ordinary) differential equations* is a system of form
@@ -206,7 +206,7 @@ See @Chicone2006, page 160, or @Perko2001, page 185.
 :::
 
 :::{#def-hyperbolic-equilibrium}
-##### Hyperbolic equilibrium
+##### Hyperbolic Equilibrium
 
 An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobi matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
 :::
@@ -224,7 +224,7 @@ $$ {#eq-linearization}
 See @Chicone2006, page 306, or @Perko2001, page 120.
 :::
 
-#### Lyapunov's direct method
+#### Lyapunov's Direct Method
 
 :::{#def-lpd-function}
 A function $V: \R^n \to \R$ is called *locally positive-definite (LPD)* at $\vi x^*$, if the following holds:
@@ -236,7 +236,7 @@ If only $V(\vi x) \geq 0$ holds on a neighborhood $\neigh{\vi x^*}$, then the fu
 :::
 
 :::{#def-lyapunov-function}
-###### Lyapunov function
+###### Lyapunov Function
 
 Let $\vi \vf(t; \vi x_0)$ be a solution of the system ([-@eq-autonomous-ode-system]) together with the initial $\vi x(0) = \vi x_0$. A function $V: \R^n \to \R$ is called *Lyapunov* at $\vi x^*$, if $V$ is locally positive definite and also $\forall \vi x_0 \in \neigh{\vi x^*}$ is the function $V \circ \vi \vf(t; \vi x_0)$ *non-increasing* for all $t > 0$.
 
@@ -250,7 +250,7 @@ Equivalently to requiring a non-increasing $V \circ \vi \vf(t; \vi x_0)$, one ca
 :::
 
 :::{#thm-lyapunov-stability-theorem}
-##### Lyapunov's stability theorem
+##### Lyapunov's Direct Method
 
 If $\vi x^*$ is an equilibrium of the system ([-@eq-autonomous-ode-system]) and $V$ is a *Lyapunov* function for the system at $\vi x^*$, then $\vi x^*$ is *Lyapunov stable*. If, in addition, $V$ is a *strict Lyapunov* function, then $\vi x^*$ is *stable*.
 :::
@@ -259,8 +259,27 @@ If $\vi x^*$ is an equilibrium of the system ([-@eq-autonomous-ode-system]) and 
 See @Chicone2006, page 24.
 :::
 
+### Discrete Dynamical Systems
 
-## Semidynamical systems
+:::{#def-autonomous-difference-system}
+
+An *autonomous system of difference equations* is a system of form
+$$
+\vi x \mapsto \vi f(\vi x) \quad \iff \quad \vi x_{m+1} = \vi f(\vi x_m),
+$$ {#eq-autonomous-difference-sys}
+where $\vi x, \vi x_m \in \stateSpace = \R^n$ and the function $\vi f : \R^n \to \R^n$ is sufficiently smooth.
+
+The system ([-@eq-autonomous-difference-sys]) induces a *discrete-time autonomous dynamical system*.
+:::
+
+:::{#thm-lyapunov-differences}
+##### Lyapunov, analogous to @thm-laypunov-ode
+
+Consider a dynamical system ([-@eq-autonomous-difference-sys]) with a fixed point $\vi x^*$. Let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is stable, if all eigenvalues^[Eigenvalues of fixed points of discrete-time dynamical systems are often called *multipliers*, see @Sevcik2021.]
+:::
+
+
+## Semidynamical Systems
 
 We have already shown in ([-@eq-ode-verhulst]) that one can define a continuous-time dynamical system with (a system of) differential equations. Most often, these come in form of a system of $n$ autonomous ordinary differential equations, ODEs for short, i.e. for a state space $\stateSpace = \R^n$ we have
 $$
@@ -285,7 +304,7 @@ $$
 \dot x(t) = - \gamma x(t) - \kappa_1 x(t - a_1 - cx(t)) - \kappa_2 x(t - a_2 - cx(t)).
 $$ {#eq-humphries}
 
-#### Delayed differential dynamics {#sec-delayed-differential-dynamics}
+#### Delayed Differential Dynamics {#sec-delayed-differential-dynamics}
 
 Let us denote by $\contf {[a,b], \R^n} 0$ the space of all continuous functions from $[a,b]$ to $\R^n$. Moreover, let $\Contf 1$ be the set of all *continuously differentiable* functions and $\histories {\tau} := \contf {[-\tau, 0], \R^n} 0$ be the set of all possible histories for a positive constant $\tau$ (and the time $0$).
 
