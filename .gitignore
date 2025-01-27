@@ -6,6 +6,7 @@ old/
 
 files/
 _book/
+_freeze/
 
 *.xdp*
 *.log

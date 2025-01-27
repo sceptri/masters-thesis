@@ -1,0 +1,45 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="241px" height="199px" viewBox="-0.5 -0.5 241 199" content="&lt;mxfile scale=&quot;1&quot; border=&quot;0&quot; disableSvgWarning=&quot;true&quot;&gt;&lt;diagram id=&quot;KBl8ILtQYh6sx5uBEzJa&quot; name=&quot;Page-1&quot;&gt;3VlNc5swEP01zLQXD5KQgWNsJ+mlM5nJoe1RNYrRFCMPyF/99ZWMZIQgxklwkjqXoKfPffu02k08NF3u7guySr/zhGYe9JOdh2YehACFUP5SyL5CcBBXwKJgSQX5NfDI/lI906BrltBSYxUkOM8EWzXBOc9zOhcNjBQF3zaHPfEsaQArsqAt4HFOsjb6gyUirdAI+zX+jbJFanYGvu5ZEjNYL1GmJOFby2R066Fpwbmovpa7Kc0UeU1e7p7pPR6soLk4Z4J2xIZka22bPpfYG2PlEVfqU0hf0r9czZysaMGWVNDCxh9qcLJNmaCPKzJXM7dyhMRSscxkC8jPJ7ajxq+qXVaf8rBosuQb8vuwuWoVVPbZbS6IsNpSWtRu04TZTa0AC2kzpEnb0ELQnQVpxu4pl1YVezlE96JIs6TliyAc4QrZ1nIAOKiw1JJCqIVOtAIXx8VrJ8kP7adunwX9PqN5cqN0LlvzjJQlmyuqSJnSRDNeswwcloHDMnBYBk2WQYvlw4BcGvVTUS6Z0c1fdt9sZxx2aO37vEMT50oKUiyoGYO7/WV5w9xN2xkGK2hGBNs01+/ykN7hgTN5uqMcAoQacgh8Z4mSr4s51bPsy9izEMLj5kKVza2FpKvJ3hq2UgPKUwf2m/uE2NFftWKtxiOnZwk0/A8Eeq7QPkxU46aPXi8qIyLj7DG8jKjcfXSQHEpUwITpU6rKMpkC0GfenwEifxBGzs0BHZG/I+4Hbw/7AH0GAsyjdlST/17m489gvhuhg/C9zB+3zH9o2S+tkDtOSMYWuYqs0tBDNqYMZDJ9vdEdS5Ykak4ru9KXXC6GJx6eqbXWgpdWoiYK/odOecZV6pfznB6yuSxzoAG4xqZKMFyjqMU1HLfJhuMB2I7aYrvzvXjmxb43Ad4t9GR4i/xhPQCG9IDzfl7svXxJ7AC9lwfGF3Jo3L4+X2yXfr3uyxT4uMk97Hi2OrKZIbg3tfxzl+m6iQ/d9Kv9YHY9GYMQ35EyaeJvvMnNdROPsJuq4Y5U7VIPCOx4QFy65+ticyx3rIJIcyCRO6Y2sArjVhXcoujD6pW+MuPseqWv8BmqXnH2QX548lwYNg2EYTDCp2eEznuHQd8M54UMsN8zwy1IgjEaDVvMo47ofd1KDuNRbP84YeS1um79lQhdRtfRC3WNm2k2DOHp8ZF70ePT402WZ+yO0GmenAoziMBb9Cyb9V/Tq+H1/yTQ7T8=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <path d="M 24 116.5 L 44 37.5 L 158 37.5 L 178 116.5 Z" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 75 116 L 73.15 99.93 Q 72 90 73.85 81.12 L 75.7 72.23" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+        <path d="M 76.77 67.09 L 78.77 74.66 L 75.7 72.23 L 71.92 73.23 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 102 116 L 100 106.5 Q 98 97 98 90.18 L 98 83.37" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+        <path d="M 98 78.12 L 101.5 85.12 L 98 83.37 L 94.5 85.12 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <ellipse cx="122" cy="88.5" rx="2" ry="2" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <ellipse cx="98" cy="77" rx="2" ry="2" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <ellipse cx="77" cy="64" rx="2" ry="2" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="214" y="53" width="26" height="26" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="226.5" y="70.5">
+                P
+            </text>
+        </g>
+        <rect x="93" y="62" width="29" height="26" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="107" y="79.5">
+                𝐱₀
+            </text>
+        </g>
+        <rect x="47" y="40" width="40" height="26" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="66.5" y="57.5">
+                P(𝐱)
+            </text>
+        </g>
+        <rect x="118" y="75" width="24" height="26" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="129.5" y="92.5">
+                𝐱
+            </text>
+        </g>
+        <rect x="0" y="90.5" width="26" height="26" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="12.5" y="108">
+                𝚺
+            </text>
+        </g>
+        <path d="M 98 77 Q 102 22 135 5.75 Q 168 -10.5 190.5 28 Q 213 66.5 203 116 Q 193 165.5 156.5 172 Q 120 178.5 102 116" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 122 87 Q 122 22 158 4.5 Q 194 -13 211 35.5 Q 228 84 208.5 141 Q 189 198 142.5 197 Q 96 196 75 118" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+    </g>
+</svg>

@@ -1,3 +1,7 @@
+---
+engine: julia
+---
+
 :::{.content-visible when-format="pdf"}
 \HeaderNumbered
 :::
@@ -5,6 +9,34 @@
 
 :::{.hidden}
 {{< include mathematics.qmd >}}
+
+```{julia}
+#| echo: false
+#| output: false
+
+using Pkg
+Pkg.activate(".")
+```
+:::
+
+:::{.content-visible when-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using WGLMakie
+WGLMakie.activate!()
+```
+:::
+
+:::{.content-visible unless-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using CairoMakie
+CairoMakie.activate!()
+```
 :::
 
 # A Primer on Dynamical Systems {#dynamical-systems-theory}
@@ -13,9 +45,9 @@ We have motivated the entire thesis with the usefulness of the knowledge and of 
 
 This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, a *semidynamical system* is usually a "better" mathematical model.
 
-## Dynamical Systems
+## Dynamical Systems {#sec-dynamical-systems}
 
-First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021.
+First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021, with @Sevcik2021 being a valuable inspiration for the structure of this section.
 
 :::{#def-dynamical-system}
 ##### Dynamical System
@@ -186,7 +218,7 @@ where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \
 The system of ODEs ([-@eq-autonomous-ode-system]) induces a *continuous-time autonomous dynamical system*.
 :::
 
-:::{#thm-laypunov-ode}
+:::{#thm-lyapunov-ode}
 ##### Lyapunov
 
 Consider a dynamical system ([-@eq-autonomous-ode-system]) with an equilibrium $\vi x^*$. Let
@@ -198,20 +230,20 @@ $$
 	\pDeriv {f_n} {x_1} (\vi x^*) & \pDeriv {f_n} {x_2} (\vi x^*) & \dots & \pDeriv {f_n} {x_n} (\vi x^*)
 }
 $$
-denote a Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\reOf \lmbd_i < 0$.
+denote a Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\reOf{\lmbd_i} < 0$.
 :::
 
 :::{.proof}
 See @Chicone2006, page 160, or @Perko2001, page 185.
 :::
 
-:::{#def-hyperbolic-equilibrium}
+:::{#def-hyperbolic-equilibrium-cont}
 ##### Hyperbolic Equilibrium
 
 An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobi matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
 :::
 
-:::{#thm-grobman-hartman}
+:::{#thm-grobman-hartman-cont}
 ##### Grobman-Hartman
 
 The system ([-@eq-autonomous-ode-system]) in a neighborhood of its *hyperbolic* equilibrium $\vi x^*$ is *locally topologically equivalent*, in the sense of @def-local-topological-equivalence, to its linearization
@@ -273,10 +305,114 @@ The system ([-@eq-autonomous-difference-sys]) induces a *discrete-time autonomou
 :::
 
 :::{#thm-lyapunov-differences}
-##### Lyapunov, analogous to @thm-laypunov-ode
+##### Lyapunov, analogous to @thm-lyapunov-ode
 
-Consider a dynamical system ([-@eq-autonomous-difference-sys]) with a fixed point $\vi x^*$. Let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is stable, if all eigenvalues^[Eigenvalues of fixed points of discrete-time dynamical systems are often called *multipliers*, see @Sevcik2021.]
+Consider a dynamical system ([-@eq-autonomous-difference-sys]) with a fixed point $\vi x^*$. Let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is stable, if all eigenvalues^[Eigenvalues of fixed points of discrete-time dynamical systems are often called *multipliers*, see @Sevcik2021.] $\lambda_i$, where $i \in \oneToN{n}$, of the matrix $\Jacobi^*$ satisfy $\absval{\lambda_i} < 1$.
 :::
+
+:::{.proof}
+See @Elaydi2005, page 222.
+:::
+
+:::{#def-hyperbolic-equilibrium-discrete}
+##### Hyperbolic fixed point
+
+A fixed point $\vi x^*$ of the system ([-@eq-autonomous-difference-sys]) is called **hyperbolic**, if none of the eigenvalues corresponding to the Jacobi matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ has unit magnitude.
+:::
+
+:::{#thm-grobman-hartman-discrete}
+##### Grobman-Hartman, analogous to @thm-grobman-hartman-cont
+
+The system ([-@eq-autonomous-difference-sys]) is locally topologically equivalent in the neighborhood of its *hyperbolic* fixed point $\vi x^*$ to its linearization
+$$
+\vi x \mapsto \jacobi \vi f(\vi x^*) \vi x.
+$$
+:::
+
+:::{.proof}
+See @Chicone2006, page 311.
+:::
+
+:::{#exm-fixed-points-2d}
+##### Fixed points of two-dimensional discrete-time dynamical system
+
+As an example, consider a two-dimensional discrete-time dynamical system
+$$
+\vi x_{m+1} = \vi f(\vi x_{m}),
+$$ {#eq-2d-discrete-dyn-sys}
+where $\vi x_m = (x_{m, 1}, x_{m, 2})\Tr$ and $\vi f : \R^2 \to \R^2$ is smooth. Moreover, let us assume there exists a *hyperbolic equilibrium* $\vi x^* = \vi f(\vi x^*)$ of the system ([-@eq-2d-discrete-dyn-sys]) and let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the corresponding Jacobi matrix evaluated at $\vi x^*$. Then $\Jacobi^*$ has two eigenvalues $\lambda_1, \lambda_2$, which satisfy
+$$
+\det \brackets{\Jacobi^* - \lambda \ident_2} = \lambda^2 - \trace \Jacobi^* \lambda + \det \Jacobi^*.
+$$
+Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda_1 + \lambda_2$  is the trace of the Jacobian and finally, $\det \Jacobi^* = \lambda_1 \lambda_2$ denotes the determinant of $\Jacobi^*$.
+
+On a different note, in the case of a linear continuous-time dynamical system, i.e.
+$$
+\dvi y = \vi A \vi y,
+$$
+where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi y^*$ we can partition the state-space into disjoint linear (vector) subspaces:
+
+- *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
+- *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
+- *central subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
+
+Then it holds that $n_{-} + n_{+} + n_0 = n$. Similarly, for linear discrete-time dynamical systems, one can perform an equivalent partitioning, such that $\obj{E}^s$ is spanned by eigenvectors corresponding to eigenvalues *lying inside the unit circle* (on the imaginary plane). Furthermore, $\obj{E}^u$ and $\obj{E}^c$ can be defined for discrete-time dynamical systems analogously.
+
+By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e. the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
+
+A fixed point is classified as a *sink*, when both eigenvalues are real and stable. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex. Should one eigenvalue be stable and the other unstable, the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
+
+```{julia}
+#| echo: false
+#| fig-cap: "Orbits near different equilibria of a linear discrete-time dynamical system (time flows from blue to red)."
+#| label: fig-2d-discrete-dynamical-system
+
+function solve(A, x, n)
+	X = similar(x, n, 2)
+	X[1, :] = x
+	for i = 2:n
+		X[i, :] = A*X[i - 1, :]
+	end
+	return X
+end
+
+fig = Figure(size = (1000, 200), backgroundcolor=:transparent)
+
+x0 = [1.0, 1.0]
+x_eq = [0.01, 0.01]
+n = 12
+
+ax = Axis(fig[1,1], title="sink")
+hidedecorations!(ax)
+scatterlines!(ax, solve([0.5 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
+
+ax = Axis(fig[1,2], title="spiral sink")
+hidedecorations!(ax)
+scatterlines!(ax, solve([0.5 0.25; -0.25 0.5], x0, n), colormap=:Zissou1, color=1:n)
+
+ax = Axis(fig[1,3], title="saddle")
+hidedecorations!(ax)
+scatterlines!(ax, solve([1.25 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, solve([1.25 0; 0 0.25], x0 .* [-1.0, 1.0], n), colormap=:Zissou1, color=1:n)
+
+ax = Axis(fig[1,4], title="source")
+hidedecorations!(ax)
+scatterlines!(ax, solve([1.5 0; 0 1.25], x_eq, n), colormap=:Zissou1, color=1:n)
+
+ax = Axis(fig[1,5], title="spiral source")
+hidedecorations!(ax)
+scatterlines!(ax, solve([1.5 0.75; -0.75 1.5], x_eq, n), colormap=:Zissou1, color=1:n)
+
+fig
+```
+<!-- TODO: Check color direction in caption correct -->
+:::
+
+### Poincaré maps
+
+See
+
+![Poincare map for cycle???](diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
 
 
 ## Semidynamical Systems
@@ -320,7 +456,4 @@ where $\vi x \in \R^n$ is the time-dependent state vector. The constant discrete
 If $\vi f \in \contf {\R^{(k+1)n}, \R^n} 1$ is a Lipschitz-continuous function, then the system ([-@eq-delayed-diff-dynamics]) has a unique solution, i.e. *orbit*, from a given initial condition $\vi \phi \in \histories {\tau_k}$, denoted as $\Orbit{\vi \phi}: [-\tau_k, \infty) \to \R^n$.
 
 <!-- TODO: Maybe add Jacobian notation with respect to various delays -->
-<!-- TODO: Add topological equivalence -->
-<!-- TODO: Hyperbolic equilibrium, Lyapunov theorem, Grobman-Hartman -->
-<!-- TODO: Add Lyapunov function -->
-<!-- TODO: Add discrete dynamical systems -->
+<!-- TODO: Improve DDE section -->

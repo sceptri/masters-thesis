@@ -9,18 +9,9 @@ let
 
   rPackages = with pkgs.rPackages; [
     quarto
-    tidyverse
-    tsibble
-    feasts
-    fable
-    magick
-    here
-    readr
-    knitr
-    kableExtra
     languageserver
-    downlit
-    xml2
+    knitr
+    tidyverse
   ];
 in
   pkgs.mkShell {
