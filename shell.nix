@@ -18,6 +18,7 @@ in
     buildInputs = with pkgs; [
       pkgs.texlive.combined.scheme-full
       pandoc
+      librsvg
       xclip
       (
         rWrapper.override {
