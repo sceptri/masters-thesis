@@ -1,0 +1,16 @@
+old/
+
+*.html
+*_libs/
+
+files/
+_book/
+_freeze/
+
+*.xdp*
+*.log
+# Bada Bib backup
+*.bak
+
+Manifest.toml
+/.quarto/
