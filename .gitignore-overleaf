@@ -3,6 +3,8 @@ old/
 *.html
 *_libs/
 
+_freeze/
+
 *.xdp*
 *.log
 # Bada Bib backup
