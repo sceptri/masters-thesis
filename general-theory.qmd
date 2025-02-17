@@ -19,7 +19,7 @@ Pkg.activate(".")
 ```
 :::
 
-:::{.content-visible when-format="html"}
+:::{.content-hidden unless-format="html"}
 ```{julia}
 #| echo: false
 #| output: false
@@ -29,7 +29,7 @@ WGLMakie.activate!()
 ```
 :::
 
-:::{.content-visible unless-format="html"}
+:::{.content-hidden when-format="html"}
 ```{julia}
 #| echo: false
 #| output: false
@@ -230,7 +230,7 @@ $$
 	\pDeriv {f_n} {x_1} (\vi x^*) & \pDeriv {f_n} {x_2} (\vi x^*) & \dots & \pDeriv {f_n} {x_n} (\vi x^*)
 }
 $$
-denote a Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\reOf{\lmbd_i} < 0$.
+denote a Jacobian matrix evaluated at $\vi x^*$. Then $\vi x^*$ is *stable*, if all eigenvalues $\lmbd_i$, where $i \in \oneToN{n}$^[For conciseness, we use the following notation $\oneToN{n} := \set{1, \dots, n}.$], of the matrix $\Jacobi^*$ satisfy $\reOf{\lmbd_i} < 0$.
 :::
 
 :::{.proof}
@@ -240,7 +240,7 @@ See @Chicone2006, page 160, or @Perko2001, page 185.
 :::{#def-hyperbolic-equilibrium-cont}
 ##### Hyperbolic Equilibrium
 
-An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobi matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
+An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
 :::
 
 :::{#thm-grobman-hartman-cont}
@@ -307,7 +307,7 @@ The system ([-@eq-autonomous-difference-sys]) induces a *discrete-time autonomou
 :::{#thm-lyapunov-differences}
 ##### Lyapunov, analogous to @thm-lyapunov-ode
 
-Consider a dynamical system ([-@eq-autonomous-difference-sys]) with a fixed point $\vi x^*$. Let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the Jacobi matrix evaluated at $\vi x^*$. Then $\vi x^*$ is stable, if all eigenvalues^[Eigenvalues of fixed points of discrete-time dynamical systems are often called *multipliers*, see @Sevcik2021.] $\lambda_i$, where $i \in \oneToN{n}$, of the matrix $\Jacobi^*$ satisfy $\absval{\lambda_i} < 1$.
+Consider a dynamical system ([-@eq-autonomous-difference-sys]) with a fixed point $\vi x^*$. Let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the Jacobian matrix evaluated at $\vi x^*$. Then $\vi x^*$ is stable, if all eigenvalues^[Eigenvalues of fixed points of discrete-time dynamical systems are often called *multipliers*, see @Sevcik2021.] $\lambda_i$, where $i \in \oneToN{n}$, of the matrix $\Jacobi^*$ satisfy $\absval{\lambda_i} < 1$.
 :::
 
 :::{.proof}
@@ -317,7 +317,7 @@ See @Elaydi2005, page 222.
 :::{#def-hyperbolic-equilibrium-discrete}
 ##### Hyperbolic fixed point
 
-A fixed point $\vi x^*$ of the system ([-@eq-autonomous-difference-sys]) is called **hyperbolic**, if none of the eigenvalues corresponding to the Jacobi matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ has unit magnitude.
+A fixed point $\vi x^*$ of the system ([-@eq-autonomous-difference-sys]) is called **hyperbolic**, if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ has unit magnitude.
 :::
 
 :::{#thm-grobman-hartman-discrete}
@@ -340,11 +340,11 @@ As an example, consider a two-dimensional discrete-time dynamical system
 $$
 \vi x_{m+1} = \vi f(\vi x_{m}),
 $$ {#eq-2d-discrete-dyn-sys}
-where $\vi x_m = (x_{m, 1}, x_{m, 2})\Tr$ and $\vi f : \R^2 \to \R^2$ is smooth. Moreover, let us assume there exists a *hyperbolic equilibrium* $\vi x^* = \vi f(\vi x^*)$ of the system ([-@eq-2d-discrete-dyn-sys]) and let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the corresponding Jacobi matrix evaluated at $\vi x^*$. Then $\Jacobi^*$ has two eigenvalues $\lambda_1, \lambda_2$, which satisfy
+where $\vi x_m = (x_{m, 1}, x_{m, 2})\Tr$ and $\vi f : \R^2 \to \R^2$ is smooth. Moreover, let us assume there exists a *hyperbolic equilibrium* $\vi x^* = \vi f(\vi x^*)$ of the system ([-@eq-2d-discrete-dyn-sys]) and let $\Jacobi^* = \jacobi \vi f(\vi x^*)$ denote the corresponding Jacobian matrix evaluated at $\vi x^*$. Then $\Jacobi^*$ has two eigenvalues $\lambda_1, \lambda_2$, which satisfy
 $$
 \det \brackets{\Jacobi^* - \lambda \ident_2} = \lambda^2 - \trace \Jacobi^* \lambda + \det \Jacobi^*.
 $$
-Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda_1 + \lambda_2$  is the trace of the Jacobian and finally, $\det \Jacobi^* = \lambda_1 \lambda_2$ denotes the determinant of $\Jacobi^*$.
+Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda_1 + \lambda_2$  is the trace of the  determinant and finally, $\det \Jacobi^* = \lambda_1 \lambda_2$ denotes the determinant of $\Jacobi^*$.
 
 On a different note, in the case of a linear continuous-time dynamical system, i.e.
 $$
@@ -363,11 +363,12 @@ By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn
 A fixed point is classified as a *sink*, when both eigenvalues are real and stable. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex. Should one eigenvalue be stable and the other unstable, the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
 
 ```{julia}
-#| echo: false
 #| fig-cap: "Orbits near different equilibria of a linear discrete-time dynamical system (time flows from blue to red)."
 #| label: fig-2d-discrete-dynamical-system
+#| tags: 
+#|   - show-in-pdf
 
-function solve(A, x, n)
+function integrate(A, x, n)
 	X = similar(x, n, 2)
 	X[1, :] = x
 	for i = 2:n
@@ -384,36 +385,102 @@ n = 12
 
 ax = Axis(fig[1,1], title="sink")
 hidedecorations!(ax)
-scatterlines!(ax, solve([0.5 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([0.5 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
 
 ax = Axis(fig[1,2], title="spiral sink")
 hidedecorations!(ax)
-scatterlines!(ax, solve([0.5 0.25; -0.25 0.5], x0, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([0.5 0.25; -0.25 0.5], x0, n), colormap=:Zissou1, color=1:n)
 
 ax = Axis(fig[1,3], title="saddle")
 hidedecorations!(ax)
-scatterlines!(ax, solve([1.25 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
-scatterlines!(ax, solve([1.25 0; 0 0.25], x0 .* [-1.0, 1.0], n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([1.25 0; 0 0.25], x0, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([1.25 0; 0 0.25], x0 .* [-1.0, 1.0], n), colormap=:Zissou1, color=1:n)
 
 ax = Axis(fig[1,4], title="source")
 hidedecorations!(ax)
-scatterlines!(ax, solve([1.5 0; 0 1.25], x_eq, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([1.5 0; 0 1.25], x_eq, n), colormap=:Zissou1, color=1:n)
 
 ax = Axis(fig[1,5], title="spiral source")
 hidedecorations!(ax)
-scatterlines!(ax, solve([1.5 0.75; -0.75 1.5], x_eq, n), colormap=:Zissou1, color=1:n)
+scatterlines!(ax, integrate([1.5 0.75; -0.75 1.5], x_eq, n), colormap=:Zissou1, color=1:n)
 
 fig
 ```
 <!-- TODO: Check color direction in caption correct -->
 :::
 
-### Poincaré maps
+For completeness sake, a classical result from theory of ODEs concerning the existence, uniqueness and smooth dependence on the initial conditions of the solution for a given ODE.
 
-See
+:::{#thm-exists-unique-smooth-ode-solution}
+##### Existence, uniqueness and smooth dependence
 
-![Poincare map for cycle???](diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
+Consider a system of ordinary differential equations
+$$
+\dvi x = \vi f(\vi x), \vi x \in \R,
+$$
+where $\vi f: \R^n \to \R^n$ is smooth in an open region $U \subset \R^n$. Then there is a unique function $\vi x = \vi x(t, \vi x_0)$, $\vi x : \R^1 \times \R^n \to \R^n$, that is smooth in $(t,x)$, and satisfies, for each $\vi x_0 \in U$, the following conditions:
 
+1. $\vi x(0, \vi x_0) = \vi x_0$;
+2. there is an interval $\timeInt = (-\delta_1, \delta_2)$, where $\delta_{1,2} = \delta_{1,2}(\vi x_0) > 0$, such that, for all $t \in \timeInt$,
+	$$
+	\vi y(t) = \vi x(t, \vi x_0) \in U,
+	$$
+	and
+	$$
+	\dvi y(t) = \vi f(\vi y(t)).
+	$$
+:::
+
+:::{.proof}
+See @Hartman2002, page 94.
+:::
+
+
+### Poincaré map
+
+The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems, be it via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
+
+Consider a continuous-time dynamical system of form
+$$
+\dvi x = \vi f(\vi x), \quad \vi x \in \R^n,
+$$ {#eq-poincare-map-system}
+where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a periodic orbit $L_0$. Let $\vi x_0$ be a point on $L_0$ and denote $\crossSection$ the *cross-section* to the cycle at this point, see @fig-poincare-map.
+
+![Poincaré map corresponding to the system ([-@eq-poincare-map-system]), the cycle $L_0$ and its point $\vi x_0$.](diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
+
+The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e. the cross-section hypersurface $\crossSection$ is of "codimension" one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to the through-going trajectories, thus the trajectories truly intersect the cross-section $\crossSection$.
+
+Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depend smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
+$$
+\vi x \mapsto \tilde{\vi x} = \vi P(\vi x).
+$$
+
+:::{#def-poincare-map}
+##### Poincaré map
+
+The map $\vi P$ defined above is called a *Poincaré map* associated with the cycle $L_0$.
+:::
+
+Similarly, we can characterize the Poincaré map $\vi P$ using a local coordinates $\vi \xi = (\xi_1, \dots, \xi_{n - 1})$ on $\crossSection$, such that the choice $\vi \xi = \vi 0$ corresponds to $\vi x_0$. Then the Poincaré map can be locally defined as a function $\vi P: \R^{n - 1} \to \R^{n - 1}$, which maps $\vi \xi$ corresponding to $\vi x$ to $\tilde{\vi \xi}$ corresponding to $\tilde {\vi x}$, i.e.
+$$
+\vi P(\vi \xi) = \tilde{\vi \xi}.
+$$
+
+In other words, the Poincaré map $\vi P$ prescribes a *discrete-time dynamical system* on the hypersurface $\crossSection$. Its origin $\vi \xi = \vi 0$ is a fixed point of this mapping. To our advantage, the stability of the underlying cycle $L_0$ is then equivalent to the stability of the fixed point $\vi \xi_0 = \vi 0$. By @thm-lyapunov-differences, we know the cycle is thus stable if all eigenvalues (also called *multipliers*) $\mu_1, \dots, \mu_{n - 1}$ of the $(n - 1) \times (n - 1)$ Jacobian matrix of $\vi P$,
+$$
+\Jacobi_{\vi P} = \jacobi_{\vi \xi} \vi P(\vi \xi_0),
+$$
+are located inside the unit circle $\norm{\vi \mu} = 1$. The Poincaré map will throughout this thesis paint itself a powerful tool in the bifurcation analysis of dynamical systems, and the following lemma hints at its usefulness.
+
+:::{#lem-poincaré-map}
+The multipliers $\mu_1, \dots, \mu_{n - 1}$ of the Jacobian matrix $\Jacobi_{\vi P}$ of the Poincaré map $\vi P$ associated with a cycle $L_0$ are independent of the point $\vi x_0$ on $L_0$, the cross-section $\crossSection$, and local coordinates on it.
+:::
+
+:::{.proof}
+See @Kuznetsov2023, page 27.
+:::
+
+<!-- TODO: Continue and add monodromy maps -->
 
 ## Semidynamical Systems
 

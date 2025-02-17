@@ -78,6 +78,8 @@ format:
 
     toc: true
     toc-expand: 3
+    code-fold: true
+    code-tools: true
 
     header-includes: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,6 +115,7 @@ format:
 filters:
  - munithesis
  - resizer.lua
+ - pdf_hide_code.lua
 
 profiles:
   default: basic

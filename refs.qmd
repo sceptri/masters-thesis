@@ -6,3 +6,7 @@
 
 ::: {#refs}
 :::
+
+:::{.content-visible when-format="pdf"}
+\cleardoublepage
+:::
