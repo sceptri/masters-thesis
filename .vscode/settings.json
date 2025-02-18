@@ -4,6 +4,7 @@
 		"bijective",
 		"codimension",
 		"evolOp",
+		"Floquet",
 		"Grobman",
 		"hypersurface",
 		"linearization",
@@ -11,6 +12,7 @@
 		"Lyapunov",
 		"Makie",
 		"mapsto",
+		"monodromy",
 		"semidynamical",
 		"transversality",
 		"transversally"

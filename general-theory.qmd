@@ -43,7 +43,7 @@ CairoMakie.activate!()
 
 We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
 
-This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, a *semidynamical system* is usually a "better" mathematical model.
+This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, the arising dynamical system becomes infinite dimensional. For better "mathematical ergonomics" we will thus define a *semidynamical system*.
 
 ## Dynamical Systems {#sec-dynamical-systems}
 
@@ -480,7 +480,49 @@ The multipliers $\mu_1, \dots, \mu_{n - 1}$ of the Jacobian matrix $\Jacobi_{\vi
 See @Kuznetsov2023, page 27.
 :::
 
-<!-- TODO: Continue and add monodromy maps -->
+Consider now the cycle $L_0$ and let $\vi x^0(t)$ denote its corresponding periodic solution of ([-@eq-poincare-map-system]) with the period $T_0$, i.e. $\vi x^0(t + T_0) = \vi x^0(t)$. Then any solution $\vi x(t)$ of ([-@eq-poincare-map-system]) can be written as
+$$
+\vi x(t) = \vi x^0(t) + \vi u(t),
+$$
+where $\vi u(t)$ stands for the deviation of the solution from the referential periodic solution. Then,
+\begin{align*}
+\dvi u(t) &= \dvi x(t) - \dvi x^0(t) \\
+	&= \vi f(\vi x^0(t) + \vi u(t))  - \vi f(\vi x^0(t)) \\
+	&= \Jacobi(t) \vi u(t) + O(\norm{\vi u(t)}^2).
+\end{align*}
+Omitting $O(\norm{\vi u(t)}^2)$ terms gives us a linear $T_0$-periodic system
+$$
+\dvi u = \Jacobi(t) \vi u, \quad \vi u \in \R^n,
+$$ {#eq-variational-about-cycle}
+where $\Jacobi(t) = \jacobi_{\vi x} \vi f(\vi x^0(t))$, and $\Jacobi(t + T_0) = \Jacobi(t)$.
+
+:::{#def-variational-equation-about-cycle}
+System ([-@eq-variational-about-cycle]) is called the *variational equation* about the cycle $L_0$.
+:::
+
+As the variational equation describes the evolution of perturbations in the proximity of the cycle $L_0$, naturally its stability depends on the properties of the variational equation.
+
+:::{#def-monodromy-matrix}
+The time-dependent matrix $\vi M(t)$ is called the *fundamental matrix solution* of ([-@eq-poincare-map-system]) if it satisfies
+$$
+\dvi M = \Jacobi(t) \vi M,
+$$
+with the initial condition $\vi M(0) = \ident_n$. The matrix $\vi M(T_0)$ is called a **monodromy matrix** of the cycle $L_0$.
+:::
+
+:::{#thm-floquet-exponents}
+##### Floquet exponents
+
+The monodromy matrix $\vi M(T_0)$ has eigenvalues (called *Floquet exponents* or *multipliers*)
+$$
+1, \mu_1, \dots, \mu_{n - 1},
+$$
+where $\mu_i$ are the multiplier of the Poincaré map $\vi P$ associated with the cycle $L_0$, see @lem-poincaré-map.
+:::
+
+:::{.proof}
+See @Kuznetsov2023, page 30, for a sketch of the proof.
+:::
 
 ## Semidynamical Systems
 
