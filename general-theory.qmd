@@ -700,7 +700,7 @@ $$
 $$
 where $\dvi \phi(0)$ denotes the left-hand derivative at $0$. In total, the history function $\vi \phi$ must thus belong to a very limited submanifold $\obj M$ of $\contStateSpace$ where
 $$
-\obj M = \set{\vi \psi \in \contStateSpace \cap \contf{[-\tau, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
+\obj M = \set{\vi \psi \in \contStateSpace \cap \contf{[-\minOf{\tau, \alpha}, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
 $$
 
 It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ -- steady-state and periodic solutions can be given as examples.
