@@ -55,6 +55,8 @@ First and foremost, we will formally introduce the notion of a *dynamical system
 A *dynamical system* is a triple $\set{\timeSet, \stateSpace, \evolOp^t}$, where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a subgroup of $(\R, +)$, $\stateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \stateSpace \to \stateSpace$ maps a certain point $x^0 \in \stateSpace$ to some other state $x_t = \evolOp^t x^0 \in \stateSpace$.
 :::
 
+<!-- TODO: Depending on whether time is a group or a monoid, it is either a dynamical or semidynamical system -->
+
 In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \N_0$ or $\timeSet = \Z$ representing a yearly interval between measurements of our system. On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ as we are concerted with even the shortest time intervals and associated changes. Similarly, the exact choice of the state space $\stateSpace$ is dependent of the system in question, but typically we use $\R^n$.
 
 Right now, nothing in the @def-dynamical-system guarantees the system does not abruptly change state, because in general $x \neq \evolOp^0 x$. If this equality does not hold for at least one $x \in \stateSpace$, then such system is called *stochastic*.
@@ -94,8 +96,7 @@ $$ {#eq-difference-verhulst}
 
 ### Basic Concepts
 
-In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in 
-<!-- TODO: Add citations -->
+In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002 or @Kuznetsov2023.
 
 :::{#def-orbit}
 ##### Orbit
@@ -217,6 +218,23 @@ where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \
 
 The system of ODEs ([-@eq-autonomous-ode-system]) induces a *continuous-time autonomous dynamical system*.
 :::
+
+##### Vector field
+::: {.callout-tip #tip-ode-vector-field}
+
+The function $\vi f$ is called a *vector field*, as it maps a vector $\vi f(\vi x)$ to each point $\vi x$ of the state space. See @fig-vector-field for an example.
+:::
+
+```{julia}
+#| label: fig-vector-field
+#| fig-cap: Vector field (or a phase portrait) corresponding to the dynamical system $\dot{x} = -x, \dot{y} = 2y$.
+#| width: 60%
+fig = Figure(size=(450, 350))
+ax = Axis(fig[1,1])
+streamplot!(ax, (x,y) -> Point2f(-x, 2y), -2..4, -2..2, colormap=:Zissou1)
+
+fig
+```
 
 :::{#thm-lyapunov-ode}
 ##### Lyapunov
@@ -365,8 +383,7 @@ A fixed point is classified as a *sink*, when both eigenvalues are real and stab
 ```{julia}
 #| fig-cap: "Orbits near different equilibria of a linear discrete-time dynamical system (time flows from blue to red)."
 #| label: fig-2d-discrete-dynamical-system
-#| tags: 
-#|   - show-in-pdf
+#| width: 95%
 
 function integrate(A, x, n)
 	X = similar(x, n, 2)
@@ -436,7 +453,7 @@ See @Hartman2002, page 94.
 :::
 
 
-### Poincaré map
+### Poincaré Map
 
 The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems, be it via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
 
@@ -526,43 +543,170 @@ See @Kuznetsov2023, page 30, for a sketch of the proof.
 
 ## Semidynamical Systems
 
-We have already shown in ([-@eq-ode-verhulst]) that one can define a continuous-time dynamical system with (a system of) differential equations. Most often, these come in form of a system of $n$ autonomous ordinary differential equations, ODEs for short, i.e. for a state space $\stateSpace = \R^n$ we have
+Before delving straight into the semidynamical systems, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e. some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
+
+### Functional Differential Equations
+
+So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, e.g. $F(t, x, \dot{x}, \ddot{x}) = 0$.
+
+In contrast, a *functional equation* (FE) is an equation connecting outputs of an unknown function evaluated at different argument values. As an example, $x(-t) + 3x(2t) = 0$, $x(x(t)) = x(t) + 2$, and $x(t) = tx(t+1) - \brackets{x(t-2)}^3$ are all examples of functional equations. The differences between the argument values of an unknown function and $t$ (its "default" argument) in a FE are called *argument deviations*. If all argument deviations are constant (like in the last example shown above), then the FE is called a *difference-functional equation*.
+
+Although, we have so far shown only examples of FEs with *discrete* (or *concentrated*) argument deviations, another possibility are FEs with *continuous* and *mixed* (both continuous and discrete) *argument deviations*. They are called *integral* and *integral-functional* (or *integral-difference*) equations.
+
+We can further combine these notions of ordinary differential equations and functional equations, yielding in the process *functional differential equations* (FDEs). FDEs can also contain discrete, continuous or mixed argument deviations. Thus, one can introduce *differential-difference equations*, and *integro-differential equations* in a similar way as seen above.
+
+The aforementioned generalization in its full form leads to *functional differential equations* -- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of form
 $$
-\dvi x = \vi f(\vi x),
-$$ {#eq-dyn-sys-ode}
-where the vector-valued function $\vi f: \R^n \to \R^n$ is *sufficiently smooth*. The function $\vi f$ is called a *vector field*, as it maps a vector $\vi f(\vi x)$ to each point $\vi x$ of the state space.
+\vi x^{(m)}(t) = \vi f\brackets{t, \vi x^{(m_1)}(t - \tau_1(t)), \dots, \vi x^{(m_k)}(t - \tau_k(t))},
+$$ {#eq-differe}
+where $\vi x(t) \in \R^n$, $m_1, \dots, m_k \geq 0$, and $\tau_1(t), \dots, \tau_k(t) \geq 0$. They can be further classified as:
 
-<!-- TODO: Add a vector field illustration figure -->
+- *retarded FDEs* (RFDEs) or equivalently *delay differential equations* (DDEs), if $\max \set{m_1, \dots, m_k} < m$;
+- *neutral FDEs* (NFDEs), if $\max \set{m_1, \dots, m_k} = m$;
+- *advanced FDEs* (AFDEs), if $\max \set{m_1, \dots, m_k} > m$.
 
-Analogously, one could use a system of **delay** differential equations, e.g. ([-@eq-dde-verhulst]), to implicitly define an autonomous dynamical system, see @Feng2019, @Nelson2013 and @Richard2003. In general, delay differential equations (DDEs) are differential equations whose solution depends on a certain past history of the system, as opposed to ODEs where the history is a singular starting time $t = t_0$. Hence, the DDEs are a class of *functional differential equations*, where the state is a function on the relevant past history. As an example, for ([-@eq-dde-verhulst]) the past history, which is required to be known, is $[t-\tau, t]$ at any point in time $t \in \timeSet$. It also implies that the state space is *infinite-dimensional* for DDEs.
+Let us also note that the argument deviations can, in theory, be dependent on the state, e.g. $\dot{x}(t) = f(t, x(t), x(t - h(t, x(t))))$, but we shall omit them from our considerations.
 
-For the purpose of this thesis, we shall consider primarily an **autonomous discrete-delay differential equation** with **constant** delays $\tau_1, \dots, \tau_k$ of form
+<!-- TODO: Check that it can really be like this! -->
+::: {.callout-caution #cau-dde-convention}
+### Note on naming convention
+
+For clarity and brevity, throughout this thesis *RFDEs with (discrete) constant delays* will be called *delay differential equations* (DDEs), although the term can be more general in other literature.
+:::
+
+### Method of Steps {#sec-method-of-steps}
+
+All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* -- a way of solving delay differential equations. This subsection is mainly based on @Smith2010.
+
+To begin gently, we will start with a simple case of $x \in \R$. Let us thus consider a nonlinear DDE of form
 $$
-\dvi x(t) = \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_k)).
-$$ {#eq-discrete-dde}
-Relatively commonly also appear *continuous-delay differential equation*
+\dot x(t) = f(t, x(t), x(t - r))
+$$ {#eq-1d-dde}
+with a single delay $r > 0$. Assume that $f(t,x,y)$ and $f_x(t,x,y)$ are continuous on $\R^3$. Let $s \in \R$ and a continuous *history* function $\phi: [s - r, s] \to \R$ be given. We aim to find a solution of ([-@eq-1d-dde]) such that
 $$
-\dot x(t) = \vi f\brackets{t, x(t), \int_0^{\infty} x(t - \tau) g(\tau) \dd \tau},
+x(t) = \phi(t), \; s-r \leq t \leq s
+$$ {#eq-1d-dde-initial-cond}
+and satisfying ([-@eq-1d-dde]) on $s \leq t \leq s + \sigma$ for some $\sigma > 0$. As a careful reader might notice, we must interpret $\dot x(s)$ as a *right-hand* derivative at $s$.
+
+The system of equations ([-@eq-1d-dde]) and ([-@eq-1d-dde-initial-cond]) can now be solved with the so-called *method of steps* as follows. For $s \leq t \leq s + r$, $x(t)$ must satisfy the initial-value problem for the following ODE:
 $$
-where $x(t)$ is for simplicity a scalar state, or *state-dependent DDEs*, see @BifurcationKit, e.g. the Humphries model, see @RHumphries2012,
+\dot y(t) = \underbrace{f(t, y(t), \phi(t - r))}_{g(t,y)}, \; y(s) = \phi(s), \; s \leq t \leq s + r.
 $$
-\dot x(t) = - \gamma x(t) - \kappa_1 x(t - a_1 - cx(t)) - \kappa_2 x(t - a_2 - cx(t)).
-$$ {#eq-humphries}
 
-#### Delayed Differential Dynamics {#sec-delayed-differential-dynamics}
-
-Let us denote by $\contf {[a,b], \R^n} 0$ the space of all continuous functions from $[a,b]$ to $\R^n$. Moreover, let $\Contf 1$ be the set of all *continuously differentiable* functions and $\histories {\tau} := \contf {[-\tau, 0], \R^n} 0$ be the set of all possible histories for a positive constant $\tau$ (and the time $0$).
-
-We shall consider a class of dynamical systems which are governed by a system of DDEs of type ([-@eq-discrete-dde]), i.e. *autonomous discrete-constant-delay differential equations*
+From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ and $g_y$, thus existence of an unique local solution is guaranteed by classic results from the ODE theory, see, for example, @Chicone2006. Moreover, if this local solution $x(t)$ exists on the entire interval $s \leq t \leq s + r$, then, together with the history $\phi$, we know the solution $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, s+r]$ and we may repeat the presented argument to extend our solution to the right. Indeed, considering now the interval $s+r \leq s \leq s + 2r$, a solution of $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) must now satisfy the following ODE problem:
 $$
-\begin{cases}
-	\dvi x(t) = \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_k)), & t \in [0, \infty) \\
-	\vi x(t) = \vi \phi(t), & t \in [\tau_k, 0],
-\end{cases}
-$$ {#eq-delayed-diff-dynamics}
-where $\vi x \in \R^n$ is the time-dependent state vector. The constant discrete delays are assumed to be ordered as $\tau_k > \dots > \tau_1 > 0$, and the initial states are specified by a vector-valued **history** function $\vi \phi(t) \in \histories {\tau_k}$.
+\dot y(t) = f(t, y(t), x(t - r)), \; y(s+r) = x(s+r), \; s+r \leq t \leq s+2r.
+$$
+Just as before, from continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e. repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
 
-If $\vi f \in \contf {\R^{(k+1)n}, \R^n} 1$ is a Lipschitz-continuous function, then the system ([-@eq-delayed-diff-dynamics]) has a unique solution, i.e. *orbit*, from a given initial condition $\vi \phi \in \histories {\tau_k}$, denoted as $\Orbit{\vi \phi}: [-\tau_k, \infty) \to \R^n$.
+:::{#thm-1d-single-delay-method-of-steps}
+##### Single-delay method of steps on $\R$
 
-<!-- TODO: Maybe add Jacobian notation with respect to various delays -->
-<!-- TODO: Improve DDE section -->
+Let $f(t,x,y)$ and $f_x(x,y,t)$ be continuous on $\R^3$, $s \in \R$, and let $\phi: [s-r, s] \to \R$ be continuous history function. Then there exists $\sigma > s$ and a unique solution of the initial-value problem ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, \sigma]$
+:::
+
+:::{.proof}
+Follows directly from calculations above.
+:::
+
+A careful reader might notice that @thm-1d-single-delay-method-of-steps guarantees only a local solution, but we might want a solution for any $t \geq s$. We will use the notation $[s-r, \sigma\rco$ to denote either the open interval $[s-r, \sigma)$ or the closed on $[s-r, \sigma]$.
+
+From the uniqueness follows that for two solutions $x(t)$ on $[s-r, \sigma\rco$ and $\hat x(t)$ on $[s-r, \rho\rco$, the equality $x(t) = \hat x(t)$ must hold for all $t$, such that both sides of the equality are defined. Moreover, if $[s-r, \sigma\rco \subset [s-r, \rho\rco$, then $\hat x$ is called an *extension* of $x$ and we write $x \subset \hat x$.
+
+One can prove there exists a *unique* maximally defined solution, i.e. one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it can be extended to a larger interval, which contradicts non-extendability of $x$.
+
+:::{#thm-dde-finite-time-blow-up}
+##### Finite-time blow-up
+
+Let $f$ satisfy the conditions of @thm-1d-single-delay-method-of-steps and let $x: [s-r, \sigma) \to \R$, $\sigma \in \R \cup \set{\infty}$, be the non-extendable solution of the initial value problem ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). If $\sigma < \infty$, then
+$$
+\lim_{t \to \sigma^-} \absval{x(t)} = \infty.
+$$
+:::
+
+:::{.proof}
+See @Smith2010, page 26.
+:::
+
+::: {.callout-note #nte-general-dde}
+##### On multiple delays and $\vi x \in \R^n$
+One can rather easily show that @thm-1d-single-delay-method-of-steps and @thm-dde-finite-time-blow-up extend to the case of $\vi x \in \R^n$ and $\vi f : \R \times \R^n \times \R^n \to \R^n$. Similarly, it can also be generalized to multiple discrete delays $r_1 < \dots < r_m$ where
+$$
+\vi f = \vi f(t, \vi y(t), \vi y(t - r_1), \dots, \vi y(t - r_m))
+$$
+with little to no change.
+:::
+
+<!-- TODO: Write about method of steps in Julia -->
+
+### Notes on Delay Differential Equations
+
+Consider a DDE of form
+$$
+\dvi x(t) = \vi f(t, \vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_m)),
+$$ {#eq-dde-general}
+with $0 = \tau_0 < \tau_1 < \dots < \tau_m$. For brevity, we will denote $\tau := \tau_m$ and
+$$
+\vi x_t(s) := \vi x(t+s), \; -\tau \leq s \leq 0,
+$$
+which, informally, prescribes the value of solution $\vi x$ up to time $t$ delayed by $s$. In other words, we can view the trajectory of our solution as the curve $t \to \vi x_t$ in the state space $\contStateSpace = \contf{[-\tau, 0], \R^n}{}$ with supremum norm
+$$
+\norm{\vi \phi} = \sup_{-\tau \leq s \leq 0} \norm{\vi \phi(s)},
+$$
+a Banach space of continuous functions mapping the interval $[-\tau, 0]$ to $\R^n$ with the topology of uniform convergence, see @Hale1993. Thus, we can reformulate ([-@eq-dde-general]) as
+$$
+\dvi x(t) = \vi F(t, \vi x_t),
+$$ {#eq-rfde}
+which can generally represent any RFDE, with $\vi F : \timeSet \times \contStateSpace \to \R^n$ defined as
+$$
+\vi F(t, \vi \phi) = \vi f(t, \vi \phi(-\tau_0), \vi \phi(-\tau_1), \dots, \vi \phi(-\tau_m)).
+$$ {#eq-dde-functional}
+
+Most often, we will encounter the following *autonomous* initial-value problem
+$$
+\begin{aligned}
+	\dvi x(t) &= \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_m)), \\
+	\vi x_{\sigma} &= \vi \phi,
+\end{aligned}
+$$ {#eq-dde-problem-autonomous}
+where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e. the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness sake, we also add that general RFDE initial-value problem reads as follows
+$$
+\begin{aligned}
+	\dvi x(t) &= \vi F(t, \vi x_t), \\
+	\vi x_{\sigma} &= \vi \phi.
+\end{aligned}
+$$ {#eq-rfde-problem}
+
+Last, but not least, we shall denote by
+$$
+\jacobi_{\vi \tau_i} \vi f = \partialOp{\vi \xi_{i}} \vi f(t, \overbrace{\vi x(t - \tau)}^{\vi \xi_0}, \overbrace{\vi x(t - \tau_1)}^{\vi \xi_1}, \dots, \overbrace{\vi x(t - \tau_m)}^{\vi \xi_m})
+$$
+the Jacobian matrix of $\vi f$ corresponding to the $i$-th delayed state input. In other words, we may write the linearization of ([-@eq-dde-problem-autonomous]) at $s$ as
+$$
+\dvi x(t) = \sum_{i = 0}^m \jacobi_{\vi \tau_i} \vi f(\vi x(s - \tau_0), \dots, \vi x(s - \tau_m)) \vi x(t - \tau_i).
+$$ {#eq-dde-linearization}
+
+#### Backward Extension
+
+Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should evident there is a fundamental asymmetry between the past and the future for DDEs, recall they are only a special case of RFDEs, which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
+
+Per @Smith2010 and @Hale1993, we say that $\vi x : [\sigma - \tau - \alpha, \sigma] \to \R^n$ for $\alpha > 0$ is a (backward) solution of the initial-value problem given by ([-@eq-rfde-problem]) if $\vi x$ is continuous, $\vi x$ satisfies the initial condition and
+$$
+\dvi x(t) = \vi F(t, \vi x_t), \; t \in [\sigma - \alpha, \sigma].
+$$
+Because $\vi x_{\sigma} = \vi \phi$ must hold as well, due to the initial condition, we get that $\vi x(t) = \vi \phi(t - \sigma)$ must be continuously differentiable for $t \in [\sigma - \alpha, \sigma]$. As $\vi \phi \in \contStateSpace$, we can equivalently say that $\vi \phi$ must be continuously differentiable on $[-\minOf{\alpha, \tau}, 0]$. This significantly constraints the space of all admissible elements in $\contStateSpace$. Furthermore, because the equality must hold at $t = \sigma$, we get
+$$
+\dvi \phi(0) = \dvi x(\sigma) = \vi f(\sigma, \vi x_{\sigma}) = \vi f(\sigma, \vi \phi),
+$$
+where $\dvi \phi(0)$ denotes the left-hand derivative at $0$. In total, the history function $\vi \phi$ must thus belong to a very limited submanifold $\obj M$ of $\contStateSpace$ where
+$$
+\obj M = \set{\vi \psi \in \contStateSpace \cap \contf{[-\tau, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
+$$
+
+It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ -- steady-state and periodic solutions can be given as examples.
+
+<!-- TODO: Add stability -->
+
+### Time Monoids and Dynamical Systems
+
+<!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->

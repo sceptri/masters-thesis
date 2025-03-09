@@ -5,10 +5,15 @@
 if FORMAT:match 'latex' then
 	function Div(el)
   		if el.classes:includes("cell") then
-			local el_tags = pandoc.json.decode(el.attributes.tags)
-    		if (el.content[1].t == "CodeBlock" and el_tags:includes("show-in-pdf")) then
-      			el.content:remove(1)
-    		end
+			local show_code = false
+			if type(el.attributes.tags) == "string" then
+				local el_tags = pandoc.json.decode(el.attributes.tags)
+				show_code = el_tags:includes("show-in-pdf")
+			end
+
+			if (el.content[1].t == "CodeBlock" and not show_code) then
+				el.content:remove(1)
+			end
   		end
   		return el
 	end
