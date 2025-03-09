@@ -219,8 +219,8 @@ where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \
 The system of ODEs ([-@eq-autonomous-ode-system]) induces a *continuous-time autonomous dynamical system*.
 :::
 
-##### Vector field
 ::: {.callout-tip #tip-ode-vector-field}
+##### Vector field
 
 The function $\vi f$ is called a *vector field*, as it maps a vector $\vi f(\vi x)$ to each point $\vi x$ of the state space. See @fig-vector-field for an example.
 :::
