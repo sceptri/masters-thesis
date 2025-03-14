@@ -50,19 +50,19 @@ This abstraction is typically called a (mathematical) model (of the reality). Th
 First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021, with @Sevcik2021 being a valuable inspiration for the structure of this section.
 
 :::{#def-dynamical-system}
-##### Dynamical System
+##### Dynamical system
 
 A *dynamical system* is a triple $\set{\timeSet, \stateSpace, \evolOp^t}$, where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a subgroup of $(\R, +)$, $\stateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \stateSpace \to \stateSpace$ maps a certain point $x^0 \in \stateSpace$ to some other state $x_t = \evolOp^t x^0 \in \stateSpace$.
 :::
 
 <!-- TODO: Depending on whether time is a group or a monoid, it is either a dynamical or semidynamical system -->
 
-In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \N_0$ or $\timeSet = \Z$ representing a yearly interval between measurements of our system. On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ as we are concerted with even the shortest time intervals and associated changes. Similarly, the exact choice of the state space $\stateSpace$ is dependent of the system in question, but typically we use $\R^n$.
+In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ representing a yearly interval between measurements of our system^[Let us note time set $\timeSet = \N_0$ is also common ecology, but such choice leads to semidynamical systems, discussed in more detail in @sec-time-monoid-dynamical-system.]. On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ as we are concerted with even the shortest time intervals and associated changes. Similarly, the exact choice of the state space $\stateSpace$ is dependent of the system in question, but typically we use $\R^n$.
 
 Right now, nothing in the @def-dynamical-system guarantees the system does not abruptly change state, because in general $x \neq \evolOp^0 x$. If this equality does not hold for at least one $x \in \stateSpace$, then such system is called *stochastic*.
 
 :::{#def-deterministic-dynamical-system}
-##### Deterministic Dynamical System
+##### Deterministic dynamical system
 
 A dynamical system, see @def-dynamical-system, is called *deterministic* if and only if the following condition is fulfilled
 $$
@@ -74,7 +74,7 @@ in other words $\forall x \in \stateSpace: x = \evolOp^0 x$.
 Onwards, we will predominantly use deterministic dynamical systems. Another assumption we shall make throughout this thesis is that the "laws of nature" do not change in time, i.e., we presume the dynamical system in question is autonomous (although it may depend on the past).
 
 :::{#def-autonomous-dynamical-system}
-##### Autonomous Dynamical System
+##### Autonomous dynamical system
 
 A deterministic dynamical system, see @def-deterministic-dynamical-system, is called *autonomous* if and only if the following condition is fulfilled
 $$
@@ -94,7 +94,7 @@ $$ {#eq-difference-verhulst}
 
 [^verhulst]: The equation ([-@eq-ode-verhulst]) describes the [Verhulst](https://en.wikipedia.org/wiki/Pierre_Fran%C3%A7ois_Verhulst) model of a population (and its growth, characterized by $r_0$) in some closed environment with some finite capacity (controlled by $K$).
 
-### Basic Concepts
+### Basic Concepts {#sec-basic-concepts}
 
 In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002 or @Kuznetsov2023.
 
@@ -110,7 +110,7 @@ In the case of a continuous dynamical system, the orbits are *oriented curves* i
 :::
 
 :::{#def-phase-portrait}
-##### Phase Portrait
+##### Phase portrait
 A *phase portrait* of a dynamical system is a partitioning of the state space into trajectories.
 :::
 
@@ -127,7 +127,7 @@ A *cycle* is a periodic orbit, namely a non-equilibrium orbit $L$, such that eac
 :::
 
 :::{#def-invariant-set}
-##### Invariant Set
+##### Invariant set
 
 An *invariant set* of a dynamical system $\set{\timeSet, \stateSpace, \evolOp^t}$ is a subset $\obj S \subset \stateSpace$ which satisfies
 $$
@@ -136,7 +136,7 @@ $$
 :::
 
 :::{#def-limit-point}
-##### $\omega$-limit and $\alpha$-limit Point
+##### $\omega$-limit and $\alpha$-limit point
 
 A point $x_* \in \stateSpace$ is called an *$\omega$-limit point* (resp. $\alpha$-limit point) of the orbit $\Orbit{x_0}$ starting at $x_0 \in \stateSpace$ if their exists a sequence of times $\seqnc{t}{k}{1}{\infty} \subseteq \timeSet$ with $t_k \to \infty$ (resp. $t_k \to - \infty$), such that
 $$
@@ -145,7 +145,7 @@ $$
 :::
 
 :::{#def-limit-set}
-##### $\omega$-limit and $\alpha$-limit Set
+##### $\omega$-limit and $\alpha$-limit set
 
 A set $\obj \Omega(\Orbit{x_0})$ of all $\omega$-limit points of the orbit $\Orbit{x_0}$, see @def-limit-point, is called an $\omega$-limit set. Similarly, a set $\obj A(\Orbit{x_0})$ of all $\alpha$-limit points of the orbit $\Orbit{x_0}$ is called an $\alpha$-limit set.
 
@@ -159,13 +159,13 @@ Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Or
 ::: -->
 
 :::{#def-limit-cycle}
-##### Limit Cycle
+##### Limit cycle
 
 A cycle of a continuous-time dynamical system, in a neighborhood of which there are no other cycles, is called a *limit cycle*.
 :::
 
 ::: {.callout-note #nte-limit-cycle}
-##### Equivalent Definition of a Limit Cycle
+##### Equivalent definition of a limit cycle
 
 Equivalently to @def-limit-cycle, one can define a *limit cycle* as a cycle, which is the limit set, see @def-limit-set, of orbits in its neighborhood.
 :::
@@ -190,7 +190,7 @@ Stable invariant set is called an *attractor*, whereas if the invariant set is u
 So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
 
 :::{#def-topological-equivalence}
-##### Topological Equivalence
+##### Topological equivalence
 
 A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
 :::
@@ -198,7 +198,7 @@ A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *t
 [^homeomorphism]: In the context of topology, a *homeomorphism* (also called a *bicontinuous function*) is a bijective and continuous function, such that its inverse is also continuous.
 
 :::{#def-local-topological-equivalence}
-##### Local Topological Equivalence
+##### Local topological equivalence
 
 A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *locally topologically equivalent* in the neighborhood of its equilibrium $\vi x^*$ to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$ in the neighborhood of its equilibrium $\vi y^*$, if there exists a *homeomorphism* $\vi h: \R^n \to \R^n$, such that
 
@@ -256,7 +256,7 @@ See @Chicone2006, page 160, or @Perko2001, page 185.
 :::
 
 :::{#def-hyperbolic-equilibrium-cont}
-##### Hyperbolic Equilibrium
+##### Hyperbolic equilibrium
 
 An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
 :::
@@ -286,7 +286,7 @@ If only $V(\vi x) \geq 0$ holds on a neighborhood $\neigh{\vi x^*}$, then the fu
 :::
 
 :::{#def-lyapunov-function}
-###### Lyapunov Function
+###### Lyapunov function
 
 Let $\vi \vf(t; \vi x_0)$ be a solution of the system ([-@eq-autonomous-ode-system]) together with the initial $\vi x(0) = \vi x_0$. A function $V: \R^n \to \R$ is called *Lyapunov* at $\vi x^*$, if $V$ is locally positive definite and also $\forall \vi x_0 \in \neigh{\vi x^*}$ is the function $V \circ \vi \vf(t; \vi x_0)$ *non-increasing* for all $t > 0$.
 
@@ -300,7 +300,7 @@ Equivalently to requiring a non-increasing $V \circ \vi \vf(t; \vi x_0)$, one ca
 :::
 
 :::{#thm-lyapunov-stability-theorem}
-##### Lyapunov's Direct Method
+##### Lyapunov's direct method
 
 If $\vi x^*$ is an equilibrium of the system ([-@eq-autonomous-ode-system]) and $V$ is a *Lyapunov* function for the system at $\vi x^*$, then $\vi x^*$ is *Lyapunov stable*. If, in addition, $V$ is a *strict Lyapunov* function, then $\vi x^*$ is *stable*.
 :::
@@ -426,7 +426,7 @@ fig
 <!-- TODO: Check color direction in caption correct -->
 :::
 
-For completeness sake, a classical result from theory of ODEs concerning the existence, uniqueness and smooth dependence on the initial conditions of the solution for a given ODE.
+For completeness sake, we give a classical result from theory of ODEs concerning the existence, uniqueness and smooth dependence on the initial conditions of the solution for a given ODE.
 
 :::{#thm-exists-unique-smooth-ode-solution}
 ##### Existence, uniqueness and smooth dependence
@@ -613,7 +613,7 @@ A careful reader might notice that @thm-1d-single-delay-method-of-steps guarante
 
 From the uniqueness follows that for two solutions $x(t)$ on $[s-r, \sigma\rco$ and $\hat x(t)$ on $[s-r, \rho\rco$, the equality $x(t) = \hat x(t)$ must hold for all $t$, such that both sides of the equality are defined. Moreover, if $[s-r, \sigma\rco \subset [s-r, \rho\rco$, then $\hat x$ is called an *extension* of $x$ and we write $x \subset \hat x$.
 
-One can prove there exists a *unique* maximally defined solution, i.e. one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it can be extended to a larger interval, which contradicts non-extendability of $x$.
+One can prove there exists a *unique* maximally defined solution, i.e. one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it could be extended to a larger interval, which contradicts non-extendability of $x$.
 
 :::{#thm-dde-finite-time-blow-up}
 ##### Finite-time blow-up
@@ -686,7 +686,7 @@ $$
 \dvi x(t) = \sum_{i = 0}^m \jacobi_{\vi \tau_i} \vi f(\vi x(s - \tau_0), \dots, \vi x(s - \tau_m)) \vi x(t - \tau_i).
 $$ {#eq-dde-linearization}
 
-#### Backward Extension
+#### Backward Extension {#sec-backward-extension-dde}
 
 Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should evident there is a fundamental asymmetry between the past and the future for DDEs, recall they are only a special case of RFDEs, which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
 
@@ -705,8 +705,78 @@ $$
 
 It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ -- steady-state and periodic solutions can be given as examples.
 
-<!-- TODO: Add stability -->
+#### Stability
 
-### Time Monoids and Dynamical Systems
+We have already discussed stability for dynamical systems in @def-invariant-set-stable. Stability for DDEs can be defined analogously, which will be summarized in the following definition (per @Smith2010 and @Hale1993).
+
+:::{#def-dde-stability}
+##### Stability in Delay Differential Equations
+
+Consider ([-@eq-rfde-problem]) and suppose that $\vi F(t, \vi 0) = \vi 0$, $t \in \R$, is satisfied so that $\vi x(t) = \vi 0$ is a solution. The solution $\vi x = \vi 0$ is called
+
+- *stable* if for any $\sigma \in \R$ and $\ve > 0$, there exists $\delta = \delta(\sigma, \ve) > 0$ such that $\vi \phi \in \contStateSpace$ and $\norm{\vi \phi} < \delta$ implies that $\norm{\vi x_t(\sigma, \vi \phi)} < \ve$, $t \geq \sigma$;^[For clarity, we use $\vi x(t, \sigma, \vi \phi)$ to denote the solution of ([-@eq-rfde-problem]).]
+- *asymptotically stable* if it is stable and if there exists $b(\sigma) > 0$ such that whenever $\vi \phi \in \contStateSpace$ and $\norm{\vi \phi} < b(\sigma)$, then $\vi x(t, \sigma, \vi \phi) \to 0$ as $t \to \infty$;
+- *unstable* if it is not stable.
+:::
+
+For a non-zero solution $\vi y(t)$ of ([-@eq-rfde-problem]) defined on $t \in \R$, its stability properties mimic those of the zero solution of
+$$
+\dvi z(t) = \vi f(t, \vi z_t + \vi y_t) - \vi f(t, \vi y_t).
+$$ {#eq-non-zero-stability}
+Indeed, let $\vi \xi(t)$ be another solution of ([-@eq-rfde-problem]) and put $\vi z(t) = \vi \xi(t) - \vi y(t)$. Then $\vi z_t = \vi \xi_t - \vi y_t$ and thus (by using ([-@eq-rfde-problem]) on $\vi \xi_t$ or $\vi y_t$)
+$$
+\dvi \xi(t) - \dvi y(t) = \vi f(t, \vi \xi_t - \vi y_t + \vi y_t)  - \vi f (t, \vi y_t),
+$$
+which yields that $\vi z$ is a solution to ([-@eq-non-zero-stability]), which was to be shown.
+
+### Time Monoids and Dynamical Systems {#sec-time-monoid-dynamical-system}
+
+So far, we have only seen examples of dynamical systems, which have inherently been symmetric in time. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced dynamical system,
+$$
+\dvi x(t) = \vi f(t, \vi x), \; \vi x(s) = \vi x_0.
+$$
+When integrating such ODE, it is only our choice to integrate forward in time, but backward integration is just a possible. This corresponds to our requirement on the time structure $\timeSet$ -- we required that $\timeSet$ is a subgroup of $(\R, +)$, thus for every $t \in \timeSet$, there must exists a corresponding inverse $-t \in \timeSet$.
+
+On the other hand, as we have seen in @sec-backward-extension-dde, delay differential equations are not always solvable backward in time. As such, we can relax our requirement of the time structure, this time constraining it to be a monoid over the reals equipped with addition.
+
+:::{#def-semidynamical-system}
+##### Semidynamical system
+
+A *semidynamical system* is a triple $\set{\timeSet, \contStateSpace, \evolOp^t}$^[For semidynamical systems, we will use $\contStateSpace$ instead of $\stateSpace$ to emphasize that $x \in \contStateSpace$ will typically be some history function.], where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a monoid, $\contStateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \contStateSpace \to \contStateSpace$ maps a certain point $x^0 \in \contStateSpace$ to some other state $x_t = \evolOp^t x^0 \in \contStateSpace$.
+:::
+
+The difference between @def-dynamical-system and @def-semidynamical-system is, indeed, very subtle. In the case of a dynamical systems, as $\timeSet$ is a subgroup then for any $t \in \timeSet$ and its corresponding $\evolOp^t$, there exists $-t \in \timeSet$ and $\evolOp^{-t}$, giving us (assuming @def-autonomous-dynamical-system) $\evolOp^{-t} \circ \evolOp^t = \evolOp^0 = \id$.  On the other hand, for a semidynamical system with a monoid $\timeSet$, we do not have a guaranteed existence of $-t \in \timeSet$.
+
+Most often, we see semidynamical systems arise by the choice of time set $\timeSet = \N_0$ or $\timeSet = \R^+$. Nevertheless, for DDEs the exact time set, allowed by the equation, of the induced semidynamical system is often more nuanced. Moreover, autonomous deterministic semidynamical system is defined analogously to @def-deterministic-dynamical-system and @def-autonomous-dynamical-system. Basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
+
+:::{#lem-autonomous-semidynamical-system}
+Deterministic semidynamical system $\set{\timeSet, \contStateSpace, \evolOp^t}$ is autonomous if and only if whenever $\vi x(t)$ is a solution defined on subset $I \subseteq \timeSet$ and $\tau \in \timeSet$, then $\vi x(t + \tau)$ is a solution on $I - \tau$, where $I - \tau = \set{t - \tau \divider t \in I}$.
+:::
+
+:::{.proof}
+Can be adapted from @Smith2010, page 63.
+:::
+
+Analogously to the dynamical system case, the family of evolution operators $\set{\evolOp^t}_{t \in \timeSet}$ of an autonomous semidynamical system is called a *semiflow*.
+
+#### Semidynamical Systems Induced by Delay Differential Equations
+
+For compatibility with the source material, see @Smith2010, we will now consider an initial-value problem ([-@eq-rfde-problem]) for a RFDE, though for our purposes a DDE would suffice,
+$$
+\dvi x(t) = \vi F(t, \vi x_t), \; \vi x_\sigma = \vi \phi,
+$$
+where $\sigma \in \R$, $\vi f$ is continuous, and $\vi \phi \in \contStateSpace$. Let us assume there is a unique solution $\vi x(t, \sigma, \vi \phi)$ of ([-@eq-rfde-problem]) defined for $t \geq \sigma$. While this condition is hard to ensure in practice, it is nonetheless necessary for the definition of the induced semidynamical system. Denote by $\vi x_t(\sigma, \vi \phi) \in \contStateSpace$ the state of the system at time $t$, defined, as usual, by
+$$
+\vi x_t(\sigma, \vi \phi)(\tht) = \vi x(t + \theta, \sigma, \vi \phi), \; -\tau \leq \tht \leq 0.
+$$
+
+:::{#prp-dde-induced-semidynamical-system}
+Operator $\evolOp^t = \vi x_t(\sigma, \cdot)$ defines a semidynamical system on $\contStateSpace$ with $\timeSet = [\sigma - \tau, \infty)$.
+:::
+
+:::{.proof}
+See @Smith2010, page 65.
+:::
+
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
