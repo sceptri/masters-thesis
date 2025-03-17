@@ -765,7 +765,7 @@ For compatibility with the source material, see @Smith2010, we will now consider
 $$
 \dvi x(t) = \vi F(t, \vi x_t), \; \vi x_\sigma = \vi \phi,
 $$
-where $\sigma \in \R$, $\vi f$ is continuous, and $\vi \phi \in \contStateSpace$. Let us assume there is a unique solution $\vi x(t, \sigma, \vi \phi)$ of ([-@eq-rfde-problem]) defined for $t \geq \sigma$. While this condition is hard to ensure in practice, it is nonetheless necessary for the definition of the induced semidynamical system. Denote by $\vi x_t(\sigma, \vi \phi) \in \contStateSpace$ the state of the system at time $t$, defined, as usual, by
+where $\sigma \in \R$, $\vi F$ is continuous, and $\vi \phi \in \contStateSpace$. Let us assume there is a unique solution $\vi x(t, \sigma, \vi \phi)$ of ([-@eq-rfde-problem]) defined for $t \geq \sigma$. While this condition is hard to ensure in practice, it is nonetheless necessary for the definition of the induced semidynamical system. Denote by $\vi x_t(\sigma, \vi \phi) \in \contStateSpace$ the state of the system at time $t$, defined, as usual, by
 $$
 \vi x_t(\sigma, \vi \phi)(\tht) = \vi x(t + \theta, \sigma, \vi \phi), \; -\tau \leq \tht \leq 0.
 $$
@@ -778,5 +778,40 @@ Operator $\evolOp^t = \vi x_t(\sigma, \cdot)$ defines a semidynamical system on 
 See @Smith2010, page 65.
 :::
 
+## Numerical Methods
+
+As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization.
+
+### Numerical Integration
+
+#### Solving ODEs
+
+Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016.
+
+Consider an ODE of form
+$$
+\dvi x(t) = \vi F(t, \vi x(t)), \; \vi x(t_0) = \vi x_0,
+$$ {#eq-ode-problem-to-solve}
+which we want to integrate on the interval $[t_0, t_N]$. By Taylor expansion at $t_0$, we can write
+$$
+\vi x(t) = \vi x(t_0) + \dvi x(t_0) (t - t_0) + O(t^2).
+$$
+Setting $t = t_0 + \diff t$ yields 
+$$
+\vi x(t_0 + \diff t) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t.
+$$
+
+Repeating this process on the entire interval $[t_0, t_N]$ and using $\diff t = \frac {t_N - t_0} N$ gives^[In practice, the step size $\diff t$ maybe dependent (implictly or explicitly) on the iteration, i.e. $\diff t = \diff t_k$.] us @alg-euler-method.
+
+::: {.callout-important appearance="simple" #alg-euler-method}
+##### Euler method
+**Input:** ODE in form ([-@eq-ode-problem-to-solve]), interval $[t_0, t_N]$, granularity $N$ (or possibly stepsizes $\seqnc{\diff t}{k}{1}{N}$) \
+**Output:** Sequence of $N$ points $\seqnc{\vi x}{k}{1}{N}$ \
+**begin** \
+&emsp;&emsp;Ahoj \
+&emsp;&emsp;&emsp;&emsp;$x^2$ \
+&emsp;&emsp;and this \
+**end**
+:::
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->

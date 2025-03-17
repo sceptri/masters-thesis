@@ -4,6 +4,13 @@ project:
   pre-render: luaotfload-tool --cache=erase --flush-lookups --force
   post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
 
+crossref: 
+  custom: 
+    - kind: float
+      reference-prefix: Algorithm
+      key: alg
+      latex-env: algorithm
+
 book:
   title: "Computational analysis in neuroscience"
   author:
@@ -116,6 +123,7 @@ filters:
  - munithesis
  - resizer.lua
  - pdf_hide_code.lua
+ - force_alg_env.lua
 
 profiles:
   default: basic
