@@ -104,3 +104,10 @@
 % Left and right closed-or-open intervals
 \LetThereBe{\lco}{\langle}
 \LetThereBe{\rco}{\rangle}
+
+% Numerical methods
+\declareMathematics{\globErr}{err}
+\declareMathematics{\locErr}{le}
+\declareMathematics{\locTrErr}{lte}
+\declareMathematics{\incrementFunc}{Inc}
+\letThereBe{\incrementF}{1}{\incrementFunc \brackets{#1}}

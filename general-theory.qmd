@@ -780,13 +780,12 @@ See @Smith2010, page 65.
 
 ## Numerical Methods
 
-As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization.
-
+As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, Newton-Raphson method will be discussed.
 ### Numerical Integration
 
 #### Solving ODEs
 
-Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016.
+Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016 and @Trefethen1994.
 
 Consider an ODE of form
 $$
@@ -796,22 +795,39 @@ which we want to integrate on the interval $[t_0, t_N]$. By Taylor expansion at 
 $$
 \vi x(t) = \vi x(t_0) + \dvi x(t_0) (t - t_0) + O(t^2).
 $$
-Setting $t = t_0 + \diff t$ yields 
+Setting $t = t_0 + \diff t_1$ yields 
 $$
-\vi x(t_0 + \diff t) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t.
+\vi x(t_0 + \diff t_1) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t_1  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t_1.
 $$
 
-Repeating this process on the entire interval $[t_0, t_N]$ and using $\diff t = \frac {t_N - t_0} N$ gives^[In practice, the step size $\diff t$ maybe dependent (implictly or explicitly) on the iteration, i.e. $\diff t = \diff t_k$.] us @alg-euler-method.
+Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, i.e. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
 ::: {.callout-important appearance="simple" #alg-euler-method}
-##### Euler method
-**Input:** ODE in form ([-@eq-ode-problem-to-solve]), interval $[t_0, t_N]$, granularity $N$ (or possibly stepsizes $\seqnc{\diff t}{k}{1}{N}$) \
-**Output:** Sequence of $N$ points $\seqnc{\vi x}{k}{1}{N}$ \
+##### Euler method (explicit)
+**Input:** ODE in form ([-@eq-ode-problem-to-solve]), interval $[t_0, t_N]$, stepsizes $\seqnc{\diff t}{i}{1}{N}$ \
+**Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
-&emsp;&emsp;Ahoj \
-&emsp;&emsp;&emsp;&emsp;$x^2$ \
-&emsp;&emsp;and this \
+&emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
+&emsp;&emsp;&emsp;&emsp;$\vi x_i \letDef \vi x_{i - 1} + \vi F(t_{i - 1}, \vi x_{i - 1}) \diff t_i$ \
+&emsp;&emsp;**end** \
 **end**
 :::
+
+Whilst the Euler method is simple, it does have its drawbacks mainly in the accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
+
+<!-- TODO: Check indices of \diff t_k -->
+:::{#def-ode-solver-error}
+Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to the next $t_{k+1}$ and represents the chosen method. Then *local truncation error* (LTE) is defined as
+$$
+\locTrErr_{k} = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}
+$$ {#eq-loc-tr-err}
+and represents the error the increment function causes when performing a single step. *Global error* is then defined as the cummulative LTE from the initial condition, and can be written as follows:
+$$
+\globErr_k = \vi x(t_k) - \vi x_k.	
+$$ {#eq-glob-err}
+
+:::
+
+> In general, we seek such method, which fulfilles given accuracy while using as few evaluations of $\vi F$ as possible -- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
