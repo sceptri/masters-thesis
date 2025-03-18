@@ -785,7 +785,7 @@ As the title may suggest, computational aspects of ODEs, DDEs and other mathemat
 
 #### Solving ODEs
 
-Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016 and @Trefethen1994.
+Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
 
 Consider an ODE of form
 $$
@@ -794,17 +794,17 @@ $$ {#eq-ode-problem-to-solve}
 which we want to integrate on the interval $[t_0, t_N]$. By Taylor expansion at $t_0$, we can write
 $$
 \vi x(t) = \vi x(t_0) + \dvi x(t_0) (t - t_0) + O(t^2).
-$$
+$$ {#eq-euler-method-taylor}
 Setting $t = t_0 + \diff t_1$ yields 
 $$
 \vi x(t_0 + \diff t_1) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t_1  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t_1.
 $$
 
-Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, i.e. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
+Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
 ::: {.callout-important appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
-**Input:** ODE in form ([-@eq-ode-problem-to-solve]), interval $[t_0, t_N]$, stepsizes $\seqnc{\diff t}{i}{1}{N}$ \
+**Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$ \
 **Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
@@ -815,19 +815,46 @@ Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-m
 
 Whilst the Euler method is simple, it does have its drawbacks mainly in the accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
 
-<!-- TODO: Check indices of \diff t_k -->
 :::{#def-ode-solver-error}
-Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to the next $t_{k+1}$ and represents the chosen method. Then *local truncation error* (LTE) is defined as
+Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. 
+
+*Local truncation error* (LTE) is defined as
 $$
 \locTrErr_{k} = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}
 $$ {#eq-loc-tr-err}
-and represents the error the increment function causes when performing a single step. *Global error* is then defined as the cummulative LTE from the initial condition, and can be written as follows:
+and represents the error the increment function causes when performing a single step. Similarly, *global error* is defined as the cummulative LTE from the initial condition,
 $$
 \globErr_k = \vi x(t_k) - \vi x_k.	
 $$ {#eq-glob-err}
-
 :::
 
 > In general, we seek such method, which fulfilles given accuracy while using as few evaluations of $\vi F$ as possible -- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
+
+By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for Euler method, we get (recalling the Taylor expansion ([-@eq-euler-method-taylor]))
+$$
+\locTrErr_k = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \vi F(t_k, \vi x(t_k)) \implies \locTrErr_k = O(\diff t_{k+1}^2).
+$$
+We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e. Euler method is first order.
+
+This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step -- this way, we obtain so called **Runge-Kutta** methods.
+
+::: {.callout-important appearance="simple" #alg-runge-kutta-explicit}
+##### $s$-stage explicit Runge-Kutta method
+**Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}, b_1, \dots, b_s, c_2, \dots, c_s$\
+**Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
+**begin** \
+&emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
+&emsp;&emsp;&emsp;&emsp;calculate
+\begin{align*}
+	\vi k_1 &= \vi F (t_0, \vi x_{i-1}), \\
+	\vi k_2 &= \vi F (t_0 + c_2 \diff t_i, \vi x_{i-1} + \diff t_i a_{21} \vi k_1), \\
+	\vi k_3 &= \vi F (t_0 + c_3 \diff t_i, \vi x_{i-1} + \diff t_i (a_{31} \vi k_1 + a_{32} \vi k_2)), \\
+	&\;\vdots \\
+	\vi k_s &= \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}))
+\end{align*}
+&emsp;&emsp;&emsp;&emsp;set $\vi x_i \letDef \vi x_{i-1} + \diff t_i (b_1 \vi k_1 + \dots + b_s \vi k_s)$ \
+&emsp;&emsp;**end** \
+**end**
+:::
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
