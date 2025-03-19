@@ -822,13 +822,13 @@ Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the sol
 $$
 \locTrErr_{k} = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}
 $$ {#eq-loc-tr-err}
-and represents the error the increment function causes when performing a single step. Similarly, *global error* is defined as the cummulative LTE from the initial condition,
+and represents the error the increment function causes when performing a single step. Similarly, *global error* is defined as the cumulative LTE from the initial condition,
 $$
 \globErr_k = \vi x(t_k) - \vi x_k.	
 $$ {#eq-glob-err}
 :::
 
-> In general, we seek such method, which fulfilles given accuracy while using as few evaluations of $\vi F$ as possible -- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
+> In general, we seek such method, which fulfills given accuracy while using as few evaluations of $\vi F$ as possible -- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
 
 By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for Euler method, we get (recalling the Taylor expansion ([-@eq-euler-method-taylor]))
 $$
@@ -839,7 +839,7 @@ We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e. E
 This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step -- this way, we obtain so called **Runge-Kutta** methods.
 
 ::: {.callout-important appearance="simple" #alg-runge-kutta-explicit}
-##### $s$-stage explicit Runge-Kutta method
+##### $s$-stage explicit Runge-Kutta (ERK) method
 **Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}, b_1, \dots, b_s, c_2, \dots, c_s$\
 **Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
@@ -856,5 +856,35 @@ This can surely be improved by using more terms from the Taylor series expansion
 &emsp;&emsp;**end** \
 **end**
 :::
+
+Usually, we constrain the coefficients to fulfill
+$$
+c_m = \sum_{n = 1}^{m - 1} a_{mn},
+$$ {#eq-runge-kutta-eval-cond}
+which represents the assumption the all points, where $\vi F$ is evaluated, are first order approximations to the solution. It can be shown that they significantly simplify the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, they are not necessary.
+
+Our task is now to choose the coefficients in @alg-runge-kutta-explicit so that the order of the method is maximized. This corresponds to computing the Taylor series expansion for each $\vi k_j$ in the state variable of $\vi F$. By combining these results, we can compare them with the Taylor expansion of $\vi x_i$. Hence, we obtain the following conditions (given for a 4-stage method):
+$$
+\begin{aligned}
+\sum_{j} b_j &= 1 \\
+\sum_{j} b_j c_j &= \frac 1 2 \\
+\sum_{j} b_j c_j^2 &= \frac 1 3 \\
+\sum_{j,m} b_j a_{jm} c_m &= \frac 1 6 \\
+\sum_{j} b_j c_j^3 &= \frac 1 4 \\
+\sum_{j,m} b_j c_j a_{jm} c_m &= \frac 1 8 \\
+\sum_{j,m} b_j a_{jm} c_m^2 &= \frac 1 {12} \\
+\sum_{j,m,n} b_j a_{jm} a_{mn} c_n &= \frac 1 {24}
+\end{aligned}
+$$ {#eq-runge-kutta-order-condition-4-stage}
+
+In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i^5)$. Typically, *"the Runge-Kutta"* method is used:
+$$
+\begin{aligned}
+\vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
+\vi k_2 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_1 \diff t} \\
+\vi k_3 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_2 \diff t} \\
+\vi k_4 &= \vi F\brackets{t_0 + \diff t, \vi x_0 + \vi k_3 \diff t}
+\end{aligned} \; \& \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
+$$ {#eq-runge-kutta-classical}
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
