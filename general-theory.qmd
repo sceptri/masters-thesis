@@ -781,6 +781,7 @@ See @Smith2010, page 65.
 ## Numerical Methods
 
 As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, Newton-Raphson method will be discussed.
+
 ### Numerical Integration
 
 #### Solving ODEs
@@ -879,12 +880,12 @@ $$ {#eq-runge-kutta-order-condition-4-stage}
 
 In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i^5)$. Typically, *"the Runge-Kutta"* method is used:
 $$
-\begin{aligned}
+\left.\begin{aligned}
 \vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
 \vi k_2 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_1 \diff t} \\
 \vi k_3 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_2 \diff t} \\
 \vi k_4 &= \vi F\brackets{t_0 + \diff t, \vi x_0 + \vi k_3 \diff t}
-\end{aligned} \; \& \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
+\end{aligned} \right\} \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
 $$ {#eq-runge-kutta-classical}
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
