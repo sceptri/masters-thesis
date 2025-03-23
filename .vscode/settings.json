@@ -2,6 +2,7 @@
 	"cSpell.words": [
 		"bicontinuous",
 		"bijective",
+		"cancellative",
 		"codimension",
 		"colormap",
 		"emsp",
@@ -9,6 +10,7 @@
 		"Floquet",
 		"forall",
 		"Grobman",
+		"Grothendieck",
 		"hidedecorations",
 		"hypersurface",
 		"infty",
@@ -28,6 +30,7 @@
 		"rfde",
 		"runge",
 		"scatterlines",
+		"semidyn",
 		"semidynamical",
 		"semiflow",
 		"seqnc",

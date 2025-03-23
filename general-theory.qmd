@@ -43,51 +43,59 @@ CairoMakie.activate!()
 
 We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
 
-This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, the arising dynamical system becomes infinite dimensional. For better "mathematical ergonomics" we will thus define a *semidynamical system*.
+This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, the arising dynamical system becomes infinite dimensional. For better "mathematical ergonomics" we will define a *semidynamical system*, a special case of a dynamical system.
 
 ## Dynamical Systems {#sec-dynamical-systems}
 
-First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021, with @Sevcik2021 being a valuable inspiration for the structure of this section.
+First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021 in terms of the content. It should be noted the notation follows @Teschl2012, @Guo2013, @Saperstone1981 or @Smith2010 for better compatibility with semidynamical systems. Also, @Sevcik2021 was used as a valuable inspiration for the structure of this section.
 
 :::{#def-dynamical-system}
-##### Dynamical system
-
-A *dynamical system* is a triple $\set{\timeSet, \stateSpace, \evolOp^t}$, where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a subgroup of $(\R, +)$, $\stateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \stateSpace \to \stateSpace$ maps a certain point $x^0 \in \stateSpace$ to some other state $x_t = \evolOp^t x^0 \in \stateSpace$.
-:::
-
-<!-- TODO: Depending on whether time is a group or a monoid, it is either a dynamical or semidynamical system -->
-
-In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ representing a yearly interval between measurements of our system^[Let us note time set $\timeSet = \N_0$ is also common ecology, but such choice leads to semidynamical systems, discussed in more detail in @sec-time-monoid-dynamical-system.]. On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ as we are concerted with even the shortest time intervals and associated changes. Similarly, the exact choice of the state space $\stateSpace$ is dependent of the system in question, but typically we use $\R^n$.
-
-Right now, nothing in the @def-dynamical-system guarantees the system does not abruptly change state, because in general $x \neq \evolOp^0 x$. If this equality does not hold for at least one $x \in \stateSpace$, then such system is called *stochastic*.
-
-:::{#def-deterministic-dynamical-system}
-##### Deterministic dynamical system
-
-A dynamical system, see @def-dynamical-system, is called *deterministic* if and only if the following condition is fulfilled
+**Dynamical system** (more precisely *deterministic dynamical system*) is a triple $(\timeSet, \stateSpace, \evolOp)$, where $(\timeSet, +, \leq)$, $\timeSet \subseteq \R$, is an ordered commutative semigroup with identity element $0$, $\stateSpace$ (called *state space*) is a metric space, and $\evolOp$ is a continuous^[The evolution map $\evolOp$ is continuous, if $t,s \in \timeSet$, $x \in \stateSpace$ and if $\set{(t_n, s_n)}_n$ is a sequence in $\timeSet \times \timeSet$ and $\Seqnc x n {}$ is a sequence in $\stateSpace$ such that $(t_n, s_n) \to (t,s)$ and $x_n \to x$, then $\evolOp(t_n, s_n, x_n) \to \evolOp(t,s,x)$.] evolution map
 $$
-\evolOp^0 = \id,
-$$ {#eq-det-dyn-sys}
-in other words $\forall x \in \stateSpace: x = \evolOp^0 x$.
+\begin{aligned}
+\evolOp : {} & \timeSet \times \timeSet \times \stateSpace & &\to & &\stateSpace \\
+	& (t, s, x) &&\mapsto &&\evolOp(t, s, x),
+\end{aligned}
+$$ 
+projecting a state $x$ from time $s$ to time $t$, which satisfies
+
+1. (*deterministic property*): $\evolOp(s,s, x) = x$ for each $x \in \stateSpace$ and $s \in \timeSet$,
+2. (*composition property*): $\evolOp(t,s,x) = \evolOp(t,r,\evolOp(r,s,x))$ for each $x \in \stateSpace$ and $t,r,s \in \timeSet$.
+
+If $(\timeSet, +)$ is a group, we will speak of an **invertible dynamical system**.
 :::
 
-Onwards, we will predominantly use deterministic dynamical systems. Another assumption we shall make throughout this thesis is that the "laws of nature" do not change in time, i.e., we presume the dynamical system in question is autonomous (although it may depend on the past).
+For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e. $a + x = b + x \implies a = b$ for each $a,b,x \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
 
 :::{#def-autonomous-dynamical-system}
-##### Autonomous dynamical system
-
-A deterministic dynamical system, see @def-deterministic-dynamical-system, is called *autonomous* if and only if the following condition is fulfilled
+**Autonomous dynamical system** is a dynamical system such that the *autonomous property*,
 $$
-\forall t,s \in \timeSet: \evolOp^{t+s} = \evolOp^{t} \circ \evolOp^{s},
-$$ {#eq-autonomous-dyn-sys}
-in other words $\forall x \in \stateSpace \, \forall t,s \in \timeSet: \evolOp^{t+s} x = \evolOp^t (\evolOp^s x)$.
+\evolOp(t, s, x) = \evolOp(t + r, s + r, x)
+$$ {#eq-autonomous-property}
+for each $x \in \stateSpace$, $t,s \in \timeSet$, and $r \in \timeSet_G$, is fulfilled. 
 :::
+
+::: {.callout-note #nte-autonomous-dyn-sys}
+##### Evolution operator as monoid action
+
+In the case of @def-autonomous-dynamical-system, we can always vanish the starting time by taking $r = -s$ in ([-@eq-autonomous-property]), which is ensured by $r \in \timeSet_G$. Then, by abuse of notation, we will write $\evolOp: \timeSet \times \stateSpace \to \stateSpace$. Moreover, the *composition* and *autonomous* properties combine into the *semigroup property*,
+$$
+\evolOp(t, \evolOp(s, x)) = \evolOp(t + s, x) \; \forall x \in \stateSpace, \forall t,s \in \timeSet,
+$$
+i.e. the map $\evolOp$ is a (left) monoid action of $(\timeSet, +)$ on $\stateSpace$. The operator $\evolOp$ is typically called *flow* of the dynamical system.
+:::
+
+In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly interval between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
+
+On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ or $\R^+$ as we are concerned with even the shortest time intervals and associated changes --- corresponding systems are called **continuous** or **continuous-time** dynamical systems. Similarly, the exact choice of the state space $\stateSpace$ is dependent on the system in question, but typically we use $\R^n$, although we will also encounter infinite-dimensional state space.
+
+The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such system *stochastic*. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
 
 Most often, a dynamical system is given implicitly by a *differential* or *difference* equation. For example, in population dynamics, one of the earliest models, the *Verhulst model of population*[^verhulst], can prescribed by an ordinary differential equation (ODE)
 $$
 \dot{x}(t) = \deriv {x(t)} t = x(t) \cdot r_0 \cdot \brackets{1 - \frac {x(t)} K},
 $$ {#eq-ode-verhulst}
-or a *difference equation*
+or a *difference equation* (although these two models are *not* equivalent)
 $$
 x(t+1) = x(t) \cdot r_0 \cdot \brackets{1 - \frac {x(t)} K}.
 $$ {#eq-difference-verhulst}
@@ -103,7 +111,7 @@ In this section, we shall introduce basic concepts regarding dynamical systems i
 
 An *orbit (trajectory)* with an *initial point* $x_0 \in \stateSpace$ is an ordered subset of the state space $\stateSpace$,
 $$
-\Orbit{x_0} = \set{x \in \stateSpace \divider x = \evolOp^t x_0, \forall t \in \timeSet \text{ such that } \evolOp^t x_0 \text{ is defined}}
+\Orbit{x_0} = \set{x \in \stateSpace \divider x = \evolOp(t, x_0), \forall t \in \timeSet \text{ such that } \evolOp(t, x_0) \text{ is defined}}
 $$
 
 In the case of a continuous dynamical system, the orbits are *oriented curves* in the state space. For a discrete dynamical systems, they become sequences of points in $\stateSpace$.
@@ -117,30 +125,30 @@ A *phase portrait* of a dynamical system is a partitioning of the state space in
 :::{#def-equilibrium}
 ##### Equilibrium
 
-A point $x^* \in \stateSpace$ is called an *equilibrium* (fixed point) if $\evolOp^t x^* = x^*$ for all $t \in \timeSet$.
+A point $x^* \in \stateSpace$ is called an *equilibrium* (fixed point) if $\evolOp(t, x^*) = x^*$ for all $t \in \timeSet$.
 :::
 
 :::{#def-cycle}
 ##### Cycle
 
-A *cycle* is a periodic orbit, namely a non-equilibrium orbit $L$, such that each point $x_0 \in L$ satisfies $\evolOp^{t + T} x_0 = \evolOp^{t} x_0$ with some $T > 0$, for all $t \in \timeSet$. The smallest admissible $T$ is called the *period* of the cycle $L$.
+A *cycle* is a periodic orbit, namely a non-equilibrium orbit $L$, such that each point $x_0 \in L$ satisfies $\evolOp(t + T, x_0) = \evolOp(t, x_0)$ with some $T > 0$, for all $t \in \timeSet$. The smallest admissible $T$ is called the *period* of the cycle $L$.
 :::
 
 :::{#def-invariant-set}
 ##### Invariant set
 
-An *invariant set* of a dynamical system $\set{\timeSet, \stateSpace, \evolOp^t}$ is a subset $\obj S \subset \stateSpace$ which satisfies
+An *invariant set* of a dynamical system $(\timeSet, \stateSpace, \evolOp)$ is a subset $\obj S \subset \stateSpace$ which satisfies
 $$
-x \in \obj{S} \implies \evolOp^t x \in \obj{S} \; \forall t \in \timeSet.
+x \in \obj{S} \implies \evolOp(t, x) \in \obj{S} \; \forall t \in \timeSet.
 $$
 :::
 
 :::{#def-limit-point}
 ##### $\omega$-limit and $\alpha$-limit point
 
-A point $x_* \in \stateSpace$ is called an *$\omega$-limit point* (resp. $\alpha$-limit point) of the orbit $\Orbit{x_0}$ starting at $x_0 \in \stateSpace$ if their exists a sequence of times $\seqnc{t}{k}{1}{\infty} \subseteq \timeSet$ with $t_k \to \infty$ (resp. $t_k \to - \infty$), such that
+A point $x_* \in \stateSpace$ is called an *$\omega$-limit point* (resp. $\alpha$-limit point) of the orbit $\Orbit{x_0}$ starting at $x_0 \in \stateSpace$ if their exists a sequence of times $\seqnc{t}{k}{1}{\infty} \subseteq \timeSet$ with $t_k \to \infty$ (resp. $t_k \to - \infty$)^[For a careful reader, let us note we assume $t_k \to \infty$ is well-defined, though it might restrict full generality of @def-dynamical-system.], such that
 $$
-\evolOp^{t_k} x_0 \onBottom{\longrightarrow}{k \to \infty} x_*.
+\evolOp(t_k, x_0) \onBottom{\longrightarrow}{k \to \infty} x_*.
 $$
 :::
 
@@ -176,8 +184,8 @@ Equivalently to @def-limit-cycle, one can define a *limit cycle* as a cycle, whi
 
 An invariant set $S_0$ is called 
 
-1. **Lyapunov stable** if for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp^t x \in U$ for all $x \in V$ and all $t > 0$;
-2. **asymptotically stable** there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp^t x \to S_0$ for all $x \in U_0$, as $t \to +\infty$;
+1. **Lyapunov stable** if for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp(t, x) \in U$ for all $x \in V$ and all $t > 0$;
+2. **asymptotically stable** there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp(t, x) \to S_0$ for all $x \in U_0$, as $t \to +\infty$;
 3. **stable** if it is both *Lyapunov* and *asymptotically stable*;
 4. **unstable** if it is not *stable*.
 :::
@@ -192,7 +200,7 @@ So far, we have described dynamical systems mainly in general terms. Later, we w
 :::{#def-topological-equivalence}
 ##### Topological equivalence
 
-A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
+A dynamical system $\obj D_1 = (\timeSet, \R^n, \evolOp)$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = (\timeSet, \R^n, \oper{\psi})$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
 :::
 
 [^homeomorphism]: In the context of topology, a *homeomorphism* (also called a *bicontinuous function*) is a bijective and continuous function, such that its inverse is also continuous.
@@ -200,7 +208,7 @@ A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *t
 :::{#def-local-topological-equivalence}
 ##### Local topological equivalence
 
-A dynamical system $\obj D_1 = \set{\timeSet, \R^n, \evolOp^t}$ is said to be *locally topologically equivalent* in the neighborhood of its equilibrium $\vi x^*$ to a dynamical system $\obj D_2 = \set{\timeSet, \R^n, \oper{\psi}^t}$ in the neighborhood of its equilibrium $\vi y^*$, if there exists a *homeomorphism* $\vi h: \R^n \to \R^n$, such that
+A dynamical system $\obj D_1 = (\timeSet, \R^n, \evolOp)$ is said to be *locally topologically equivalent* in the neighborhood of its equilibrium $\vi x^*$ to a dynamical system $\obj D_2 = (\timeSet, \R^n, \oper{\psi})$ in the neighborhood of its equilibrium $\vi y^*$, if there exists a *homeomorphism* $\vi h: \R^n \to \R^n$, such that
 
 1. $\vi h$ is defined on a (small) neighborhood $\neigh{\vi x^*} \subset \R^n$,
 2. satisfies $\vi y^* = \vi h(\vi x^*)$ and
@@ -216,7 +224,7 @@ $$
 $$ {#eq-autonomous-ode-system}
 where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \to \R^n$ is sufficiently smooth. The symbol $\dvi x$ denotes a derivative of $\vi x(t)$ with respect to time $t \in \timeSet = \R$.
 
-The system of ODEs ([-@eq-autonomous-ode-system]) induces a *continuous-time autonomous dynamical system*.
+The system of ODEs ([-@eq-autonomous-ode-system]) induces an *invertible continuous-time dynamical system*.
 :::
 
 ::: {.callout-tip #tip-ode-vector-field}
@@ -541,9 +549,9 @@ where $\mu_i$ are the multiplier of the Poincaré map $\vi P$ associated with th
 See @Kuznetsov2023, page 30, for a sketch of the proof.
 :::
 
-## Semidynamical Systems
+## Dynamical Systems with Delays {#sec-dynamical-systems-delays}
 
-Before delving straight into the semidynamical systems, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e. some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
+To understand how delays influence dynamical systems and define a *semidynamical system*, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e. some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
 
 ### Functional Differential Equations
 
@@ -729,37 +737,33 @@ $$
 $$
 which yields that $\vi z$ is a solution to ([-@eq-non-zero-stability]), which was to be shown.
 
-### Time Monoids and Dynamical Systems {#sec-time-monoid-dynamical-system}
+### Semidynamical Systems Induced by Delay Differential Equations {#sec-semidyn-sys-induced-by-dde}
 
-So far, we have only seen examples of dynamical systems, which have inherently been symmetric in time. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced dynamical system,
+So far, we have only seen examples of *continuous-time* dynamical systems, which have inherently been symmetric in time, i.e. *invertible*. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced continuous-time dynamical system,
 $$
 \dvi x(t) = \vi f(t, \vi x), \; \vi x(s) = \vi x_0.
 $$
-When integrating such ODE, it is only our choice to integrate forward in time, but backward integration is just a possible. This corresponds to our requirement on the time structure $\timeSet$ -- we required that $\timeSet$ is a subgroup of $(\R, +)$, thus for every $t \in \timeSet$, there must exists a corresponding inverse $-t \in \timeSet$.
-
-On the other hand, as we have seen in @sec-backward-extension-dde, delay differential equations are not always solvable backward in time. As such, we can relax our requirement of the time structure, this time constraining it to be a monoid over the reals equipped with addition.
+When solving such ODE, it is only our choice to integrate forward in time, but backward integration is just as possible. On the other hand, as we have seen in @sec-backward-extension-dde, delay differential equations are not always solvable backward in time. 
 
 :::{#def-semidynamical-system}
-##### Semidynamical system
-
-A *semidynamical system* is a triple $\set{\timeSet, \contStateSpace, \evolOp^t}$^[For semidynamical systems, we will use $\contStateSpace$ instead of $\stateSpace$ to emphasize that $x \in \contStateSpace$ will typically be some history function.], where $\timeSet \subseteq \R$ (*time*) endowed with addition $+$ is a monoid, $\contStateSpace$ is a metric space (called a *state space*), and $\set{\evolOp^t}_{t \in \timeSet}$ is a family of evolution operators parametrized by $t \in \timeSet$, such that $\evolOp^t : \contStateSpace \to \contStateSpace$ maps a certain point $x^0 \in \contStateSpace$ to some other state $x_t = \evolOp^t x^0 \in \contStateSpace$.
+**Semidynamical system** is a triple^[For semidynamical systems, we will use $\contStateSpace$ instead of $\stateSpace$ to emphasize that $\vi x \in \contStateSpace$ will typically be some (vector-valued) history function.] $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$, where
+$$
+\widetilde{\timeSet} = \set{(t,s) \in \timeSet \times \timeSet \divider t \geq s},
+$$
+$\contStateSpace$ is a metric space and $\evolOp : \widetilde{\timeSet} \times \contStateSpace \to \contStateSpace$ is continuous map, which satisfies the *deterministic* and *composition* properties from @def-dynamical-system.
 :::
 
-The difference between @def-dynamical-system and @def-semidynamical-system is, indeed, very subtle. In the case of a dynamical systems, as $\timeSet$ is a subgroup then for any $t \in \timeSet$ and its corresponding $\evolOp^t$, there exists $-t \in \timeSet$ and $\evolOp^{-t}$, giving us (assuming @def-autonomous-dynamical-system) $\evolOp^{-t} \circ \evolOp^t = \evolOp^0 = \id$.  On the other hand, for a semidynamical system with a monoid $\timeSet$, we do not have a guaranteed existence of $-t \in \timeSet$.
-
-Most often, we see semidynamical systems arise by the choice of time set $\timeSet = \N_0$ or $\timeSet = \R^+$. Nevertheless, for DDEs the exact time set, allowed by the equation, of the induced semidynamical system is often more nuanced. Moreover, autonomous deterministic semidynamical system is defined analogously to @def-deterministic-dynamical-system and @def-autonomous-dynamical-system. Basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
+The difference between @def-dynamical-system and @def-semidynamical-system is rather subtle. It lies in the restriction to $\widetilde{\timeSet}$, which permits only projection forward in time. Indeed, by using $\widetilde{\timeSet} = \timeSet \times \timeSet$, we get the usual dynamical system. Note, that autonomous semidynamical system is defined analogously as in @def-autonomous-dynamical-system. Also, basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
 
 :::{#lem-autonomous-semidynamical-system}
-Deterministic semidynamical system $\set{\timeSet, \contStateSpace, \evolOp^t}$ is autonomous if and only if whenever $\vi x(t)$ is a solution defined on subset $I \subseteq \timeSet$ and $\tau \in \timeSet$, then $\vi x(t + \tau)$ is a solution on $I - \tau$, where $I - \tau = \set{t - \tau \divider t \in I}$.
+Semidynamical system $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$ is autonomous if and only if whenever $\vi x(t)$ is a solution defined on subset $I \subseteq \timeSet$ and $\tau \in \timeSet_G$, then $\vi x(t + \tau)$ is a solution on $I - \tau$, where $I - \tau = \set{t - \tau \divider t \in I}$.
 :::
 
 :::{.proof}
 Can be adapted from @Smith2010, page 63.
 :::
 
-Analogously to the dynamical system case, the family of evolution operators $\set{\evolOp^t}_{t \in \timeSet}$ of an autonomous semidynamical system is called a *semiflow*.
-
-#### Semidynamical Systems Induced by Delay Differential Equations
+Analogously to the dynamical system case, the evolution operator $\evolOp$ of an autonomous semidynamical system is called a *semiflow*.
 
 For compatibility with the source material, see @Smith2010, we will now consider an initial-value problem ([-@eq-rfde-problem]) for a RFDE, though for our purposes a DDE would suffice,
 $$
@@ -771,7 +775,7 @@ $$
 $$
 
 :::{#prp-dde-induced-semidynamical-system}
-Operator $\evolOp^t = \vi x_t(\sigma, \cdot)$ defines a semidynamical system on $\contStateSpace$ with $\timeSet = [\sigma - \tau, \infty)$.
+The map $\evolOp(t,\sigma,\vi \phi) = \vi x_t(\sigma, \vi \phi)$ defines a semidynamical system on $\contStateSpace$ with $\timeSet = [\sigma - \tau, \infty)$ and its corresponding $\widetilde{\timeSet}$.
 :::
 
 :::{.proof}
@@ -864,21 +868,21 @@ c_m = \sum_{n = 1}^{m - 1} a_{mn},
 $$ {#eq-runge-kutta-eval-cond}
 which represents the assumption the all points, where $\vi F$ is evaluated, are first order approximations to the solution. It can be shown that they significantly simplify the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, they are not necessary.
 
-Our task is now to choose the coefficients in @alg-runge-kutta-explicit so that the order of the method is maximized. This corresponds to computing the Taylor series expansion for each $\vi k_j$ in the state variable of $\vi F$. By combining these results, we can compare them with the Taylor expansion of $\vi x_i$. Hence, we obtain the following conditions (given for a 4-stage method):
+Our task is now to choose the coefficients in @alg-runge-kutta-explicit so that the order of the method is maximized. This corresponds to computing the Taylor series expansion for each $\vi k_j$ in the state variable of $\vi F$. By combining these results, we can compare them with the Taylor expansion of $\vi x_i$. Hence, we obtain the following conditions (given for a 4-stage method), using $c_1 = 0$:
 $$
 \begin{aligned}
-\sum_{j} b_j &= 1 \\
-\sum_{j} b_j c_j &= \frac 1 2 \\
-\sum_{j} b_j c_j^2 &= \frac 1 3 \\
-\sum_{j,m} b_j a_{jm} c_m &= \frac 1 6 \\
-\sum_{j} b_j c_j^3 &= \frac 1 4 \\
-\sum_{j,m} b_j c_j a_{jm} c_m &= \frac 1 8 \\
-\sum_{j,m} b_j a_{jm} c_m^2 &= \frac 1 {12} \\
-\sum_{j,m,n} b_j a_{jm} a_{mn} c_n &= \frac 1 {24}
+\sum_{j} b_j &= 1, &
+\sum_{j} b_j c_j &= \frac 1 2, \\
+\sum_{j} b_j c_j^2 &= \frac 1 3, &
+\sum_{j,m} b_j a_{jm} c_m &= \frac 1 6, \\
+\sum_{j} b_j c_j^3 &= \frac 1 4, &
+\sum_{j,m} b_j c_j a_{jm} c_m &= \frac 1 8, \\
+\sum_{j,m} b_j a_{jm} c_m^2 &= \frac 1 {12}, &
+\sum_{j,m,n} b_j a_{jm} a_{mn} c_n &= \frac 1 {24}.
 \end{aligned}
 $$ {#eq-runge-kutta-order-condition-4-stage}
 
-In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i^5)$. Typically, *"the Runge-Kutta"* method is used:
+In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i t^5)$. Typically, *"the Runge-Kutta"* method is used:
 $$
 \left.\begin{aligned}
 \vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
