@@ -95,18 +95,51 @@
 \LetThereBe{\vrZ}{\vr Z}
 \LetThereBe{\vrY}{\vr Y}
 \LetThereBe{\vrX}{\vr X}
+\LetThereBe{\rW}{\rnd W}
+\LetThereBe{\rS}{\rnd S}
+\LetThereBe{\rM}{\rnd M}
+\LetThereBe{\rtau}{\rnd \tau}
 
 % Bayesian inference
 \LetThereBe{\paramSet}{\mcal T}
 \LetThereBe{\sampleSet}{\mcal Y}
 \LetThereBe{\bayesSigmaAlg}{\mcal B}
 
+\LetThereBe{\ltwo}{L^2}
+\LetThereBe{\ltwoEq}{\onTop{=}{\ltwo}}
+
+
 % Different types of convergence
 \LetThereBe{\inDist}{\onTop{\to}{d}}
 \letThereBe{\inDistWhen}{1}{\onBottom{\onTop{\longrightarrow}{d}}{#1}}
 \LetThereBe{\inProb}{\onTop{\to}{P}}
 \letThereBe{\inProbWhen}{1}{\onBottom{\onTop{\longrightarrow}{P}}{#1}}
-\LetThereBe{\inMeanSq}{\onTop{\to}{L^2}}
-\letThereBe{\inMeanSqWhen}{1}{\onBottom{\onTop{\longrightarrow}{L^2}}{#1}}
+\LetThereBe{\inMeanSq}{\onTop{\to}{\ltwo}}
+\LetThereBe{\inltwo}{\onTop{\to}{\ltwo}}
+\letThereBe{\inMeanSqWhen}{1}{\onBottom{\onTop{\longrightarrow}{\ltwo}}{#1}}
 \LetThereBe{\convergeAS}{\tOnTop{\to}{a.s.}}
 \letThereBe{\convergeASWhen}{1}{\onBottom{\tOnTop{\longrightarrow}{a.s.}}{#1}}
+
+% Asymptotic qualities
+\LetThereBe{\simAsymp}{\tOnTop{\sim}{as.}}
+
+% Stochastic analysis
+\letThereBe{\diffOn}{2}{\diff #1_{[#2]}}
+\LetThereBe{\timeSet}{\Theta}
+\LetThereBe{\eventSet}{\Omega}
+
+\LetThereBe{\filtration}{\mcal F}
+% TODO: Rename allFiltrations and the like
+\letThereBe{\allFiltrations}{1}{\set{\filtration_t}_{#1}}
+\letThereBe{\natFilter}{1}{\filtration_t^{#1}}
+\letThereBe{\NatFilter}{2}{\filtration_{#2}^{#1}}
+\letThereBe{\filterAll}{1}{\set{#1}_{t \geq 0}}
+\letThereBe{\FilterAll}{2}{\set{#1}_{#2}}
+
+\LetThereBe{\borelAlgebra}{\mcal B}
+\LetThereBe{\sAlgebra}{\mcal A}
+\LetThereBe{\quadVar}{Q}
+\LetThereBe{\totalVar}{V}
+
+\LetThereBe{\adaptIntProcs}{\mcal M}
+\letThereBe{\reflectProc}{2}{#1^{#2}}

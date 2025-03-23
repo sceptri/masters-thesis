@@ -596,7 +596,7 @@ x(t) = \phi(t), \; s-r \leq t \leq s
 $$ {#eq-1d-dde-initial-cond}
 and satisfying ([-@eq-1d-dde]) on $s \leq t \leq s + \sigma$ for some $\sigma > 0$. As a careful reader might notice, we must interpret $\dot x(s)$ as a *right-hand* derivative at $s$.
 
-The system of equations ([-@eq-1d-dde]) and ([-@eq-1d-dde-initial-cond]) can now be solved with the so-called *method of steps* as follows. For $s \leq t \leq s + r$, $x(t)$ must satisfy the initial-value problem for the following ODE:
+The system of equations ([-@eq-1d-dde]) and ([-@eq-1d-dde-initial-cond]) can now be solved with the so-called *method of steps* as follows. For $s \leq t \leq s + r$, $x(t)$ must satisfy the initial-value problem (IVP) for the following ODE:
 $$
 \dot y(t) = \underbrace{f(t, y(t), \phi(t - r))}_{g(t,y)}, \; y(s) = \phi(s), \; s \leq t \leq s + r.
 $$
@@ -855,7 +855,7 @@ This can surely be improved by using more terms from the Taylor series expansion
 	\vi k_2 &= \vi F (t_0 + c_2 \diff t_i, \vi x_{i-1} + \diff t_i a_{21} \vi k_1), \\
 	\vi k_3 &= \vi F (t_0 + c_3 \diff t_i, \vi x_{i-1} + \diff t_i (a_{31} \vi k_1 + a_{32} \vi k_2)), \\
 	&\;\vdots \\
-	\vi k_s &= \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}))
+	\vi k_s &= \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}));
 \end{align*}
 &emsp;&emsp;&emsp;&emsp;set $\vi x_i \letDef \vi x_{i-1} + \diff t_i (b_1 \vi k_1 + \dots + b_s \vi k_s)$ \
 &emsp;&emsp;**end** \
@@ -891,5 +891,107 @@ $$
 \vi k_4 &= \vi F\brackets{t_0 + \diff t, \vi x_0 + \vi k_3 \diff t}
 \end{aligned} \right\} \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
 $$ {#eq-runge-kutta-classical}
+
+Throughout this thesis, we will use solvers available in DifferentiaEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
+
+#### Solving DDEs with Method of Steps
+
+As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
+
+::: {.callout-important appearance="simple" #alg-method-of-steps}
+##### Method of steps
+**Input:** DDE in form ([-@eq-dde-problem-autonomous]), ODE numerical integration method $\mathrm{odeSolver}$\
+**Output:** Sequence of $N \letDef k \sum_{i = 1}^m N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
+**begin** \
+&emsp;&emsp;set $\vi \xi \letDef \vi \phi$ and $s \letDef \sigma$; \
+&emsp;&emsp;define $A_{x,y} = (x - 1) N_{\tau} + \sum_{b = 1}^{y} N_b$; \
+&emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
+&emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $m$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; define ODE
+$$
+\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m))
+$$ {#eq-method-of-steps-intermediate}
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; with initial value $\vi y(s) = \vi \xi(s)$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \letDef s + \tau_j$ and
+$$
+\vi \xi(\theta) = \begin{cases}
+	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
+	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j
+\end{cases}
+$$
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;**end** \
+**end**
+:::
+
+For brevity, discussion on convergence and other numerical properties is omitted. In implementations, we will predominantly use DelayDiffEq.jl package by @Widmann2022 in Julia or `dde23` in MATLAB.
+
+#### Solving SDEs
+
+So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e. the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
+
+Let us first introduce necessary theory of stochastic analysis.
+
+:::{#def-stochastic-process}
+##### Stochastic process
+
+Let $(\eventSet, \sAlgebra, P)$ be a **probability space** and $\timeSet \subseteq \R$ some index set of times. Then **random/stochastic process** $\set{\rX(t, \omega); \; t \in \timeSet}$ is a mapping
+$$
+\rX : \timeSet \times \eventSet \to \R,
+$$
+which is $\sAlgebra$-measurable, i.e.,
+$$
+\forall t \in \timeSet, \; \forall B \in \borelAlgebra: \; \set{\omega \in \eventSet : \; \rX(t, \omega) \in B} \in \sAlgebra.
+$$
+For a fixed $\omega \in \eventSet$, the mapping $\rX(t) = \rX(t,\omega)$ is called a **trajectory**. Similarly, for a fixed $t\in \timeSet$ the resulting $\rX(\omega) = \rX(t,\omega)$ **is a random variable**.
+:::
+
+:::{#def-wiener-process}
+##### Wiener process
+
+**Wiener process**, sometimes also called **Brownian motion**, is a random process $\set{\rW(t, \omega); \; t \geq 0}$ satisfying
+
+1. $\rW(0, \omega) = 0$,
+2. trajectories are *almost surely* continuous, i.e.,
+	$$
+	P(\set{\omega \in \eventSet: \; \text{trajectory } t \mapsto \rW(t, \omega) \text{ is discontinuous}}) = 0,
+	$$
+3. for all $0 \leq s_1 < t_1 \leq s_2 < t_2 \dots \leq s_k < t_k \leq \cdots$, the **increments** of Wiener process
+	$$
+	\set{\diff \rW_1(\omega), \diff \rW_2(\omega), \dots}
+	$$
+	are **stochastically independent** random variables with Gaussian probability distribution
+	$$
+	\diff \rW_k \sim \normalD{0, t_k - s_k},
+	$$
+	where $\diff \rW_k(\omega) = \rW(t_k, \omega) - \rW(s_k, \omega)$ for $k = 1,2,\cdots$.
+:::
+
+In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
+
+Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential form)
+$$
+\deriv {x(t)} t = a x(t) \iff \d x(t) = a x(t) \dd t,
+$$
+which has the solution $x(t) = e^{at}$, where $x(t)$ often represents size of some population. Taking $a = r + \sigma \rve(t, \omega)$, where $\rve(t, \omega)$ is a random process, the population size now becomes a random variable
+$$
+\d \rX(t,\omega) = \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \dd t,
+$$
+which is a **stochastic differential equation** (SDE). For a moment, let us use *differences* instead of *differentials*, i.e.,
+\begin{align*}
+\diff \rX(t,\omega) &= \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \, \diff t \\
+  &= r \rX(t, \omega) \, \diff t + \sigma \rX(t, \omega) \underbrace{\rve(t)  \, \diff t}_{\diff \rZ(t)}.
+\end{align*}
+
+What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a **white Gaussian noise**? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
+$$
+\d \rW(t) = \rve(t) \dd t,
+$$
+which can re-written in form of a *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
+$$
+\d \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
+$$
+which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. Moreover
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
