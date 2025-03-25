@@ -50,7 +50,7 @@ This abstraction is typically called a (mathematical) model (of the reality). Th
 First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021 in terms of the content. It should be noted the notation follows @Teschl2012, @Guo2013, @Saperstone1981 or @Smith2010 for better compatibility with semidynamical systems. Also, @Sevcik2021 was used as a valuable inspiration for the structure of this section.
 
 :::{#def-dynamical-system}
-**Dynamical system** (more precisely *deterministic dynamical system*) is a triple $(\timeSet, \stateSpace, \evolOp)$, where $(\timeSet, +, \leq)$, $\timeSet \subseteq \R$, is an ordered commutative semigroup with identity element $0$, $\stateSpace$ (called *state space*) is a metric space, and $\evolOp$ is a continuous^[The evolution map $\evolOp$ is continuous, if $t,s \in \timeSet$, $x \in \stateSpace$ and if $\set{(t_n, s_n)}_n$ is a sequence in $\timeSet \times \timeSet$ and $\Seqnc x n {}$ is a sequence in $\stateSpace$ such that $(t_n, s_n) \to (t,s)$ and $x_n \to x$, then $\evolOp(t_n, s_n, x_n) \to \evolOp(t,s,x)$.] evolution map
+**Dynamical system** (more precisely *deterministic dynamical system*) is a triple $(\timeSet, \stateSpace, \evolOp)$, where $(\timeSet, +, \leq)$, $\timeSet \subseteq \R$, is an ordered commutative semigroup with identity element $0$, $\stateSpace$ (called *state space*) is a metric space, and $\evolOp$ is a continuous^[The evolution map $\evolOp$ is continuous, if $t,s \in \timeSet$, $x \in \stateSpace$ and if $\set{(t_n, s_n)}_n$ is a sequence in $\timeSet \times \timeSet$ and $\Seqnc {x_n} n {}$ is a sequence in $\stateSpace$ such that $(t_n, s_n) \to (t,s)$ and $x_n \to x$, then $\evolOp(t_n, s_n, x_n) \to \evolOp(t,s,x)$.] evolution map
 $$
 \begin{aligned}
 \evolOp : {} & \timeSet \times \timeSet \times \stateSpace & &\to & &\stateSpace \\
@@ -786,9 +786,7 @@ See @Smith2010, page 65.
 
 As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, Newton-Raphson method will be discussed.
 
-### Numerical Integration
-
-#### Solving ODEs
+### Numerical integration of ODEs
 
 Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
 
@@ -845,7 +843,7 @@ This can surely be improved by using more terms from the Taylor series expansion
 
 ::: {.callout-important appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
-**Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}, b_1, \dots, b_s, c_2, \dots, c_s$\
+**Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}$, $b_1, \dots, b_s$, and $c_2, \dots, c_s$\
 **Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
@@ -894,7 +892,7 @@ $$ {#eq-runge-kutta-classical}
 
 Throughout this thesis, we will use solvers available in DifferentiaEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
 
-#### Solving DDEs with Method of Steps
+### Solving DDEs with Method of Steps
 
 As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
 
@@ -904,22 +902,18 @@ As invested reader can surely recall, we have already discussed method of steps 
 **Output:** Sequence of $N \letDef k \sum_{i = 1}^m N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
 &emsp;&emsp;set $\vi \xi \letDef \vi \phi$ and $s \letDef \sigma$; \
-&emsp;&emsp;define $A_{x,y} = (x - 1) N_{\tau} + \sum_{b = 1}^{y} N_b$; \
+&emsp;&emsp;define $A_{x,y} = (x - 1) N_{\tau} + \sum_{b = 1}^{y} N_b$ \
 &emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
 &emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $m$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; define ODE
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; define ODE IVP by $\vi y(s) = \vi \xi(s)$ and
 $$
-\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m))
+\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m));
 $$ {#eq-method-of-steps-intermediate}
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; with initial value $\vi y(s) = \vi \xi(s)$; \
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \letDef s + \tau_j$ and
-$$
-\vi \xi(\theta) = \begin{cases}
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \letDef s + \tau_j$ and $\vi \xi(\theta) = \begin{cases}
 	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
 	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j
-\end{cases}
-$$
+\end{cases}$ \
 &emsp;&emsp;&emsp;&emsp;**end** \
 &emsp;&emsp;**end** \
 **end**
@@ -927,7 +921,7 @@ $$
 
 For brevity, discussion on convergence and other numerical properties is omitted. In implementations, we will predominantly use DelayDiffEq.jl package by @Widmann2022 in Julia or `dde23` in MATLAB.
 
-#### Solving SDEs
+### Solving SDEs
 
 So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e. the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
 
@@ -968,6 +962,23 @@ For a fixed $\omega \in \eventSet$, the mapping $\rX(t) = \rX(t,\omega)$ is call
 	where $\diff \rW_k(\omega) = \rW(t_k, \omega) - \rW(s_k, \omega)$ for $k = 1,2,\cdots$.
 :::
 
+:::{#thm-wiener-process-properties}
+##### Properties of Wiener process
+
+Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it holds^[Let us note $\acov(s,t) = \cov(\rX(s), \rX(t)) = \Expect{(\rX(s) - \expect \rX(s))(\rX(t) - \expect \rX(t))}$ denotes the *autocovariance function* and $\acf(s,t) = \corr(\rX(s), \rX(t)) = \frac {\cov (\rX(s), \rX(t))} {\sqrt{\variance \rX(s) \variance \rX(t)}}$ the *autocorrelation function* of a stochastic process $X(t)$.]
+
+1. $\procMean(t) = 0$,
+2. $\acov(t,t) = t$,
+3. $\rW(t) \sim \normalD{0,t}$,
+4. $\acov(s,t) = \min\set{s,t}$,
+5. $\acf(s,t) = \sqrt{\frac {\min\set{s,t}} {\max\set{s,t}}}$.
+:::
+
+:::{.proof}
+See @Kloeden1992, page 28.
+:::
+
+
 In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
 
 Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential form)
@@ -984,14 +995,131 @@ which is a **stochastic differential equation** (SDE). For a moment, let us use 
   &= r \rX(t, \omega) \, \diff t + \sigma \rX(t, \omega) \underbrace{\rve(t)  \, \diff t}_{\diff \rZ(t)}.
 \end{align*}
 
-What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a **white Gaussian noise**? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
+What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a *Gaussian white noise*? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
 $$
 \d \rW(t) = \rve(t) \dd t,
 $$
-which can re-written in form of a *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
+which can be understood as *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
 $$
 \d \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
 $$
-which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. Moreover
+which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. This rather simple SDE prescribes so called *geometric Brownian motion*. In general, a random process $\rX(t)$ is called **Itô process**, if it is a solution to
+$$
+\dd \rX(t) = \rnd U(t) \dd t + \rnd V(t) \dd \rW(t), \; \rX(0) = \rX_0,
+$$
+where $\rnd U(t, \omega), \rnd V(t, \omega)$ are random processes satisfying certain conditions and $\rX_0$ is required to have finite second moment.
+
+Let us now turn our attention back to the noisy measurements problem. Using discussed concepts, this can be represented as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
+$$
+\dd \rX(t) = a(t, \rX(t)) \dd t + b(t, \rX(t)) \dd \rW(t), \; \rX(t_0) = \rX_0
+$$ {#eq-euler-maruyama-sde}
+on $t_0 \leq t \leq T$.
+
+For a given discretization $t_0 < t_1 < \dots < t_n = T$ of the time interval $[t_0, T]$, an Euler-Maruyama approximation is a continuous-time stochastic process $\rY = \set{\rY(t) \divider t_0 \leq t \leq T}$ satisfying the following iterative scheme (using $\rY(t_n) = \rY_n$)
+$$
+\rY_{n+1} = \rY_n + a(t_n, \rY_n) (t_{n+1} - t_n) + b(t_n, \rY_n)(\rW(t_{n+1}) - \rW(t_n))
+$$ {#eq-em-iteration-long}
+for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall using equidistant discretization, i.e. $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
+$$
+\diff \rW_n \sim \normalD{0, \diff t_n}.
+$$
+Thus for equidistant discretization ([-@eq-em-iteration-long]) becomes
+$$
+\rY_{n+1} = \rY_n + a(t_n, \rY_n) \diff t_n + b(t_n, \rY_n) \diff \rW_n,
+$$ {#eq-em-iteration}
+and as such $\rY$ can be interpreted as a Markov chain. This can be easily extended to vector-valued SDE,
+$$
+\dd \vr X(t) = \vi a(t, \vr X(t)) \dd t + \vi B(t, \vr X(t)) \dd \vr W(t), \; \vr X(t_0) = \vr X_0,
+$$ {#eq-euler-maruyama-vec-problem}
+where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in @alg-euler-maruyama-method.
+
+::: {.callout-important appearance="simple" #alg-euler-maruyama-method}
+##### Euler-Maruyama method
+**Input:** SDE in form ([-@eq-euler-maruyama-vec-problem]), time discretization $\seqnc{\diff t}{i}{1}{N}$ \
+**Output:** Discretized random process $\vr Y$ to $\seqnc t i 0 N$ \
+**begin** \
+&emsp;&emsp;set $\vr Y_0 \letDef \vr X_0$ by ([-@eq-euler-maruyama-vec-problem]) \
+&emsp;&emsp;**for** $i = 0$ **to** $N - 1$ **do** \
+&emsp;&emsp;&emsp;&emsp;$\vr Y_{n+1} \letDef \vr Y_n + \vi a(t_n, \vr Y_n) \diff t_n + \vi B(t_n, \vr Y_n) \diff \vr W_n$ \
+&emsp;&emsp;**end** \
+**end**
+:::
+
+Let us note that for implementation, we will predominantly use the `EM` method, from @Rackauckas2017, for Julia and a custom implementation for MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs.
+
+### Optimization in $\mathbb{R}$
+
+Optimization is almost ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is fortunately the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
+
+The methods we will present can be collectively called *bracketing*, as they rely on iteratively shrinking an interval inside which a local minimum lies. Furthermore, a single-minimum requirement shall be placed on functions to be optimized. For functions on $\R$, this translates to so called *unimodality*.
+
+:::{#def-unimodal-function}
+##### Unimodal function
+
+Let $I \subset \R$ be a interval and $f: I \to \R$ a function. We say $f$ is **unimodal** if there exists $x^* \in I$ such that
+
+- $f(x_1) > f(x_2)$ for arbitrary $x_1, x_2 \in I$ satisfying $x_1 < x_2 < x^*$;
+- $f(x_1) < f(x_2)$ for arbitrary $x_1, x_2 \in I$ satisfying $x^* < x_1 < x_2$.
+:::
+
+::: {.callout-note #nte-unimodality}
+##### Unimodality
+
+As a careful reader might notice, unimodal function is necessarily *monotone decreasing* on $(-\infty, x^*) \cap I$ and *monotone increasing* on $I \cap (x^*, \infty)$. Moreover, unimodality implies only *quasi-convexity*^[A function $f: S \to \R$, where $S$ is a real vector space, is *convex* on $S$ if for all $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ holds $f(\lmbd \vi x + (1 - \lmbd) \vi) \leq \lmbd f(\vi x) + (1 - \lmbd) f(\vi y)$ and *strictly convex* if the inequality is strict. Furthermore, we call it *quasi-convex* on $S$ if for any $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ we have $f(\lmbd \vi x + (1 - \lmbd) \vi y) \leq \minOf{f(\vi x), f(\vi y)}$.] and, on the other hand, only *strict convexity* implies unimodality of a function on $f: I \to \R$.
+:::
+
+:::{#lem-unimodality}
+Let $f: I \to \R$ be unimodal on $I$ and consider $x_1, x_2 \in I$ such that $x_1 < x_2$, then
+
+- $f(x_1) \leq f(x_2) \implies x^* \leq x_2$;
+- $f(x_1) \geq f(x_2) \implies x_1 \leq x^*$.
+:::
+
+:::{.proof}
+Follows directly from @def-unimodal-function.
+:::
+
+Consider now the following optimization problem
+$$
+\min_{x \in I} f(x), \quad \text{resp.} \quad \argmin_{x \in I} f(x),
+$$ {#eq-unimodal-optim-problem}
+for an **unimodal** function $f: I \to \R$, $I = [a,b]$. Furthermore, let $N$ denote the *allowed number of evaluations* of $f$ and assume the accuracy of presented methods is $\absval{\bar x  - x^*}$, where $x^*$ is the exact solution of ([-@eq-unimodal-optim-problem]) and $\bar x$ its approximation found by used method. Using @lem-unimodality, one can easily find the initial bracket to be successively shrunk if it is not provided in the definition of the optimization problem ([-@eq-unimodal-optim-problem]).
+
+#### Bisection method
+
+Consider now $N = 2k$, $k \in \N$, choose $\delta \in (0, \frac{b - a} 2]$ sufficiently small and let $a_0 \letDef a, b_0 \letDef b$ set the initial bracket $[a_0, b_0]$. We then define
+$$
+x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta \; \& \; x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta
+$$ {#eq-bisection-points}
+for $i = 1, \dots, k$. Now we can examine in which "half" of interval (including the offset $\delta$) the minimum lies, i.e. we evaluate $f(x_i^-), f(x_i^+)$ and adjust the bracket accordingly (by @lem-unimodality)
+
+- $f(x_i^-) < f(x_i^+) \implies [a_i, b_i] = [a_{i - 1}, x_i^+]$;
+- $f(x_i^-) > f(x_i^+) \implies [a_i, b_i] = [x_i^-, b_{i - 1}]$.
+
+The center $\bar x_k$ of the $k$-th bracket is assumed to approximate the exact solution $x^*$ with accuracy $l_k/2$, where 
+$$
+l_k = \frac {b - a} {2^k} + \frac {(2^k - 1)\delta} {2^{k - 1}}
+$$
+denotes the length of the $k$-th bracket and $l_k \to 2 \delta$ for $k \to \infty$.
+
+::: {.callout-important appearance="simple" #alg-bisection-method}
+##### Bisection method
+**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, $\delta \in (0, \frac {b - a} 2]$, number of steps $k \in \N$ \
+**Output:** Approximation of minimum $\bar{x}_k$ \
+**begin** \
+&emsp;&emsp;set $a_0 \letDef a, b_0 \letDef b$ \
+&emsp;&emsp;**for** $i = i$ **to** $k$ **do** \
+&emsp;&emsp;&emsp;&emsp;calculate $x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta$ & $x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta$ \
+&emsp;&emsp;&emsp;&emsp;**if** $f(x_i^-) < f(x_i^+)$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [a_{i - 1}, x_i^+]$ \
+&emsp;&emsp;&emsp;&emsp;**else if** $f(x_i^-) > f(x_i^+)$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [x_i^-, b_{i - 1}]$ \
+&emsp;&emsp;&emsp;&emsp;**else do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set^[In the case of equality, both options for a new bracket are equally valid.] $[a_i, b_i] \letDef [x_i^-, b_{i - 1}]$ \
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;&emsp;&emsp;set $\bar{x}_i \letDef \frac {a_i + b_i} 2$ \
+&emsp;&emsp;**end** \
+**end**
+:::
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->

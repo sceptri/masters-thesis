@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"autocovariance",
 		"bicontinuous",
 		"bijective",
 		"cancellative",
@@ -23,6 +24,7 @@
 		"Lyapunov",
 		"Makie",
 		"mapsto",
+		"Maruyama",
 		"monodromy",
 		"Monoids",
 		"multistep",
@@ -41,6 +43,8 @@
 		"transversality",
 		"transversally",
 		"underbrace",
+		"unimodal",
+		"unimodality",
 		"verhulst",
 		"Zissou"
 	]
