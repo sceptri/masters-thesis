@@ -39,13 +39,13 @@ CairoMakie.activate!()
 ```
 :::
 
-# A Primer on Dynamical Systems {#dynamical-systems-theory}
+# Mathematics Behind Dynamics {#sec-general-theory}
 
 We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
 
 This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, the arising dynamical system becomes infinite dimensional. For better "mathematical ergonomics" we will define a *semidynamical system*, a special case of a dynamical system.
 
-## Dynamical Systems {#sec-dynamical-systems}
+## A Primer on Dynamical Systems {#sec-dynamical-systems}
 
 First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021 in terms of the content. It should be noted the notation follows @Teschl2012, @Guo2013, @Saperstone1981 or @Smith2010 for better compatibility with semidynamical systems. Also, @Sevcik2021 was used as a valuable inspiration for the structure of this section.
 
@@ -292,6 +292,20 @@ $$ {#eq-linearization}
 See @Chicone2006, page 306, or @Perko2001, page 120.
 :::
 
+This theorem is very prominently used in conjunction with *linear* continuous-time dynamical systems, i.e.
+$$
+\dvi y = \vi A \vi y,
+$$
+where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi y^*$. Thus, we can partition the state-space into disjoint linear (vector) subspaces:
+
+- *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
+- *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
+- *center subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
+
+Then it holds that $n_{-} + n_{+} + n_0 = n$. Similarly, for linear discrete-time dynamical systems, one can perform an equivalent partitioning, such that $\obj{E}^s$ is spanned by eigenvectors corresponding to eigenvalues *lying inside the unit circle* (on the imaginary plane), see @thm-grobman-hartman-discrete below. Furthermore, $\obj{E}^u$ and $\obj{E}^c$ can be defined for discrete-time dynamical systems analogously.
+
+Moreover, by @thm-grobman-hartman-cont we know that these subspaces will be preserved in some neighborhood of the *hyperbolic* equilibrium of the nonlinear system ([-@eq-autonomous-ode-system]). Specifically, because the equilibrium is *hyperbolic*, $\obj{E}^c = \set{\vi 0}$.
+
 #### Lyapunov's Direct Method
 
 :::{#def-lpd-function}
@@ -381,18 +395,6 @@ $$
 \det \brackets{\Jacobi^* - \lambda \ident_2} = \lambda^2 - \trace \Jacobi^* \lambda + \det \Jacobi^*.
 $$
 Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda_1 + \lambda_2$  is the trace of the  determinant and finally, $\det \Jacobi^* = \lambda_1 \lambda_2$ denotes the determinant of $\Jacobi^*$.
-
-On a different note, in the case of a linear continuous-time dynamical system, i.e.
-$$
-\dvi y = \vi A \vi y,
-$$
-where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi y^*$ we can partition the state-space into disjoint linear (vector) subspaces:
-
-- *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
-- *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
-- *center subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
-
-Then it holds that $n_{-} + n_{+} + n_0 = n$. Similarly, for linear discrete-time dynamical systems, one can perform an equivalent partitioning, such that $\obj{E}^s$ is spanned by eigenvectors corresponding to eigenvalues *lying inside the unit circle* (on the imaginary plane). Furthermore, $\obj{E}^u$ and $\obj{E}^c$ can be defined for discrete-time dynamical systems analogously.
 
 By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e. the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
 
@@ -793,7 +795,7 @@ $$ {#eq-dde-linearization}
 
 #### Backward Extension {#sec-backward-extension-dde}
 
-Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
+Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should be evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
 
 Per @Smith2010 and @Hale1993, we say that $\vi x : [\sigma - \tau - \alpha, \sigma] \to \R^n$ for $\alpha > 0$ is a (backward) solution of the initial-value problem given by ([-@eq-rfde-problem]) if $\vi x$ is continuous, $\vi x$ satisfies the initial condition and
 $$
@@ -864,9 +866,9 @@ As an example of an autonomous system, one can consider the delayed logistic equ
 $$
 \dot{n}(t) = a \cdot \brackets{1 - \frac{n(t - T)} K} n(t),
 $$
-which assumes, among other facts, a constant capacity of the environment $K$. Should this value be subject to change in time $K = K(t)$ (for example by external influences), yielding
+which assumes, among other facts, a constant growth rate $a$. Should the growth rate $a = a(t)$ be subject to change in time (for example by external influences), yielding
 $$
-\dot{n}(t) = a \cdot \brackets{1 - \frac{n(t - T)} {K(t)}} n(t),
+\dot{n}(t) = a(t) \cdot \brackets{1 - \frac{n(t - T)} K} n(t),
 $$
 then it prescribes a **non**-autonomous semidynamical system. Analogously to the dynamical system case, the evolution operator $\evolOp$ of an autonomous semidynamical system is called a *semiflow*.
 
@@ -1015,7 +1017,7 @@ $$
 \dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m));
 $$ {#eq-method-of-steps-intermediate}
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) = \begin{cases}
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) \gets \begin{cases}
 	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
 	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j
 \end{cases}$ \
@@ -1251,36 +1253,9 @@ $$
 $$ {#eq-fibonacci-successive}
 where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$. The algorithm of the Fibonacci method, heavily based on implementation from @Kochenderfer2019, is provided in @alg-fibonacci-method.
 
-::: {.callout appearance="simple" #alg-fibonacci-method}
-##### Fibonacci method
-**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, number of evaluations $N \in \N$, tolerance $\ve > 0$ small \
-**Output:** Approximation of minimum $\bar{x}$ \
-**begin** \
-&emsp;&emsp;set $A \gets a$, $B \gets b$, $n \gets N$; \
-&emsp;&emsp;define $s \letDef \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$; \
-&emsp;&emsp;let $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$, $r \gets (1 - \rho) A + \rho B$; \
-&emsp;&emsp;set $f^r \gets f(r)$ and $n \gets n - 1$ \
-&emsp;&emsp;**while** $n > 0$ **do** \
-&emsp;&emsp;&emsp;&emsp;**if** $n > 1$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \rho A + (1 - \rho) B$ \
-&emsp;&emsp;&emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \ve A + (1 - \ve) r$ \
-&emsp;&emsp;&emsp;&emsp;**end** \
-&emsp;&emsp;&emsp;&emsp;update $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$; \
-&emsp;&emsp;&emsp;&emsp;set $f^l \gets f(l)$ and $n \gets n - 1$ \
-&emsp;&emsp;&emsp;&emsp;**if** $f^l < f^r$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[r, B, f^r] \gets [l, r, f^l]$ \
-&emsp;&emsp;&emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[A, B] \gets [B, l]$ \
-&emsp;&emsp;&emsp;&emsp;**end** \
-&emsp;&emsp;**end** \
-&emsp;&emsp;set $\bar{x} = \frac {A + B} 2$ \
-**end**
-:::
-
 ### Newton's Method
 
-Last, but not least, we shall discuss the Newton's, or Newton-Raphson, method for finding roots of a given equation (or a system thereof). Suppose we are given a system of equations
+Last, but not least, we shall discuss the Newton's, or Newton-Raphson, method for finding roots of a given equation (or a system thereof). The treatment provided here follows @Lacerda2010. Suppose we are given a system of equations
 $$
 \begin{aligned}
 f_1(x_1, \dots, x_n) &= 0 \\
@@ -1288,6 +1263,33 @@ f_2(x_1, \dots, x_n) &= 0 \\
 &\vdots \\
 f_n(x_1, \dots, x_n) &= 0
 \end{aligned} \iff \vi F(\vi x) = \vi 0.
-$$ 
+$$ {#eq-newton-method-system}
 
-<!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->
+Let $\vi x^i \in \R^n$ be known and fixed, for example a previous iteration, then ([-@eq-newton-method-system]) can be approximated using Taylor's series in the neighborhood of $\vi x^i$. Corresponding first-order Taylor expansion is
+$$
+f_k(\vi x) \approx f_k(\vi x^i) + \sum_{j = 1}^n \pDeriv {f_k(\vi x^i)}{x_j} (x_j - x^i_j).
+$$
+
+Using vector notation, we can collectively approximate ([-@eq-newton-method-system]) as
+$$
+\vi F(\vi x^i) + \Jacobi_i (\vi x - \vi x^i) = \vi 0,
+$$ {#eq-newton-method-approx}
+where $\Jacobi_i = \jacobi_{\vi x} \vi F(\vi x^i)$, i.e. $(\Jacobi_i)_{k,j} = \pDeriv {f_k(\vi x^i)}{x_j}$. Certainly a solution to ([-@eq-newton-method-approx]) approximates the true solution to ([-@eq-newton-method-system]). Then, by sequentially approximating the true solution from points getting closer, the approximations also get more accurate. In other words, we can write the following iterative process to finding the true solution (to an arbitrary accuracy)
+$$
+\vi x^{i+1} = \vi x^i - \Jacobi_i\Inv \vi F(\vi x^i).
+$$ {#eq-newton-iter}
+
+While this formula for Newton's method is very common, we shall also present the *residual* form
+$$
+\Jacobi_i \cdot \diff \vi x^{i+1} = \vi R(\vi x^i),
+$$ {#eq-newton-residual}
+where $\vi R(\vi x) = - \vi F(\vi x)$, and $\diff \vi x^{i+1} = \vi x^{i+1} - \vi x^i$, which play the role of unknowns in ([-@eq-newton-residual]). As a careful reader might notice, instead of requiring an inverse of the Jacobian matrix $\Jacobi_i$, we have translated into a linear system of equations. If $\Jacobi_i\Inv$ exists and is numerically stable^[In such case we can calculate it straight or implicitly via so-called *left division*, which, in Julia, relies on pivoted QR decomposition.], then we can use it to solve ([-@eq-newton-residual]). On the other hand, if $\Jacobi_i$ is badly conditioned (or singular), so $\Jacobi_i\Inv$ cannot be reliably found, then one can use iterative methods to find an approximate solution. Assuming $\diff \vi x^{i+1}$ is the solution to ([-@eq-newton-residual]), next iteration for ([-@eq-newton-iter]) is computed as
+$$
+\vi x^{i+1} = \vi x^i + \diff \vi x^{i+1}.
+$$
+
+There are many possible stopping conditions for this iterative Newton's method, but often one can see
+$$
+\norm{\vi x^i - \vi x^{i-1}} \leq \ve_{\text{err}} \; \& \; \norm{\vi R(\vi x^i)} \leq \ve_{\text{res}},
+$$
+where $\ve_{\text{err}}$ is the given tolerance for the solution error and $\ve_{\text{res}}$ for the residual.

@@ -44,6 +44,8 @@ book:
   favicon: assets/SCI_MUNI_logo.png
 
 bibliography: bibliography.bib
+csl: the-annals-of-probability.csl
+link-citations: true
 
 thesis:
   coloring: Barevne # Barevne | Tisk
@@ -125,6 +127,7 @@ format:
     fig-format: png
     mermaid-format: png
     df-print: tibble
+
 filters:
  - munithesis
  - resizer.lua

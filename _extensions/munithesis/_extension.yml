@@ -20,7 +20,6 @@ contributes:
     pdf:
       documentclass: book
       pdf-engine: lualatex
-      cite-method: biblatex # TODO: use citeproc, but modify it
       papersize: a4
       fontsize: 12pt
       geometry:
@@ -39,8 +38,8 @@ contributes:
         - "assets/SCI_(black).pdf"
       template-partials:
         - "before-title.tex"
-        #- "title.tex"
         - "before-body.tex"
+        - "after-body.tex"
     html:
       theme:
         light: 
@@ -48,12 +47,7 @@ contributes:
           - thesis.scss
         dark: darkly
       fontsize: 16px
-      # mainfont: "Merriweather, serif"
       code-link: true
       toc-title: "<b>Sections</b>"
       html-math-method: mathjax
       published-title: "Last updated"
-      # format-resources:
-      #   - fonts.html
-      # include-in-header:
-      #   file: fonts.html

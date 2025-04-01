@@ -42,3 +42,30 @@
 &emsp;&emsp;**end** \
 **end**
 :::
+
+::: {.callout appearance="simple" #alg-fibonacci-method}
+##### Fibonacci method
+**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, number of evaluations $N \in \N$, tolerance $\ve > 0$ small \
+**Output:** Approximation of minimum $\bar{x}$ \
+**begin** \
+&emsp;&emsp;set $A \gets a$, $B \gets b$, $n \gets N$; \
+&emsp;&emsp;define $s \letDef \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$; \
+&emsp;&emsp;let $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$, $r \gets (1 - \rho) A + \rho B$; \
+&emsp;&emsp;set $f^r \gets f(r)$ and $n \gets n - 1$ \
+&emsp;&emsp;**while** $n > 0$ **do** \
+&emsp;&emsp;&emsp;&emsp;**if** $n > 1$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \rho A + (1 - \rho) B$ \
+&emsp;&emsp;&emsp;&emsp;**else do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \ve A + (1 - \ve) r$ \
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;&emsp;&emsp;update $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$; \
+&emsp;&emsp;&emsp;&emsp;set $f^l \gets f(l)$ and $n \gets n - 1$ \
+&emsp;&emsp;&emsp;&emsp;**if** $f^l < f^r$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[r, B, f^r] \gets [l, r, f^l]$ \
+&emsp;&emsp;&emsp;&emsp;**else do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[A, B] \gets [B, l]$ \
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;**end** \
+&emsp;&emsp;set $\bar{x} = \frac {A + B} 2$ \
+**end**
+:::
