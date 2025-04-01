@@ -227,6 +227,16 @@ where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \
 The system of ODEs ([-@eq-autonomous-ode-system]) induces an *invertible continuous-time dynamical system*.
 :::
 
+In ([-@eq-autonomous-ode-system]), we have given the ODE in explicit form, but, in general, it can also be defined by an implicit higher-order equation
+$$
+\vi F(\vi x, \dvi x, \ddot{\vi x}, \dots, \vi x^{(k)}) = \vi 0.
+$$ {#eq-implicit-ode-system}
+Such system can always be translated into a first-order system of equations
+$$
+\vi G(\vi y, \dvi y) = \vi 0
+$$
+and, if $\vi F$ (or $\vi G$ respectively) allows it, even to the explicit form ([-@eq-autonomous-ode-system]).
+
 ::: {.callout-tip #tip-ode-vector-field}
 ##### Vector field
 
@@ -290,7 +300,7 @@ A function $V: \R^n \to \R$ is called *locally positive-definite (LPD)* at $\vi 
 1. $V(\vi x^*) = 0$,
 2. $V(\vi x) > 0$, $\vi x \in \neigh{\vi x^*} \setminus \set{\vi x^*}$ for some neighborhood $\neigh{\vi x^*}$.
 
-If only $V(\vi x) \geq 0$ holds on a neighborhood $\neigh{\vi x^*}$, then the function is called *locally positive semi-definite (LPSD)*. Analogously, we can define a *locally negative (semi-)definite* function.
+If only $V(\vi x) \geq 0$ holds on a neighborhood $\neigh{\vi x^*}$, then the function is called *locally positive semi-definite (LPSD)*. Analogously, we can define a *locally negative definite* and *semi-definite* functions.
 :::
 
 :::{#def-lyapunov-function}
@@ -380,7 +390,7 @@ where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi 
 
 - *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
 - *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
-- *central subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
+- *center subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
 
 Then it holds that $n_{-} + n_{+} + n_0 = n$. Similarly, for linear discrete-time dynamical systems, one can perform an equivalent partitioning, such that $\obj{E}^s$ is spanned by eigenvectors corresponding to eigenvalues *lying inside the unit circle* (on the imaginary plane). Furthermore, $\obj{E}^u$ and $\obj{E}^c$ can be defined for discrete-time dynamical systems analogously.
 
@@ -549,13 +559,100 @@ where $\mu_i$ are the multiplier of the Poincaré map $\vi P$ associated with th
 See @Kuznetsov2023, page 30, for a sketch of the proof.
 :::
 
+### Stochastic Dynamical Systems {#sec-stochastic-dyn-systems}
+
+So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e. the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
+
+Let us first introduce necessary theory of stochastic analysis.
+
+:::{#def-stochastic-process}
+##### Stochastic process
+
+Let $(\eventSet, \sAlgebra, P)$ be a **probability space** and $\timeSet \subseteq \R$ some index set of times. Then **random/stochastic process** $\set{\rX(t, \omega); \; t \in \timeSet}$ is a mapping
+$$
+\rX : \timeSet \times \eventSet \to \R,
+$$
+which is $\sAlgebra$-measurable, i.e.,
+$$
+\forall t \in \timeSet, \; \forall B \in \borelAlgebra: \; \set{\omega \in \eventSet : \; \rX(t, \omega) \in B} \in \sAlgebra.
+$$
+For a fixed $\omega \in \eventSet$, the mapping $\rX(t) = \rX(t,\omega)$ is called a **trajectory**. Similarly, for a fixed $t\in \timeSet$ the resulting $\rX(\omega) = \rX(t,\omega)$ **is a random variable**.
+:::
+
+:::{#def-wiener-process}
+##### Wiener process
+
+**Wiener process**, sometimes also called **Brownian motion**, is a random process $\set{\rW(t, \omega); \; t \geq 0}$ satisfying
+
+1. $\rW(0, \omega) = 0$,
+2. trajectories are *almost surely* continuous, i.e.,
+	$$
+	P(\set{\omega \in \eventSet: \; \text{trajectory } t \mapsto \rW(t, \omega) \text{ is discontinuous}}) = 0,
+	$$
+3. for all $0 \leq s_1 < t_1 \leq s_2 < t_2 \dots \leq s_k < t_k \leq \cdots$, the **increments** of Wiener process
+	$$
+	\set{\diff \rW_1(\omega), \diff \rW_2(\omega), \dots}
+	$$
+	are **stochastically independent** random variables with Gaussian probability distribution
+	$$
+	\diff \rW_k \sim \normalD{0, t_k - s_k},
+	$$
+	where $\diff \rW_k(\omega) = \rW(t_k, \omega) - \rW(s_k, \omega)$ for $k = 1,2,\cdots$.
+:::
+
+:::{#thm-wiener-process-properties}
+##### Properties of Wiener process
+
+Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it holds^[Let us note $\acov(s,t) = \cov(\rX(s), \rX(t)) = \Expect{(\rX(s) - \expect \rX(s))(\rX(t) - \expect \rX(t))}$ denotes the *autocovariance function* and $\acf(s,t) = \corr(\rX(s), \rX(t)) = \frac {\cov (\rX(s), \rX(t))} {\sqrt{\variance \rX(s) \variance \rX(t)}}$ the *autocorrelation function* of a stochastic process $X(t)$.]
+
+1. $\procMean(t) = 0$,
+2. $\acov(t,t) = t$,
+3. $\rW(t) \sim \normalD{0,t}$,
+4. $\acov(s,t) = \min\set{s,t}$,
+5. $\acf(s,t) = \sqrt{\frac {\min\set{s,t}} {\max\set{s,t}}}$.
+:::
+
+:::{.proof}
+See @Kloeden1992, page 28.
+:::
+
+In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
+
+Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential form)
+$$
+\deriv {x(t)} t = a x(t) \iff \d x(t) = a x(t) \dd t,
+$$
+which has the solution $x(t) = e^{at}$, where $x(t)$ often represents size of some population. Taking $a = r + \sigma \rve(t, \omega)$, where $\rve(t, \omega)$ is a random process, the population size now becomes a random variable
+$$
+\d \rX(t,\omega) = \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \dd t,
+$$
+which is a **stochastic differential equation** (SDE). For a moment, let us use *differences* instead of *differentials*, i.e.,
+\begin{align*}
+\diff \rX(t,\omega) &= \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \, \diff t \\
+  &= r \rX(t, \omega) \, \diff t + \sigma \rX(t, \omega) \underbrace{\rve(t)  \, \diff t}_{\diff \rZ(t)}.
+\end{align*}
+
+What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a *Gaussian white noise*? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
+$$
+\d \rW(t) = \rve(t) \dd t,
+$$
+which can be understood as *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
+$$
+\dd \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
+$$
+which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. This rather simple SDE prescribes so called *geometric Brownian motion*. In general, a random process $\rX(t)$ is called **Itô process**, if it is a solution to
+$$
+\dd \rX(t) = \rnd U(t) \dd t + \rnd V(t) \dd \rW(t), \; \rX(0) = \rX_0,
+$$
+where $\rnd U(t, \omega), \rnd V(t, \omega)$ are random processes satisfying certain conditions and $\rX_0$ is required to have finite second moment.
+
 ## Dynamical Systems with Delays {#sec-dynamical-systems-delays}
 
 To understand how delays influence dynamical systems and define a *semidynamical system*, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e. some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
 
 ### Functional Differential Equations
 
-So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, e.g. $F(t, x, \dot{x}, \ddot{x}) = 0$.
+So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, see ([-@eq-autonomous-ode-system]) and ([-@eq-implicit-ode-system]), e.g. $F(t, x, \dot{x}, \ddot{x}) = 0$.
 
 In contrast, a *functional equation* (FE) is an equation connecting outputs of an unknown function evaluated at different argument values. As an example, $x(-t) + 3x(2t) = 0$, $x(x(t)) = x(t) + 2$, and $x(t) = tx(t+1) - \brackets{x(t-2)}^3$ are all examples of functional equations. The differences between the argument values of an unknown function and $t$ (its "default" argument) in a FE are called *argument deviations*. If all argument deviations are constant (like in the last example shown above), then the FE is called a *difference-functional equation*.
 
@@ -696,7 +793,7 @@ $$ {#eq-dde-linearization}
 
 #### Backward Extension {#sec-backward-extension-dde}
 
-Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should evident there is a fundamental asymmetry between the past and the future for DDEs, recall they are only a special case of RFDEs, which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
+Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
 
 Per @Smith2010 and @Hale1993, we say that $\vi x : [\sigma - \tau - \alpha, \sigma] \to \R^n$ for $\alpha > 0$ is a (backward) solution of the initial-value problem given by ([-@eq-rfde-problem]) if $\vi x$ is continuous, $\vi x$ satisfies the initial condition and
 $$
@@ -763,7 +860,15 @@ Semidynamical system $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$ is auton
 Can be adapted from @Smith2010, page 63.
 :::
 
-Analogously to the dynamical system case, the evolution operator $\evolOp$ of an autonomous semidynamical system is called a *semiflow*.
+As an example of an autonomous system, one can consider the delayed logistic equation, see @Hutchinson1948,
+$$
+\dot{n}(t) = a \cdot \brackets{1 - \frac{n(t - T)} K} n(t),
+$$
+which assumes, among other facts, a constant capacity of the environment $K$. Should this value be subject to change in time $K = K(t)$ (for example by external influences), yielding
+$$
+\dot{n}(t) = a \cdot \brackets{1 - \frac{n(t - T)} {K(t)}} n(t),
+$$
+then it prescribes a **non**-autonomous semidynamical system. Analogously to the dynamical system case, the evolution operator $\evolOp$ of an autonomous semidynamical system is called a *semiflow*.
 
 For compatibility with the source material, see @Smith2010, we will now consider an initial-value problem ([-@eq-rfde-problem]) for a RFDE, though for our purposes a DDE would suffice,
 $$
@@ -805,13 +910,13 @@ $$
 
 Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
-::: {.callout-important appearance="simple" #alg-euler-method}
+::: {.callout appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
 **Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$ \
 **Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
-&emsp;&emsp;&emsp;&emsp;$\vi x_i \letDef \vi x_{i - 1} + \vi F(t_{i - 1}, \vi x_{i - 1}) \diff t_i$ \
+&emsp;&emsp;&emsp;&emsp;$\vi x_i \gets \vi x_{i - 1} + \vi F(t_{i - 1}, \vi x_{i - 1}) \diff t_i$ \
 &emsp;&emsp;**end** \
 **end**
 :::
@@ -841,7 +946,7 @@ We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e. E
 
 This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step -- this way, we obtain so called **Runge-Kutta** methods.
 
-::: {.callout-important appearance="simple" #alg-runge-kutta-explicit}
+::: {.callout appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
 **Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}$, $b_1, \dots, b_s$, and $c_2, \dots, c_s$\
 **Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
@@ -855,7 +960,7 @@ This can surely be improved by using more terms from the Taylor series expansion
 	&\;\vdots \\
 	\vi k_s &= \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}));
 \end{align*}
-&emsp;&emsp;&emsp;&emsp;set $\vi x_i \letDef \vi x_{i-1} + \diff t_i (b_1 \vi k_1 + \dots + b_s \vi k_s)$ \
+&emsp;&emsp;&emsp;&emsp;set $\vi x_i \gets \vi x_{i-1} + \diff t_i (b_1 \vi k_1 + \dots + b_s \vi k_s)$ \
 &emsp;&emsp;**end** \
 **end**
 :::
@@ -896,12 +1001,12 @@ Throughout this thesis, we will use solvers available in DifferentiaEquations.jl
 
 As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
 
-::: {.callout-important appearance="simple" #alg-method-of-steps}
+::: {.callout appearance="simple" #alg-method-of-steps}
 ##### Method of steps
 **Input:** DDE in form ([-@eq-dde-problem-autonomous]), ODE numerical integration method $\mathrm{odeSolver}$\
 **Output:** Sequence of $N \letDef k \sum_{i = 1}^m N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
-&emsp;&emsp;set $\vi \xi \letDef \vi \phi$ and $s \letDef \sigma$; \
+&emsp;&emsp;set $\vi \xi \gets \vi \phi$ and $s \gets \sigma$; \
 &emsp;&emsp;define $A_{x,y} = (x - 1) N_{\tau} + \sum_{b = 1}^{y} N_b$ \
 &emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
 &emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $m$ **do** \
@@ -910,7 +1015,7 @@ $$
 \dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m));
 $$ {#eq-method-of-steps-intermediate}
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \letDef s + \tau_j$ and $\vi \xi(\theta) = \begin{cases}
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) = \begin{cases}
 	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
 	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j
 \end{cases}$ \
@@ -923,93 +1028,7 @@ For brevity, discussion on convergence and other numerical properties is omitted
 
 ### Solving SDEs
 
-So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e. the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
-
-Let us first introduce necessary theory of stochastic analysis.
-
-:::{#def-stochastic-process}
-##### Stochastic process
-
-Let $(\eventSet, \sAlgebra, P)$ be a **probability space** and $\timeSet \subseteq \R$ some index set of times. Then **random/stochastic process** $\set{\rX(t, \omega); \; t \in \timeSet}$ is a mapping
-$$
-\rX : \timeSet \times \eventSet \to \R,
-$$
-which is $\sAlgebra$-measurable, i.e.,
-$$
-\forall t \in \timeSet, \; \forall B \in \borelAlgebra: \; \set{\omega \in \eventSet : \; \rX(t, \omega) \in B} \in \sAlgebra.
-$$
-For a fixed $\omega \in \eventSet$, the mapping $\rX(t) = \rX(t,\omega)$ is called a **trajectory**. Similarly, for a fixed $t\in \timeSet$ the resulting $\rX(\omega) = \rX(t,\omega)$ **is a random variable**.
-:::
-
-:::{#def-wiener-process}
-##### Wiener process
-
-**Wiener process**, sometimes also called **Brownian motion**, is a random process $\set{\rW(t, \omega); \; t \geq 0}$ satisfying
-
-1. $\rW(0, \omega) = 0$,
-2. trajectories are *almost surely* continuous, i.e.,
-	$$
-	P(\set{\omega \in \eventSet: \; \text{trajectory } t \mapsto \rW(t, \omega) \text{ is discontinuous}}) = 0,
-	$$
-3. for all $0 \leq s_1 < t_1 \leq s_2 < t_2 \dots \leq s_k < t_k \leq \cdots$, the **increments** of Wiener process
-	$$
-	\set{\diff \rW_1(\omega), \diff \rW_2(\omega), \dots}
-	$$
-	are **stochastically independent** random variables with Gaussian probability distribution
-	$$
-	\diff \rW_k \sim \normalD{0, t_k - s_k},
-	$$
-	where $\diff \rW_k(\omega) = \rW(t_k, \omega) - \rW(s_k, \omega)$ for $k = 1,2,\cdots$.
-:::
-
-:::{#thm-wiener-process-properties}
-##### Properties of Wiener process
-
-Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it holds^[Let us note $\acov(s,t) = \cov(\rX(s), \rX(t)) = \Expect{(\rX(s) - \expect \rX(s))(\rX(t) - \expect \rX(t))}$ denotes the *autocovariance function* and $\acf(s,t) = \corr(\rX(s), \rX(t)) = \frac {\cov (\rX(s), \rX(t))} {\sqrt{\variance \rX(s) \variance \rX(t)}}$ the *autocorrelation function* of a stochastic process $X(t)$.]
-
-1. $\procMean(t) = 0$,
-2. $\acov(t,t) = t$,
-3. $\rW(t) \sim \normalD{0,t}$,
-4. $\acov(s,t) = \min\set{s,t}$,
-5. $\acf(s,t) = \sqrt{\frac {\min\set{s,t}} {\max\set{s,t}}}$.
-:::
-
-:::{.proof}
-See @Kloeden1992, page 28.
-:::
-
-
-In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
-
-Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential form)
-$$
-\deriv {x(t)} t = a x(t) \iff \d x(t) = a x(t) \dd t,
-$$
-which has the solution $x(t) = e^{at}$, where $x(t)$ often represents size of some population. Taking $a = r + \sigma \rve(t, \omega)$, where $\rve(t, \omega)$ is a random process, the population size now becomes a random variable
-$$
-\d \rX(t,\omega) = \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \dd t,
-$$
-which is a **stochastic differential equation** (SDE). For a moment, let us use *differences* instead of *differentials*, i.e.,
-\begin{align*}
-\diff \rX(t,\omega) &= \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \, \diff t \\
-  &= r \rX(t, \omega) \, \diff t + \sigma \rX(t, \omega) \underbrace{\rve(t)  \, \diff t}_{\diff \rZ(t)}.
-\end{align*}
-
-What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a *Gaussian white noise*? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
-$$
-\d \rW(t) = \rve(t) \dd t,
-$$
-which can be understood as *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
-$$
-\d \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
-$$
-which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. This rather simple SDE prescribes so called *geometric Brownian motion*. In general, a random process $\rX(t)$ is called **Itô process**, if it is a solution to
-$$
-\dd \rX(t) = \rnd U(t) \dd t + \rnd V(t) \dd \rW(t), \; \rX(0) = \rX_0,
-$$
-where $\rnd U(t, \omega), \rnd V(t, \omega)$ are random processes satisfying certain conditions and $\rX_0$ is required to have finite second moment.
-
-Let us now turn our attention back to the noisy measurements problem. Using discussed concepts, this can be represented as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
+In @sec-stochastic-dyn-systems, we have presented a framework for dealing with stochastic dynamical systems. These very often arise from noisy measurements of the underlying system. Using discussed concepts, we can represent this as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
 $$
 \dd \rX(t) = a(t, \rX(t)) \dd t + b(t, \rX(t)) \dd \rW(t), \; \rX(t_0) = \rX_0
 $$ {#eq-euler-maruyama-sde}
@@ -1021,26 +1040,26 @@ $$
 $$ {#eq-em-iteration-long}
 for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall using equidistant discretization, i.e. $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
 $$
-\diff \rW_n \sim \normalD{0, \diff t_n}.
+\diff \rW_n \sim \normalD{0, \diff t_n} \quad \& \quad \diff \rW \sim \normalD{0, \diff t}.
 $$
 Thus for equidistant discretization ([-@eq-em-iteration-long]) becomes
 $$
-\rY_{n+1} = \rY_n + a(t_n, \rY_n) \diff t_n + b(t_n, \rY_n) \diff \rW_n,
+\rY_{n+1} = \rY_n + a(t_n, \rY_n) \diff t + b(t_n, \rY_n) \diff \rW,
 $$ {#eq-em-iteration}
-and as such $\rY$ can be interpreted as a Markov chain. This can be easily extended to vector-valued SDE,
+and as such $\rY$ can be interpreted as a Markov chain. This can be easily extended to a vector-valued SDE,
 $$
 \dd \vr X(t) = \vi a(t, \vr X(t)) \dd t + \vi B(t, \vr X(t)) \dd \vr W(t), \; \vr X(t_0) = \vr X_0,
 $$ {#eq-euler-maruyama-vec-problem}
 where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in @alg-euler-maruyama-method.
 
-::: {.callout-important appearance="simple" #alg-euler-maruyama-method}
+::: {.callout appearance="simple" #alg-euler-maruyama-method}
 ##### Euler-Maruyama method
 **Input:** SDE in form ([-@eq-euler-maruyama-vec-problem]), time discretization $\seqnc{\diff t}{i}{1}{N}$ \
 **Output:** Discretized random process $\vr Y$ to $\seqnc t i 0 N$ \
 **begin** \
-&emsp;&emsp;set $\vr Y_0 \letDef \vr X_0$ by ([-@eq-euler-maruyama-vec-problem]) \
+&emsp;&emsp;set $\vr Y_0 \gets \vr X_0$ by ([-@eq-euler-maruyama-vec-problem]) \
 &emsp;&emsp;**for** $i = 0$ **to** $N - 1$ **do** \
-&emsp;&emsp;&emsp;&emsp;$\vr Y_{n+1} \letDef \vr Y_n + \vi a(t_n, \vr Y_n) \diff t_n + \vi B(t_n, \vr Y_n) \diff \vr W_n$ \
+&emsp;&emsp;&emsp;&emsp;$\vr Y_{n+1} \gets \vr Y_n + \vi a(t_n, \vr Y_n) \diff t_n + \vi B(t_n, \vr Y_n) \diff \vr W_n$ \
 &emsp;&emsp;**end** \
 **end**
 :::
@@ -1085,7 +1104,7 @@ $$
 $$ {#eq-unimodal-optim-problem}
 for an **unimodal** function $f: I \to \R$, $I = [a,b]$. Furthermore, let $N$ denote the *allowed number of evaluations* of $f$ and assume the accuracy of presented methods is $\absval{\bar x  - x^*}$, where $x^*$ is the exact solution of ([-@eq-unimodal-optim-problem]) and $\bar x$ its approximation found by used method. Using @lem-unimodality, one can easily find the initial bracket to be successively shrunk if it is not provided in the definition of the optimization problem ([-@eq-unimodal-optim-problem]).
 
-#### Bisection method
+#### Bisection Method
 
 Consider now $N = 2k$, $k \in \N$, choose $\delta \in (0, \frac{b - a} 2]$ sufficiently small and let $a_0 \letDef a, b_0 \letDef b$ set the initial bracket $[a_0, b_0]$. We then define
 $$
@@ -1100,25 +1119,144 @@ The center $\bar x_k$ of the $k$-th bracket is assumed to approximate the exact 
 $$
 l_k = \frac {b - a} {2^k} + \frac {(2^k - 1)\delta} {2^{k - 1}}
 $$
-denotes the length of the $k$-th bracket and $l_k \to 2 \delta$ for $k \to \infty$.
+denotes the length of the $k$-th bracket. It can be seen that $l_k \to 2 \delta$ for $k \to \infty$.
 
-::: {.callout-important appearance="simple" #alg-bisection-method}
+::: {.callout appearance="simple" #alg-bisection-method}
 ##### Bisection method
 **Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, $\delta \in (0, \frac {b - a} 2]$, number of steps $k \in \N$ \
 **Output:** Approximation of minimum $\bar{x}_k$ \
 **begin** \
-&emsp;&emsp;set $a_0 \letDef a, b_0 \letDef b$ \
-&emsp;&emsp;**for** $i = i$ **to** $k$ **do** \
-&emsp;&emsp;&emsp;&emsp;calculate $x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta$ & $x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta$ \
+&emsp;&emsp;set $a_0 \gets a, b_0 \gets b$
+&emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
+&emsp;&emsp;&emsp;&emsp;calculate $x_i^- \gets \frac {a_{i - 1} + b_{i - 1}} 2 - \delta$ & $x_i^+ \gets \frac {a_{i - 1} + b_{i - 1}} 2 + \delta$ \
 &emsp;&emsp;&emsp;&emsp;**if** $f(x_i^-) < f(x_i^+)$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [a_{i - 1}, x_i^+]$ \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \gets [a_{i - 1}, x_i^+]$ \
 &emsp;&emsp;&emsp;&emsp;**else if** $f(x_i^-) > f(x_i^+)$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [x_i^-, b_{i - 1}]$ \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \gets [x_i^-, b_{i - 1}]$ \
 &emsp;&emsp;&emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set^[In the case of equality, both options for a new bracket are equally valid.] $[a_i, b_i] \letDef [x_i^-, b_{i - 1}]$ \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set^[In the case of equality, both options for a new bracket are equally valid.] $[a_i, b_i] \gets [x_i^-, b_{i - 1}]$ \
 &emsp;&emsp;&emsp;&emsp;**end** \
-&emsp;&emsp;&emsp;&emsp;set $\bar{x}_i \letDef \frac {a_i + b_i} 2$ \
+&emsp;&emsp;&emsp;&emsp;set $\bar{x}_i \gets \frac {a_i + b_i} 2$ \
 &emsp;&emsp;**end** \
+**end**
+:::
+
+#### Golden Section Method
+
+The bisection method we have presented above has one significant flaw. Every iteration, i.e. every bracket improvement, requires two separate evaluations which are, in general, never used again. Thus, the Golden section method was constructed, requiring only a single evaluation.
+
+::: {.callout-tip #tip-golden-ratio}
+##### Golden ratio
+
+Before delving into the technical details, let us note in this subsection $\goldRatio \approx 1.618$ denotes the positive solution of
+$$
+\goldRatio^2 - \goldRatio - 1 = 0,
+$$ {#eq-golden-ratio-quad}
+i.e. $\frac 1 \goldRatio \approx 0.618$, and is generally referred to as the *golden ratio*. Equivalently, it is also given as
+$$
+\frac {a + b} a  = \frac a b = \goldRatio
+$$ {#eq-golden-ratio-frac}
+for $a > b > 0$ which satisfy the above equality.
+:::
+
+Consider an unimodal function $f: I \to \R$ on the interval $I = [a,b]$ subject to optimization problem ([-@eq-unimodal-optim-problem]) and evaluation-count restriction $N \geq 2$ (or desired accuracy $\ve$). Let us relax the bisection method such that
+$$
+x_i^- = a_{i-1} + \delta_- (b_{i-1} - a_{i-1}), \; x_i^+ = a_{i-1} + \delta_+ (b_{i-1} - a_{i-1})
+$$ {#eq-relaxed-bisection}
+and we shall attempt to find a values of $\delta_-, \delta_+ \in (0,1)$ such that only 1 iteration is needed. Assume $f(x_i^-) < f(x_i^+)$, then (by @lem-unimodality as in @alg-bisection-method)
+$$
+[a_i, b_i] = [a_{i-1}, x_i^+] = \parentheses{a_{i-1}, a_{i-1} + \delta_+ (b_{i-1} - a_{i-1})}
+$$
+and
+$$
+x_{i+1}^- = a_i + \delta_- (b_i - a_i) \; x_{i+1}^+ = a_i + \delta_+ (b_i - a_i).
+$$
+If we want to reuse the $f(x_i^-)$ evaluation, then necessarily
+$$
+\begin{aligned}
+	x_{i+1}^+ &= x_i^- \\
+	a_i + \delta_+ (b_i - a_i) &= a_{i-1} + \delta_- (b_{i-1} - a_{i-1}) \\
+	a_{i-1} + \delta_+ (a_{i-1} + \delta_+ (b_{i-1} - a_{i-1}) - a_{i-1}) &= a_{i-1} + \delta_- (b_{i-1} - a_{i-1}) \\
+	\delta_+^2 (b_{i-1} - a_{i-1}) &= \delta_- (b_{i-1} - a_{i-1}) \\
+	&\implies \delta_+^2 = \delta_-.
+\end{aligned}
+$$ 
+Now we shall focus on $f(x_i^-) \geq f(x_i^+)$, denoting $\delta = \delta_+$, which by the same argument leads to
+$$
+[a_i, b_i] = [x_i^-, b_{i-1}] = \parentheses{a_{i-1} + \delta^2 (b_{i-1} - a_{i-1}), b_{i-1}},
+$$
+which together with the analogous condition $x_{i+1}^- = x_i^+$ yields (using $l_i = b_i - a_i$)
+$$
+\begin{aligned}
+	x_{i+1}^- &= x_i^+ \\
+	a_i + \delta^2 (b_i - a_i) &= a_{i-1} + \delta (b_{i - 1} - a_{i - 1}) \\
+	a_{i-1} + \delta^2 (b_{i - 1} - a_{i - 1}) + \delta^2 \brackets{b_{i - 1} - a_{i-1} - \delta^2 (b_{i - 1} - a_{i - 1})} &= a_{i - 1} + \delta(b_{i - 1} - a_{i - 1}) \\
+	\delta^2 l_{i - 1} + \delta^2 l_{i - 1} - \delta^4 l_{i-1} &= \delta l_{i - 1} \\
+	\delta (\delta^3 - 2 \delta + 1) &= 0 \\
+	\delta (\delta - 1) (\delta^2 + \delta - 1) &= 0.
+\end{aligned}
+$$ 
+Recall we defined $\delta_-, \delta_+ \in (0,1)$, thus $\delta \in (0,1)$ ruling out $\delta = 0$ and $\delta = 1$ roots. What remains is $\delta^2 + \delta - 1 = 0$, which has the solution $\delta = \frac {\sqrt{5} - 1} 2$. 
+
+Moreover, notice that
+$$
+\frac{x_{i+1}^- - a_i} {x_{i+1}^+ - a_i} = \frac {a_i + \delta^2 l_i - a_i} {a_i + \delta l_i - a_i} = \delta = \frac {a_i + \delta l_i - a_i} {l_i} = \frac {x_{i+1}^+ - a_i} {l_i},
+$$
+i.e. we split the interval $[a_i, b_i]$ such that the ratio between the whole $[a_i, b_i]$ and the bigger part $[a_i, x_{i+1}^+]$ is the same as between the smaller part $[a_i, x_{i+1}^-]$ and the bigger part. Rephrasing this ratio equality as (using $\delta^2 = 1 - \delta$)
+$$
+\begin{aligned}
+\frac 1 {\delta} = \frac{x_{i+1}^+ - a_i} {x_{i+1}^- - a_i} &= \frac {l_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + b_i - x_{i-1}^+} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + b_i - a_i - \delta l_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + l_i - \delta l_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + (1 - \delta) l_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + \delta^2 l_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + a_i + \delta^2 l_i - a_i} {x_{i+1}^+ - a_i} \\
+	&= \frac {x_{i-1}^+ - a_i + x_{i-1}^- - a_i} {x_{i+1}^+ - a_i}
+\end{aligned}
+$$ 
+gives us the relation ([-@eq-golden-ratio-frac]) defining the golden ratio, i.e. $\goldRatio = \frac 1 \delta$. In fact, the method bears its name due to this fact. Lastly, see @alg-golden-section-method for implementation.
+
+#### Fibonacci method
+
+Let us now approach the problem from a different direction. Given the minimization problem ([-@eq-unimodal-optim-problem]) and maximum evaluations $N$, we want to shrink the initial bracket as much as possible.
+
+Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to a half of the original interval (i.e. shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
+
+![Shrinkage by $\ve$-distance between the only two allowed evaluations.](diagrams/2-eval_fibonacci_method.drawio.svg){#fig-2-eval-fibonacci .final}
+
+Suppose $N = 3$ evaluations are now permitted. Then the best course of action is to divide the initial into thirds, which results in the next bracket having $\frac 2 3$-length. If we perform the last $f$-query in the $\ve$-distance from the interior evaluation of the previous round (one is guaranteed to lie inside the next-iteration bracket), then by $\ve \to 0$, in the limit sense, we get a shrinkage by a factor of 3, see @fig-3-eval-fibonacci.
+
+![Sketch of the Fibonacci method bracket shrinkage when $N = 3$.](diagrams/3-eval_fibonacci_method.drawio.svg){#fig-3-eval-fibonacci .final}
+
+In general, this leads to evaluation given by the Fibonacci numbers
+$$
+F_n = \begin{cases}
+	1, & n \leq 2, \\
+	F_{n-1} + F_{n_2}, & n > 2,
+\end{cases}
+$$
+which prescribe the queries at
+$$
+x_i^- = a_{i-1} + \frac {F_{N - i - 1}} {F_{N - i + 1}} l_{i - 1}, \quad x_i^+ = a_{i - 1} + \frac {F_{N - i}} {F_{N - i + 1}} l_{i-1}.
+$$ {#eq-fibonacci-method-queries}
+
+For more details on the derivation, see @Zemanek2021. Moreover, the Fibonacci series can be written explicitly using *Binet's formula*:
+$$
+F_n = \frac {\goldRatio^n - (1 - \goldRatio)^n} {\sqrt{5}},
+$$ {#eq-binets-formula}
+where $\goldRatio$ is the *golden ratio*, see @tip-golden-ratio, from which can be shown
+$$
+\rho(i) = \frac {F_i} {F_{i - 1}} = \goldRatio \frac {1 - s^i} {1 - s^{i - 1}},
+$$ {#eq-fibonacci-successive}
+where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$.
+
+::: {.callout appearance="simple" #alg-fibonacci-method}
+##### Fibonacci method
+**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, number of evaluations $N \in \N$, tolerance $\ve > 0$ small \
+**Output:** Approximation of minimum $\bar{x}_k$
+**begin** \
+&emsp;&emsp;set $a_0 \gets a, b_0 \gets b$, $l_0 = b_0 - a_0$ \
 **end**
 :::
 

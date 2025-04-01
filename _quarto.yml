@@ -4,6 +4,8 @@ project:
   pre-render: luaotfload-tool --cache=erase --flush-lookups --force
   post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
 
+# TODO: Fix too small Algorithm offset
+# Possibly by a custom Quarto build
 crossref: 
   custom: 
     - kind: float
@@ -24,6 +26,8 @@ book:
     - "introduction.qmd"
     - "general-theory.qmd"
     - "refs.qmd"
+  appendices:
+    - "appendix-algs.qmd"
   sidebar:
     style: "docked"
 
@@ -37,6 +41,7 @@ book:
         href: LICENSE
 
   downloads: [pdf]
+  favicon: assets/SCI_MUNI_logo.png
 
 bibliography: bibliography.bib
 
@@ -88,10 +93,11 @@ format:
     code-fold: true
     code-tools: true
 
-    header-includes: |
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   munithesis-pdf:
     mainfont: "Tex Gyre Pagella" # or GaramondLibre
     mathfont: "GaramondMath"
@@ -124,6 +130,7 @@ filters:
  - resizer.lua
  - pdf_hide_code.lua
  - force_alg_env.lua
+ - floatbox.lua
 
 profiles:
   default: basic

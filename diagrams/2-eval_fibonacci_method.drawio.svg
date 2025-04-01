@@ -1,0 +1,28 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="296px" height="101px" viewBox="-0.5 -0.5 296 101" content="&lt;mxfile scale=&quot;1&quot; border=&quot;0&quot; disableSvgWarning=&quot;true&quot;&gt;&lt;diagram id=&quot;w6b0G7boEAHX74kgDjak&quot; name=&quot;Page-1&quot;&gt;7ZfJcqMwEIafRnckGUKOhngyl6maqhzmLKM2VkUgl5C3PP0IELuzlJdDPHNxwS910/q/lsCIxtnhWbPN+pfiIBHx+AHRJ0SIjz37WwrHWiDYr4VUC15LuBNexBs40cWlW8GhGEw0SkkjNkMxUXkOiRloTGu1H05bKTl86oalMBFeEian6h/BzbpWQ9/r9J8g0nXzZOy5kYw1k51QrBlX+55EF4jGWilTX2WHGGTpXeNLHffjndG2MA25+UoAqQN2TG7d2lxd5tgsFnI+Lz2zd7nKrRgVRqvXduXUKishZayk0lUI5QzCVdLO7I0ESQjLlR2ZFupqBz7w3pX9DCoDo492wr5zvDF83TO70TRIZsRuSIw58Gmbrn3CbyVsJcRzPYoDl8e1KG2INSkKtdUJuKi+w6NEM++TRIbpFMwkkb3oLbuTKoCnYdL/ML8I0z8TJnn8JNH1YM4uh4m/ARryMHKUnotmnAjfDI3/j6AZN/vZaMaJbocmmKKJFyjyJ4AMHKxbEZMiza2SWAZgj7VoB9oI+6afu4FMcF7GRBoK8caWVbxn7zdltVX9foT8pzLX1qii/lbBk+PSdUH/bHXSu21QlgKHDxuhMTjwBwa3hvcahZ5olDHQfk8MIHzg+MPE8Rz2VlhqlrxC2QViVVW6wCWHOUELgkJ7bRduHx/IEgOKCZqfmDO/c27hkFu7w3rc8OxG4MLLT7H7/FqYvEnCa336jRNd79x7vHAXptUuPDXhzrcgpiNGwe22oL3t/tnVkLu/x3TxFw==&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <path d="M 30 30 L 270 30" fill="none" stroke="#6c8ebf" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 30 60 L 160 60" fill="none" stroke="#6c8ebf" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 140 40 L 140 20" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 160 40 L 160 20" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <rect x="135" y="0" width="30" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="149.5" y="19.5">
+                ε
+            </text>
+        </g>
+        <rect x="155" y="40" width="140" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="224.5" y="59.5">
+                new bracket if xᵢ⁻ &lt; xᵢ⁺
+            </text>
+        </g>
+        <path d="M 140 90 L 270 90" fill="none" stroke="#6c8ebf" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <rect x="0" y="70" width="140" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" text-anchor="middle" font-size="12px">
+            <text x="69.5" y="89.5">
+                new bracket if xᵢ⁻ &gt; xᵢ⁺
+            </text>
+        </g>
+    </g>
+</svg>
