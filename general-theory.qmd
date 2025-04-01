@@ -1126,7 +1126,7 @@ denotes the length of the $k$-th bracket. It can be seen that $l_k \to 2 \delta$
 **Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, $\delta \in (0, \frac {b - a} 2]$, number of steps $k \in \N$ \
 **Output:** Approximation of minimum $\bar{x}_k$ \
 **begin** \
-&emsp;&emsp;set $a_0 \gets a, b_0 \gets b$
+&emsp;&emsp;set $a_0 \gets a, b_0 \gets b$ \
 &emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
 &emsp;&emsp;&emsp;&emsp;calculate $x_i^- \gets \frac {a_{i - 1} + b_{i - 1}} 2 - \delta$ & $x_i^+ \gets \frac {a_{i - 1} + b_{i - 1}} 2 + \delta$ \
 &emsp;&emsp;&emsp;&emsp;**if** $f(x_i^-) < f(x_i^+)$ **do** \
@@ -1247,17 +1247,47 @@ F_n = \frac {\goldRatio^n - (1 - \goldRatio)^n} {\sqrt{5}},
 $$ {#eq-binets-formula}
 where $\goldRatio$ is the *golden ratio*, see @tip-golden-ratio, from which can be shown
 $$
-\rho(i) = \frac {F_i} {F_{i - 1}} = \goldRatio \frac {1 - s^i} {1 - s^{i - 1}},
+\frac 1 {\rho(i)} = \frac {F_i} {F_{i - 1}} = \goldRatio \frac {1 - s^i} {1 - s^{i - 1}},
 $$ {#eq-fibonacci-successive}
-where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$.
+where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$. The algorithm of the Fibonacci method, heavily based on implementation from @Kochenderfer2019, is provided in @alg-fibonacci-method.
 
 ::: {.callout appearance="simple" #alg-fibonacci-method}
 ##### Fibonacci method
 **Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, number of evaluations $N \in \N$, tolerance $\ve > 0$ small \
-**Output:** Approximation of minimum $\bar{x}_k$
+**Output:** Approximation of minimum $\bar{x}$ \
 **begin** \
-&emsp;&emsp;set $a_0 \gets a, b_0 \gets b$, $l_0 = b_0 - a_0$ \
+&emsp;&emsp;set $A \gets a$, $B \gets b$, $n \gets N$; \
+&emsp;&emsp;define $s \letDef \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$; \
+&emsp;&emsp;let $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$, $r \gets (1 - \rho) A + \rho B$; \
+&emsp;&emsp;set $f^r \gets f(r)$ and $n \gets n - 1$ \
+&emsp;&emsp;**while** $n > 0$ **do** \
+&emsp;&emsp;&emsp;&emsp;**if** $n > 1$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \rho A + (1 - \rho) B$ \
+&emsp;&emsp;&emsp;&emsp;**else do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $l \gets \ve A + (1 - \ve) r$ \
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;&emsp;&emsp;update $\rho \gets \frac 1 {\goldRatio} \frac {1 - s^n}{1 - s^{n+1}}$; \
+&emsp;&emsp;&emsp;&emsp;set $f^l \gets f(l)$ and $n \gets n - 1$ \
+&emsp;&emsp;&emsp;&emsp;**if** $f^l < f^r$ **do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[r, B, f^r] \gets [l, r, f^l]$ \
+&emsp;&emsp;&emsp;&emsp;**else do** \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[A, B] \gets [B, l]$ \
+&emsp;&emsp;&emsp;&emsp;**end** \
+&emsp;&emsp;**end** \
+&emsp;&emsp;set $\bar{x} = \frac {A + B} 2$ \
 **end**
 :::
+
+### Newton's Method
+
+Last, but not least, we shall discuss the Newton's, or Newton-Raphson, method for finding roots of a given equation (or a system thereof). Suppose we are given a system of equations
+$$
+\begin{aligned}
+f_1(x_1, \dots, x_n) &= 0 \\
+f_2(x_1, \dots, x_n) &= 0 \\
+&\vdots \\
+f_n(x_1, \dots, x_n) &= 0
+\end{aligned} \iff \vi F(\vi x) = \vi 0.
+$$ 
 
 <!-- Newton method with \diff x, see: https://www.iue.tuwien.ac.at/phd/orio/node55.html -->

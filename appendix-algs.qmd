@@ -1,40 +1,44 @@
 # Algorithms
 
+:::{.hidden}
+{{< include mathematics.qmd >}}
+:::
+
 ::: {.callout appearance="simple" #alg-golden-section-method}
 ##### Golden section method
 **Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, number of evaluations $N \in \N$ \
 **Output:** Approximation of minimum $\bar{x}_k$ \
 **begin** \
-&emsp;&emsp;set $[a_0, b_0] \letDef [a,b]$, $l_0 = b_0 - a_0$; \
-&emsp;&emsp;calculate $x_2^- \letDef a_0 + \frac 1 {\goldRatio^2} l_0$ & $x_2^+ \letDef a_0 + \frac 1 \goldRatio l_0$; \
-&emsp;&emsp;evaluate $f_2^- \letDef f(x_2^-)$, $f_2^+ \letDef f(x_2^+)$ \
+&emsp;&emsp;set $[a_0, b_0] \gets [a,b]$, $l_0 \gets b_0 - a_0$; \
+&emsp;&emsp;calculate $x_2^- \gets a_0 + \frac 1 {\goldRatio^2} l_0$ & $x_2^+ \gets a_0 + \frac 1 \goldRatio l_0$; \
+&emsp;&emsp;evaluate $f_2^- \gets f(x_2^-)$, $f_2^+ \gets f(x_2^+)$ \
 &emsp;&emsp;**if** $f_2^- < f_2^+$ **do** \
-&emsp;&emsp;&emsp;&emsp;set $[a_2, b_2] \letDef [a_0, x_2^+]$; \
-&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \letDef 1$; \
+&emsp;&emsp;&emsp;&emsp;set $[a_2, b_2] \gets [a_0, x_2^+]$; \
+&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \gets 1$; \
 &emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;set $[a_2, b_2] \letDef [x_2^-, b_0]$; \
-&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \letDef 0$; \
+&emsp;&emsp;&emsp;&emsp;set $[a_2, b_2] \gets [x_2^-, b_0]$; \
+&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \gets 0$; \
 &emsp;&emsp;**end** \
-&emsp;&emsp;set $l_2 \letDef b_2 - a_2$ \
+&emsp;&emsp;set $l_2 \gets b_2 - a_2$ \
 &emsp;&emsp;**for** $i = 3$ **to** $N$ **do** \
 &emsp;&emsp;&emsp;&emsp;**if** $\mathrm{Increasing}$ equals $1$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $x_i^+ \letDef x_{i-1}^-$, $f_i^+ = f_{i-1}^-$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;calculate $x_i^- \letDef a_{i-1} + \frac 1 {\goldRatio^2} l_{i-1}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;evaluate $f_i^- \letDef f(x_i^-)$ \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $x_i^+ \gets x_{i-1}^-$, $f_i^+ = f_{i-1}^-$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;calculate $x_i^- \gets a_{i-1} + \frac 1 {\goldRatio^2} l_{i-1}$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;evaluate $f_i^- \gets f(x_i^-)$ \
 &emsp;&emsp;&emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $x_i^- \letDef x_{i-1}^+$, $f_i^- = f_{i-1}^+$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;calculate $x_i^+ \letDef a_{i-1} + \frac 1 {\goldRatio} l_{i-1}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;evaluate $f_i^+ \letDef f(x_i^+)$ \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $x_i^- \gets x_{i-1}^+$, $f_i^- = f_{i-1}^+$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;calculate $x_i^+ \gets a_{i-1} + \frac 1 {\goldRatio} l_{i-1}$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;evaluate $f_i^+ \gets f(x_i^+)$ \
 &emsp;&emsp;&emsp;&emsp;**end** \
 &emsp;&emsp;&emsp;&emsp;**if** $f_i^- < f_i^+$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [a_{i-1}, x_i^+]$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \letDef 1$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \gets [a_{i-1}, x_i^+]$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \gets 1$; \
 &emsp;&emsp;&emsp;&emsp;**else do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \letDef [x_i^-, b_{i-1}]$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \letDef 0$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $[a_i, b_i] \gets [x_i^-, b_{i-1}]$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;set $\mathrm{Increasing} \gets 0$; \
 &emsp;&emsp;&emsp;&emsp;**end** \
-&emsp;&emsp;&emsp;&emsp;set $l_i \letDef b_i - a_i$; \
-&emsp;&emsp;&emsp;&emsp;set $\bar{x}_i \letDef \frac {a_i + b_i} 2$ \
+&emsp;&emsp;&emsp;&emsp;set $l_i \gets b_i - a_i$; \
+&emsp;&emsp;&emsp;&emsp;set $\bar{x}_i \gets \frac {a_i + b_i} 2$ \
 &emsp;&emsp;**end** \
 **end**
 :::
