@@ -25,6 +25,7 @@ book:
       file: index.qmd
     - "introduction.qmd"
     - "general-theory.qmd"
+    - "bifurcation-approach.qmd"
     - "refs.qmd"
   appendices:
     - "appendix-algs.qmd"
@@ -83,7 +84,7 @@ thesis:
   declaration: 
     cz: "partials/prohlaseni.qmd"
     en: "partials/declaration.qmd"
-    date: 24.09.2024 # FIXME: Something like `last-modified`
+    date: 04.05.2025 # FIXME: Something like `last-modified`
   assignment: "assets/assignment.pdf" # TODO: Change name
 
 format:

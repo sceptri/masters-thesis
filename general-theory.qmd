@@ -223,9 +223,9 @@ $$
 \dvi x = \vi f(\vi x),
 $$ {#eq-autonomous-ode-system}
 where $\vi x \in \stateSpace = \R^n$ and a vector-valued function $\vi f: \R^n \to \R^n$ is sufficiently smooth. The symbol $\dvi x$ denotes a derivative of $\vi x(t)$ with respect to time $t \in \timeSet = \R$.
-
-The system of ODEs ([-@eq-autonomous-ode-system]) induces an *invertible continuous-time dynamical system*.
 :::
+
+It can be shown the system of ODEs ([-@eq-autonomous-ode-system]) induces an *invertible continuous-time dynamical system* if $\vi f$ is sufficiently smooth, see @Kuznetsov2023 (Theorem 1.4).
 
 In ([-@eq-autonomous-ode-system]), we have given the ODE in explicit form, but, in general, it can also be defined by an implicit higher-order equation
 $$
@@ -473,7 +473,7 @@ See @Hartman2002, page 94.
 :::
 
 
-### Poincaré Map
+### Poincaré Map {#sec-poincare-map}
 
 The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems, be it via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
 
@@ -665,7 +665,7 @@ We can further combine these notions of ordinary differential equations and func
 The aforementioned generalization in its full form leads to *functional differential equations* -- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of form
 $$
 \vi x^{(m)}(t) = \vi f\brackets{t, \vi x^{(m_1)}(t - \tau_1(t)), \dots, \vi x^{(m_k)}(t - \tau_k(t))},
-$$ {#eq-differe}
+$$
 where $\vi x(t) \in \R^n$, $m_1, \dots, m_k \geq 0$, and $\tau_1(t), \dots, \tau_k(t) \geq 0$. They can be further classified as:
 
 - *retarded FDEs* (RFDEs) or equivalently *delay differential equations* (DDEs), if $\max \set{m_1, \dots, m_k} < m$;
@@ -1253,7 +1253,7 @@ $$
 $$ {#eq-fibonacci-successive}
 where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$. The algorithm of the Fibonacci method, heavily based on implementation from @Kochenderfer2019, is provided in @alg-fibonacci-method.
 
-### Newton's Method
+### Newton's Method {#sec-newton-method}
 
 Last, but not least, we shall discuss the Newton's, or Newton-Raphson, method for finding roots of a given equation (or a system thereof). The treatment provided here follows @Lacerda2010. Suppose we are given a system of equations
 $$
@@ -1283,7 +1283,7 @@ While this formula for Newton's method is very common, we shall also present the
 $$
 \Jacobi_i \cdot \diff \vi x^{i+1} = \vi R(\vi x^i),
 $$ {#eq-newton-residual}
-where $\vi R(\vi x) = - \vi F(\vi x)$, and $\diff \vi x^{i+1} = \vi x^{i+1} - \vi x^i$, which play the role of unknowns in ([-@eq-newton-residual]). As a careful reader might notice, instead of requiring an inverse of the Jacobian matrix $\Jacobi_i$, we have translated into a linear system of equations. If $\Jacobi_i\Inv$ exists and is numerically stable^[In such case we can calculate it straight or implicitly via so-called *left division*, which, in Julia, relies on pivoted QR decomposition.], then we can use it to solve ([-@eq-newton-residual]). On the other hand, if $\Jacobi_i$ is badly conditioned (or singular), so $\Jacobi_i\Inv$ cannot be reliably found, then one can use iterative methods to find an approximate solution. Assuming $\diff \vi x^{i+1}$ is the solution to ([-@eq-newton-residual]), next iteration for ([-@eq-newton-iter]) is computed as
+where $\vi R(\vi x) = - \vi F(\vi x)$ is the *residual*, and $\diff \vi x^{i+1} = \vi x^{i+1} - \vi x^i$ is the *displacement*, which play the role of unknowns in ([-@eq-newton-residual]). As a careful reader might notice, instead of requiring an inverse of the Jacobian matrix $\Jacobi_i$, we have translated into a linear system of equations. If $\Jacobi_i\Inv$ exists and is numerically stable^[In such case we can calculate it straight or implicitly via so-called *left division*, which, in Julia, relies on pivoted QR decomposition.], then we can use it to solve ([-@eq-newton-residual]). On the other hand, if $\Jacobi_i$ is badly conditioned (or singular), so $\Jacobi_i\Inv$ cannot be reliably found, then one can use iterative methods to find an approximate solution. Assuming $\diff \vi x^{i+1}$ is the solution to ([-@eq-newton-residual]), next iteration for ([-@eq-newton-iter]) is computed as
 $$
 \vi x^{i+1} = \vi x^i + \diff \vi x^{i+1}.
 $$
@@ -1293,3 +1293,8 @@ $$
 \norm{\vi x^i - \vi x^{i-1}} \leq \ve_{\text{err}} \; \& \; \norm{\vi R(\vi x^i)} \leq \ve_{\text{res}},
 $$
 where $\ve_{\text{err}}$ is the given tolerance for the solution error and $\ve_{\text{res}}$ for the residual.
+
+::: {.callout-note #nte-newton-method-modifications}
+##### Modifications to Newton's method
+Here, we have only discussed the standard Newton's method, but there exists a number of modifications including Newton-chord method, Newton-Broyden method or various quasi-Newton methods.
+:::

@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"algs",
 		"autocovariance",
 		"bicontinuous",
 		"bijective",
@@ -28,16 +29,20 @@
 		"monodromy",
 		"Monoids",
 		"multistep",
+		"MUNI",
 		"overbrace",
+		"pandoc",
 		"rfde",
 		"runge",
 		"scatterlines",
 		"semidyn",
 		"semidynamical",
 		"semiflow",
+		"semigroup",
 		"seqnc",
 		"stepsize",
 		"stepsizes",
+		"subinterval",
 		"submanifold",
 		"subseteq",
 		"transversality",
@@ -46,6 +51,10 @@
 		"unimodal",
 		"unimodality",
 		"verhulst",
+		"widetilde",
 		"Zissou"
-	]
+	],
+	"cSpell.enabledFileTypes": {
+		"yaml": false
+	}
 }

@@ -1,0 +1,126 @@
+---
+engine: julia
+---
+
+:::{.content-visible when-format="pdf"}
+\HeaderNumbered
+:::
+
+
+:::{.hidden}
+{{< include mathematics.qmd >}}
+
+```{julia}
+#| echo: false
+#| output: false
+
+using Pkg
+Pkg.activate(".")
+```
+:::
+
+:::{.content-hidden unless-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using WGLMakie
+WGLMakie.activate!()
+```
+:::
+
+:::{.content-hidden when-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using CairoMakie
+CairoMakie.activate!()
+```
+:::
+
+# Bifurcation Theory Approach
+
+As we have mentioned several times before, the fundamental goal of this thesis is to study the computational aspects of continuation/detection of stable and unstable manifolds of periodic orbits (and what challenges come with it). As such, we shall properly discuss what a continuation is and how we compute it. We begin with a theoretical treatment of bifurcation theory, focused solely on cycle continuation and stability identification, followed by original results concerning coupled models of neurons. The theoretical introduction is mainly based on @Kuznetsov2023, @Guo2013, and @Smith2010, but many more related articles are cited throughout the discussion.
+
+> We should also disclose that while this chapter is named 'Bifurcation Theory Approach', we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
+
+<!-- TODO: Change the title -->
+## Theory of Localizations
+
+Although the primary subjects of our study are periodic orbits, we will first delve into the localization of equilibrium. Indeed, one might recall we discussed the relation of equilibria (or fixed points) in discrete dynamical systems and periodic orbits of continuous-time dynamical systems in @sec-poincare-map. This fact alone suggests it is beneficial to first study the simpler case of equilibria localization, building tools to later tackle the periodic case.
+
+### Dynamical Systems
+
+#### Equilibrium Localization
+
+To start relatively simple, consider a continuous-time dynamical system induced by an autonomous ODE of form ([-@eq-autonomous-ode-system]), i.e.
+$$
+\dvi x = \vi f(\vi x), \; \vi x \in \R^n.
+$$
+Its equilibrium $\vi x^*$ is then given by
+$$
+\vi f(\vi x^*) = 0.
+$$ {#eq-equilibrium-cond}
+Note that similarly by setting $\vi f(\vi x) = \vi g(\vi x) - \vi x$ we can get the same equilibrium condition for a discrete-time dynamical system $\vi x \mapsto \vi g(\vi x)$.
+
+It is easy to see that if the equilibrium $\vi x^*$ is stable, one can integrate the system ([-@eq-autonomous-ode-system]) forward in time starting from some point $\vi x$ in the basis of attraction of $\vi x^*$, since
+$$
+\lim_{t \to \infty} \norm{\vi \evolOp(t, \vi x) - \vi x^*} = 0
+$$
+by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e. *repelling* from all directions), we can simply reverse time (as we are in the ODE case) and repeat the procedure.
+
+Nonetheless, in general, this approach will not work, as equilibria are often neither stable nor repelling. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{(i)}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
+
+Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e. how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
+$$
+p(\lmbd) = \det (\Jacobi^* - \lmbd \ident).
+$$
+Note that there are other methods of computing stability, which in particular do not require eigenvalues, but only computation of certain determinants of $\Jacobi^*$. We refer the interested reader to @Kuznetsov2023, page 470.
+
+#### Periodic Orbit Localization
+
+As we have seen, localization of an equilibrium from sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles the situation is more complicated.
+
+If the system features a stable limit cycle $L_0$, then we can find it again by numerical integration from a point in its basin of attraction. In contrast to the case of equilibria, backward-time numerical integration will not, in general, help us find a repelling periodic orbit. 
+
+Suppose we have a system in 2-dimensional state space, which possesses a periodic orbit, see @fig-2d-periodic-orbit. Then such orbit partitions the state space into inside and outside of the cycle (and the cycle itself)^[In practice, it suffices to consider a sufficiently large continuous region containing the cycle instead of the entire state space]. Thus if $L_0$ is repelling, trajectories are guaranteed to converge to $L_0$ backward in time.
+
+![Unstable periodic orbit $L_0$ of a 2-dimensional dynamical system.](diagrams/2D-state-space-periodic-orbit.drawio.svg){#fig-2d-periodic-orbit .final}
+
+On the other hand, for 3- or mode dimensional dynamical systems, a periodic orbit does not partition the state space (or any local neighborhood). Then, we cannot guarantee a converge to the repelling cycle by backward-time integration no matter the initial closeness. Moreover, it is needless to say numerical integration localization approach will surely fail if the cycle is not stable or repelling.
+
+From now on, we will assume we know the location of the periodic orbit approximately. This is a rather common scenario in practice, where we often know the location of the cycle for a given parameter value and wish to "continue" by varying the parameter and correcting the cycle afterwards. This process is commonly referred to as *continuation*.
+
+Usually, we take the period $T_0$ of $L_0$ as an unknown and formulate the *boundary-value problem* (BVP) on a fixed interval. In particular, assume $T_0$ a parameter and construct a "time-normalized" system
+$$
+\deriv {\vi u} {\tau} = T_0 \vi f(\vi u),
+$$ {#eq-autonomous-ode-period-1}
+which rescales ([-@eq-autonomous-ode-system]) by a time-scaling factor $T_0$, such that the new time is denoted $\tau$. Now, if a solution $\vi u(t)$ to ([-@eq-autonomous-ode-period-1]) also satisfies the *periodic boundary conditions*
+$$
+\vi u(0) = \vi u(0),
+$$ {#eq-autonomous-ode-1-periodicity-cond}
+then it corresponds to a $T_0$-periodic solution of ([-@eq-autonomous-ode-system]). However, these two conditions do not prescribe the period orbit of ([-@eq-eq-autonomous-ode-system]) uniquely. Indeed, any time shift of the solution to the BVP ([-@eq-autonomous-ode-period-1]), ([-@eq-autonomous-ode-1-periodicity-cond]) also determines the same periodic orbit.
+
+Therefore, an extra condition, called the *phase condition*, must be added. Such condition is most often written in the form
+$$
+\Phi[\vi u] = 0,
+$$ {#eq-general-phase-condition}
+where $\Phi$ is a scalar *functional* defined on the space of periodic solutions. The exact choice of phase condition is up the user, but predominantly is used an *integral phase condition*
+$$
+\Phi[\vi u] = \int_0^1 \scal {\vi u(\tau)} {\vi v(\tau)} \dd \tau,
+$$ {#eq-integral-phase-cond}
+where $\vi v(\tau)$ is the reference period-one solution.
+
+::: {.callout-tip #tip-integral-phase-cond}
+##### Integral phase condition
+
+The integral phase condition ([-@eq-integral-phase-cond]) is a necessary condition for a local minimum of the time-shift distance
+$$
+\rho(\sigma) = \int_0^1 \norm{\vi u(t + \sigma) - \vi t(\tau)}^2 \dd \tau,
+$$
+which should illustrate the motivation behind such choice.
+:::
+
+
+<!-- TODO: Write about equilibrium localization and cycle localization by Poincaré map -->
