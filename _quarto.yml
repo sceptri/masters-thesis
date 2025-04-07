@@ -102,9 +102,9 @@ format:
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   munithesis-pdf:
-    mainfont: "Tex Gyre Pagella" # or GaramondLibre
-    mathfont: "GaramondMath"
-    monofont: "TeX Gyre Cursor" # or Latin Modern Mono
+    mainfont: "KpRoman" # or GaramondLibre
+    mathfont: "KpMath"
+    monofont: "KpMono" # or Latin Modern Mono
 
     keep-tex: false
     hyperrefoptions:
@@ -116,6 +116,7 @@ format:
       - mathematics/linear-algebra.tex
       - mathematics/statistics.tex
       - mathematics/distributions.tex
+      - mathematics/game-theory.tex
       - mathematics/special.tex
       - mathematics/overrides.tex
 

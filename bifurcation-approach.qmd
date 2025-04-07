@@ -80,7 +80,24 @@ Note that there are other methods of computing stability, which in particular do
 
 #### Periodic Orbit Localization
 
-As we have seen, localization of an equilibrium from sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles the situation is more complicated.
+As we have seen, localization of an equilibrium from sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles the situation is more complicated. For clarity, @Kuznetsov2016 was heavily used as a source material for this section.
+
+Assume again we have a dynamical system prescribed by ([-@eq-autonomous-ode-system]), 
+$$
+\dvi x = \vi f(\vi x), \; \vi x \in \R^n,
+$$
+such that is has an isolated periodic orbit $L_0$. Let $\vi x^0(t + T_0) = \vi x^0(t)$ be the corresponding solution with minimal period $T_0 > 0$. Further assume that the cycle $L_0$ has corresponding multipliers, see @sec-poincare-map and @lem-poincaré-map, 
+$$
+\mu_1, \dots, \mu_n \in \C,
+$$
+which are by @thm-floquet-exponents the eigenvalues of the $n\times n$ monodromy matrix $\vi M(T_0)$, where $\vi M(t)$ satisfies
+$$
+\rcases{
+	\dvi M(t) &= \jacobi \vi f (t) \vi M(t), \\
+	\vi M(0) &= \ident_n.
+}
+$$ {#eq-ode-monodromy-system}
+Recall there is always a trivial multiplier $\mu_n = 1$. Also, if $\absval{\mu_i} < 1$ for all $i \in \oneToN{n}$, then the cycle is stable. In contrast, if there exists $i \in \oneToN{n}$ such that $\absval{\mu_i} > 1$, the cycle is unstable (and if all multipliers have modulus greater than one, the cycle is called *totally unstable* or *repelling*).
 
 If the system features a stable limit cycle $L_0$, then we can find it again by numerical integration from a point in its basin of attraction. In contrast to the case of equilibria, backward-time numerical integration will not, in general, help us find a repelling periodic orbit. 
 
@@ -90,17 +107,17 @@ Suppose we have a system in 2-dimensional state space, which possesses a periodi
 
 On the other hand, for 3- or mode dimensional dynamical systems, a periodic orbit does not partition the state space (or any local neighborhood). Then, we cannot guarantee a converge to the repelling cycle by backward-time integration no matter the initial closeness. Moreover, it is needless to say numerical integration localization approach will surely fail if the cycle is not stable or repelling.
 
-From now on, we will assume we know the location of the periodic orbit approximately. This is a rather common scenario in practice, where we often know the location of the cycle for a given parameter value and wish to "continue" by varying the parameter and correcting the cycle afterwards. This process is commonly referred to as *continuation*.
+From now on, we will assume we know the location of the periodic orbit approximately. A correction method, most often Newton-Raphson as we shall use here, is then applied repeatedly until satisfactory convergence. This is a rather common scenario in practice, where we often know the location of the cycle for a given parameter value and wish to "continue" by varying the parameter and correcting the cycle afterwards. This process is commonly referred to as *continuation*.
 
-Usually, we take the period $T_0$ of $L_0$ as an unknown and formulate the *boundary-value problem* (BVP) on a fixed interval. In particular, assume $T_0$ a parameter and construct a "time-normalized" system
+Usually, we take the period $T$ of $L_0$ as an unknown and formulate the *boundary-value problem* (BVP) on a fixed interval. In particular, assume $T$ a parameter and construct a "time-normalized" system
 $$
-\deriv {\vi u} {\tau} = T_0 \vi f(\vi u),
+\deriv {\vi u} {s} = T \vi f(\vi u), \; s \in [0,1]
 $$ {#eq-autonomous-ode-period-1}
-which rescales ([-@eq-autonomous-ode-system]) by a time-scaling factor $T_0$, such that the new time is denoted $\tau$. Now, if a solution $\vi u(t)$ to ([-@eq-autonomous-ode-period-1]) also satisfies the *periodic boundary conditions*
+which rescales ([-@eq-autonomous-ode-system]) by a time-scaling factor $T$, such that the new time is denoted $s$. Now, if a solution $\vi u(s)$ to ([-@eq-autonomous-ode-period-1]) also satisfies the *periodic boundary conditions*
 $$
 \vi u(0) = \vi u(0),
 $$ {#eq-autonomous-ode-1-periodicity-cond}
-then it corresponds to a $T_0$-periodic solution of ([-@eq-autonomous-ode-system]). However, these two conditions do not prescribe the period orbit of ([-@eq-eq-autonomous-ode-system]) uniquely. Indeed, any time shift of the solution to the BVP ([-@eq-autonomous-ode-period-1]), ([-@eq-autonomous-ode-1-periodicity-cond]) also determines the same periodic orbit.
+then it corresponds to a $T$-periodic solution of ([-@eq-autonomous-ode-system]). However, these two conditions do not prescribe the period orbit of ([-@eq-autonomous-ode-system]) uniquely. Indeed, any time shift of the solution to the BVP ([-@eq-autonomous-ode-period-1]), ([-@eq-autonomous-ode-1-periodicity-cond]) also determines the same periodic orbit.
 
 Therefore, an extra condition, called the *phase condition*, must be added. Such condition is most often written in the form
 $$
@@ -108,19 +125,151 @@ $$
 $$ {#eq-general-phase-condition}
 where $\Phi$ is a scalar *functional* defined on the space of periodic solutions. The exact choice of phase condition is up the user, but predominantly is used an *integral phase condition*
 $$
-\Phi[\vi u] = \int_0^1 \scal {\vi u(\tau)} {\vi v(\tau)} \dd \tau,
+\Phi[\vi u] = \int_0^1 \scal {\vi u(s)} {\dvi v(s)} \dd s,
 $$ {#eq-integral-phase-cond}
-where $\vi v(\tau)$ is the reference period-one solution.
+where $\vi v(s) \in \contf{[0, 1], \R^n}{}$ is the reference period-one solution.
 
-::: {.callout-tip #tip-integral-phase-cond}
-##### Integral phase condition
-
-The integral phase condition ([-@eq-integral-phase-cond]) is a necessary condition for a local minimum of the time-shift distance
+:::{#lem-integral-phase-cond}
+The integral phase condition ([-@eq-integral-phase-cond]) is a necessary condition for a local minimum of the time-shift $L_2$-distance of smooth functions $\vi u, \vi v : \R \to \R^n$
 $$
-\rho(\sigma) = \int_0^1 \norm{\vi u(t + \sigma) - \vi t(\tau)}^2 \dd \tau,
+\rho(\sigma) = \int_0^1 \norm{\vi u(s + \sigma) - \vi v(s)}_2^2 \dd s,
 $$
-which should illustrate the motivation behind such choice.
+such that the minimum is obtained at shift $\sigma = 0$.
 :::
+
+:::{.proof}
+See @Kuznetsov2016, lemma 11.
+:::
+
+We can now collect all the conditions to obtain the periodic BVP
+$$
+\rcases{
+	\dvi u(s) &= T \vi f(\vi u(s)),\; s \in [0,1] \\
+	\vi u(0) &= \vi u(1), \\
+	\int_0^1 \scal {\vi u(s)} {\dvi v(s)} \dd s &= 0.
+}
+$$ {#eq-ode-cycle-bvp}
+If $(\vi u(\cdot), \vi T_0) \in \contf {[0,1], \R^n} 1 \times \R$ satisfies ([-@eq-ode-cycle-bvp]), then $\vi x(t) = \vi u\brackets{\frac t {T_0}}$ gives the $T_0$-periodic solution of ([-@eq-autonomous-ode-system]) with $\vi x(0) = \vi u(0)$.
+
+Moreover, for the monodromy matrix $\vi M(t)$ of ([-@eq-autonomous-ode-system]) we define $\vi \Phi(s)$, such that $\vi M(T) = \vi \Phi(1)$ and
+$$
+\dvi \Phi(s) - T \jacobi \vi f(\vi u(s)) \vi \Phi(s) = \vi 0, \; \vi \Phi(0) = \vi \ident_n.
+$$ {#eq-monodromy-system-normalized}
+The eigenvalues of $\vi \Phi(1)$ correspond exactly to the aforementioned multipliers of the cycle $L_0$. We also define the **adjoint monodromy matrix** $\vi \Psi(1)$ as the solution of
+$$
+\dvi \Psi(s) - T \jacobi \vi f\Tr(\vi u(s)) \vi \Psi(s) = \vi 0, \; \vi \Psi(0) = \vi \ident_n
+$$
+evaluated at 1. It follows that
+$$
+\vi \Psi(s) = \brackets{\vi \Phi(s)\Inv}\Tr.
+$$ {#eq-monodromy-psi-phi}
+In general, any solution $\vi \xi$ of an inhomogeneous linear system
+$$
+\dvi \xi - T \jacobi \vi f(\vi u(s)) \vi \xi = \vi b(s),
+$$ 
+where $\vi b \in \contf {\R, \R^n} {0}$, can be written as (by ([-@eq-monodromy-psi-phi]))^[In other words, $\vi \Phi(s)$ is a *fundamental matrix* of ([-@eq-monodromy-system-normalized]). Moreover, this viewpoint explains ([-@eq-monodromy-variation-of-const]) as a corollary of method of variation of constants.]
+$$
+\vi \xi(s) = \vi \Phi(s) \brackets{\vi \xi(0) + \int_0^{s} \vi \Phi\Inv(\sigma) \vi b(\sigma) \dd \sigma} = \vi \Phi(s) \brackets{\vi \xi(0) + \int_0^s \vi \Psi\Tr(\sigma) \vi b(\sigma) \dd \sigma}.
+$$ {#eq-monodromy-variation-of-const}
+
+:::{#def-simple-cycle}
+A cycle $L$ is called **simple** if the trivial multiplier $\mu_n = 1$ has algebraic multiplicity^[Recall the algebraic multiplicity of an eigenvalue $\lmbd$ of a matrix $\vi A$ is its multiplicity as a root of characteristic polynomial. Furthermore, geometric multiplicity of $\lmbd$ is defined as $\dim \ker (\vi A - \lmbd \ident)$. The algebraic multiplicity is always greater than or equal to the geometric multiplicity for any given eigenvalue $\lmbd$ of $\vi A$.] 1.
+:::
+
+Let $\vi q_0, \vi p_0 \in \R^n$ be the left and right eigenvectors of the monodromy matrix corresponding to the trivial multiplier,
+$$
+\begin{aligned}
+(\vi \Phi(1) - \ident_n) \vi q_0 = (\vi \Psi(1) - \ident_n) \vi p_0 & = \vi 0, \\
+(\vi \Phi(1) - \ident_n)\Tr \vi p_0 = (\vi \Psi(1) - \ident_n)\Tr \vi q_0 & = \vi 0,
+\end{aligned}
+$$ 
+such that $\norm{\vi p_0}_2 = \norm{\vi q_0}_2 = 1$. Also, $\vi q_0 = c_0 \vi f(\vi u(0))$ for $c_0 \in \R \setminus \set{0}$, which follows from ([-@eq-monodromy-system-normalized]) using ([-@eq-autonomous-ode-period-1]),([-@eq-autonomous-ode-1-periodicity-cond])
+\begin{align*}
+	\partialOp {s} (c_0 \vi f(\vi u(0))) - T \vi f(\vi u(1)) c_0 \vi f(\vi u(0)) &= c_0 \jacobi \vi f(\vi u(0)) \dvi u(0) - T \jacobi \vi f(\vi u(0)) c_0 \vi f(\vi u(0)) \\	
+	&= c_0 \jacobi \vi f(\vi u(0)) T \vi f(\vi u(0)) - T \jacobi \vi f(\vi u(0)) c_0 \vi f(\vi u(0)) \\
+	&= \vi 0.
+\end{align*} 
+
+As we have mentioned, the workflow for localization of a periodic orbit is to start from an initial guess $(\vi u, T)$, which we correct by $(\vi w(\cdot), S) \in \contf {[0,1], \R^n} {1} \times \R$, i.e. 
+$$
+(\vi u, T) \mapsto (\vi u + \vi w, T + S),
+$$
+where $(\vi w(\cdot), S)$ is the solution of the linearized inhomogeneous BVP (for reference, see ([-@eq-ode-cycle-bvp]))
+$$
+\rcases{
+	\dvi w(s) - T \jacobi \vi f(\vi u(s)) \vi w - S \vi f(\vi u(s)) &= - \dvi u(s) + T \vi f(\vi u(s)), \; s \in [0,1], \\
+	\vi w(0) - \vi w(1) &= - \vi u(1) + \vi u(0), \\
+	\int_0^1 \scal {\dvi v(\sigma)} {\vi w(\sigma)} \dd \sigma &= - \int_0^1 \scal {\dvi v(\sigma)} {\vi u(\sigma)} \dd \sigma.
+}
+$$ {#eq-newton-step-bvp}
+The left-hand side of ([-@eq-newton-step-bvp]) can be expressed as a matrix operator of form
+$$
+\underbrace{\bmtr{
+	\oper{\jacobi} - T \jacobi \vi f(\vi u) & -\vi f(\vi u) \\
+	\evalOp{0} - \evalOp{1} & 0 \\
+	\testInt{\dvi v} & 0
+}}_{\oper L_{\vi u, T}} \mtr{
+	\vi w \\ S
+},
+$$
+where $\oper{\jacobi}$ denotes the differentiation operator, $\evalOp{a}$ is the evaluation operator at $t = a$, i.e. $\evalOp{a} \vi w = \vi w(a)$, and
+$$
+\testInt{\dvi v} \vi w = \int_0^1 \scal{\dvi v(\sigma)} {\vi w(\sigma)} \dd \sigma.
+$$
+
+By taking $\vi v = \vi u$, where $\vi u$ is a solution of ([-@eq-ode-cycle-bvp]), we get $\dvi v = \dvi u = T \vi f(\vi u)$. Moreover, for the purposes of the following theorem, one might choose $\vi v$ sufficiently close to such $\vi u$ (most importantly when $\vi v$ is a reference period-1 function, for example the solution in the previous step of continuation). Lastly, replacement of $T \vi f(\vi u)$ by $\vi f(\vi u)$ does not change the fundamental properties of the operator $\oper{L}_{\vi u, T}$.
+
+:::{#thm-ode-correction-operator-bijection}
+If $(\vi u(\cdot), T)$ corresponds to a simple cycle, then the operator
+$$
+\oper{L}_{\vi u, T} = \bmtr{
+	\oper{\jacobi} - T \jacobi \vi f(\vi u) & - \vi f(\vi u) \\
+	\evalOp{1} - \evalOp{0} & 0 \\
+	\testInt{\vi f(\vi u)} & 0
+},
+$$
+from $\contf {[0,1], \R^n} {1} \times \R$ into $\contf {[0,1], \R^n} {1} \times \R^n \times \R$ is one-to-one and onto.
+:::
+
+:::{.proof}
+See @Kuznetsov2016, page 36.
+:::
+
+By @thm-ode-correction-operator-bijection we know ([-@eq-newton-step-bvp]) can be schematically rewritten as
+$$
+\oper{L}_{\vi u, T} \mtr{\vi w \\ S} = \vi A_{\vi u, T},
+$$
+where $\vi A_{\vi u, T}$ captures the right-hand side of ([-@eq-newton-step-bvp]), and that $\oper{L}_{\vi u, T}$ is regular. Thus, an appropriate correction $(\vi w, S)$ can indeed be found by Newton's method, see @sec-newton-method.
+
+This can finally be extended to the **continuation** of a **limit cycle branch** of a system
+$$
+\dvi x = \vi f(\vi x, \alpha), \; \vi x \in \R^n, \; \alpha \in \R,
+$$ {#eq-cycle-continuation-problem}
+with respect to (w.r.t.) parameter $\alpha \in \R$ as the solution to the following BVP:
+$$
+\rcases{
+	\dvi u(s) - T \vi f(\vi u(s), \alpha) &= \vi 0, \; s \in [0,1], \\
+	\vi u(0) - \vi u(1) &= \vi 0, \\
+	\int_0^1 \scal{\vi u(\sigma)} {\dvi u(\sigma)} \dd \sigma &= 0.
+}
+$$ {#eq-ode-continuation-bvp}
+Futhermore, from @thm-ode-correction-operator-bijection and implicit function theorem, we obtain that a simple cycle has *locally unique* continuation w.r.t. parameter $\alpha$. Again, we can define a corresponding operator to ([-@eq-ode-continuation-bvp])
+$$
+\bmtr{
+	\oper{\jacobi}_{\vi u} - T \jacobi_{\vi u} \vi f(\vi u, \alpha) & - \vi f(\vi u, \alpha) & - T \pDeriv {\vi f} {\alpha}(\vi u, \alpha) \\
+	\evalOp{0} - \evalOp{1} & 0 & 0 \\
+	\testInt{\dvi u} & 0 & 0
+},
+$$
+which then has a one-dimensional kernel at a simple cycle.
+
+To solve ([-@eq-ode-cycle-bvp]) (or ([-@eq-ode-continuation-bvp])) numerically, we have to reduce it a finite-dimensional problem (as opposed to searching in the infinite-dimensional space of periodic functions $\vi u$), i.e. we need to choose a *discretization*. Although shooting, multiple shooting and finite differences are sometimes used, most common and most capable is the method of *orthogonal collocation*.
+
+Consider for simplicity the BVP ([-@eq-ode-cycle-bvp]). We shall introduce a partitioning of the interval $[0,1]$ by $N - 1$ mesh points, i.e.
+$$
+0 = s_0 < s_1 < \dots < s_N = 1.
+$$
+The primary goal of the orthogonal collocation is to approximate the true solution $\vi u$ by piecewise-differentiable continuous function, which is defined as a *vector polynomial* $\vi u^{(j)}(s)$ of maximal degree $m$ within each subinterval $[s_j, s_{j+1}]$, $j = 0, 1, \dots, N-1$.
 
 
 <!-- TODO: Write about equilibrium localization and cycle localization by Poincaré map -->

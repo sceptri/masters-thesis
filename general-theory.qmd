@@ -989,12 +989,12 @@ $$ {#eq-runge-kutta-order-condition-4-stage}
 
 In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i t^5)$. Typically, *"the Runge-Kutta"* method is used:
 $$
-\left.\begin{aligned}
-\vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
-\vi k_2 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_1 \diff t} \\
-\vi k_3 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_2 \diff t} \\
-\vi k_4 &= \vi F\brackets{t_0 + \diff t, \vi x_0 + \vi k_3 \diff t}
-\end{aligned} \right\} \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
+\rcases{
+	\vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
+	\vi k_2 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_1 \diff t} \\
+	\vi k_3 &= \vi F\brackets{t_0 + \frac 1 2 \diff t, \vi x_0 + \frac 1 2 \vi k_2 \diff t} \\
+	\vi k_4 &= \vi F\brackets{t_0 + \diff t, \vi x_0 + \vi k_3 \diff t}
+} \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
 $$ {#eq-runge-kutta-classical}
 
 Throughout this thesis, we will use solvers available in DifferentiaEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
@@ -1017,10 +1017,9 @@ $$
 \dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m));
 $$ {#eq-method-of-steps-intermediate}
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) \gets \begin{cases}
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) \gets \lcases{
 	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
-	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j
-\end{cases}$ \
+	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j}$ \
 &emsp;&emsp;&emsp;&emsp;**end** \
 &emsp;&emsp;**end** \
 **end**
@@ -1233,10 +1232,10 @@ Suppose $N = 3$ evaluations are now permitted. Then the best course of action is
 
 In general, this leads to evaluation given by the Fibonacci numbers
 $$
-F_n = \begin{cases}
+F_n = \lcases{
 	1, & n \leq 2, \\
 	F_{n-1} + F_{n_2}, & n > 2,
-\end{cases}
+}
 $$
 which prescribe the queries at
 $$

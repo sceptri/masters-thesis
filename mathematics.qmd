@@ -19,6 +19,9 @@ $$
 {{< include mathematics/distributions.tex >}}
 $$
 $$
+{{< include mathematics/game-theory.tex >}}
+$$
+$$
 {{< include mathematics/special.tex >}}
 $$
 ```
