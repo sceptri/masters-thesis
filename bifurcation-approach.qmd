@@ -245,12 +245,12 @@ This approach can be extended to the **continuation** of a **limit cycle branch*
 $$
 \dvi x = \vi f(\vi x, \alpha), \; \vi x \in \R^n, \; \alpha \in \R,
 $$ {#eq-cycle-continuation-problem}
-with respect to (w.r.t.) parameter $\alpha \in \R$ as the solution to the following BVP ($\vi u_{\text{previous}}$ denotes the period-1 cycle for the previous value of $\alpha$):
+with respect to (w.r.t.) parameter $\alpha \in \R$ as the solution to the following BVP ($\vi u_{\text{old}}$ denotes the period-1 cycle for the previous value of $\alpha$):
 $$
 \rcases{
 	\dvi u(s) - T \vi f(\vi u(s), \alpha) &= \vi 0, \; s \in [0,1], \\
 	\vi u(0) - \vi u(1) &= \vi 0, \\
-	\int_0^1 \scal{\vi u(\sigma)} {\dvi u_{\text{previous}}(\sigma)} \dd \sigma &= 0.
+	\int_0^1 \scal{\vi u(\sigma)} {\dvi u_{\text{old}}(\sigma)} \dd \sigma &= 0.
 }
 $$ {#eq-ode-continuation-bvp}
 Furthermore, from @thm-ode-correction-operator-bijection and implicit function theorem, we obtain that a simple cycle has *locally unique* continuation w.r.t. parameter $\alpha$. Again, we can define a corresponding operator to ([-@eq-ode-continuation-bvp]),
@@ -258,7 +258,7 @@ $$
 \bmtr{
 	\oper{\jacobi}_{\vi u} - T \jacobi_{\vi u} \vi f(\vi u, \alpha) & - \vi f(\vi u, \alpha) & - T \pDeriv {\vi f} {\alpha}(\vi u, \alpha) \\
 	\evalOp{0} - \evalOp{1} & 0 & 0 \\
-	\testInt{\dvi u_{\text{previous}}} & 0 & 0
+	\testInt{\dvi u_{\text{old}}} & 0 & 0
 },
 $$ {#eq-ode-continuation-operator}
 which then has a one-dimensional null-space for a simple cycle $\vi u$.
@@ -283,9 +283,9 @@ $$
 $$
 where $s_{j,k}$ are *representation points*^[Throughout the discussion of orthogonal collocation, we will use both *collocation* and *representation* points, which do not (in general) coincide.], i.e. nodes of equidistant partitioning of the interval
 $$
-s_j = s_{j,0} < s_{j,1} < \dots < s_{j,m-1} < s_{j,m} = s_{j+1}
+s_j = s_{j,0} < s_{j,1} < \dots < s_{j,m-1} < s_{j,m} = s_{j+1},
 $$
-given by
+implying $\vi u^{j,m} = \vi u^{j+1,0}$, given by
 $$
 s_{j,k} = s_j + \frac k m (s_{j+1} - s_{k}), \; j = 0,1,\dots,N-1, k = 0,1,\dots,m.
 $$
@@ -313,7 +313,7 @@ where $\dvi v^{j,i}$ are the values of the derivative of the reference period-1 
 $$
 \rcases{
 	\sum_{i = 0}^m\brackets{\vi u^{j,i}, \lagrPoly'_{j,i}(\zeta_{j,k})} - T \vi f\brackets{\sum_{i = 0}^m \vi u^{j,i} \lagrPoly_{j,i}(\zeta_{j,k})} &= \vi 0_n, \\
-	j = 0, 1, \dots, N-1, k = 0, 1, \dots, m, & \\
+	j = 0, 1, \dots, N-1, \; k = 1, \dots, m, & \\
 	\vi u^{0,0} - \vi u^{N-1, m} &= \vi 0_n, \\
 	\sum_{j = 0}^{N-1}\sum_{i = 0}^m \omega_{j,i} \scal{\vi u^{j,i}}{\dvi v^{j,i}} &= 0.
 }
@@ -328,3 +328,35 @@ $$
 $$
 where $h = \max_{0 \leq j \leq N-1} (s_{j+1} - s_j)$.
 
+Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e. the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = (\set{\vi u^{j,k}}, T, \alpha) \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)
+$$
+\mtr{
+	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & & \\
+	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & & \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & \\
+}.
+$$
+Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points).
+
+Assume that we have corrected $\vi X = (\set{\vi u^{j,k}}, T, \alpha)$, converging to a new point
+$$
+\vi X_c = (\set{\vi u_c^{j,k}}, T_c, \alpha_c)
+$$
+on the branch of the limit cycle. Then $\vi X_c$ approximates a solution to ([-@eq-ode-continuation-bvp]).
+
+<!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
+<!-- For ODEs, we can exploit the sparse structure in a direct solver (first by condensation of parameters) to obtain Floquet multipliers more easily -->
+<!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
