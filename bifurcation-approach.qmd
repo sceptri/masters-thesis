@@ -269,7 +269,7 @@ Consider for simplicity the BVP ([-@eq-ode-cycle-bvp]). We shall introduce a par
 $$
 0 = s_0 < s_1 < \dots < s_N = 1.
 $$
-The primary goal of the orthogonal collocation is to approximate the true solution $\vi u$ by piecewise-differentiable continuous function, which is defined as a *vector polynomial* $\vi u^{(j)}(s)$ of maximal degree $m$ within each subinterval $[s_j, s_{j+1}]$, $j = 0, 1, \dots, N-1$. Such polynomials can be specified by $m$ points 
+The primary goal of the orthogonal collocation is to approximate the true solution $\vi u$ by piecewise-differentiable continuous function, which is defined as a *vector polynomial* $\vi u^{(j)}(s)$ of maximal degree $m$ within each subinterval $[s_j, s_{j+1}]$, $j = 0, 1, \dots, N-1$. Such polynomials can be specified by $m$ *collocation* points 
 $$
 s_j < \zeta_{j,1} < \zeta_{j,2} < \dots < \zeta_{j,m} < s_{j+1}
 $$
@@ -307,7 +307,7 @@ $$
 $$ {#eq-collocation-discretized-periodicity}
 and
 $$
-\sum_{j = 0}^{N-1} \sum_{i = 0}^m \omega_{j,i} \scal{\vi u^{j,i}} {\dvi v^{j,i}} = 0,
+\sum_{j = 0}^{N-1} \sum_{i = 0}^{m-1} \omega_{j,i} \scal{\vi u^{j,i}} {\dvi v^{j,i}} + \omega_{N,0} \scal{\vi u^{N,0}} {\dvi v^{N,0}} = 0,
 $$ {#eq-collocation-discretized-phase}
 where $\dvi v^{j,i}$ are the values of the derivative of the reference period-1 solution at representation points $s_{j,i}$ and $\omega_{j,i}$ are the *Gauss-Legendre quadrature coefficients*^[Gauss-Legendre quadrature is a method of approximating a definite integral $\int_{-1}^1 f(x) \dd x \approx \sum_{i = 1}^n \omega_i f(x_i)$. The optimal value of $x_i$ and $\omega_i$ for a given value of $n$ can be computed analytically. For more information, see @Brin2020]. By combining ([-@eq-collocation-spline-requirements]), ([-@eq-collocation-spline-lagrange]), ([-@eq-collocation-discretized-periodicity]), and ([-@eq-collocation-discretized-phase]) we get a system ([-@eq-ode-discretized-bvp]) of $nmN + n + 1$ scalar equations for the unknown values $\vi u^{j,i} \in \R^n$ at representation points $s_{j,i}$ (there are $(mN + 1)$ values $\vi u^{j,i}$) and for the unknown period $T$,
 $$
@@ -315,22 +315,22 @@ $$
 	\sum_{i = 0}^m\brackets{\vi u^{j,i}, \lagrPoly'_{j,i}(\zeta_{j,k})} - T \vi f\brackets{\sum_{i = 0}^m \vi u^{j,i} \lagrPoly_{j,i}(\zeta_{j,k})} &= \vi 0_n, \\
 	j = 0, 1, \dots, N-1, \; k = 1, \dots, m, & \\
 	\vi u^{0,0} - \vi u^{N-1, m} &= \vi 0_n, \\
-	\sum_{j = 0}^{N-1}\sum_{i = 0}^m \omega_{j,i} \scal{\vi u^{j,i}}{\dvi v^{j,i}} &= 0.
+	\sum_{j = 0}^{N-1}\sum_{i = 0}^{m-1} \omega_{j,i} \scal{\vi u^{j,i}}{\dvi v^{j,i}} + \omega_{N,0} \scal{\vi u^{N,0}} {\dvi v^{N,0}} &= 0.
 }
 $$ {#eq-ode-discretized-bvp}
 The resulting finite-dimensional system ([-@eq-ode-discretized-bvp]) is nonlinear, thus we solve it by Newton's method (or some modification exploiting the block structure of Jacobian, which we will discuss later) -- this problem is well-posed by @thm-ode-correction-operator-bijection and the discussion afterward.
 
 So far, we have translated ([-@eq-ode-cycle-bvp]) into a finite dimensional problem, but we have neglected a discussion of a crucial choice of the collocation points $\set{\zeta_{j,i}}$. The distribution of collocation points affects the approximation, so a natural goal is to minimize it. It can be shown that the optimal choice is position them at so-called *Gauss points*, which are the roots of $m$-th degree *Legendre polynomial* corresponding to the subinterval $[s_j, s_{j+1}]$. For more information, we refer the reader to @Brin2020. These roots originally belong to the interval $[-1, 1]$, but can be easily transformed to each $[s_j, s_{j+1}]$. Furthermore, the Legendre polynomials form an orthogonal system on the interval $[-1, 1]$ (or its transformation), which lends the name to the orthogonal collocation method.
 
-Let us note the collocation at Gauss point leads to very highly accurate approximation of a smooth solution of ([-@eq-ode-cycle-bvp]) by ([-@eq-ode-discretized-bvp]) at *mesh* points, namely
+Let us note the collocation at Gauss points leads to very highly accurate approximation of a smooth solution of ([-@eq-ode-cycle-bvp]) by ([-@eq-ode-discretized-bvp]) at *mesh* points, namely
 $$
 \norm{\vi u(s_j) - \vi u^{j, 0}} = O(h^{2m}),
 $$
 where $h = \max_{0 \leq j \leq N-1} (s_{j+1} - s_j)$.
 
-Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e. the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = (\set{\vi u^{j,k}}, T, \alpha) \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)
+Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e. the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet included (and therefore it can, in theory, depend on all variables).]
 $$
-\mtr{
+{\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
 	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
 	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
@@ -347,16 +347,75 @@ $$
 	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & & \\
 	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & & \\
 	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & \\
-}.
-$$
-Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points).
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl
+}},
+$$ {#eq-ode-collocation-jacobian}
+where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see TODO, we will get a fully determined system. 
+<!-- TODO: Add continuation ref -->
 
-Assume that we have corrected $\vi X = (\set{\vi u^{j,k}}, T, \alpha)$, converging to a new point
+The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e. $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
 $$
-\vi X_c = (\set{\vi u_c^{j,k}}, T_c, \alpha_c)
+{\scriptsize \mtr{
+	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	+ & + & \zeroEl & \zeroEl & + & + & & & & & & & & & + & + \\
+	+ & + & \zeroEl & \zeroEl & \zeroEl & + & & & & & & & & & + & + \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & + & + & \zeroEl & \zeroEl & + & + & & & & & + & + \\
+	& & & & + & + & \zeroEl & \zeroEl & \zeroEl & + & & & & & + & + \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & + & + & \zeroEl & \zeroEl & + & + & + & + \\
+	& & & & & & & & + & + & \zeroEl & \zeroEl & \zeroEl & + & + & + \\
+	+ & + & & & & & & & & & & & + & + & & \\
+	+ & + & & & & & & & & & & & + & + & & \\
+	+ & + & \zeroEl & \zeroEl & + & + & \zeroEl & \zeroEl & + & + & \zeroEl & \zeroEl & + & + & + & + \\
+	+ & + & \zeroEl & \zeroEl & + & + & \zeroEl & \zeroEl & + & + & \zeroEl & \zeroEl & + & + & + & +
+}},
+$$ {#eq-ode-collocation-jacobian-decoupled}
+which has a *decoupled subsystem* for $+$ signs. Hence, we can first solve the subsystem given by $+$'s, and follow up by solving for the intermediate variables afterward, see @Doedel1991. This significantly reduces the dimensionality and thus also memory requirements.
+
+Assume that we have corrected (in, possibly, multiple steps of the Newton-Raphson method) $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha}$, converging onto a new point
 $$
-on the branch of the limit cycle. Then $\vi X_c$ approximates a solution to ([-@eq-ode-continuation-bvp]).
+\vi X_c = \brackets{\set{\vi u_c^{j,k}}, T_c, \alpha_c}
+$$
+on the branch of the limit cycle. Then $\vi X_c$ approximates a solution to ([-@eq-ode-continuation-bvp]). Moreover, we can further perform Gaussian elimination on rows of $\jacobi \vi H(\vi X_c)$, see ([-@eq-ode-collocation-jacobian-decoupled]) and @Kuznetsov2016, to obtain
+$$
+{\scriptsize \mtr{
+	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
+	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \zeroEl & \zeroEl & \nonzeroEl & & & & & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & \nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & & & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & & & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \nonzeroEl & & & & & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	& & & & & & & & \nonzeroEl & \nonzeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	\ast & \ast & & & & & & & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \star & \star & \nonzeroEl & \nonzeroEl \\
+	\ast & \ast & & & & & & & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \star & \star & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & & & & & & & & & & & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl \\
+	\nonzeroEl & \nonzeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \zeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl
+}}.
+$$ {#eq-ode-collocation-jacobian-floquet}
+Furthermore, we denote by $\vi P_0$ the matrix block marked by $\ast$ sings and by $\vi P_1$ the block of $\star$'s. Let $\vi u(0) = \vi u^{0,0}$ and $\vi u(1) = \vi u^{N,0}$, then the following holds
+$$
+\jacobi \vi H(\vi X_c) \cdot \brackets{\set{\vi u^{j,k}}, 0, 0}\Tr = \vi 0 \implies \vi P_0 \vi u(0) + \vi P_1 \vi u(1) = \vi 0.
+$$
+A careful reader might notice that $\vi P_0$ and $\vi P_1$ belong to the linearized equation ([-@eq-collocation-spline-requirements]), i.e. by ([-@eq-monodromy-system-normalized]) the equality
+$$
+\vi u(1) = - \vi P_1\Inv \vi P_0 \vi u(0)
+$$ {#eq-ode-collocation-monodromy-approx}
+approximates
+$$
+\vi u(1) = \vi \Phi(1) \vi \Phi(0)\Inv \vi u(0).
+$$
+Thus, using $\vi \Phi(0) = \ident_n$ from ([-@eq-monodromy-system-normalized]), $- \vi P_1\Inv \vi P_0 \approx \vi \Phi(1) = \vi M(T_0)$ for the monodromy matrix $\vi M(T_0)$ corresponding to the cycle $L_0$ of ([-@eq-autonomous-ode-system]). Computing the eigenvalues of $- \vi P_1\Inv \vi P_0$ then estimates the multipliers of the cycle $L_0$, which determine its stability.
 
 <!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
-<!-- For ODEs, we can exploit the sparse structure in a direct solver (first by condensation of parameters) to obtain Floquet multipliers more easily -->
 <!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->

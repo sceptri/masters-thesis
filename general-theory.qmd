@@ -971,7 +971,7 @@ Usually, we constrain the coefficients to fulfill
 $$
 c_m = \sum_{n = 1}^{m - 1} a_{mn},
 $$ {#eq-runge-kutta-eval-cond}
-which represents the assumption the all points, where $\vi F$ is evaluated, are first order approximations to the solution. It can be shown that they significantly simplify the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, they are not necessary.
+which represents the assumption that all points, where $\vi F$ is evaluated, are first order approximations to the solution. It can be shown that ([-@eq-runge-kutta-eval-cond]) significantly simplifies the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, it is not necessary.
 
 Our task is now to choose the coefficients in @alg-runge-kutta-explicit so that the order of the method is maximized. This corresponds to computing the Taylor series expansion for each $\vi k_j$ in the state variable of $\vi F$. By combining these results, we can compare them with the Taylor expansion of $\vi x_i$. Hence, we obtain the following conditions (given for a 4-stage method), using $c_1 = 0$:
 $$
