@@ -447,6 +447,8 @@ Although analytical conditions for the stability do exist (and are derived by te
 The solution operator $\solOp(t)$ has eigenvalues $\mu(t)$, which are related to the roots of the characteristic equation by $\mu(t) = e^{\lmbd t}$, see @Roose2007. Obviously, to determine the stability of $\vi x^*$, we are interested in the dominant eigenvalues. Moreover, it follows that for $t$ large, the eigenvalues $\mu(t)$ are well separated, which we can exploit in the computation. Below, we describe an algorithm to compute the dominant eigenvalues of $\solOp(\diff t)$, where $\diff t$ is the time-step of a linear multistep (LMS) method.
 
 ::: {.callout-note #nte-infinitesimal-generator}
+##### Infinitesimal generator
+
 In @sec-dde-stability, we have discussed that $\solOp(t)$ is a one-parameter *strongly continuous semigroup*, see @Roose2007. One can thus define the *infinitesimal generator* $\infGen$ of $\set{\solOp(t)}$, see @Curtain1995, by
 $$
 \infGen \vi \phi = \lim_{t \to 0^+} \frac {\solOp(t)\vi \phi - \vi \phi} t.
@@ -467,17 +469,19 @@ A straightforward way to approximate the solution operator is to consider the ma
 
 Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x_i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for DDEs with step-length $h$ may be written as
 $$
-\sum_{i = 0}^k \alpha_i \vi x_i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* t_i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
+\sum_{i = 0}^k \alpha_i \vi x_i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* \vi x_i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
 $$ {#eq-dde-lms}
-where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ (when $(t_i - \tau_j) \notin \set{t_i}_{i = 1}^k$) are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively. To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
+where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ (when $(t_i - \tau_j) \notin \set{t_i}$) are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively. To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
 
 Clearly, the discretization of the operator $\solOp(h)$ itself is given by the linear map from $[\vi x_l, \dots, \vi x_{k-1}]\Tr$ to $[\vi x_{l+1}, \dots, \vi x_k]\Tr$, where $l = - s_- - \ceil{\tau/h}$ and where the mapping is prescribed by ([-@eq-dde-lms]). This procedure results in a $N \times N$ matrix approximation of the operator $\solOp(h)$, where
 $$
 N = n(-l + k) \approx n\tau/h.
 $$ {#eq-dde-lms-dimension}
-Unfortunately, due to our choice of approximation and discretization of the solution operator $\solOp(h)$ at the step-length $h$, which is typically rather small, the eigenvalues $\mu(h)$ of $\solOp(h)$ are not well separated. Nonetheless, we can compute them using the QR method with computational cost $O(N^3)$, from which we can derive the roots of the characteristic equation. Moreover, there have been derived conditions on the step-length $h$, such that all characteristic roots $\lmbd$ with $\ReOf{\lmbd} \geq r$ for some threshold $r < 0$ are approximated sufficiently accurately, see @Engelborghs2002a.
+Unfortunately, due to our choice of approximation and discretization of the solution operator $\solOp(h)$ at the step-length $h$, which is typically rather small, the eigenvalues $\mu(h)$ of $\solOp(h)$ are not well separated. Nonetheless, we can compute them using the QR method with computational cost $O(N^3)$, from which the roots of the characteristic equation can be calculated. Moreover, there have been derived conditions on the step-length $h$, such that all characteristic roots $\lmbd$ with $\ReOf{\lmbd} \geq r$ for some threshold $r < 0$ are approximated sufficiently accurately, see @Engelborghs2002a.
 
 ::: {.callout-note #nte-runge-kutta-discretization}
+##### Runge-Kutta discretization
+
 Let us note a discretization induced by Runge-Kutta numerical integrator can also be used, albeit it is less frequent in practice. We refer the interested reader to @Breda2006a.
 :::
 
@@ -488,7 +492,7 @@ Possibly also @Breda2006 and more
 
 ## Continuation {#sec-continuation}
 
-TODO, @Kuznetsov2023
+TODO, see @Kuznetsov2023
 
 ### Pseudo-arclength Continuation
 
