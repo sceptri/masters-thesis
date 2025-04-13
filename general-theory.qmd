@@ -737,9 +737,9 @@ See @Smith2010, page 26.
 
 ::: {.callout-note #nte-general-dde}
 ##### On multiple delays and $\vi x \in \R^n$
-One can rather easily show that @thm-1d-single-delay-method-of-steps and @thm-dde-finite-time-blow-up extend to the case of $\vi x \in \R^n$ and $\vi f : \R \times \R^n \times \R^n \to \R^n$. Similarly, it can also be generalized to multiple discrete delays $r_1 < \dots < r_m$ where
+One can rather easily show that @thm-1d-single-delay-method-of-steps and @thm-dde-finite-time-blow-up extend to the case of $\vi x \in \R^n$ and $\vi f : \R \times \R^n \times \R^n \to \R^n$. Similarly, it can also be generalized to multiple discrete delays $r_1 < \dots < r_H$ where
 $$
-\vi f = \vi f(t, \vi y(t), \vi y(t - r_1), \dots, \vi y(t - r_m))
+\vi f = \vi f(t, \vi y(t), \vi y(t - r_1), \dots, \vi y(t - r_H))
 $$
 with little to no change.
 :::
@@ -750,9 +750,9 @@ with little to no change.
 
 Consider a DDE of form
 $$
-\dvi x(t) = \vi f(t, \vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_m)),
+\dvi x(t) = \vi f(t, \vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_H)),
 $$ {#eq-dde-general}
-with $0 = \tau_0 < \tau_1 < \dots < \tau_m$. For brevity, we will denote $\tau := \tau_m$ and
+with $0 = \tau_0 < \tau_1 < \dots < \tau_H$. For brevity, we will denote $\tau := \tau_H$ and
 $$
 \vi x_t(s) := \vi x(t+s), \; -\tau \leq s \leq 0,
 $$
@@ -766,13 +766,13 @@ $$
 $$ {#eq-rfde}
 which can generally represent any RFDE, with $\vi F : \timeSet \times \contStateSpace \to \R^n$ defined as
 $$
-\vi F(t, \vi \phi) = \vi f(t, \vi \phi(-\tau_0), \vi \phi(-\tau_1), \dots, \vi \phi(-\tau_m)).
+\vi F(t, \vi \phi) = \vi f(t, \vi \phi(-\tau_0), \vi \phi(-\tau_1), \dots, \vi \phi(-\tau_H)).
 $$ {#eq-dde-functional}
 
 Most often, we will encounter the following *autonomous* initial-value problem
 $$
 \begin{aligned}
-	\dvi x(t) &= \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_m)), \\
+	\dvi x(t) &= \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_H)), \\
 	\vi x_{\sigma} &= \vi \phi,
 \end{aligned}
 $$ {#eq-dde-problem-autonomous}
@@ -786,12 +786,13 @@ $$ {#eq-rfde-problem}
 
 Last, but not least, we shall denote by
 $$
-\jacobi_{\vi \tau_i} \vi f = \partialOp{\vi \xi_{i}} \vi f(t, \overbrace{\vi x(t - \tau)}^{\vi \xi_0}, \overbrace{\vi x(t - \tau_1)}^{\vi \xi_1}, \dots, \overbrace{\vi x(t - \tau_m)}^{\vi \xi_m})
+\jacobi_{\vi \tau_i} \vi f = \partialOp{\vi \xi_{i}} \vi f(t, \overbrace{\vi x(t - \tau)}^{\vi \xi_0}, \overbrace{\vi x(t - \tau_1)}^{\vi \xi_1}, \dots, \overbrace{\vi x(t - \tau_H)}^{\vi \xi_H})
 $$
-the Jacobian matrix of $\vi f$ corresponding to the $i$-th delayed state input. In other words, we may write the linearization of ([-@eq-dde-problem-autonomous]) at $s$ as
+the Jacobian matrix of $\vi f$ corresponding to the $i$-th delayed state input. In other words, we may write the linearization of ([-@eq-dde-problem-autonomous]) around equilibrium $\vi x^*$, i.e. $\vi f(\vi x^*, \dots, \vi x^*) = \vi 0$, as
 $$
-\dvi x(t) = \sum_{i = 0}^m \jacobi_{\vi \tau_i} \vi f(\vi x(s - \tau_0), \dots, \vi x(s - \tau_m)) \vi x(t - \tau_i).
+\vi f(\vi x(t)) \approx \vi f(\vi x^*, \dots, \vi x^*) + \sum_{i = 0}^H \jacobi_{\vi \tau_i} \vi f(\vi x^*, \dots, \vi x^*) \vi x(t - \tau_i),
 $$ {#eq-dde-linearization}
+which follows from the Taylor expansion of $\vi f$.
 
 #### Backward Extension {#sec-backward-extension-dde}
 
@@ -812,7 +813,7 @@ $$
 
 It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ -- steady-state and periodic solutions can be given as examples.
 
-#### Stability
+#### Stability {#sec-dde-stability}
 
 We have already discussed stability for dynamical systems in @def-invariant-set-stable. Stability for DDEs can be defined analogously, which will be summarized in the following definition (per @Smith2010 and @Hale1993).
 
@@ -835,6 +836,31 @@ $$
 \dvi \xi(t) - \dvi y(t) = \vi f(t, \vi \xi_t - \vi y_t + \vi y_t)  - \vi f (t, \vi y_t),
 $$
 which yields that $\vi z$ is a solution to ([-@eq-non-zero-stability]), which was to be shown.
+
+Moreover, we shall also define a *solution operator* (or *solution map*) for autonomous RFDEs. This will become useful later when discussing stability of equilibria in the case of DDEs from the perspective of their linearization, see @sec-dde-equilibrium-localization.
+
+:::{#def-dde-solution-oper}
+Consider the autonomous DDE problem ([-@eq-dde-problem-autonomous]).The *solution operator* $\solOp(t, \sigma) : \contStateSpace \to \contStateSpace$ from time $\sigma$ to $t$, such that $t \geq \sigma$, is defined as
+$$
+\solOp(t,\sigma) \vi \phi \letDef \vi x_t(\sigma, \vi \phi).
+$$ {#eq-dde-solution-oper}
+
+In the case of $\sigma = 0$, we abuse the notation to write $\solOp(t)$. 
+:::
+
+In other words, the solution operator $\solOp(t)$ maps the initial segment $\vi \phi$ onto the solution segment $\vi x_t$ at time $t$. Note that ([-@eq-dde-solution-oper]) is equivalent to (considering $\sigma = 0$)
+$$
+(\solOp(t) \vi \phi)(\tht) = \vi x(t + \tht), \; - \tau \leq \tht \leq 0, t \geq 0.
+$$ {#eq-dde-solution-oper-theta}
+It can be shown that, see @Hale1993,
+$$
+\begin{aligned}
+\solOp(0) &= \id, \\
+\solOp(t) \solOp(s) &= \solOp(t + s), \; t,s \geq 0, \\
+\solOp(t)\vi \phi &\text{ is continuous in } (t, \vi \phi),
+\end{aligned}
+$$ {#eq-dde-solution-oper-semigroup}
+thus $\set{\solOp(t)}$, $t \geq 0$, is a *strongly continuous semigroup of transformations* on a subset of $\contStateSpace$ (see @Hale1993 or @Curtain1995 for more information on the subject). Let us remark we assume $t,s$ are allowed to range over an interval which may be dependent on $\vi \phi \in \contStateSpace$.
 
 ### Semidynamical Systems Induced by Delay Differential Equations {#sec-semidyn-sys-induced-by-dde}
 
@@ -956,11 +982,11 @@ This can surely be improved by using more terms from the Taylor series expansion
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
 &emsp;&emsp;&emsp;&emsp;calculate
 \begin{align*}
-	\vi k_1 &= \vi F (t_0, \vi x_{i-1}), \\
-	\vi k_2 &= \vi F (t_0 + c_2 \diff t_i, \vi x_{i-1} + \diff t_i a_{21} \vi k_1), \\
-	\vi k_3 &= \vi F (t_0 + c_3 \diff t_i, \vi x_{i-1} + \diff t_i (a_{31} \vi k_1 + a_{32} \vi k_2)), \\
+	\vi k_1 &\gets \vi F (t_0, \vi x_{i-1}), \\
+	\vi k_2 &\gets \vi F (t_0 + c_2 \diff t_i, \vi x_{i-1} + \diff t_i a_{21} \vi k_1), \\
+	\vi k_3 &\gets \vi F (t_0 + c_3 \diff t_i, \vi x_{i-1} + \diff t_i (a_{31} \vi k_1 + a_{32} \vi k_2)), \\
 	&\;\vdots \\
-	\vi k_s &= \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}));
+	\vi k_s &\gets \vi F (t_0 + c_s \diff t_i, \vi x_{i-1} + \diff t_i (a_{s1} \vi k_1 + \dots + a_{s, s-1} \vi k_{s-1}));
 \end{align*}
 &emsp;&emsp;&emsp;&emsp;set $\vi x_i \gets \vi x_{i-1} + \diff t_i (b_1 \vi k_1 + \dots + b_s \vi k_s)$ \
 &emsp;&emsp;**end** \
@@ -1005,18 +1031,18 @@ As invested reader can surely recall, we have already discussed method of steps 
 
 ::: {.callout appearance="simple" #alg-method-of-steps}
 ##### Method of steps
-**Input:** DDE in form ([-@eq-dde-problem-autonomous]), ODE numerical integration method $\mathrm{odeSolver}$\
-**Output:** Sequence of $N \letDef k \sum_{i = 1}^m N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
+**Input:** DDE in form ([-@eq-dde-problem-autonomous]), ODE numerical integration method $\mathrm{odeSolver}$, number of extensions $k \in \N$ of interval $[-\tau, 0]$ by $\tau$\
+**Output:** Sequence of $N \letDef k \sum_{i = 1}^H N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
 **begin** \
 &emsp;&emsp;set $\vi \xi \gets \vi \phi$ and $s \gets \sigma$; \
-&emsp;&emsp;define $A_{x,y} = (x - 1) N_{\tau} + \sum_{b = 1}^{y} N_b$ \
+&emsp;&emsp;define $A(u,v) = (u - 1) N_{\tau} + \sum_{b = 1}^{v} N_b$ \
 &emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
-&emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $m$ **do** \
+&emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $H$ **do** \
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; define ODE IVP by $\vi y(s) = \vi \xi(s)$ and
 $$
-\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_m));
+\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_H));
 $$ {#eq-method-of-steps-intermediate}
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A_{i, j - 1}} {A_{i,j}}$; \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A(i, j - 1)} {A(i,j)}$; \
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) \gets \lcases{
 	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
 	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j}$ \

@@ -68,9 +68,9 @@ It is easy to see that if the equilibrium $\vi x^*$ is stable, one can integrate
 $$
 \lim_{t \to \infty} \norm{\vi \evolOp(t, \vi x) - \vi x^*} = 0
 $$
-by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e. *repelling* from all directions), we can simply reverse time (as we are in the ODE case) and repeat the procedure.
+by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e. *repelling* from all directions), we can simply reverse time (as we are in the *ODE* case) and repeat the procedure^[Note that this behavior is *local* and global properties are often more complicated, which is even more prevalent in higher dimensions.].
 
-Nonetheless, in general, this approach will not work, as equilibria are often neither stable nor repelling. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{(i)}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
+Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{(i)}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
 
 Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e. how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
 $$
@@ -101,7 +101,7 @@ Recall there is always a trivial multiplier $\mu_1 = 1$. Also, if $\absval{\mu_i
 
 If the system features a stable limit cycle $L_0$, then we can find it again by numerical integration from a point in its basin of attraction. In contrast to the case of equilibria, backward-time numerical integration will not, in general, help us find a repelling periodic orbit. 
 
-Suppose we have a system in 2-dimensional state space, which possesses a periodic orbit, see @fig-2d-periodic-orbit. From the theory of differential equations, we know that in the case of an autonomous ODE ([-@eq-autonomous-ode-system]) its trajectories do not intersect. Thus a periodic orbit $L_0$ constitutes a Jordan curve^[By ([-@eq-autonomous-ode-system]) and the periodicity constraint, there exists a map $\vi \phi(t) = \evolOp(t, \vi x(t))$ such that it maps the interval $[t_0, t_0 + T_0]$ onto the cycle $L_0$ and is surely continuous by @def-dynamical-system and @def-autonomous-ode-system for sufficiently smooth $\vi f$ (otherwise $\vi f$ would not give rise to a dynamical system in the first place). Moreover, $\vi \phi(t)$ is injective on $[t_0, t_0 + T_0)$ as there can be no intersections. In total, $L_0 = \vi \phi([t_0, t_0 + T_0])$ is a Jordan curve.]. Then by Jordan curve theorem, see @wikiJordanCurve, such orbit partitions the state space into inside and outside of the cycle (and the cycle itself)^[In practice, it suffices to consider a sufficiently large connected region containing the cycle instead of the entire state space]. Thus if $L_0$ is repelling, trajectories are guaranteed to converge to $L_0$ backward in time.
+Suppose we have a system in *2-dimensional* state space, which possesses a periodic orbit, see @fig-2d-periodic-orbit. From the theory of differential equations, we know that in the case of an autonomous ODE ([-@eq-autonomous-ode-system]) its trajectories do not intersect. Thus a periodic orbit $L_0$ constitutes a Jordan curve^[By ([-@eq-autonomous-ode-system]) and the periodicity constraint, there exists a map $\vi \phi(t) = \evolOp(t, \vi x(t))$ such that it maps the interval $[t_0, t_0 + T_0]$ onto the cycle $L_0$ and is surely continuous by @def-dynamical-system and @def-autonomous-ode-system for sufficiently smooth $\vi f$ (otherwise $\vi f$ would not give rise to a dynamical system in the first place). Moreover, $\vi \phi(t)$ is injective on $[t_0, t_0 + T_0)$ as there can be no intersections. In total, $L_0 = \vi \phi([t_0, t_0 + T_0])$ is a Jordan curve.]. Then by Jordan curve theorem, see @wikiJordanCurve, such orbit partitions the state space into inside and outside of the cycle (and the cycle itself)^[In practice, it suffices to consider a sufficiently large connected region containing the cycle instead of the entire state space]. Thus if $L_0$ is repelling, trajectories are guaranteed to converge to $L_0$ backward in time.
 
 ![Unstable periodic orbit $L_0$ of a 2-dimensional dynamical system.](diagrams/2D-state-space-periodic-orbit.drawio.svg){#fig-2d-periodic-orbit .final}
 
@@ -350,8 +350,7 @@ $$
 	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl
 }},
 $$ {#eq-ode-collocation-jacobian}
-where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see TODO, we will get a fully determined system. 
-<!-- TODO: Add continuation ref -->
+where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see @sec-continuation, we will get a fully determined system. 
 
 The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e. $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
 $$
@@ -416,6 +415,88 @@ $$
 \vi u(1) = \vi \Phi(1) \vi \Phi(0)\Inv \vi u(0).
 $$
 Thus, using $\vi \Phi(0) = \ident_n$ from ([-@eq-monodromy-system-normalized]), $- \vi P_1\Inv \vi P_0 \approx \vi \Phi(1) = \vi M(T_0)$ for the monodromy matrix $\vi M(T_0)$ corresponding to the cycle $L_0$ of ([-@eq-autonomous-ode-system]). Computing the eigenvalues of $- \vi P_1\Inv \vi P_0$ then estimates the multipliers of the cycle $L_0$, which determine its stability.
+
+### Semidynamical Systems
+
+Now we shall turn our attention to semidynamical systems induced by DDEs. Throughout this section, we will assume the DDE of the form ([-@eq-dde-problem-autonomous]), 
+$$
+\dvi x(t) = \vi f(\vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_H)),
+$$
+together with $0 = \tau_0 < \tau_1 < \dots < \tau_H = \tau$. Although for the purposes of continuation, a dependence of $\vi f$ on some parameter $\alpha \in \R$ is assumed, here we consider $\alpha$ fixed and omit it from the notation. Let us note this section is primarily based on @Roose2007 and @Sieber2014.
+
+#### Equilibrium Localization {#sec-dde-equilibrium-localization}
+
+The techniques of equilibrium localization for DDEs do not differ much from the ODE case. Indeed, assume we are trying to find a stable equilibrium. By time integration, see @sec-method-of-steps and @alg-method-of-steps, we can get to a point $\vi x_t$ in a close neighborhood of the steady state solution. Then, we can apply the Newton-Raphson method, see @sec-newton-method, to the $n$-dimensional system
+$$
+\vi f(\vi x^i, \dots, \vi x^i) = \vi 0,
+$$ {#eq-dde-equilibrium-newton}
+where we use $\vi x^0 = \vi x_t(0)$ as the initial approximation. The iterations of the Newton-Raphson method $\vi x^i$ converge to the steady state $\vi x^*$ for $\vi x^0$ sufficiently close to $\vi x^*$. Naturally, this process can be performed with free parameter $\alpha$ to obtain the continuation curve of the equilibrium by considering ([-@eq-dde-equilibrium-newton]) along with a constraint given by the continuation method, see @sec-continuation.
+
+Suppose again we have found $\vi x^*$ with desired accuracy and that our goal is now to determine its stability. It can be shown that stability of $\vi x^*$ follows stability of (the zero solutions of) the linearized equation, see ([-@eq-dde-linearization]),
+$$
+\dvi x(t) = \sum_{i = 0}^H \jacobi_{\tau_i} \vi f^* \vi x(t - \tau_i),
+$$ {#eq-linearized-dde}
+where $\jacobi_{\tau_i} \vi f^* = \jacobi_{\tau_i} \vi f(\vi x^*, \dots, \vi x^*)$. Moreover, the linearized equation ([-@eq-linearized-dde]) is *asymptotically* stable if all roots $\lmbd \in \C$ of the corresponding *characteristic equation*
+$$
+\det\brackets{\lmbd \ident - \jacobi_{\tau_0} \vi f^* - \sum_{i = 1}^H \jacobi_{\tau_i} \vi f^*} = 0
+$$ {#eq-linearized-dde-character-eq}
+lie in the open left half-plane, i.e. $\ReOf{\lmbd} < 0$, see @Hale1993. Unfortunately, the equation ([-@eq-linearized-dde-character-eq]) has *infinitely many* roots. However, only *finitely many* roots have a real part larger than a give threshold. Thus, to study the stability of $\vi x^*$ it suffices to calculate only *stability-determining* roots $\lmbd \in \C$, which are roots satisfying $\ReOf{\lmbd} \geq r$ for a given threshold $r < 0$ close to zero.
+
+Although analytical conditions for the stability do exist (and are derived by techniques from complex analysis), we shall omit their theoretical derivation to maintain a focused and concise scope. Recently, there have been a development in numerical methods to approximate the stability-determining (i.e. right-most) characteristic roots of ([-@eq-linearized-dde-character-eq]) using either a discretized *solution* operator $\solOp(t)$ of ([-@eq-linearized-dde]), see @sec-dde-stability and @def-dde-solution-oper, or a discretized *infinitesimal* generator $\infGen$ of the semigroup of the solution operator of ([-@eq-linearized-dde]), see @nte-infinitesimal-generator.
+
+The solution operator $\solOp(t)$ has eigenvalues $\mu(t)$, which are related to the roots of the characteristic equation by $\mu(t) = e^{\lmbd t}$, see @Roose2007. Obviously, to determine the stability of $\vi x^*$, we are interested in the dominant eigenvalues. Moreover, it follows that for $t$ large, the eigenvalues $\mu(t)$ are well separated, which we can exploit in the computation. Below, we describe an algorithm to compute the dominant eigenvalues of $\solOp(\diff t)$, where $\diff t$ is the time-step of a linear multistep (LMS) method.
+
+::: {.callout-note #nte-infinitesimal-generator}
+In @sec-dde-stability, we have discussed that $\solOp(t)$ is a one-parameter *strongly continuous semigroup*, see @Roose2007. One can thus define the *infinitesimal generator* $\infGen$ of $\set{\solOp(t)}$, see @Curtain1995, by
+$$
+\infGen \vi \phi = \lim_{t \to 0^+} \frac {\solOp(t)\vi \phi - \vi \phi} t.
+$$
+In particular, for the linearized equation ([-@eq-linearized-dde]), the infinitesimal generator becomes
+$$
+\begin{gathered}
+	\infGen \vi x(\tht) = \dvi x(\tht),\\
+	\vi x \in \domain \infGen \letDef \set{\vi x \in \contStateSpace \divider \dvi x \in \contStateSpace \; \& \; \dvi x(0) = \sum_{i = 0}^H \jacobi_{\tau_i} \vi f^* \vi x(-\tau_i)}.
+\end{gathered}
+$$
+Note that some algorithms for computation of stability of an equilibrium use a discretized infinitesimal generator instead of the solution operator.
+:::
+
+When discretized, either of the discussed operators results in some matrix, for which we need to compute its eigenvalues. Therefore, it is our key concern that this matrix is small or its dominant eigenvalues can be computed efficiently by using an iterative scheme, such as subspace iteration.
+
+A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007 and @Sieber2014, and relies on the linear multistep method^[LMS methods are used for numerically integrating ODEs by dependence on previously evaluated points and as such can be paired with method of steps, see @alg-method-of-steps, for DDEs. However, LMS method can also be rewritten for DDEs directly, which gives a much nicer formulation.].
+
+Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x_i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for DDEs with step-length $h$ may be written as
+$$
+\sum_{i = 0}^k \alpha_i \vi x_i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* t_i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
+$$ {#eq-dde-lms}
+where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ (when $(t_i - \tau_j) \notin \set{t_i}_{i = 1}^k$) are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively. To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
+
+Clearly, the discretization of the operator $\solOp(h)$ itself is given by the linear map from $[\vi x_l, \dots, \vi x_{k-1}]\Tr$ to $[\vi x_{l+1}, \dots, \vi x_k]\Tr$, where $l = - s_- - \ceil{\tau/h}$ and where the mapping is prescribed by ([-@eq-dde-lms]). This procedure results in a $N \times N$ matrix approximation of the operator $\solOp(h)$, where
+$$
+N = n(-l + k) \approx n\tau/h.
+$$ {#eq-dde-lms-dimension}
+Unfortunately, due to our choice of approximation and discretization of the solution operator $\solOp(h)$ at the step-length $h$, which is typically rather small, the eigenvalues $\mu(h)$ of $\solOp(h)$ are not well separated. Nonetheless, we can compute them using the QR method with computational cost $O(N^3)$, from which we can derive the roots of the characteristic equation. Moreover, there have been derived conditions on the step-length $h$, such that all characteristic roots $\lmbd$ with $\ReOf{\lmbd} \geq r$ for some threshold $r < 0$ are approximated sufficiently accurately, see @Engelborghs2002a.
+
+::: {.callout-note #nte-runge-kutta-discretization}
+Let us note a discretization induced by Runge-Kutta numerical integrator can also be used, albeit it is less frequent in practice. We refer the interested reader to @Breda2006a.
+:::
+
+#### Periodic Orbit Localization
+
+TODO, see @Roose2007, @Fairgrieve1991, @Sieber2014, @Engelborghs2001, @Verheyden2005
+Possibly also @Breda2006 and more
+
+## Continuation {#sec-continuation}
+
+TODO, @Kuznetsov2023
+
+### Pseudo-arclength Continuation
+
+TODO
+
+### Moore-Penrose Continuation
+
+TODO
 
 <!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
 <!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
