@@ -39,7 +39,7 @@ CairoMakie.activate!()
 ```
 :::
 
-# Bifurcation Theory Approach
+# Bifurcation Theory Approach {#sec-bifurcation-approach}
 
 As we have mentioned several times before, the fundamental goal of this thesis is to study the computational aspects of continuation/detection of stable and unstable manifolds of periodic orbits (and what challenges come with it). As such, we shall properly discuss what a continuation is and how we compute it. We begin with a theoretical treatment of bifurcation theory, focused solely on cycle continuation and stability identification, followed by original results concerning coupled models of neurons. The theoretical introduction is mainly based on @Kuznetsov2023, @Guo2013, and @Smith2010, but many more related articles are cited throughout the discussion.
 
@@ -54,7 +54,7 @@ Although the primary subjects of our study are periodic orbits, we will first de
 
 #### Equilibrium Localization
 
-To start relatively simple, consider a continuous-time dynamical system induced by an autonomous ODE of form ([-@eq-autonomous-ode-system]), i.e.
+To start relatively simple, consider a continuous-time dynamical system induced by an autonomous ODE of form ([-@eq-autonomous-ode-system]), i.e.,
 $$
 \dvi x = \vi f(\vi x), \; \vi x \in \R^n.
 $$
@@ -68,11 +68,11 @@ It is easy to see that if the equilibrium $\vi x^*$ is stable, one can integrate
 $$
 \lim_{t \to \infty} \norm{\vi \evolOp(t, \vi x) - \vi x^*} = 0
 $$
-by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e. *repelling* from all directions), we can simply reverse time (as we are in the *ODE* case) and repeat the procedure^[Note that this behavior is *local* and global properties are often more complicated, which is even more prevalent in higher dimensions.].
+by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e., *repelling* from all directions), we can simply reverse time (as we are in the *ODE* case) and repeat the procedure^[Note that this behavior is *local* and global properties are often more complicated, which is even more prevalent in higher dimensions.].
 
 Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{(i)}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
 
-Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e. how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
+Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e., how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
 $$
 p(\lmbd) = \det (\Jacobi^* - \lmbd \ident).
 $$
@@ -190,7 +190,7 @@ such that $\norm{\vi p_0}_2 = \norm{\vi q_0}_2 = 1$. Also, $\vi q_0 = c_0 \vi f(
 	&= \vi 0.
 \end{align*} 
 
-As we have mentioned, the workflow for localization of a periodic orbit is to start from an initial guess $(\vi u, T)$, which we correct by $(\vi w, S) \in \contf {[0,1], \R^n} {1} \times \R$, i.e. 
+As we have mentioned, the workflow for localization of a periodic orbit is to start from an initial guess $(\vi u, T)$, which we correct by $(\vi w, S) \in \contf {[0,1], \R^n} {1} \times \R$, i.e.,
 $$
 (\vi u, T) \mapsto (\vi u + \vi w, T + S),
 $$
@@ -212,7 +212,7 @@ $$
 	\vi w \\ S
 },
 $$
-where $\oper{\jacobi}$ denotes the differentiation operator, $\evalOp{a}$ is the evaluation operator at $t = a$, i.e. $\evalOp{a} \vi w = \vi w(a)$, and
+where $\oper{\jacobi}$ denotes the differentiation operator, $\evalOp{a}$ is the evaluation operator at $t = a$, i.e., $\evalOp{a} \vi w = \vi w(a)$, and
 $$
 \testInt{\dvi v} \vi w = \int_0^1 \scal{\dvi v(\sigma)} {\vi w(\sigma)} \dd \sigma.
 $$
@@ -263,9 +263,9 @@ $$
 $$ {#eq-ode-continuation-operator}
 which then has a one-dimensional null-space for a simple cycle $\vi u$.
 
-To solve ([-@eq-ode-cycle-bvp]) (or ([-@eq-ode-continuation-bvp])) numerically, we have to reduce it to a finite-dimensional problem (as opposed to searching in the infinite-dimensional space of periodic functions $\vi u$), i.e. we need to choose a *discretization*. Although shooting, multiple shooting and finite differences are sometimes used, most common and most capable is the method of *orthogonal collocation*.
+To solve ([-@eq-ode-cycle-bvp]) (or ([-@eq-ode-continuation-bvp])) numerically, we have to reduce it to a finite-dimensional problem (as opposed to searching in the infinite-dimensional space of periodic functions $\vi u$), that is, we need to choose a *discretization*. Although shooting, multiple shooting and finite differences are sometimes used, most common and most capable is the method of *orthogonal collocation*.
 
-Consider for simplicity the BVP ([-@eq-ode-cycle-bvp]). We shall introduce a partitioning of the interval $[0,1]$ by $N - 1$ mesh points, i.e.
+Consider for simplicity the BVP ([-@eq-ode-cycle-bvp]). We shall introduce a partitioning of the interval $[0,1]$ by $N - 1$ mesh points, i.e.,
 $$
 0 = s_0 < s_1 < \dots < s_N = 1.
 $$
@@ -281,7 +281,7 @@ for $i = 1, \dots, m$, $j = 0,1,\dots, N-1$. To put it another way, we are tryin
 $$
 \vi u^{j,k} = \vi u^{(j)}(s_{j,k}) \in \R^n, \; k = 0, 1, \dots, m,
 $$
-where $s_{j,k}$ are *representation points*^[Throughout the discussion of orthogonal collocation, we will use both *collocation* and *representation* points, which do not (in general) coincide.], i.e. nodes of equidistant partitioning of the interval
+where $s_{j,k}$ are *representation points*^[Throughout the discussion of orthogonal collocation, we will use both *collocation* and *representation* points, which do not (in general) coincide.], i.e., nodes of equidistant partitioning of the interval
 $$
 s_j = s_{j,0} < s_{j,1} < \dots < s_{j,m-1} < s_{j,m} = s_{j+1},
 $$
@@ -328,7 +328,7 @@ $$
 $$
 where $h = \max_{0 \leq j \leq N-1} (s_{j+1} - s_j)$.
 
-Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e. the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet included (and therefore it can, in theory, depend on all variables).]
+Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e., the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet included (and therefore it can, in theory, depend on all variables).]
 $$
 {\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
@@ -352,7 +352,7 @@ $$
 $$ {#eq-ode-collocation-jacobian}
 where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see @sec-continuation, we will get a fully determined system. 
 
-The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e. $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
+The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e., $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
 $$
 {\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
@@ -406,7 +406,7 @@ Furthermore, we denote by $\vi P_0$ the matrix block marked by $\ast$ sings and 
 $$
 \jacobi \vi H(\vi X_c) \cdot \brackets{\set{\vi u^{j,k}}, 0, 0}\Tr = \vi 0 \implies \vi P_0 \vi u(0) + \vi P_1 \vi u(1) = \vi 0.
 $$
-A careful reader might notice that $\vi P_0$ and $\vi P_1$ belong to the linearized equation ([-@eq-collocation-spline-requirements]), i.e. by ([-@eq-monodromy-system-normalized]) the equality
+A careful reader might notice that $\vi P_0$ and $\vi P_1$ belong to the linearized equation ([-@eq-collocation-spline-requirements]), i.e., by ([-@eq-monodromy-system-normalized]) the equality
 $$
 \vi u(1) = - \vi P_1\Inv \vi P_0 \vi u(0)
 $$ {#eq-ode-collocation-monodromy-approx}
@@ -440,9 +440,9 @@ where $\jacobi_{\tau_i} \vi f^* = \jacobi_{\tau_i} \vi f(\vi x^*, \dots, \vi x^*
 $$
 \det\brackets{\lmbd \ident - \jacobi_{\tau_0} \vi f^* - \sum_{i = 1}^H \jacobi_{\tau_i} \vi f^*} = 0
 $$ {#eq-linearized-dde-character-eq}
-lie in the open left half-plane, i.e. $\ReOf{\lmbd} < 0$, see @Hale1993. Unfortunately, the equation ([-@eq-linearized-dde-character-eq]) has *infinitely many* roots. However, only *finitely many* roots have a real part larger than a give threshold. Thus, to study the stability of $\vi x^*$ it suffices to calculate only *stability-determining* roots $\lmbd \in \C$, which are roots satisfying $\ReOf{\lmbd} \geq r$ for a given threshold $r < 0$ close to zero.
+lie in the open left half-plane, i.e., $\ReOf{\lmbd} < 0$, see @Hale1993. Unfortunately, the equation ([-@eq-linearized-dde-character-eq]) has *infinitely many* roots. However, only *finitely many* roots have a real part larger than a give threshold. Thus, to study the stability of $\vi x^*$ it suffices to calculate only *stability-determining* roots $\lmbd \in \C$, which are roots satisfying $\ReOf{\lmbd} \geq r$ for a given threshold $r < 0$ close to zero.
 
-Although analytical conditions for the stability do exist (and are derived by techniques from complex analysis), we shall omit their theoretical derivation to maintain a focused and concise scope. Recently, there have been a development in numerical methods to approximate the stability-determining (i.e. right-most) characteristic roots of ([-@eq-linearized-dde-character-eq]) using either a discretized *solution* operator $\solOp(t)$ of ([-@eq-linearized-dde]), see @sec-dde-stability and @def-dde-solution-oper, or a discretized *infinitesimal* generator $\infGen$ of the semigroup of the solution operator of ([-@eq-linearized-dde]), see @nte-infinitesimal-generator.
+Although analytical conditions for the stability do exist (and are derived by techniques from complex analysis), we shall omit their theoretical derivation to maintain a focused and concise scope. Recently, there have been a development in numerical methods to approximate the stability-determining (i.e., right-most) characteristic roots of ([-@eq-linearized-dde-character-eq]) using either a discretized *solution* operator $\solOp(t)$ of ([-@eq-linearized-dde]), see @sec-dde-stability and @def-dde-solution-oper, or a discretized *infinitesimal* generator $\infGen$ of the semigroup of the solution operator of ([-@eq-linearized-dde]), see @nte-infinitesimal-generator.
 
 The solution operator $\solOp(t)$ has eigenvalues $\mu(t)$, which are related to the roots of the characteristic equation by $\mu(t) = e^{\lmbd t}$, see @Roose2007. Obviously, to determine the stability of $\vi x^*$, we are interested in the dominant eigenvalues. Moreover, it follows that for $t$ large, the eigenvalues $\mu(t)$ are well separated, which we can exploit in the computation. Below, we describe an algorithm to compute the dominant eigenvalues of $\solOp(\diff t)$, where $\diff t$ is the time-step of a linear multistep (LMS) method.
 
@@ -501,6 +501,11 @@ TODO
 ### Moore-Penrose Continuation
 
 TODO
+
+## Cycle Continuation in Coupled Oscillators
+
+<!-- TODO: Add ref to the previous section -->
+As we have discussed in the previous section, see TODO, consider again the symmetrically coupled oscillators. This subsection is almost singularly based on @Zathurecky2025, which I am a co-author of.
 
 <!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
 <!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->

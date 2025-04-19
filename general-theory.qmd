@@ -65,7 +65,7 @@ projecting a state $x$ from time $s$ to time $t$, which satisfies
 If $(\timeSet, +)$ is a group, we will speak of an **invertible dynamical system**.
 :::
 
-For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e. $a + x = b + x \implies a = b$ for each $a,b,x \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
+For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e., $a + x = b + x \implies a = b$ for each $a,b,x \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
 
 :::{#def-autonomous-dynamical-system}
 **Autonomous dynamical system** is a dynamical system such that the *autonomous property*,
@@ -82,7 +82,7 @@ In the case of @def-autonomous-dynamical-system, we can always vanish the starti
 $$
 \evolOp(t, \evolOp(s, x)) = \evolOp(t + s, x) \; \forall x \in \stateSpace, \forall t,s \in \timeSet,
 $$
-i.e. the map $\evolOp$ is a (left) monoid action of $(\timeSet, +)$ on $\stateSpace$. The operator $\evolOp$ is typically called *flow* of the dynamical system.
+i.e., the map $\evolOp$ is a (left) monoid action of $(\timeSet, +)$ on $\stateSpace$. The operator $\evolOp$ is typically called *flow* of the dynamical system.
 :::
 
 In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly interval between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
@@ -292,7 +292,7 @@ $$ {#eq-linearization}
 See @Chicone2006, page 306, or @Perko2001, page 120.
 :::
 
-This theorem is very prominently used in conjunction with *linear* continuous-time dynamical systems, i.e.
+This theorem is very prominently used in conjunction with *linear* continuous-time dynamical systems, i.e.,
 $$
 \dvi y = \vi A \vi y,
 $$
@@ -300,7 +300,7 @@ where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi 
 
 - *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
 - *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
-- *center subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e. eigenvalues with zero real part.
+- *center subspace* $\obj{E}^c = \Span{\vi w^1, \dots, \vi w^{n_0}}$ of dimension $n_{0}$, where $\vi w^1, \dots, \vi w^{n_0}$ are the eigenvectors of $\vi A$ corresponding to *strictly imaginary* eigenvalues, i.e., eigenvalues with zero real part.
 
 Then it holds that $n_{-} + n_{+} + n_0 = n$. Similarly, for linear discrete-time dynamical systems, one can perform an equivalent partitioning, such that $\obj{E}^s$ is spanned by eigenvectors corresponding to eigenvalues *lying inside the unit circle* (on the imaginary plane), see @thm-grobman-hartman-discrete below. Furthermore, $\obj{E}^u$ and $\obj{E}^c$ can be defined for discrete-time dynamical systems analogously.
 
@@ -328,7 +328,7 @@ Moreover, the function $V$ is called *strictly Lyapunov* if $V \circ \vi \vf(t; 
 ::: {.callout-note #nte-lyapunov-function}
 ##### Monotonicity of $V \circ \vi \vf(t; \vi x_0)$
 
-Equivalently to requiring a non-increasing $V \circ \vi \vf(t; \vi x_0)$, one can instead demand the *derivatives with respect to the trajectories* of $V$, i.e. $\dot V(\vi x(t))$, to be non-positive. In other words, the *derivative w.r.t. the trajectories* $\dot V$ must be *locally negative semi-definite*.
+Equivalently to requiring a non-increasing $V \circ \vi \vf(t; \vi x_0)$, one can instead demand the *derivatives with respect to the trajectories* of $V$, i.e., $\dot V(\vi x(t))$, to be non-positive. In other words, the *derivative w.r.t. the trajectories* $\dot V$ must be *locally negative semi-definite*.
 :::
 
 :::{#thm-lyapunov-stability-theorem}
@@ -396,7 +396,7 @@ $$
 $$
 Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda_1 + \lambda_2$  is the trace of the  determinant and finally, $\det \Jacobi^* = \lambda_1 \lambda_2$ denotes the determinant of $\Jacobi^*$.
 
-By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e. the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
+By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e., the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
 
 A fixed point is classified as a *sink*, when both eigenvalues are real and stable. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex. Should one eigenvalue be stable and the other unstable, the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
 
@@ -485,7 +485,7 @@ where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a perio
 
 ![Poincaré map corresponding to the system ([-@eq-poincare-map-system]), the cycle $L_0$ and its point $\vi x_0$.](diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
 
-The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e. the cross-section hypersurface $\crossSection$ is of "codimension" one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to the through-going trajectories, thus the trajectories truly intersect the cross-section $\crossSection$.
+The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of "codimension" one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to the through-going trajectories, thus the trajectories truly intersect the cross-section $\crossSection$.
 
 Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depend smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
 $$
@@ -498,7 +498,7 @@ $$
 The map $\vi P$ defined above is called a *Poincaré map* associated with the cycle $L_0$.
 :::
 
-Similarly, we can characterize the Poincaré map $\vi P$ using a local coordinates $\vi \xi = (\xi_1, \dots, \xi_{n - 1})$ on $\crossSection$, such that the choice $\vi \xi = \vi 0$ corresponds to $\vi x_0$. Then the Poincaré map can be locally defined as a function $\vi P: \R^{n - 1} \to \R^{n - 1}$, which maps $\vi \xi$ corresponding to $\vi x$ to $\tilde{\vi \xi}$ corresponding to $\tilde {\vi x}$, i.e.
+Similarly, we can characterize the Poincaré map $\vi P$ using a local coordinates $\vi \xi = (\xi_1, \dots, \xi_{n - 1})$ on $\crossSection$, such that the choice $\vi \xi = \vi 0$ corresponds to $\vi x_0$. Then the Poincaré map can be locally defined as a function $\vi P: \R^{n - 1} \to \R^{n - 1}$, which maps $\vi \xi$ corresponding to $\vi x$ to $\tilde{\vi \xi}$ corresponding to $\tilde {\vi x}$, i.e.,
 $$
 \vi P(\vi \xi) = \tilde{\vi \xi}.
 $$
@@ -517,7 +517,7 @@ The multipliers $\mu_1, \dots, \mu_{n - 1}$ of the Jacobian matrix $\Jacobi_{\vi
 See @Kuznetsov2023, page 27.
 :::
 
-Consider now the cycle $L_0$ and let $\vi x^0(t)$ denote its corresponding periodic solution of ([-@eq-poincare-map-system]) with the period $T_0$, i.e. $\vi x^0(t + T_0) = \vi x^0(t)$. Then any solution $\vi x(t)$ of ([-@eq-poincare-map-system]) can be written as
+Consider now the cycle $L_0$ and let $\vi x^0(t)$ denote its corresponding periodic solution of ([-@eq-poincare-map-system]) with the period $T_0$, i.e., $\vi x^0(t + T_0) = \vi x^0(t)$. Then any solution $\vi x(t)$ of ([-@eq-poincare-map-system]) can be written as
 $$
 \vi x(t) = \vi x^0(t) + \vi u(t),
 $$
@@ -563,7 +563,7 @@ See @Kuznetsov2023, page 30, for a sketch of the proof.
 
 ### Stochastic Dynamical Systems {#sec-stochastic-dyn-systems}
 
-So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e. the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
+So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e., the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
 
 Let us first introduce necessary theory of stochastic analysis.
 
@@ -650,7 +650,7 @@ where $\rnd U(t, \omega), \rnd V(t, \omega)$ are random processes satisfying cer
 
 ## Dynamical Systems with Delays {#sec-dynamical-systems-delays}
 
-To understand how delays influence dynamical systems and define a *semidynamical system*, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e. some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
+To understand how delays influence dynamical systems and define a *semidynamical system*, we have to generalize our notion of a differential equation. This modification will rely on introducing a deviating argument, i.e., some of the derivatives of the differential equation will be evaluated at different argument values. This section will be primarily sourced from @Hale1977, @Hale1993, @Kolmanovskii1992, @Diekmann1995, @Smith2010, and @Guo2013.
 
 ### Functional Differential Equations
 
@@ -704,7 +704,7 @@ From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ a
 $$
 \dot y(t) = f(t, y(t), x(t - r)), \; y(s+r) = x(s+r), \; s+r \leq t \leq s+2r.
 $$
-Just as before, from continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e. repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
+Just as before, from continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
 
 :::{#thm-1d-single-delay-method-of-steps}
 ##### Single-delay method of steps on $\R$
@@ -720,7 +720,7 @@ A careful reader might notice that @thm-1d-single-delay-method-of-steps guarante
 
 From the uniqueness follows that for two solutions $x(t)$ on $[s-r, \sigma\rco$ and $\hat x(t)$ on $[s-r, \rho\rco$, the equality $x(t) = \hat x(t)$ must hold for all $t$, such that both sides of the equality are defined. Moreover, if $[s-r, \sigma\rco \subset [s-r, \rho\rco$, then $\hat x$ is called an *extension* of $x$ and we write $x \subset \hat x$.
 
-One can prove there exists a *unique* maximally defined solution, i.e. one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it could be extended to a larger interval, which contradicts non-extendability of $x$.
+One can prove there exists a *unique* maximally defined solution, i.e., one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it could be extended to a larger interval, which contradicts non-extendability of $x$.
 
 :::{#thm-dde-finite-time-blow-up}
 ##### Finite-time blow-up
@@ -776,7 +776,7 @@ $$
 	\vi x_{\sigma} &= \vi \phi,
 \end{aligned}
 $$ {#eq-dde-problem-autonomous}
-where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e. the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness sake, we also add that general RFDE initial-value problem reads as follows
+where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e., the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness sake, we also add that general RFDE initial-value problem reads as follows
 $$
 \begin{aligned}
 	\dvi x(t) &= \vi F(t, \vi x_t), \\
@@ -788,7 +788,7 @@ Last, but not least, we shall denote by
 $$
 \jacobi_{\vi \tau_i} \vi f = \partialOp{\vi \xi_{i}} \vi f(t, \overbrace{\vi x(t - \tau)}^{\vi \xi_0}, \overbrace{\vi x(t - \tau_1)}^{\vi \xi_1}, \dots, \overbrace{\vi x(t - \tau_H)}^{\vi \xi_H})
 $$
-the Jacobian matrix of $\vi f$ corresponding to the $i$-th delayed state input. In other words, we may write the linearization of ([-@eq-dde-problem-autonomous]) around equilibrium $\vi x^*$, i.e. $\vi f(\vi x^*, \dots, \vi x^*) = \vi 0$, as
+the Jacobian matrix of $\vi f$ corresponding to the $i$-th delayed state input. In other words, we may write the linearization of ([-@eq-dde-problem-autonomous]) around equilibrium $\vi x^*$, i.e., $\vi f(\vi x^*, \dots, \vi x^*) = \vi 0$, as
 $$
 \vi f(\vi x(t)) \approx \vi f(\vi x^*, \dots, \vi x^*) + \sum_{i = 0}^H \jacobi_{\vi \tau_i} \vi f(\vi x^*, \dots, \vi x^*) \vi x(t - \tau_i),
 $$ {#eq-dde-linearization}
@@ -864,7 +864,7 @@ thus $\set{\solOp(t)}$, $t \geq 0$, is a *strongly continuous semigroup of trans
 
 ### Semidynamical Systems Induced by Delay Differential Equations {#sec-semidyn-sys-induced-by-dde}
 
-So far, we have only seen examples of *continuous-time* dynamical systems, which have inherently been symmetric in time, i.e. *invertible*. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced continuous-time dynamical system,
+So far, we have only seen examples of *continuous-time* dynamical systems, which have inherently been symmetric in time, i.e., *invertible*. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced continuous-time dynamical system,
 $$
 \dvi x(t) = \vi f(t, \vi x), \; \vi x(s) = \vi x_0.
 $$
@@ -919,7 +919,7 @@ See @Smith2010, page 65.
 
 As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, Newton-Raphson method will be discussed.
 
-### Numerical integration of ODEs
+### Numerical integration of ODEs {#sec-integrating-odes}
 
 Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
 
@@ -970,7 +970,7 @@ By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for Euler method
 $$
 \locTrErr_k = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \vi F(t_k, \vi x(t_k)) \implies \locTrErr_k = O(\diff t_{k+1}^2).
 $$
-We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e. Euler method is first order.
+We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., Euler method is first order.
 
 This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step -- this way, we obtain so called **Runge-Kutta** methods.
 
@@ -1013,7 +1013,7 @@ $$
 \end{aligned}
 $$ {#eq-runge-kutta-order-condition-4-stage}
 
-In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e. $\locTrErr_i = O(\diff_i t^5)$. Typically, *"the Runge-Kutta"* method is used:
+In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e., $\locTrErr_i = O(\diff_i t^5)$. Typically, *"the Runge-Kutta"* method is used:
 $$
 \rcases{
 	\vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
@@ -1025,7 +1025,7 @@ $$ {#eq-runge-kutta-classical}
 
 Throughout this thesis, we will use solvers available in DifferentiaEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
 
-### Solving DDEs with Method of Steps
+### Solving DDEs with Method of Steps {#sec-integrating-ddes}
 
 As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
 
@@ -1065,7 +1065,7 @@ For a given discretization $t_0 < t_1 < \dots < t_n = T$ of the time interval $[
 $$
 \rY_{n+1} = \rY_n + a(t_n, \rY_n) (t_{n+1} - t_n) + b(t_n, \rY_n)(\rW(t_{n+1}) - \rW(t_n))
 $$ {#eq-em-iteration-long}
-for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall using equidistant discretization, i.e. $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
+for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall using equidistant discretization, i.e., $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
 $$
 \diff \rW_n \sim \normalD{0, \diff t_n} \quad \& \quad \diff \rW \sim \normalD{0, \diff t}.
 $$
@@ -1137,7 +1137,7 @@ Consider now $N = 2k$, $k \in \N$, choose $\delta \in (0, \frac{b - a} 2]$ suffi
 $$
 x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta \; \& \; x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta
 $$ {#eq-bisection-points}
-for $i = 1, \dots, k$. Now we can examine in which "half" of interval (including the offset $\delta$) the minimum lies, i.e. we evaluate $f(x_i^-), f(x_i^+)$ and adjust the bracket accordingly (by @lem-unimodality)
+for $i = 1, \dots, k$. Now we can examine in which "half" of interval (including the offset $\delta$) the minimum lies, i.e., we evaluate $f(x_i^-), f(x_i^+)$ and adjust the bracket accordingly (by @lem-unimodality)
 
 - $f(x_i^-) < f(x_i^+) \implies [a_i, b_i] = [a_{i - 1}, x_i^+]$;
 - $f(x_i^-) > f(x_i^+) \implies [a_i, b_i] = [x_i^-, b_{i - 1}]$.
@@ -1170,7 +1170,7 @@ denotes the length of the $k$-th bracket. It can be seen that $l_k \to 2 \delta$
 
 #### Golden Section Method
 
-The bisection method we have presented above has one significant flaw. Every iteration, i.e. every bracket improvement, requires two separate evaluations which are, in general, never used again. Thus, the Golden section method was constructed, requiring only a single evaluation.
+The bisection method we have presented above has one significant flaw. Every iteration, i.e., every bracket improvement, requires two separate evaluations which are, in general, never used again. Thus, the Golden section method was constructed, requiring only a single evaluation.
 
 ::: {.callout-tip #tip-golden-ratio}
 ##### Golden ratio
@@ -1229,7 +1229,7 @@ Moreover, notice that
 $$
 \frac{x_{i+1}^- - a_i} {x_{i+1}^+ - a_i} = \frac {a_i + \delta^2 l_i - a_i} {a_i + \delta l_i - a_i} = \delta = \frac {a_i + \delta l_i - a_i} {l_i} = \frac {x_{i+1}^+ - a_i} {l_i},
 $$
-i.e. we split the interval $[a_i, b_i]$ such that the ratio between the whole $[a_i, b_i]$ and the bigger part $[a_i, x_{i+1}^+]$ is the same as between the smaller part $[a_i, x_{i+1}^-]$ and the bigger part. Rephrasing this ratio equality as (using $\delta^2 = 1 - \delta$)
+i.e., we split the interval $[a_i, b_i]$ such that the ratio between the whole $[a_i, b_i]$ and the bigger part $[a_i, x_{i+1}^+]$ is the same as between the smaller part $[a_i, x_{i+1}^-]$ and the bigger part. Rephrasing this ratio equality as (using $\delta^2 = 1 - \delta$)
 $$
 \begin{aligned}
 \frac 1 {\delta} = \frac{x_{i+1}^+ - a_i} {x_{i+1}^- - a_i} &= \frac {l_i} {x_{i+1}^+ - a_i} \\
@@ -1242,13 +1242,13 @@ $$
 	&= \frac {x_{i-1}^+ - a_i + x_{i-1}^- - a_i} {x_{i+1}^+ - a_i}
 \end{aligned}
 $$ 
-gives us the relation ([-@eq-golden-ratio-frac]) defining the golden ratio, i.e. $\goldRatio = \frac 1 \delta$. In fact, the method bears its name due to this fact. Lastly, see @alg-golden-section-method for implementation.
+gives us the relation ([-@eq-golden-ratio-frac]) defining the golden ratio, i.e., $\goldRatio = \frac 1 \delta$. In fact, the method bears its name due to this fact. Lastly, see @alg-golden-section-method for implementation.
 
 #### Fibonacci method
 
 Let us now approach the problem from a different direction. Given the minimization problem ([-@eq-unimodal-optim-problem]) and maximum evaluations $N$, we want to shrink the initial bracket as much as possible.
 
-Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to a half of the original interval (i.e. shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
+Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to a half of the original interval (i.e., shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
 
 ![Shrinkage by $\ve$-distance between the only two allowed evaluations.](diagrams/2-eval_fibonacci_method.drawio.svg){#fig-2-eval-fibonacci .final}
 
@@ -1299,7 +1299,7 @@ Using vector notation, we can collectively approximate ([-@eq-newton-method-syst
 $$
 \vi F(\vi x^i) + \Jacobi_i (\vi x - \vi x^i) = \vi 0,
 $$ {#eq-newton-method-approx}
-where $\Jacobi_i = \jacobi_{\vi x} \vi F(\vi x^i)$, i.e. $(\Jacobi_i)_{k,j} = \pDeriv {f_k(\vi x^i)}{x_j}$. Certainly a solution to ([-@eq-newton-method-approx]) approximates the true solution to ([-@eq-newton-method-system]). Then, by sequentially approximating the true solution from points getting closer, the approximations also get more accurate. In other words, we can write the following iterative process to finding the true solution (to an arbitrary accuracy)
+where $\Jacobi_i = \jacobi_{\vi x} \vi F(\vi x^i)$, i.e., $(\Jacobi_i)_{k,j} = \pDeriv {f_k(\vi x^i)}{x_j}$. Certainly a solution to ([-@eq-newton-method-approx]) approximates the true solution to ([-@eq-newton-method-system]). Then, by sequentially approximating the true solution from points getting closer, the approximations also get more accurate. In other words, we can write the following iterative process to finding the true solution (to an arbitrary accuracy)
 $$
 \vi x^{i+1} = \vi x^i - \Jacobi_i\Inv \vi F(\vi x^i).
 $$ {#eq-newton-iter}

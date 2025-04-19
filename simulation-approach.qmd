@@ -1,0 +1,127 @@
+---
+engine: julia
+---
+
+:::{.content-visible when-format="pdf"}
+\HeaderNumbered
+:::
+
+
+:::{.hidden}
+{{< include mathematics.qmd >}}
+
+```{julia}
+#| echo: false
+#| output: false
+
+using Pkg
+Pkg.activate(".")
+```
+:::
+
+:::{.content-hidden unless-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using WGLMakie
+WGLMakie.activate!()
+```
+:::
+
+:::{.content-hidden when-format="html"}
+```{julia}
+#| echo: false
+#| output: false
+
+using CairoMakie
+CairoMakie.activate!()
+```
+:::
+
+# Simulation-based Approach {#sec-simulation-approach}
+
+## Problem Formulation {#sec-problem-formulation}
+
+Neuroscience is among the richest applications of mathematics in the current day and age. In neuronal dynamics, synchronization phenomena occurring in networks of individual neurons is of particular importance. These complex patters have been tied to the very fundamental capabilities of the brain, be it information processing, memory encoding, or the generation of rhythmic brain activity, see @Izhikevich2006, @Song2018. 
+
+Although it is likely safe to assume a certain level of robustness of brain functions in regards to anomalies in the synchronization pattern, significant abnormalities in the rhythmic brain activity can be attributed to neurological disorders. The sheer variety of neurological disorders invalidates any sort of comprehensive study in a mere master's thesis, thus we shall only limit ourselves only to focal epilepsy. Let us note that it is still a vast topic in both neurology and applied mathematics and we will only manage to scratch the surface.
+
+From the perspective of neuronal dynamics, these abnormalities (in the case of focal epilepsy) manifest themselves as anomalous synchronization within the neuronal network and can lead to spontaneous seizures, see @Jiruska2013. This type of synchronization is often closely linked to the presence of high-frequency oscillations (HFOs), very-high-frequency oscillations (VHFOs) and ultra-fast oscillators (UFOs) within depth electroencephalographic (EEG) recordings from patients with focal epilepsy. This possible connection between focal points of drug-resistant epilepsy and high-frequency EEG reading in their vicinity has been the cause of significant research interest due to the potential use as biomarkers for epileptogenic zones, see @Jacobs2008, @Jacobs2012, @Worrell2011, @Staba2011, @Brazdil2017, @Cimbalnik2018, @Cimbalnik2020, and @Brazdil2023. Let us note the exact mechanism governing these high frequency oscillations in EEG signals remains unknown, when physiological limitations of action potential firing rates are taken into account, see @Jiruska2017.
+
+Conducted research sheds light on the role of anti-phase synchronization in the mechanism for the emergence of HFOs and VFHOs in epileptic EEG signals, see @Pribylova2024, @Sevcik2024, and @Zathurecky2025. The applied part of this thesis is mainly based on @Zathurecky2025 (the author of this thesis also contributed to the publication), although our focus will be the comparison between bifurcation- and simulation-based approaches to the same problem.
+
+Let us thus consider two weakly coupled oscillators. Most commonly, these will be models of neuron connected by a (possibly delayed) gap-junctional coupling, see TODO. 
+<!-- TODO: Ref mathematical neuroscience chapter -->
+By phase synchronization we understand two (or more) cyclic signals featuring a consistent relationship between their phases. Note that the amplitudes or even frequencies may differs. Understanding of this phenomenon, often called *phase locking* in the context of bifurcation theory, can be aided by examining corresponding *Arnold tongues*, which are regions where a phase synchronization occurs, see @Wiggins2003, @Kuznetsov2023. 
+
+Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must exist a cycle manifold with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator near zero coupling between the two oscillators, such that their phases are synchronized. We shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2024. This will be performed mainly by studying the phase shifts between the two oscillators.
+
+In general, the system of interest takes the following DDE form
+$$
+\begin{aligned}
+	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau)), \\
+	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t)),
+\end{aligned}
+$$ {#eq-general-delayed-coupled-oscillators}
+where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ are parameters influencing oscillation frequencies of the respective models, $\lmbd \in \R^+_0$ the coupling strength and $\vi K$ represent the coupling function.
+
+## Grid-Based Phase-Shift Computation
+
+<!-- TODO: Rename and use the "GridWalker" package -->
+<!-- TODO: Add reference to NeuronToolbox.jl if applicable -->
+<!-- TODO: Add reference to interneuron discussion and coupling discussions -->
+Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 coupled oscillators. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
+$$
+\underbrace{\overbrace{\omega_2^0}^{\omega_-} < \omega_2^1 < \dots < \overbrace{\omega_2^{N_{\Omega}}}^{\omega_+}}_{\Omega},
+$$
+with analogous bounds and discretization chosen for $\lambda$ as well, producing set $\Lambda$ of permissible values for $\lmbd$. Both are most often chosen as equidistant partitions of intervals stemming from respective bounds. We shall denote $\obj M = \Omega \times \Lambda$ the mesh of all possible combinations of $\omega_2^i$ and $\lmbd^i$.
+
+The most straightforward way to determine for which pairs $(\omega_2, \lmbd) \in \obj M$ the coupled system ([-@eq-general-delayed-coupled-oscillators]) features a *stable*^[Note that this method is effectively unable to compute unstable cycle manifolds due to the methodology itself.] anti-phase cycle is to solve the ([-@eq-general-delayed-coupled-oscillators]) forward in time from a fixed initial condition $\vi \phi \in \contStateSpace$ on a fixed time interval $[0, t_{\mathrm{end}}]$.
+
+In case there is no delay in the coupling, i.e. $\tau = 0$, then we can integrate the system forward in time, see @sec-integrating-odes. Similarly, for delayed coupling one can employ the method of steps, which allows for an analogous forward-in-time integration, see @sec-integrating-ddes. Either way, this results in 2 trajectories, both corresponding to evaluations at times $\Seqnc {t^i} {i = 0} N$, namely $\Seqnc {\vi x_1^i} {i = 0} N$ and $\Seqnc {\vi x_2^i} {i = 0} N$, each for one oscillator. Moreover, denote by
+$$
+\Seqnc {\vi \xi^i} {i = 1} N = \Seqnc {\mtr{\vi x_1^i \\ \vi x_2^i}} {i = 0} N
+$$
+the joint trajectory. For simplicity, we shall assume that the time interval is divided equidistantly, i.e. there is a constant time-step $\diff t$.
+
+Now, we face 2 main challenges:
+
+1. How to determine the period $T$ of the coupled system ([-@eq-general-delayed-coupled-oscillators])?
+2. Knowing the period $T$, how to calculate the phase-shift $\beta$ between the oscillators?
+
+### Period Searching {#sec-period-searching}
+
+To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. By choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
+
+Clearly, (local) extrema of the time series $\Seqnc {\xi^i_j} {i = 0} N$ occur when the differences $\Seqnc {\diff \xi^i_j} {i = 1} N$ change sign^[The order determines whether its a local minimum or maximum.]. In other words, we attempt to detect peaks (which should reflect the true period) as indices satisfying
+$$
+i \text{ is a peak } \iff \diff \xi^i_j > 0 \; \land \; \diff \xi^{i+1}_j < 0.
+$$
+Let us denote $I^{\uparrow}_j$ the set of all peaks originating from the choice of notable index $j$, then the period $T$ can be approximated as the $\diff t$ multiple of the *mean difference* $\avg{\diff I^{\uparrow}_j}$ of the peak indices, i.e.
+$$
+T \approx \estim T_{\diff} = \diff t \cdot \avg{\diff I^{\uparrow}_j}.
+$$
+We shall call $\estim T_{\diff}$ the *differences period estimate*. Note that while this method is rather inexpensive from the computational point of view, it depends on the appropriate choice of $j$ and the necessary assumption that the period of $\xi_j$ accurately reflects the period of the joint oscillation.
+
+::: {.callout-tip #tip-monotony-extension}
+##### On the length of monotony of $\xi^i_j$
+
+Currently, we require the $\xi^i_j$ to be strictly increasing only one step left of a peak and decreasing also for only one step right of the peak. This can be extended to require $\xi^i_j$ to be increasing for $k_+$ steps on the left and decreasing for $k_-$ steps on the right of a peak.
+:::
+
+<!-- TODO: Add picture -->
+
+The second approach one can use is less heuristic, but potentially more computationally intensive. Naturally, the joint period $T$ should minimize the discrepancy between $t$ and $t + T$ states, i.e.,^[We are interested in the *minimal period*, thus we add $\min$ to select the least of all permissible values in ([-@eq-period-minimization-problem]).]
+$$
+T = \minOf{\argmin_{T > 0} \int_a^b \norm{\vi \xi(t) - \vi \xi(t + T)} \dd t}, \quad (a,b) \subset \R.
+$$ {#eq-period-minimization-problem}
+
+As it stands, ([-@eq-period-minimization-problem]) is infeasible to solve computationally, but one can rather easily discretize it using $\Seqnc {\vi \xi^i} {i = 0} N$ to obtain
+$$
+\estim T_{\min, P} = \argmin_{T \in P} \sum_{i = 0}^{i_{\mathrm{end} - T}} \norm{\vi \xi^i - \vi \xi^{i + \floor{T/\diff t}}},
+$$ {#eq-discretized-period-minimization}
+where $P = (P_-, P_+)$ is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$.
+
+
+

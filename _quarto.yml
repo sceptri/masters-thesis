@@ -25,6 +25,7 @@ book:
       file: index.qmd
     - "introduction.qmd"
     - "general-theory.qmd"
+    - "simulation-approach.qmd"
     - "bifurcation-approach.qmd"
     - "refs.qmd"
   appendices:
