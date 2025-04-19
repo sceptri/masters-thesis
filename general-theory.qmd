@@ -160,12 +160,6 @@ A set $\obj \Omega(\Orbit{x_0})$ of all $\omega$-limit points of the orbit $\Orb
 Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Orbit{x_0})$ of all limit points of the orbit $\Orbit{x_0}$ is called its *limit set*.
 :::
 
-<!--  FIXME: Add, but I am not sure of the translation
-:::{#def-limit-invariant-loop}
-##### Limit invariant loop
-
-::: -->
-
 :::{#def-limit-cycle}
 ##### Limit cycle
 
@@ -177,8 +171,6 @@ A cycle of a continuous-time dynamical system, in a neighborhood of which there 
 
 Equivalently to @def-limit-cycle, one can define a *limit cycle* as a cycle, which is the limit set, see @def-limit-set, of orbits in its neighborhood.
 :::
-
-<!-- TODO: Add citations (use files/, Kuznetsov...) -->
 
 :::{#def-invariant-set-stable}
 
@@ -195,7 +187,7 @@ Stable invariant set is called an *attractor*, whereas if the invariant set is u
 #### Topologically Equivalent Dynamical Systems
 
 <!-- TODO: Add refs to section -->
-So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
+So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, see TODO, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
 
 :::{#def-topological-equivalence}
 ##### Topological equivalence
@@ -1093,7 +1085,7 @@ where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega))
 
 Let us note that for implementation, we will predominantly use the `EM` method, from @Rackauckas2017, for Julia and a custom implementation for MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs.
 
-### Optimization in $\mathbb{R}$
+### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
 
 Optimization is almost ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is fortunately the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
 

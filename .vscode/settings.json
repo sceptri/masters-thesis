@@ -10,10 +10,12 @@
 		"bijective",
 		"bmtr",
 		"cancellative",
+		"Chicone",
 		"Cimbalnik",
 		"codimension",
 		"colormap",
 		"contf",
+		"ddes",
 		"Doedel",
 		"emsp",
 		"Engelborghs",
@@ -42,6 +44,7 @@
 		"Makie",
 		"mapsto",
 		"Maruyama",
+		"mathrm",
 		"monodromy",
 		"Monoids",
 		"multistep",
@@ -80,6 +83,7 @@
 		"widetilde",
 		"Worrell",
 		"Zathurecky",
+		"Záthurecký",
 		"Zissou"
 	],
 	"cSpell.enabledFileTypes": {

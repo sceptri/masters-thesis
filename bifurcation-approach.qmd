@@ -471,7 +471,7 @@ Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly t
 $$
 \sum_{i = 0}^k \alpha_i \vi x_i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* \vi x_i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
 $$ {#eq-dde-lms}
-where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ (when $(t_i - \tau_j) \notin \set{t_i}$) are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively. To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
+where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively, when $(t_i - \tau_j) \notin \set{t_k}$ (i.e., when $(t_i - \tau_j)$ does not "align" with $t_k$ from the discretization). To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
 
 Clearly, the discretization of the operator $\solOp(h)$ itself is given by the linear map from $[\vi x_l, \dots, \vi x_{k-1}]\Tr$ to $[\vi x_{l+1}, \dots, \vi x_k]\Tr$, where $l = - s_- - \ceil{\tau/h}$ and where the mapping is prescribed by ([-@eq-dde-lms]). This procedure results in a $N \times N$ matrix approximation of the operator $\solOp(h)$, where
 $$
@@ -490,6 +490,10 @@ Let us note a discretization induced by Runge-Kutta numerical integrator can als
 TODO, see @Roose2007, @Fairgrieve1991, @Sieber2014, @Engelborghs2001, @Verheyden2005
 Possibly also @Breda2006 and more
 
+<!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
+<!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
+
+
 ## Continuation {#sec-continuation}
 
 TODO, see @Kuznetsov2023
@@ -504,8 +508,8 @@ TODO
 
 ## Cycle Continuation in Coupled Oscillators
 
-<!-- TODO: Add ref to the previous section -->
-As we have discussed in the previous section, see TODO, consider again the symmetrically coupled oscillators. This subsection is almost singularly based on @Zathurecky2025, which I am a co-author of.
+As we have discussed in the @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase-shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
 
-<!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
-<!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
+For soundness of the grid-based approach to the computation of phase-shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have just used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable cycle near zero coupling strength, which could be used as the starting point for the continuation.
+
+Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must locally exist a cycle manifold (with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator) near zero coupling between the two oscillators, such that their phases are synchronized. In particular, we shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2024. This will be performed mainly by studying the phase shifts between the two oscillators.

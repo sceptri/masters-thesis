@@ -55,23 +55,23 @@ Let us thus consider two weakly coupled oscillators. Most commonly, these will b
 <!-- TODO: Ref mathematical neuroscience chapter -->
 By phase synchronization we understand two (or more) cyclic signals featuring a consistent relationship between their phases. Note that the amplitudes or even frequencies may differs. Understanding of this phenomenon, often called *phase locking* in the context of bifurcation theory, can be aided by examining corresponding *Arnold tongues*, which are regions where a phase synchronization occurs, see @Wiggins2003, @Kuznetsov2023. 
 
-Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must exist a cycle manifold with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator near zero coupling between the two oscillators, such that their phases are synchronized. We shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2024. This will be performed mainly by studying the phase shifts between the two oscillators.
+We shall be primarily interested in a system consisting of 2 weakly coupled oscillators with possible delay in the coupling. In such systems, regions of phase-synchrony between the two oscillators may arise for certain values of the coupling strength and some parameter, which influences the oscillation frequency of one of the oscillators. Then, by the continuous dependence on parameters and initial values for both the ODEs, see @Chicone2006 (Theorem 1.3), and DDEs, see @Hale1993 (Chapter 2.2), we can explore the phase-shift in the coupled system via small changes in both parameters.
 
 In general, the system of interest takes the following DDE form
 $$
 \begin{aligned}
-	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau)), \\
-	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t)),
+	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau), \sigma), \\
+	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
 \end{aligned}
 $$ {#eq-general-delayed-coupled-oscillators}
-where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ are parameters influencing oscillation frequencies of the respective models, $\lmbd \in \R^+_0$ the coupling strength and $\vi K$ represent the coupling function.
+where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function.
 
 ## Grid-Based Phase-Shift Computation
 
-<!-- TODO: Rename and use the "GridWalker" package -->
+<!-- TODO: Use the "GridWalker" package -->
 <!-- TODO: Add reference to NeuronToolbox.jl if applicable -->
 <!-- TODO: Add reference to interneuron discussion and coupling discussions -->
-Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 coupled oscillators. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
+Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models, see TODO, with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
 $$
 \underbrace{\overbrace{\omega_2^0}^{\omega_-} < \omega_2^1 < \dots < \overbrace{\omega_2^{N_{\Omega}}}^{\omega_+}}_{\Omega},
 $$
@@ -121,7 +121,6 @@ As it stands, ([-@eq-period-minimization-problem]) is infeasible to solve comput
 $$
 \estim T_{\min, P} = \argmin_{T \in P} \sum_{i = 0}^{i_{\mathrm{end} - T}} \norm{\vi \xi^i - \vi \xi^{i + \floor{T/\diff t}}},
 $$ {#eq-discretized-period-minimization}
-where $P = (P_-, P_+)$ is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$.
+where $P = (p_-, p_+)$ is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$. The discretized problem ([-@eq-discretized-period-minimization]) can now be solved using discussed optimization methods for one-dimensional optimization, see @sec-1d-optimization, under the assumption of *unimodality*!^[Without unimodality, these methods converge to a local minimum near the starting point.]
 
-
-
+Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P$ and choose the best fitting among them. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied
