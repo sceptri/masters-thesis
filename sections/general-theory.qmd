@@ -475,7 +475,7 @@ $$
 $$ {#eq-poincare-map-system}
 where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a periodic orbit $L_0$. Let $\vi x_0$ be a point on $L_0$ and denote $\crossSection$ the *cross-section* to the cycle at this point, see @fig-poincare-map.
 
-![Poincaré map corresponding to the system ([-@eq-poincare-map-system]), the cycle $L_0$ and its point $\vi x_0$.](diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
+![Poincaré map corresponding to the system ([-@eq-poincare-map-system]), the cycle $L_0$ and its point $\vi x_0$.](../diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
 
 The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of "codimension" one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to the through-going trajectories, thus the trajectories truly intersect the cross-section $\crossSection$.
 
@@ -1242,11 +1242,11 @@ Let us now approach the problem from a different direction. Given the minimizati
 
 Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to a half of the original interval (i.e., shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
 
-![Shrinkage by $\ve$-distance between the only two allowed evaluations.](diagrams/2-eval_fibonacci_method.drawio.svg){#fig-2-eval-fibonacci .final}
+![Shrinkage by $\ve$-distance between the only two allowed evaluations.](../diagrams/2-eval_fibonacci_method.drawio.svg){#fig-2-eval-fibonacci .final}
 
 Suppose $N = 3$ evaluations are now permitted. Then the best course of action is to divide the initial into thirds, which results in the next bracket having $\frac 2 3$-length. If we perform the last $f$-query in the $\ve$-distance from the interior evaluation of the previous round (one is guaranteed to lie inside the next-iteration bracket), then by $\ve \to 0$, in the limit sense, we get a shrinkage by a factor of 3, see @fig-3-eval-fibonacci.
 
-![Sketch of the Fibonacci method bracket shrinkage when $N = 3$.](diagrams/3-eval_fibonacci_method.drawio.svg){#fig-3-eval-fibonacci .final}
+![Sketch of the Fibonacci method bracket shrinkage when $N = 3$.](../diagrams/3-eval_fibonacci_method.drawio.svg){#fig-3-eval-fibonacci .final}
 
 In general, this leads to evaluation given by the Fibonacci numbers
 $$

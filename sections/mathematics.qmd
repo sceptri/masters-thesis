@@ -1,0 +1,28 @@
+:::{.content-visible when-format="html"}
+```{=html}
+$$
+{{< include ../mathematics/html-math.tex >}}
+$$
+$$
+{{< include ../mathematics/general.tex >}}
+$$
+$$
+{{< include ../mathematics/analysis.tex >}}
+$$
+$$
+{{< include ../mathematics/linear-algebra.tex >}}
+$$
+$$
+{{< include ../mathematics/statistics.tex >}}
+$$
+$$
+{{< include ../mathematics/distributions.tex >}}
+$$
+$$
+{{< include ../mathematics/game-theory.tex >}}
+$$
+$$
+{{< include ../mathematics/special.tex >}}
+$$
+```
+:::

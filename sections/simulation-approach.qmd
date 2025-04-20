@@ -55,7 +55,7 @@ Let us thus consider two weakly coupled oscillators. Most commonly, these will b
 <!-- TODO: Ref mathematical neuroscience chapter -->
 By phase synchronization we understand two (or more) cyclic signals featuring a consistent relationship between their phases. Note that the amplitudes or even frequencies may differs. Understanding of this phenomenon, often called *phase locking* in the context of bifurcation theory, can be aided by examining corresponding *Arnold tongues*, which are regions where a phase synchronization occurs, see @Wiggins2003, @Kuznetsov2023. 
 
-We shall be primarily interested in a system consisting of 2 weakly coupled oscillators with possible delay in the coupling. In such systems, regions of phase-synchrony between the two oscillators may arise for certain values of the coupling strength and some parameter, which influences the oscillation frequency of one of the oscillators. Then, by the continuous dependence on parameters and initial values for both the ODEs, see @Chicone2006 (Theorem 1.3), and DDEs, see @Hale1993 (Chapter 2.2), we can explore the phase-shift in the coupled system via small changes in both parameters.
+We shall be primarily interested in a system consisting of 2 weakly coupled oscillators with possible delay in the coupling. In such systems, regions of phase-synchrony between the two oscillators may arise for certain values of the coupling strength and some parameter, which influences the oscillation frequency of one of the oscillators. Then, by the continuous dependence of the solution on parameters and initial values for both the ODEs, see @Chicone2006 (Theorem 1.3), and DDEs, see @Hale1993 (Chapter 2.2), we can explore the phase-shift in the coupled system via small changes in both parameters.
 
 In general, the system of interest takes the following DDE form
 $$
@@ -121,6 +121,32 @@ As it stands, ([-@eq-period-minimization-problem]) is infeasible to solve comput
 $$
 \estim T_{\min, P} = \argmin_{T \in P} \sum_{i = 0}^{i_{\mathrm{end} - T}} \norm{\vi \xi^i - \vi \xi^{i + \floor{T/\diff t}}},
 $$ {#eq-discretized-period-minimization}
-where $P = (p_-, p_+)$ is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$. The discretized problem ([-@eq-discretized-period-minimization]) can now be solved using discussed optimization methods for one-dimensional optimization, see @sec-1d-optimization, under the assumption of *unimodality*!^[Without unimodality, these methods converge to a local minimum near the starting point.]
+where $P = (p_-, p_+)$, with $p_+ > p_- > 0$, is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$. The discretized problem ([-@eq-discretized-period-minimization]) can now be solved using discussed optimization methods for one-dimensional optimization, see @sec-1d-optimization, under the assumption of *unimodality*!^[Without unimodality, these methods converge to a local minimum near the starting point.]
 
-Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P$ and choose the best fitting among them. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied
+Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P_i$ and choose the estimate $\estim T_{\min, P_i}$ with the least error. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied.
+
+<!-- TODO: Add picture -->
+
+::: {.callout-tip #tip-optimal-period-modifications}
+##### Modifications to the optimal period method
+
+In ([-@eq-discretized-period-minimization]), we have used the full state vector for discrepancy calculation, but similarly as with the computation of $\estim T_{\diff}$, one can choose only a sub-vector as well. Another common modification is to calculate the dissimilarity in ([-@eq-discretized-period-minimization]) after a certain transient has passed (such that we presume we have converged to the cycle after the transient), i.e., on interval with indices from $i_{\mathrm{start}}$ to $i_{\mathrm{end} - T}$.
+:::
+
+### Shift Searching {#sec-shift-searching}
+
+After one has successfully estimated the period in the joint model, what remains is to approximate the shift between the two oscillators of ([-@eq-general-delayed-coupled-oscillators]). This can be achieved by solving a very similar problem ([-@eq-discretized-period-minimization]), namely
+$$
+\estim \beta_d = \argmin_{\beta \in Q} \sum_{i = i_{\mathrm{start}}}^{i_{\mathrm{end} - \beta}} d\brackets{\vi x_1^i, \vi x_2^{i + \floor{\beta/\diff t}}},
+$$ {#eq-discretized-shift-minimization}
+where $Q = (q_-, q_+)$ is a chosen interval with $0 \leq q_- < q_+ < \estim T$ and $d$ is a metric. Commonly, metrics induced by $\ltwo$-norm $\norm{\cdot}_2$ or maximum-norm $\norm{\cdot}_{\infty}$ are used. Moreover, $i_{\mathrm{start}}$ can again be used to offset the computation of shift $\beta$ after a transient has passed.
+
+Note that we shall primarily focus on calculating a shift $\beta$ between periodic trajectories of a notable component $j$ in each of the oscillators, i.e.,
+$$
+\estim \beta_{d,j} = \argmin_{\beta \in Q} \sum_{i = i_{\mathrm{start}}}^{i_{\mathrm{end} - \beta}} d\brackets{x_{1,j}^i, x_{2,j}^{i + \floor{\beta/\diff t}}}.
+$$ {#eq-1d-discretized-shift-minimization}
+In total, ([-@eq-discretized-shift-minimization]) and ([-@eq-1d-discretized-shift-minimization]) both lead to an one-dimensional optimization problem on a given interval, and as such can be solved using methods proposed in @sec-1d-optimization. In particular, in the case of shift searching, unimodality of the corresponding loss function seems to be satisfied more generally.
+
+<!-- TODO: Add picture -->
+
+### Starters, Iterators and Indexers {#sec-starters-iterators-indexers}

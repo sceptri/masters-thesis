@@ -23,13 +23,13 @@ book:
   chapters:
     - text: "Front matter"
       file: index.qmd
-    - "introduction.qmd"
-    - "general-theory.qmd"
-    - "simulation-approach.qmd"
-    - "bifurcation-approach.qmd"
-    - "refs.qmd"
+    - sections/introduction.qmd
+    - sections/general-theory.qmd
+    - sections/simulation-approach.qmd
+    - sections/bifurcation-approach.qmd
+    - sections/refs.qmd
   appendices:
-    - "appendix-algs.qmd"
+    - sections/appendix-algs.qmd
   sidebar:
     style: "docked"
 
@@ -133,10 +133,10 @@ format:
 
 filters:
  - munithesis
- - resizer.lua
- - pdf_hide_code.lua
- - force_alg_env.lua
- - floatbox.lua
+ - lua_filters/resizer.lua
+ - lua_filters/pdf_hide_code.lua
+ - lua_filters/force_alg_env.lua
+ - lua_filters/floatbox.lua
 
 profiles:
   default: basic
