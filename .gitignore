@@ -13,5 +13,4 @@ _freeze/
 # Bada Bib backup
 *.bak
 
-Manifest.toml
 /.quarto/
