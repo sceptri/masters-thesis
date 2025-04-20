@@ -1,3 +1,5 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GridWalker = "ad2945ea-6d9d-43b3-8911-8e9e2a7fd8e1"
+NeuronToolbox = "435c7341-2adf-4c69-883b-9023f0b26b4d"
 WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"

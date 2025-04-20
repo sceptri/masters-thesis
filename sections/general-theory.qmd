@@ -41,9 +41,9 @@ CairoMakie.activate!()
 
 # Mathematics Behind Dynamics {#sec-general-theory}
 
-We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real couples of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g. the coupled neurons.
+We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real networks of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g., coupled neurons.
 
-This abstraction is typically called a (mathematical) model (of the reality). The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g. a model of neuron starts spiking, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal due to the dependence on some past states of the system, the arising dynamical system becomes infinite dimensional. For better "mathematical ergonomics" we will define a *semidynamical system*, a special case of a dynamical system.
+This abstraction is typically called a (mathematical) model. The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g., a model of a neuron starts spiking when evolving in time, with dependence solely on the current state, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal with respect to only the current state due to the dependence on the history of the system, the arising dynamical system becomes infinite dimensional (and thus harder to work with). For better "mathematical ergonomics" we will define a *semidynamical system* to deal with delayed dependencies.
 
 ## A Primer on Dynamical Systems {#sec-dynamical-systems}
 
@@ -65,7 +65,7 @@ projecting a state $x$ from time $s$ to time $t$, which satisfies
 If $(\timeSet, +)$ is a group, we will speak of an **invertible dynamical system**.
 :::
 
-For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e., $a + x = b + x \implies a = b$ for each $a,b,x \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
+For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e., $a + c = b + c \implies a = b$ for each $a,b,c \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
 
 :::{#def-autonomous-dynamical-system}
 **Autonomous dynamical system** is a dynamical system such that the *autonomous property*,
@@ -89,7 +89,7 @@ In the @def-dynamical-system, the time set $\timeSet$ can take on various forms.
 
 On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ or $\R^+$ as we are concerned with even the shortest time intervals and associated changes --- corresponding systems are called **continuous** or **continuous-time** dynamical systems. Similarly, the exact choice of the state space $\stateSpace$ is dependent on the system in question, but typically we use $\R^n$, although we will also encounter infinite-dimensional state space.
 
-The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such system *stochastic*. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
+The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such system *stochastic*, see @sec-stochastic-dyn-systems. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
 
 Most often, a dynamical system is given implicitly by a *differential* or *difference* equation. For example, in population dynamics, one of the earliest models, the *Verhulst model of population*[^verhulst], can prescribed by an ordinary differential equation (ODE)
 $$
@@ -612,7 +612,7 @@ See @Kloeden1992, page 28.
 
 In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
 
-Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential form)
+Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential formulation)
 $$
 \deriv {x(t)} t = a x(t) \iff \d x(t) = a x(t) \dd t,
 $$
@@ -626,7 +626,7 @@ which is a **stochastic differential equation** (SDE). For a moment, let us use 
   &= r \rX(t, \omega) \, \diff t + \sigma \rX(t, \omega) \underbrace{\rve(t)  \, \diff t}_{\diff \rZ(t)}.
 \end{align*}
 
-What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a *Gaussian white noise*? To a careful reader, this may seem at least a little reminiscent of a Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process -- that is $\diff \rW(t)$ have the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
+What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(t) \, \diff t$, where $\rve(t)$ is a *Gaussian white noise*? To a careful reader, this may seem at least a little reminiscent of the Wiener process. In other words, differences $\diff Z(t)$ are *Gaussian white noise*^[A random variable is called Gaussian white noise if it has normal distribution with zero mean.] and if we require (almost sure) continuity and $\rZ(0) = 0$, we get that $\rZ(t)$ is the Wiener process --- that is, $\diff \rW(t)$ has the same properties as $\rve(t) \diff t$. With the limit transition $\lim_{\diff t \to 0}$ in the $\ltwo$ sense we get, arguably after much more mathematics,
 $$
 \d \rW(t) = \rve(t) \dd t,
 $$
@@ -832,7 +832,7 @@ which yields that $\vi z$ is a solution to ([-@eq-non-zero-stability]), which wa
 Moreover, we shall also define a *solution operator* (or *solution map*) for autonomous RFDEs. This will become useful later when discussing stability of equilibria in the case of DDEs from the perspective of their linearization, see @sec-dde-equilibrium-localization.
 
 :::{#def-dde-solution-oper}
-Consider the autonomous DDE problem ([-@eq-dde-problem-autonomous]).The *solution operator* $\solOp(t, \sigma) : \contStateSpace \to \contStateSpace$ from time $\sigma$ to $t$, such that $t \geq \sigma$, is defined as
+Consider the autonomous DDE problem ([-@eq-dde-problem-autonomous]). The *solution operator* $\solOp(t, \sigma) : \contStateSpace \to \contStateSpace$ from time $\sigma$ to $t$, such that $t \geq \sigma$, is defined as
 $$
 \solOp(t,\sigma) \vi \phi \letDef \vi x_t(\sigma, \vi \phi).
 $$ {#eq-dde-solution-oper}
