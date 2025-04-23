@@ -231,7 +231,8 @@ $$
 $$ {#eq-1d-discretized-shift-minimization}
 In total, ([-@eq-discretized-shift-minimization]) and ([-@eq-1d-discretized-shift-minimization]) both lead to an one-dimensional optimization problem on a given interval, and as such can be solved using methods proposed in @sec-1d-optimization. In particular, in the case of shift searching, unimodality of the corresponding loss function seems to be satisfied more generally.
 
-<!-- TODO: Add picture -->
+<!-- TODO: Define or ref to what Arnold tongue is -->
+For comparison of computed shifts in regards to period estimation based on differences and optimization, see @fig-naive-diff-shift. There we see the central Arnold tongue (along with side sub-tongues, which we shall try to eliminate later using periodicity checking) with a rather abrupt boundary. From theory, see @Kuznetsov2023 or @Záthurecký2025, we know that the Arnold tongue is bordered by LPC (limit point of cycle) curves, thus one desires to see a sharp boundary.
 
 ```{julia}
 #| echo: false
@@ -279,8 +280,9 @@ jldopen("../data/naive_optimal_no_checker_among_halves.jld2", "r") do data
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $\omega_2$. For every point, the same initial condition $\vi \phi(t) \equiv \vi u_0$ was used. Left figure presents the shift heatmap using *differences* period, whereas the right figure shows *optimal* period-based shift. Trajectories are computed for 1500 ms, periods are computed on the last 20% and shifts on the last 10% of their lengths. Note that optimal period is calculated by halving the upper constraint up-to 4 times. Shift is estimated based on the first state variable, i.e. $V$, in both interneurons.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ without delay. For every point, the same initial condition $\vi \phi(t) \equiv \vi u_0$ was used. Left figure presents the shift heatmap using *differences* period, whereas the right figure shows *optimal* period-based shift. Trajectories are computed for 1500 ms, periods are computed on the last 20% and shifts on the last 10% of their lengths. Note that optimal period is calculated by halving the upper constraint up-to 4 times. Shift is estimated based on the first state variable, i.e. $V$, in both interneurons.
 
 :::
 
+<!-- TODO: Add delay figures -->
 ### Starters, Iterators and Indexers {#sec-starters-iterators-indexers}

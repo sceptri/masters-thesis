@@ -48,13 +48,16 @@ args = (
 
     # Starter
     starter=GridWalker.cold_start,
-    u0=[31, 0.2, 0.5, 31, 0.2, 0.5],
+    u0=[31, 0.2, 0.5, -36, 0.16, 0.5],
     center_function=GridWalker.relative_center,
     fixed_ratio_center=(0.5, 0.9),
     starter_loss=GridWalker.additive_loss,
 
     # Indexer
     indexer_N=10,
+
+    # Iterator
+    enumerator=GridWalker.line_enumerator,
 
     # Saving
     save_every_nth=100,
@@ -69,3 +72,18 @@ params = parametrize_walker(; args...);
 
 using JLD2
 jldsave("data/naive_optimal_no_checker_among_halves.jld2"; shifts, λ, C₂)
+
+begin
+    CyclicZissou = ColorScheme([ColorSchemes.Zissou1.colors..., reverse(ColorSchemes.Zissou1.colors)...])
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda")
+
+    hmap = heatmap!(ax,
+        range(C₂...),
+        range(λ...),
+        transpose(shifts), colormap=CyclicZissou)
+    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+    fig
+end
