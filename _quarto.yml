@@ -137,6 +137,7 @@ filters:
  - lua_filters/pdf_hide_code.lua
  - lua_filters/force_alg_env.lua
  - lua_filters/floatbox.lua
+ - lua_filters/include_code_files.lua
 
 profiles:
   default: basic

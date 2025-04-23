@@ -328,7 +328,7 @@ $$
 $$
 where $h = \max_{0 \leq j \leq N-1} (s_{j+1} - s_j)$.
 
-Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e., the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet included (and therefore it can, in theory, depend on all variables).]
+Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e., the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet discussed (and therefore, we assume, it can, in theory, depend on all variables).]
 $$
 {\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
@@ -376,7 +376,7 @@ $$
 $$ {#eq-ode-collocation-jacobian-decoupled}
 which has a *decoupled subsystem* for $+$ signs. Hence, we can first solve the subsystem given by $+$'s, and follow up by solving for the intermediate variables afterward, see @Doedel1991. This significantly reduces the dimensionality and thus also memory requirements.
 
-Assume that we have corrected (in, possibly, multiple steps of the Newton-Raphson method) $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha}$, converging onto a new point
+Assume that we have corrected (in, possibly, multiple steps of the Newton-Raphson method) $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha}$ converging onto a new point
 $$
 \vi X_c = \brackets{\set{\vi u_c^{j,k}}, T_c, \alpha_c}
 $$

@@ -35,7 +35,7 @@ WGLMakie.activate!()
 #| output: false
 
 using CairoMakie
-CairoMakie.activate!()
+CairoMakie.activate!(type = "svg")
 ```
 :::
 
@@ -61,7 +61,7 @@ In general, the system of interest takes the following DDE form
 $$
 \begin{aligned}
 	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau), \sigma), \\
-	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
+	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \\vi x_2(t), \sigma),
 \end{aligned}
 $$ {#eq-general-delayed-coupled-oscillators}
 where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function.
@@ -92,7 +92,7 @@ Now, we face 2 main challenges:
 
 ### Period Searching {#sec-period-searching}
 
-To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. By choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
+To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. Moreover, the periodic signal of this state variable behaves rather nicely, attaining single (local) minimum and maximum on the repeating section of minimal period. By choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
 
 Clearly, (local) extrema of the time series $\Seqnc {\xi^i_j} {i = 0} N$ occur when the differences $\Seqnc {\diff \xi^i_j} {i = 1} N$ change sign^[The order determines whether its a local minimum or maximum.]. In other words, we attempt to detect peaks (which should reflect the true period) as indices satisfying
 $$
@@ -102,15 +102,59 @@ Let us denote $I^{\uparrow}_j$ the set of all peaks originating from the choice 
 $$
 T \approx \estim T_{\diff} = \diff t \cdot \avg{\diff I^{\uparrow}_j}.
 $$
-We shall call $\estim T_{\diff}$ the *differences period estimate*. Note that while this method is rather inexpensive from the computational point of view, it depends on the appropriate choice of $j$ and the necessary assumption that the period of $\xi_j$ accurately reflects the period of the joint oscillation.
+We shall call $\estim T_{\diff}$ the *differences period estimate*. Note that while this method is rather inexpensive from the computational point of view, it depends on the appropriate choice of $j$ and the necessary assumption that the period of $\xi_j$ accurately reflects the period of the joint oscillation. For an example, see @fig-diff-period.
 
 ::: {.callout-tip #tip-monotony-extension}
 ##### On the length of monotony of $\xi^i_j$
 
-Currently, we require the $\xi^i_j$ to be strictly increasing only one step left of a peak and decreasing also for only one step right of the peak. This can be extended to require $\xi^i_j$ to be increasing for $k_+$ steps on the left and decreasing for $k_-$ steps on the right of a peak.
+Currently, we require the $\xi^i_j$ to be strictly increasing only one step left of a peak and decreasing also for only one step right of the peak. This can be extended to require $\xi^i_j$ to be increasing for $k_+$ steps on the left and decreasing for $k_-$ steps on the right of a peak. Such modification allows us to detect periods of much more complicated signals.
 :::
 
-<!-- TODO: Add picture -->
+
+```{julia}
+#| label: fig-diff-period
+#| fig-cap: Approximation of the period of a test function $y(t)= \sin(t) + \frac {\cos\brackets{2t + \frac {\pi} 3}} 3$ (with true period $2\pi$) by *differences period* estimation method.
+#| width: 70%
+using LaTeXStrings, Statistics
+
+fig = Figure(size=(450, 250))
+ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)")
+ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"\Delta y(t)")
+
+linkxaxes!(ax1, ax2)
+
+
+Δt = 0.5
+
+t = 0:Δt:13π;
+n = length(t);
+y = @. sin(t) + 1 / 3 * cos(2 * t + π / 3)
+ts = t[2:end]
+dy = diff(y)
+
+dy_up = dy .> 0
+dy_down = dy .< 0
+
+# Find where the monotony changes from up to down
+y_monotony = dy_up[2:end] .&& dy_down[1:end-1]
+
+# Compute mean distance between ups
+Iⱼ = findall(identity, y_monotony)
+
+for i in Iⱼ
+    vlines!(ax1, ts[i]; linewidth=2, color=ones(n), colormap=:Zissou1)
+    vlines!(ax2, ts[i]; linewidth=2, color=ones(n), colormap=:Zissou1)
+end
+scatterlines!(ax1, t, y, colormap=:Zissou1)
+scatterlines!(ax2, ts, dy, colormap=:Zissou1, color=[el > 0 ? 1 : 2 for el in dy])
+
+ΔĪⱼ = mean(diff(Iⱼ))
+T̂ = ΔĪⱼ * Δt
+
+ax2.xlabel = LaTeXString("\$\\hat{T}_{\\Delta} \\approx $T̂\$")
+
+fig
+```
 
 The second approach one can use is less heuristic, but potentially more computationally intensive. Naturally, the joint period $T$ should minimize the discrepancy between $t$ and $t + T$ states, i.e.,^[We are interested in the *minimal period*, thus we add $\min$ to select the least of all permissible values in ([-@eq-period-minimization-problem]).]
 $$
@@ -119,13 +163,53 @@ $$ {#eq-period-minimization-problem}
 
 As it stands, ([-@eq-period-minimization-problem]) is infeasible to solve computationally, but one can rather easily discretize it using $\Seqnc {\vi \xi^i} {i = 0} N$ to obtain
 $$
-\estim T_{\min, P} = \argmin_{T \in P} \sum_{i = 0}^{i_{\mathrm{end} - T}} \norm{\vi \xi^i - \vi \xi^{i + \floor{T/\diff t}}},
+\estim T_{\min, P} = \argmin_{T \in P} \overbrace{\sum_{i = 0}^{i_{\mathrm{end} - T}} \norm{\vi \xi^i - \vi \xi^{i + \floor{T/\diff t}}}}^{f_{\vi \xi}(T)},
 $$ {#eq-discretized-period-minimization}
 where $P = (p_-, p_+)$, with $p_+ > p_- > 0$, is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$. The discretized problem ([-@eq-discretized-period-minimization]) can now be solved using discussed optimization methods for one-dimensional optimization, see @sec-1d-optimization, under the assumption of *unimodality*!^[Without unimodality, these methods converge to a local minimum near the starting point.]
 
-Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P_i$ and choose the estimate $\estim T_{\min, P_i}$ with the least error. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied.
+Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P_i$ and choose the estimate $\estim T_{\min, P_i}$ with the least error. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied. In addition, @fig-optim-period provides an illustration of the algorithm.
 
-<!-- TODO: Add picture -->
+```{julia}
+#| label: fig-optim-period
+#| fig-cap: Approximation of the period of a test function $y(t)= \sin(t) + \frac {\cos\brackets{2t + \frac {\pi} 3}} 3$ (with true period $2\pi$) by *optimal period* estimation method.
+#| width: 70%
+using Optim, LinearAlgebra
+
+fig = Figure(size=(450, 250))
+ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)")
+ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"f_{\mathbf{\xi}}(T)")
+
+P = (1, 10)
+xlims!(ax2, P)
+
+Δt = 0.5
+t = 0:Δt:13π;
+n = length(t);
+y = @. sin(t) + 1 / 3 * cos(2 * t + π / 3)
+
+i_end(T) = findlast(tᵢ <= (t[end] - T) for tᵢ in t)
+
+T_ex = 3.2
+f_ξ(T) = sum(norm(y[i] - y[i+floor(Int, T / Δt)]) for i in 1:i_end(T))
+p = first(P):0.01:last(P)
+
+result = Optim.optimize(f_ξ, P..., Optim.GoldenSection())
+T̂ = round(result.minimizer, digits=2)
+
+ax2.xlabel = LaTeXString("\$\\hat{T}_{\\min, P} \\approx $T̂\$")
+
+scatterlines!(ax1, t[1:i_end(T_ex)], [y[i+floor(Int, T_ex / Δt)] for i in 1:i_end(T_ex)], color=(:gray, 0.4), markersize=5)
+scatterlines!(ax1, t[1:i_end(T̂)], [y[i+floor(Int, T̂ / Δt)] for i in 1:i_end(T̂)], color=ones(i_end(T̂)), colormap=:Zissou1, markersize=5)
+scatterlines!(ax1, t, y, colormap=:Zissou1, markersize=5)
+
+vlines!(ax2, T_ex, color=(:gray, 0.4))
+vlines!(ax2, T̂, color=[1], colormap=:Zissou1)
+lines!(ax2, p, f_ξ.(p); colormap=:Zissou1)
+scatter!(ax2, [T_ex], [f_ξ(T_ex)], color=:gray)
+scatter!(ax2, [T̂], [f_ξ(T̂)], color=[1], colormap=:Zissou1)
+
+fig
+```
 
 ::: {.callout-tip #tip-optimal-period-modifications}
 ##### Modifications to the optimal period method
@@ -148,5 +232,55 @@ $$ {#eq-1d-discretized-shift-minimization}
 In total, ([-@eq-discretized-shift-minimization]) and ([-@eq-1d-discretized-shift-minimization]) both lead to an one-dimensional optimization problem on a given interval, and as such can be solved using methods proposed in @sec-1d-optimization. In particular, in the case of shift searching, unimodality of the corresponding loss function seems to be satisfied more generally.
 
 <!-- TODO: Add picture -->
+
+```{julia}
+#| echo: false
+#| output: false
+using ColorSchemes, JLD2
+CyclicZissou = ColorScheme([ColorSchemes.Zissou1.colors..., reverse(ColorSchemes.Zissou1.colors)...]);
+```
+
+::: {#fig-naive-diff-shift layout-ncol="2"}
+```{julia}
+#| echo: false
+#| label: fig-naive-diff-shift-a
+#| fig-cap: "*Differences* period estimation"
+jldopen("../data/naive_diff_no_checker.jld2", "r") do data
+	fig = Figure(size=(600, 400))
+	ax = CairoMakie.Axis(fig[1, 1];
+		xlabel=L"C_2", ylabel=L"\lambda")
+
+	hmap = heatmap!(ax,
+		range(data["C₂"]...),
+		range(data["λ"]...),
+		transpose(data["shifts"]), colormap=CyclicZissou)
+	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+	fig
+end
+```
+
+```{julia}
+#| echo: false
+#| label: fig-naive-diff-shift-b
+#| fig-cap: "*Optimal* period estimation"
+jldopen("../data/naive_optimal_no_checker_among_halves.jld2", "r") do data
+	fig = Figure(size=(600, 400))
+	ax = CairoMakie.Axis(fig[1, 1];
+		xlabel=L"C_2", ylabel=L"\lambda")
+
+	hmap = heatmap!(ax,
+		range(data["C₂"]...),
+		range(data["λ"]...),
+		transpose(data["shifts"]), colormap=CyclicZissou)
+	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+	fig
+end
+```
+
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $\omega_2$. For every point, the same initial condition $\vi \phi(t) \equiv \vi u_0$ was used. Left figure presents the shift heatmap using *differences* period, whereas the right figure shows *optimal* period-based shift. Trajectories are computed for 1500 ms, periods are computed on the last 20% and shifts on the last 10% of their lengths. Note that optimal period is calculated by halving the upper constraint up-to 4 times. Shift is estimated based on the first state variable, i.e. $V$, in both interneurons.
+
+:::
 
 ### Starters, Iterators and Indexers {#sec-starters-iterators-indexers}

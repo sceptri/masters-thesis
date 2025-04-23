@@ -1,5 +1,11 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
+ComponentArrays = "b0b7db55-cfe3-40fc-9ded-d10e2dbeff66"
 GridWalker = "ad2945ea-6d9d-43b3-8911-8e9e2a7fd8e1"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 NeuronToolbox = "435c7341-2adf-4c69-883b-9023f0b26b4d"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
