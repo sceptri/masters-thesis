@@ -125,7 +125,7 @@ format:
     number-sections: true
 
     fig-align: center
-    fig-pos: H
+    # fig-pos: H
     
     fig-format: png
     mermaid-format: png

@@ -61,17 +61,18 @@ In general, the system of interest takes the following DDE form
 $$
 \begin{aligned}
 	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau), \sigma), \\
-	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \\vi x_2(t), \sigma),
+	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
 \end{aligned}
 $$ {#eq-general-delayed-coupled-oscillators}
-where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function.
+where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function. Note that $\vi x_i$ does not have to represent a single neuron (or model thereof), but even synchronized clusters of neurons or neural masses^[Neural mass models approximate the behavior of large clusters of neurons based on statistically-reasoned simplifications.].
 
 ## Grid-Based Phase-Shift Computation
 
 <!-- TODO: Use the "GridWalker" package -->
 <!-- TODO: Add reference to NeuronToolbox.jl if applicable -->
 <!-- TODO: Add reference to interneuron discussion and coupling discussions -->
-Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models, see TODO, with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
+
+Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators, most often neurons, their synchronized clusters, or neural masses. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models, see TODO, with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
 $$
 \underbrace{\overbrace{\omega_2^0}^{\omega_-} < \omega_2^1 < \dots < \overbrace{\omega_2^{N_{\Omega}}}^{\omega_+}}_{\Omega},
 $$
@@ -81,7 +82,7 @@ $$
 $$
 be the set of all possible indices in $\meshGrid$.
 
-The most straightforward way to determine for which pairs $(\omega_2, \lmbd) \in \meshGrid$ the coupled system ([-@eq-general-delayed-coupled-oscillators]) features a *stable*^[Note that this method is effectively unable to compute unstable cycle manifolds due to the methodology itself.] anti-phase cycle is to solve the ([-@eq-general-delayed-coupled-oscillators]) forward in time from a fixed initial condition $\vi \phi \in \contStateSpace$ on a fixed time interval $[0, t_{\mathrm{end}}]$.
+The most straightforward way to determine for which pairs $(\omega_2, \lmbd) \in \meshGrid$ the coupled system ([-@eq-general-delayed-coupled-oscillators]) features a *stable*^[Note that this method is effectively unable to compute unstable cycle manifolds due to the methodology itself.] anti-phase cycle is to solve the ([-@eq-general-delayed-coupled-oscillators]) forward in time from a fixed initial condition $\vi \phi \in \contStateSpace$ on a fixed time interval $[0, t_{\mathrm{end}}]$. This is a reasonable methodology if assume the system converges to the synchronized cycle and that we chose long-enough transient, included in the interval $[0, t_{\mathrm{end}}]$, such that we are in an acceptably small neighborhood around the limit cycle.
 
 In case there is no delay in the coupling, i.e. $\tau = 0$, then we can integrate the system forward in time, see @sec-integrating-odes. Similarly, for delayed coupling one can employ the method of steps, which allows for an analogous forward-in-time integration, see @sec-integrating-ddes. Either way, this results in 2 trajectories, both corresponding to evaluations at times $\Seqnc {t^i} {i = 0} N$, namely $\Seqnc {\vi x_1^i} {i = 0} N$ and $\Seqnc {\vi x_2^i} {i = 0} N$, each for one oscillator. Moreover, denote by
 $$
@@ -96,7 +97,8 @@ Now, we face 2 main challenges:
 
 ### Period Searching {#sec-period-searching}
 
-To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. Moreover, the periodic signal of this state variable behaves rather nicely, attaining single (local) minimum and maximum on the repeating section of minimal period. By choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
+<!-- TODO: Change @Pribylova2025 from SSRN to the actual publication -->
+To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. Moreover, we assume the periodic signal of this state variable behaves rather nicely, attaining single (local) minimum and maximum on the repeating section of minimal period. As a counterexample to this assumption, the bursting behavior of pyramid cells might be considered (in such case, an envelope would have to be constructed in order to proceed as described), see @Pribylova2025. By choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
 
 Clearly, (local) extrema of the time series $\Seqnc {\xi^i_j} {i = 0} N$ occur when the differences $\Seqnc {\diff \xi^i_j} {i = 1} N$ change sign^[The order determines whether its a local minimum or maximum.]. In other words, we attempt to detect peaks (which should reflect the true period) as indices satisfying
 $$
@@ -240,7 +242,7 @@ For comparison of computed shifts in regards to period estimation based on diffe
 ::: {.callout-note #nte-arnold-tongues}
 ##### Arnold tongue
 
-Arnold tongues are, in general, regions (in parameter space) of rational^[By *rational synchrony* we mean phase-locked synchronization in the form $p:q$, $p,q \in \N$ indivisible, i.e., one period consists of $p$ revolutions around the first axis and $q$ revolutions around the second. For two weakly coupled oscillators, this translates to a period of the full system being completed after $p$ periods of the first oscillators and $q$ of the second one.] synchrony near a Neimark-Sacker bifurcation. For a continuous-time dynamical system, this, in essence, means that a given cycle switches stability and a torus with the opposite stability emerges around it (i.e., a stable cycle loses stability when it undergoes the Neimark-Sacker bifurcation while a stable torus appears around the now-unstable cycle). Then dynamics on torus then provide the two "directions of oscillation", for which we can study its synchrony. Nonetheless, two weakly coupled oscillators themselves are governed by dynamics on some torus, which mimics the transition normally originating from the Neimark-Sacker bifurcation.
+Arnold tongues are, in general, regions (in parameter space) of rational^[By *rational synchrony* we mean phase-locked synchronization in the form $p:q$, $p,q \in \N$ indivisible, i.e., one period consists of $p$ revolutions around the first axis and $q$ revolutions around the second. For two weakly coupled oscillators, this translates to a period of the full system being completed after $p$ periods of the first oscillators and $q$ of the second one.] synchrony near a Neimark-Sacker bifurcation. For a continuous-time dynamical system, this, in essence, means that a given cycle switches stability and a torus with the opposite stability emerges around it (i.e., a stable cycle loses stability when it undergoes the Neimark-Sacker bifurcation while a stable torus appears around the now-unstable cycle). The dynamics on torus then provide the two "directions of oscillation", for which we can study its synchrony. Furthermore, two weakly coupled oscillators themselves are governed by dynamics on a torus, such that influence of coupling strength $\lmbd$ mimics the transition normally originating from the Neimark-Sacker bifurcation.
 :::
 
 ```{julia}
@@ -338,11 +340,11 @@ Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models 
 
 ### Starters, Iterators and Indexers {#sec-starters-iterators-indexers}
 
-So far, we have utilized a rather naive approach of using always the same predetermined starting condition -- we shall refer to this as a *cold* start^[For reference on the terminology, see [cold start Wikipedia entry](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).]. Nevertheless, we have no guarantee such choice was optimal for any grid point, much less for the entire grid. 
+So far, we have utilized a rather naive approach of using always the same predetermined starting condition -- we shall refer to this as a *cold* start^[For reference on the terminology, see the [cold start Wikipedia entry](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).]. Nevertheless, we have no guarantee such choice was optimal for any grid point, much less for the entire grid. 
 
 A natural solution to this problem is to re-use trajectories we have already computed for some other combination of parameters. In general, it is going to be beneficial to use choose as an initial condition the endpoint of the trajectory corresponding to parameter values *close* to our current ones. Moreover, we want to consider only those nearby parameter values such that their trajectories lead to anti-phase synchronization. In total, the optimal reference index $\starter(\vi i) \in \indicesOf{\meshGrid}$, from which to read the new initial condition, for the shift computation at $\vi i$ (using $\vi i \in \indicesOf{\meshGrid}$ to denote the combined index in both axis of the grid $\meshGrid$) is given by the following minimization problem,
 $$
-\starter_{\indicesOf{\meshGrid}}(\vi i) = \argmin_{\vi j \in \indicesOf{\meshGrid}} \loss(\vi i, \vi j, \beta_{\vi i}),
+\starter_{\indicesOf{\meshGrid}}(\vi i) = \argmin_{\vi j \in \indicesOf{\meshGrid}} \loss(\vi i, \vi j, \beta_{\vi j}),
 $$ {#eq-mesh-warm-start-minimization}
 where we use either the *multiplicative* loss, 
 $$
@@ -354,13 +356,31 @@ $$
 $$ {#eq-starter-additive-loss}
 where $c_1, c_2 > 0$ are chosen weights. Note that we will use additive loss ([-@eq-starter-additive-loss]) if not stated otherwise, as it seemed to perform generally better for our needs.
 
-While this approach is ideal in theory, in practice we run into two main issues. Firstly, during the computation, some of the indices are not yet evaluated, thus we do not know their respective values of shifts $\beta_{\vi i}$. This can be remedied by defining the set of all *evaluated* indices $\IndicesOf{\meshGrid}{C}$ and restricting ([-@eq-mesh-warm-start-minimization]) to it, yielding
+While this approach is ideal in theory, in practice we run into two main issues. Firstly, during the computation, some of the indices are not yet evaluated, thus we do not know their respective values of shifts $\beta_{\vi i}$. This can be remedied by defining the set of all *evaluated* indices $\IndicesOf{\meshGrid}{E}$ and restricting ([-@eq-mesh-warm-start-minimization]) to it, yielding
 $$
-\starter_{\IndicesOf{\meshGrid}{C}}(\vi i) = \argmin_{\vi j \in \IndicesOf{\meshGrid}{C}} \loss(\vi i, \vi j, \beta_{\vi i}).
+\starter_{\IndicesOf{\meshGrid}{E}}(\vi i) = \argmin_{\vi j \in \IndicesOf{\meshGrid}{E}} \loss(\vi i, \vi j, \beta_{\vi j}).
 $$ {#eq-warm-start-minimization}
 
 The second issue is present even in ([-@eq-warm-start-minimization]), and it is the dependence on the entire grid. Indeed, for distant indices the loss function, be it ([-@eq-starter-multiplicative-loss]) or ([-@eq-starter-additive-loss]), will be large and irrelevant for the minimum. Hence, we can define an *indexer* function
 $$
 \indexer : \indicesOf{\meshGrid} \to 2^{\indicesOf{\meshGrid}}
 $$ {#eq-indexer-def}
-specifying a permissible neighborhood for every point of the grid.
+specifying a permissible neighborhood for every point of the grid. 
+
+Arnold tongues have a distinct shape, see @Sevcik2021, @Kuznetsov2023 or @Zathurecky2025, which we can exploit to restrict the search space of a starter.  Indeed, if assume the Arnold tongue with the anti-phase synchrony is present approximately in the middle of our grid $\meshGrid$, then elements closer to the center are more likely to live inside the tongue (and therefore be a good initial guess for anti-phase synchronized trajectories for nearby parameter values). Thus, choosing a starter only among evaluated indices on the diagonal from the current index to the center of $\indicesOf{\meshGrid}$ up-to some distance away, as can be seen on the following illustration, should not worsen our initial guess as compared to the full *warm starter*.
+$$
+\begin{array}{cccccc}
+	& & & & & \text{center of } \indicesOf{\meshGrid} \\
+	& & & & \nearrow & \\
+	\circ_3 & \circ_3 & \circ_3 & \circ_3 & & \\
+	\circ_2 & \circ_2 & \circ_2 & \circ_3 & & \\
+	\circ_1 & \circ_1 & \circ_2 & \circ_3 & & \\
+	\bullet_{\vi i} & \circ_1 & \circ_2 & \circ_3 & &
+\end{array}
+$$
+
+We refer to the described method as the *diagonal indexer* of length $l_{\indexer} \in \N$ (example shown with $l_{\indexer} = 3$). Using a warm starter in conjunction with a diagonal indexer, yielding the minimization problem
+$$
+\starter_{\indexer \IndicesOf{\meshGrid}{E}}(\vi i) = \argmin_{\vi j \in \IndicesOf{\meshGrid}{E} \cap \indexer(\vi i)} \loss(\vi i, \vi j, \beta_{\vi j}),
+$$ {#eq-warm-start-diagonal-indexer}
+brings a very important computational benefit of *constant complexity*. Indeed, by employing a diagonal indexer, the warm starter^[The naive warm starter has a time complexity $O(N_{\Omega} \cdot N_{\Lambda})$.] requires comparison of at most $l_{\indexer}^2 - 1$ values of $\loss(\vi i, \vi j, \beta_{\vi j})$, where $l_{\indexer} \ll \minOf{N_{\Omega}, N_{\Lambda}}$.
