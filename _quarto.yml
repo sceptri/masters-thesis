@@ -96,6 +96,7 @@ format:
     toc-expand: 3
     code-fold: true
     code-tools: true
+    lightbox: true
 
     include-in-header:
       text: |
