@@ -514,4 +514,8 @@ Notice that in @fig-indexed-shift-a, the boundary of the tongue for higher coupl
 
 ### Periodicity Checkers
 
-In Figures [-@fig-cold-diff-shift] to [-@fig-indexed-shift], we have always computed a trajectory for each parameter combination belonging to a point on the grid $\meshGrid$ and then attempted to find corresponding period and shift. This relied on the assumption that the (joint) trajectory is always periodic, and thus all necessary quantities are well defined and can be computed. In case the assumption does not hold, we will still get *some outputs*
+In Figures [-@fig-cold-diff-shift] to [-@fig-indexed-shift], we have always computed a trajectory for each parameter combination belonging to a point on the grid $\meshGrid$ and then attempted to find corresponding period and shift. This relied on the assumption that the (joint) trajectory is always periodic, and thus all necessary quantities are well defined and can be computed. In case the assumption does not hold, we will still get an output, but potentially a nonsensical one.
+
+In other words, one should check for periodicity of the trajectory for each parameter combination. If periodicity is not confirmed, we can skip the rest of the algorithm, saving valuable compute time.
+
+There are several ways one might go about 
