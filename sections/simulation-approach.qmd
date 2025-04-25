@@ -518,4 +518,12 @@ In Figures [-@fig-cold-diff-shift] to [-@fig-indexed-shift], we have always comp
 
 In other words, one should check for periodicity of the trajectory for each parameter combination. If periodicity is not confirmed, we can skip the rest of the algorithm, saving valuable compute time.
 
-There are several ways one might go about 
+There are several ways one might go about determining periodicity. One possibility is to consider a band around a reference value with respect to $\vi x_{1,i}$, the $i$-th coordinate of the state corresponding to the first oscillator -- local maxima work especially well for this approach. Then we can select indices of all data points lying inside this band and study the distribution of $i$-th coordinate of trajectory points for the 2nd oscillator, i.e., $\vi x_{2,i}$, at these indices. However, this method is very sensitive to the width of the band and the reference value, rendering it almost unusable in practice.
+
+An alternative approach is to detect peaks of $\vi x_{1,i}$, the $i$-th coordinate for trajectory of the 1st oscillator. This again prescribes an index set $i$, which we can apply to $\vi x^I_{2,i}$. Then, we can check whether $\vi x^I_{2,i}$ follow chosen criteria, e.g., stay within a predefined range. If this check is successful, we assume the trajectory as a whole is periodic.
+
+::: {.callout-note #nte-peak-periodicity-checker}
+##### Peak-based periodicity checker
+
+A careful reader might notice the peak-based periodicity checker closely resembles *differences* period searcher, see @sec-period-searching. Indeed, it should be possible to merge these two concepts into a single algorithm. Nevertheless, we decided against it due to code-readability reasons. Moreover, the computational complexity of the peak-based periodicity checker almost negligible when considering the entire run of the algorithm over the whole grid, even more so when taking into account the time saved on shift searching for skipped indices $\vi i \in \indicesOf{\meshGrid}$.
+:::
