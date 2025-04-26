@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N julia_antiphase-tongue_test
+#PBS -N julia_compute_shift_heatmap
 #PBS -l select=1:ncpus=20:mem=36gb:scratch_local=150gb
 #PBS -l walltime=10:00:00 
 # The 4 lines above are options for scheduling system: job will run 10 hour at maximum, 1 machine with 20 processors + 36gb RAM memory + 150gb scratch memory are requested

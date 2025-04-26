@@ -9,8 +9,8 @@ using ColorSchemes
 # Thus, while NeuronToolbox is fine for most cases, here we use a hand-made coupled interneurons model
 include("../src/models/coupled_interneurons.jl")
 
-λ = (start=0.0, stop=0.035, length=75)
-C₂ = (start=0.95, stop=1.05, length=75)
+λ = (start=0.0, stop=0.035, length=1200)
+C₂ = (start=0.95, stop=1.05, length=1200)
 
 # All arguments can be found in GridWalker/src/WalkerParameters.jl
 args = (

@@ -577,3 +577,13 @@ Throughout this chapter, we have discussed and implemented various measures to e
 :::
 
 ### Multi-threading and Grid Computing
+
+The Figures [-@fig-cold-diff-shift] - [-@fig-checked-shift] presented so far have all been computed on a Thinkpad T490s with Intel Core i7-8565U CPU and 16 GiB of RAM. We have utilized at most 6 threads and the computations took at most approximately 3 minutes. However, if we were to increase the grid density, the computation time increases quadratically. Indeed, the calculation of 1200-by-1200 grid would take approximately 768 minutes (considering 16 GiB of RAM would be enough, and thus swapping would not be needed, which could cause a significant slow-down).
+
+Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{n_t \cdot k + (l - 1)}} {k = 1} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
+
+In general, scientific computing is often too demanding for a personal computer. One possible solution is to offload the computation to grid infrastructure, namely MetaCentrum. 
+
+> MetaCentrum is the leading national grid computing infrastructure in the Czech Republic, providing researchers, scientists, and students with advanced computing resources to tackle complex computational challenges.
+
+For illustration purposes, we ran 
