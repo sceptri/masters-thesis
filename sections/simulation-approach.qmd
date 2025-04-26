@@ -520,10 +520,60 @@ In other words, one should check for periodicity of the trajectory for each para
 
 There are several ways one might go about determining periodicity. One possibility is to consider a band around a reference value with respect to $\vi x_{1,i}$, the $i$-th coordinate of the state corresponding to the first oscillator -- local maxima work especially well for this approach. Then we can select indices of all data points lying inside this band and study the distribution of $i$-th coordinate of trajectory points for the 2nd oscillator, i.e., $\vi x_{2,i}$, at these indices. However, this method is very sensitive to the width of the band and the reference value, rendering it almost unusable in practice.
 
-An alternative approach is to detect peaks of $\vi x_{1,i}$, the $i$-th coordinate for trajectory of the 1st oscillator. This again prescribes an index set $i$, which we can apply to $\vi x^I_{2,i}$. Then, we can check whether $\vi x^I_{2,i}$ follow chosen criteria, e.g., stay within a predefined range. If this check is successful, we assume the trajectory as a whole is periodic.
+An alternative approach is to detect peaks of $\vi x_{1,i}$, the $i$-th coordinate for trajectory of the 1st oscillator. This again prescribes an index set $i$, which we can apply to $\vi x^I_{2,i}$. Then, we can check whether $\vi x^I_{2,i}$ follow chosen criteria, e.g., stay within a predefined range. If this check is successful, we assume the trajectory as a whole is periodic and execute the rest of the procedure, see @fig-checked-shift.
 
 ::: {.callout-note #nte-peak-periodicity-checker}
 ##### Peak-based periodicity checker
 
 A careful reader might notice the peak-based periodicity checker closely resembles *differences* period searcher, see @sec-period-searching. Indeed, it should be possible to merge these two concepts into a single algorithm. Nevertheless, we decided against it due to code-readability reasons. Moreover, the computational complexity of the peak-based periodicity checker almost negligible when considering the entire run of the algorithm over the whole grid, even more so when taking into account the time saved on shift searching for skipped indices $\vi i \in \indicesOf{\meshGrid}$.
 :::
+
+::: {#fig-checked-shift layout-ncol="2"}
+```{julia}
+#| echo: false
+#| label: fig-checked-shift-a
+#| fig-cap: "$\\tau = 0$"
+jldopen("../data/no_delay_spiral_indexed_optimal_peak_checker_among_halves.jld2", "r") do data
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda")
+
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou)
+    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+    fig
+end
+```
+
+```{julia}
+#| echo: false
+#| label: fig-checked-shift-b
+#| fig-cap: "$\\tau = 0.025$"
+jldopen("../data/delay_spiral_indexed_optimal_peak_checker_among_halves.jld2", "r") do data
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda")
+
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou)
+    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+    fig
+end
+```
+
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay, such that for each parameter combination a periodicity is tested before continuing with the computation.
+:::
+
+::: {.callout-caution #cau-sub-tongues}
+##### Sub-tongues
+
+Throughout this chapter, we have discussed and implemented various measures to ensure optimal estimation of the true shift between the oscillators. However, none of our modifications have removed the sub-tongues, which can be seen in every shift heatmap. By examining the trajectories at their corresponding points, one can verify that both periodicity and computed shift. Unfortunately, we have not found a theoretical explanation for them. Although they could, in theory, represent Arnold tongues of different synchronizations, it seems unlikely given their shape (they are widest for low coupling strength). As such, their origin remains an open question.
+:::
+
+### Multi-threading and Grid Computing
