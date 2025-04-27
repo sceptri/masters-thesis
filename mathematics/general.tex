@@ -52,8 +52,11 @@
 \LetThereBe{\divider}{\; \vert \;}
 \LetThereBe{\gets}{\leftarrow}
 \letThereBe{\rcases}{1}{\left.\begin{aligned}#1\end{aligned}\right\}}
+\letThereBe{\rcasesAt}{2}{\left.\begin{alignedat}{#1}#2\end{alignedat}\right\}}
 \letThereBe{\lcases}{1}{\begin{cases}#1\end{cases}}
+\letThereBe{\lcasesAt}{2}{\left\{\begin{alignedat}{#1}#2\end{alignedat}\right.}
 \letThereBe{\evaluateAt}{2}{\left.#1\right|_{#2}}
+\LetThereBe{\Mod}{\;\mathrm{mod}\;}
 
 % Special symbols
 \LetThereBe{\const}{\mathrm{const}}

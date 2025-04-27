@@ -507,7 +507,7 @@ jldopen("../data/delay_spiral_indexed_optimal_no_checker_among_halves.jld2", "r"
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay. The heatmaps are computed by utilizing introduced techniques of starters, indexers and iterators.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay. The heatmaps are computed by utilizing introduced techniques of starters, indexers and iterators. The rest of the procedure follows @fig-cold-diff-shift and @fig-cold-diff-shift-delay.
 :::
 
 Notice that in @fig-indexed-shift-a, the boundary of the tongue for higher coupling strengths is sharper than in @fig-cold-diff-shift. Also, sub-tongues present in all previous results now appear thinner and more distorted.
@@ -567,7 +567,7 @@ jldopen("../data/delay_spiral_indexed_optimal_peak_checker_among_halves.jld2", "
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay, such that for each parameter combination a periodicity is tested before continuing with the computation.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay, such that for each parameter combination a periodicity is tested before continuing with the computation. The rest of the computation follows @fig-indexed-shift.
 :::
 
 ::: {.callout-caution #cau-sub-tongues}
@@ -582,8 +582,51 @@ The Figures [-@fig-cold-diff-shift] - [-@fig-checked-shift] presented so far hav
 
 Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{n_t \cdot k + (l - 1)}} {k = 1} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
 
-In general, scientific computing is often too demanding for a personal computer. One possible solution is to offload the computation to grid infrastructure, namely MetaCentrum. 
+In general, scientific computing is often too demanding for a personal computer. One possible solution is to offload the computation to grid infrastructure, namely [MetaCentrum](https://metavo.metacentrum.cz/en/). 
 
 > MetaCentrum is the leading national grid computing infrastructure in the Czech Republic, providing researchers, scientists, and students with advanced computing resources to tackle complex computational challenges.
 
-For illustration purposes, we ran 
+For illustration purposes, we ran the script generating @fig-checked-shift for 1200-by-1200 grid instead of 75-by-75, see TODO. As we have said, on a regular consumer-grade laptop, such computation would take about 750 minutes. On MetaCentrum, we reserved 20 CPU cores, 36 GiB of RAM and 150 GiB scratch storage with maximal runtime of 16 hours. Using this setup, the computation took TODO.
+
+<!-- 
+::: {#fig-metacentrum-shift layout-ncol="2"}
+```{julia}
+#| echo: false
+#| label: fig-metacentrum-shift-a
+#| fig-cap: "$\\tau = 0$"
+jldopen("../data/no_delay_computation_metacentrum.jld2", "r") do data
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda")
+
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou)
+    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+    fig
+end
+```
+
+```{julia}
+#| echo: false
+#| label: fig-metacentrum-shift-b
+#| fig-cap: "$\\tau = 0.025$"
+jldopen("../data/delay_computation_metacentrum.jld2", "r") do data
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda")
+
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou)
+    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+
+    fig
+end
+```
+
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay computed on MetaCentrum grid. Save for grid density, the experiments setup mimics @fig-checked-shift.
+::: -->

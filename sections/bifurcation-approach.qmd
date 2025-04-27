@@ -78,7 +78,7 @@ p(\lmbd) = \det (\Jacobi^* - \lmbd \ident).
 $$
 Note that there are other methods of computing stability, which in particular do not require eigenvalues, but only computation of certain determinants of $\Jacobi^*$. We refer the interested reader to @Kuznetsov2023, page 470.
 
-#### Periodic Orbit Localization
+#### Periodic Orbit Localization {#sec-ode-periodic-orbit-localization}
 
 As we have seen, localization of an equilibrium from sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles the situation is more complicated. For clarity, @Kuznetsov2016 was heavily used as a source material for this section.
 
@@ -151,25 +151,25 @@ $$
 $$ {#eq-ode-cycle-bvp}
 If $(\vi u(\cdot), \vi T_0) \in \contf {[0,1], \R^n} 1 \times \R$ satisfies ([-@eq-ode-cycle-bvp]), then $\vi x(t) = \vi u\brackets{\frac t {T_0}}$ gives the $T_0$-periodic solution of ([-@eq-autonomous-ode-system]) with $\vi x(0) = \vi u(0)$.
 
-Moreover, for the fundamental matrix solution $\vi M(t)$ of ([-@eq-autonomous-ode-system]) we define $\vi \Phi(s)$, such that for the monodromy matrix of $L_0$ holds $\vi M(T) = \vi \Phi(1)$ and
+Moreover, for the fundamental matrix solution $\vi M(t)$ of ([-@eq-autonomous-ode-system]) we define $\vi \Gamma(s)$, such that for the monodromy matrix of $L_0$ holds $\vi M(T) = \vi \Gamma(1)$ and
 $$
-\dvi \Phi(s) - T \jacobi \vi f(\vi u(s)) \vi \Phi(s) = \vi 0, \; \vi \Phi(0) = \vi \ident_n.
+\dvi \Gamma(s) - T \jacobi \vi f(\vi u(s)) \vi \Gamma(s) = \vi 0, \; \vi \Gamma(0) = \vi \ident_n.
 $$ {#eq-monodromy-system-normalized}
-The eigenvalues of $\vi \Phi(1)$ correspond exactly to the aforementioned multipliers of the cycle $L_0$. We also define the **adjoint monodromy matrix** $\vi \Psi(1)$ as the solution of
+The eigenvalues of $\vi \Gamma(1)$ correspond exactly to the aforementioned multipliers of the cycle $L_0$. We also define the **adjoint monodromy matrix** $\vi \Psi(1)$ as the solution of
 $$
 \dvi \Psi(s) - T \jacobi \vi f\Tr(\vi u(s)) \vi \Psi(s) = \vi 0, \; \vi \Psi(0) = \vi \ident_n
 $$
 evaluated at 1. It follows that
 $$
-\vi \Psi(s) = \brackets{\vi \Phi(s)\Inv}\Tr.
+\vi \Psi(s) = \brackets{\vi \Gamma(s)\Inv}\Tr.
 $$ {#eq-monodromy-psi-phi}
 In general, any solution $\vi \xi \in \contf {[0,1], \R^n} {1}$ of an inhomogeneous linear system
 $$
 \dvi \xi - T \jacobi \vi f(\vi u(s)) \vi \xi = \vi b(s),
 $$ 
-where $\vi b \in \contf {\R, \R^n} {0}$, can be written as (by ([-@eq-monodromy-psi-phi]))^[In other words, $\vi \Phi(s)$ is a *fundamental matrix* of ([-@eq-monodromy-system-normalized]). Moreover, this viewpoint explains ([-@eq-monodromy-variation-of-const]) as a corollary of method of variation of constants.]
+where $\vi b \in \contf {\R, \R^n} {0}$, can be written as (by ([-@eq-monodromy-psi-phi]))^[In other words, $\vi \Gamma(s)$ is a *fundamental matrix* of ([-@eq-monodromy-system-normalized]). Moreover, this viewpoint explains ([-@eq-monodromy-variation-of-const]) as a corollary of method of variation of constants.]
 $$
-\vi \xi(s) = \vi \Phi(s) \brackets{\vi \xi(0) + \int_0^{s} \vi \Phi\Inv(\sigma) \vi b(\sigma) \dd \sigma} = \vi \Phi(s) \brackets{\vi \xi(0) + \int_0^s \vi \Psi\Tr(\sigma) \vi b(\sigma) \dd \sigma}.
+\vi \xi(s) = \vi \Gamma(s) \brackets{\vi \xi(0) + \int_0^{s} \vi \Gamma\Inv(\sigma) \vi b(\sigma) \dd \sigma} = \vi \Gamma(s) \brackets{\vi \xi(0) + \int_0^s \vi \Psi\Tr(\sigma) \vi b(\sigma) \dd \sigma}.
 $$ {#eq-monodromy-variation-of-const}
 
 :::{#def-simple-cycle}
@@ -179,8 +179,8 @@ A cycle $L$ is called **simple** if the trivial multiplier $\mu_1 = 1$ has algeb
 Let $\vi q_0, \vi p_0 \in \R^n$ be the left and right eigenvectors of the monodromy matrix corresponding to the trivial multiplier $\mu_1$,
 $$
 \begin{aligned}
-(\vi \Phi(1) - \ident_n) \vi q_0 = (\vi \Psi(1) - \ident_n) \vi p_0 & = \vi 0, \\
-(\vi \Phi(1) - \ident_n)\Tr \vi p_0 = (\vi \Psi(1) - \ident_n)\Tr \vi q_0 & = \vi 0,
+(\vi \Gamma(1) - \ident_n) \vi q_0 = (\vi \Psi(1) - \ident_n) \vi p_0 & = \vi 0, \\
+(\vi \Gamma(1) - \ident_n)\Tr \vi p_0 = (\vi \Psi(1) - \ident_n)\Tr \vi q_0 & = \vi 0,
 \end{aligned}
 $$ 
 such that $\norm{\vi p_0}_2 = \norm{\vi q_0}_2 = 1$. Also, $\vi q_0 = c_0 \vi f(\vi u(0))$ for $c_0 \in \R \setminus \set{0}$, which follows from ([-@eq-monodromy-system-normalized]) using ([-@eq-autonomous-ode-period-1]),([-@eq-autonomous-ode-1-periodicity-cond]):
@@ -224,7 +224,7 @@ If $(\vi u(\cdot), T)$ corresponds to a simple cycle, then the operator
 $$
 \oper{L}_{\vi u, T} = \bmtr{
 	\oper{\jacobi} - T \jacobi \vi f(\vi u) & - \vi f(\vi u) \\
-	\evalOp{1} - \evalOp{0} & 0 \\
+	\evalOp{0} - \evalOp{1} & 0 \\
 	\testInt{\vi f(\vi u)} & 0
 },
 $$
@@ -312,7 +312,7 @@ $$ {#eq-collocation-discretized-phase}
 where $\dvi v^{j,i}$ are the values of the derivative of the reference period-1 solution at representation points $s_{j,i}$ and $\omega_{j,i}$ are the *Gauss-Legendre quadrature coefficients*^[Gauss-Legendre quadrature is a method of approximating a definite integral $\int_{-1}^1 f(x) \dd x \approx \sum_{i = 1}^n \omega_i f(x_i)$. The optimal value of $x_i$ and $\omega_i$ for a given value of $n$ can be computed analytically. For more information, see @Brin2020]. By combining ([-@eq-collocation-spline-requirements]), ([-@eq-collocation-spline-lagrange]), ([-@eq-collocation-discretized-periodicity]), and ([-@eq-collocation-discretized-phase]) we get a system ([-@eq-ode-discretized-bvp]) of $nmN + n + 1$ scalar equations for the unknown values $\vi u^{j,i} \in \R^n$ at representation points $s_{j,i}$ (there are $(mN + 1)$ values $\vi u^{j,i}$) and for the unknown period $T$,
 $$
 \rcases{
-	\sum_{i = 0}^m\brackets{\vi u^{j,i}, \lagrPoly'_{j,i}(\zeta_{j,k})} - T \vi f\brackets{\sum_{i = 0}^m \vi u^{j,i} \lagrPoly_{j,i}(\zeta_{j,k})} &= \vi 0_n, \\
+	\sum_{i = 0}^m \vi u^{j,i} \lagrPoly'_{j,i}(\zeta_{j,k}) - T \vi f\brackets{\sum_{i = 0}^m \vi u^{j,i} \lagrPoly_{j,i}(\zeta_{j,k})} &= \vi 0_n, \\
 	j = 0, 1, \dots, N-1, \; k = 1, \dots, m, & \\
 	\vi u^{0,0} - \vi u^{N-1, m} &= \vi 0_n, \\
 	\sum_{j = 0}^{N-1}\sum_{i = 0}^{m-1} \omega_{j,i} \scal{\vi u^{j,i}}{\dvi v^{j,i}} + \omega_{N,0} \scal{\vi u^{N,0}} {\dvi v^{N,0}} &= 0.
@@ -350,7 +350,7 @@ $$
 	\nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl & \nonzeroEl
 }},
 $$ {#eq-ode-collocation-jacobian}
-where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see @sec-continuation, we will get a fully determined system. 
+where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = \vi 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see @sec-continuation, we will get a fully determined system. 
 
 The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e., $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
 $$
@@ -412,9 +412,9 @@ $$
 $$ {#eq-ode-collocation-monodromy-approx}
 approximates
 $$
-\vi u(1) = \vi \Phi(1) \vi \Phi(0)\Inv \vi u(0).
+\vi u(1) = \vi \Gamma(1) \vi \Gamma(0)\Inv \vi u(0).
 $$
-Thus, using $\vi \Phi(0) = \ident_n$ from ([-@eq-monodromy-system-normalized]), $- \vi P_1\Inv \vi P_0 \approx \vi \Phi(1) = \vi M(T_0)$ for the monodromy matrix $\vi M(T_0)$ corresponding to the cycle $L_0$ of ([-@eq-autonomous-ode-system]). Computing the eigenvalues of $- \vi P_1\Inv \vi P_0$ then estimates the multipliers of the cycle $L_0$, which determine its stability.
+Thus, using $\vi \Gamma(0) = \ident_n$ from ([-@eq-monodromy-system-normalized]), $- \vi P_1\Inv \vi P_0 \approx \vi \Gamma(1) = \vi M(T_0)$ for the monodromy matrix $\vi M(T_0)$ corresponding to the cycle $L_0$ of ([-@eq-autonomous-ode-system]). Computing the eigenvalues of $- \vi P_1\Inv \vi P_0$ then estimates the multipliers of the cycle $L_0$, which determine its stability.
 
 ### Semidynamical Systems
 
@@ -485,12 +485,66 @@ Unfortunately, due to our choice of approximation and discretization of the solu
 Let us note a discretization induced by Runge-Kutta numerical integrator can also be used, albeit it is less frequent in practice. We refer the interested reader to @Breda2006a.
 :::
 
-#### Periodic Orbit Localization
+#### Periodic Orbit Localization {#sec-dde-periodic-orbit-localization}
 
-TODO, see @Roose2007, @Fairgrieve1991, @Sieber2014, @Engelborghs2001, @Verheyden2005
-Possibly also @Breda2006 and more
+The localization of periodic orbits in DDEs proceeds similarly to the ODE case, see @sec-ode-periodic-orbit-localization. Indeed, main differences lie in the discretization and normalization to unit period. Let us remark this subsection is based on @Verheyden2005, @Sieber2014 and @Roose2007, but also @Engelborghs2001, @Fairgrieve1991 and @Breda2006.
 
-<!-- See @Govaerts2005, @Doedel1991 (same as @Kuznetsov2016) for matlab, @Verheyden2005 (or even @Lust1998) and @Roose2007 for DDEs and @Fairgrieve1991  -->
+So far, our discretization scheme, prescribed by *representation* points,
+$$
+0 = s_0 = s_{0,0} < s_{0,1} < \dots < s_{0, m-1} < s_{0,m} = s_{1} = s_{1,0} < \dots < s_N = T,
+$$
+has been designed for a single period interval $[0,T]$ (or $[0,1]$ after period-1 normalization). As such, we can periodically extent it to cover the interval $[-\tau, T]$. There are now two possible, yet fundamentally different approaches.
+
+The first approach, used in DDE-BIFTOOL, see @Sieber2014 or @Roose2007, normalize the system in time to a unit period for the given cycle (analogously as we did for ODEs). Afterwards, we can wrap-around the delays into interval $[0,1]$, which yields the following BVP^[The notation $t \mod [0,1]$ refers to $t - \max{k \in \Z \divider k \leq t}$.]
+$$
+\rcases{
+	\dvi u (\zeta_{j,i}) - T \vi f\brackets{\vi u(\zeta_{j,i}), \vi u \brackets{\brackets{\zeta_{j,i} - \frac {\tau_1} T} \Mod [0,1]}, \dots, \vi u \brackets{\brackets{\zeta_{j,i} - \frac {\tau_H} T} \Mod [0,1]}} &= \vi 0, \\
+	j = 0, 1, \dots, N-1, \; k = 1, \dots, m, \qquad & \\
+	\vi u(0) - \vi u(1) &= \vi 0, \\
+	\int_0^1 \scal {\vi u(\sigma)} {\dvi u_{\text{old}}(\sigma)} \dd \sigma &= 0,
+}
+$$ {#eq-dde-periodic-orbit-normalized-bvp}
+where $\zeta_{j,i}$ are again the *collocation* points, and $\vi u_0$ and $\vi u_1$ are solution segments on $[-\tau, 0]$ and $[1 - \linefrac{\tau} T, 1]$, respectively. The period $T$ is unknown variable. Unfortunately, the resulting linearized system for the BVP ([-@eq-dde-periodic-orbit-normalized-bvp]) has banded structure, which cannot be easily exploited to aid used linear solver. Moreover, the transformation via the modulo operator complicates the computation of Floquet multipliers, because it distorts the included matrix corresponding to the discretized time-integration operator.
+
+The alternative method, see @Verheyden2005 and @Roose2007, relies on the construction of the orthogonal collocation BVP *without* subsequent wrapping of the delays. This produces a larger BVP, as collocation of the delayed segment is also required, 
+$$
+\rcasesAt{2}{
+	\dvi u (\zeta_{j,i}) - T \vi f\brackets{\vi u(\zeta_{j,i}), \vi u \brackets{\zeta_{j,i} - \frac {\tau_1} T}, \dots, \vi u \brackets{\zeta_{j,i} - \frac {\tau_H} T}} &= \vi H^{\text{dde}} (\vi u, T) &&= \vi 0, \\
+	j = 0, 1, \dots, N-1, \; k = 1, \dots, m, \qquad & & & \\
+	\vi u_0 - \vi u_1 &= \vi H^{\text{per}}(\vi u) &&= \vi 0, \\
+	\int_0^1 \scal {\vi u(\sigma)} {\dvi u_{\text{old}}(\sigma)} \dd \sigma &= \vi \Phi [\vi u] &&= 0
+} = \vi H(\vi u, T) = \vi 0.
+$$ {#eq-dde-periodic-orbit-unwrapped-bvp}
+
+Note that the trajectory $\vi u(s)$ of the periodic orbit for $s \in [-\tau/T, 1]$ may be split into 2 parts, $\vi u_0$ corresponding to the initial point, which captures the delay, and $\vi u_t(s)$ for $s \in [0, 1]$ representing the cycle itself. To solve BVP ([-@eq-dde-periodic-orbit-unwrapped-bvp]), one can again employ the Newton-Raphson method in its residual form, see @sec-newton-method, where its linearization may be written as
+$$
+\rcases{
+	\vi H^{\text{dde}}_{\vi u_0} \diff \vi u_0 + \vi H^{\text{dde}}_{\vi u_t} \diff \vi u_t + \vi H^{\text{dde}}_{T} \diff T &= - \vi H^{\text{dde}}, \\
+	\diff \vi u_0 - \diff \vi u_1 &= - \vi H^{\text{per}}, \\
+	\vi \Phi_0 \diff \vi u_0 + \vi \Phi_t \diff \vi u_t + \vi \Phi_T \diff T &= \vi \Phi,
+}
+$$ {#eq-linearized-dde-periodic-orbit-bvp}
+where $\vi H^{\text{dde}}_{\vi u_0}$, $\vi H^{\text{dde}}_{\vi u_t}$ and $\vi H^{\text{dde}}_{T}$ denote the partial derivatives of $\vi H^{\text{dde}}$ with respect to $\vi u_0$, $\vi u_t$ and $T$, respectively, and analogously for $\vi \Phi$. All functions and their partial derivatives are assumed to be evaluated for a given $(\vi u, T)$, such that $\diff \vi u_0, \diff \vi u_t, \diff T$ are considered to be correction variables for ([-@eq-linearized-dde-periodic-orbit-bvp]) in the context of the Newton-Raphson method (this notation was introduced in @sec-newton-method).
+
+::: {.callout-tip #tip-periodic-orbit-dde-to-ode-bvp}
+##### Similarities with ODEs
+
+By omitting terms corresponding to partial derivatives with respect to $\vi u_0$, we get a similar expression to the linearized BVP for the ODE case ([-@eq-newton-step-bvp]).
+:::
+
+In @Verheyden2005, Verheyden and Lust proposed a method of condensation of parameters for ([-@eq-linearized-dde-periodic-orbit-bvp]), such that it is reduced to the following form
+$$
+\mtr{
+	\vi \Gamma(1) - \ident & \cdot \\
+	\cdot & \cdot
+} \mtr{\diff \vi u_0 \\ \diff T} = - \vi R,
+$$ {#eq-dde-condensed-linearized-cycle-bvp}
+where $\vi \Gamma(1)$ is the monodromy matrix, see ([-@eq-monodromy-system-normalized]), which can be obtained from the time-integration matrix $\vi \Gamma_t$ for variational equations^[The variational equations for a given cycle were introduced in @def-variational-equation-about-cycle and correspond to the linearization of the orthogonal collocation BVP.],
+$$
+\vi \Gamma_t = - \brackets{\vi H^{\text{dde}}_{\vi u_t}}\Inv \vi H^{\text{dde}}_{\vi u_0},
+$$ {#eq-dde-time-integration-matrix}
+similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The exact form of ([-@eq-dde-condensed-linearized-cycle-bvp]) can be found in @Verheyden2005. The Newton-Picard method, see @Lust1998, @Linge2017 or @Hellevik2020, can be used to efficiently solve ([-@eq-dde-condensed-linearized-cycle-bvp]). Afterwards, $\diff \vi u_t$ may be obtained from the first equation of ([-@eq-linearized-dde-periodic-orbit-bvp]). Lastly, Floquet multipliers of the periodic orbit can be computed as the dominant eigenvalues of the discretized monodromy matrix $\vi \Gamma(1)$.
+
 <!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
 
 
