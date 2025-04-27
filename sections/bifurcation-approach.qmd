@@ -532,11 +532,11 @@ where $\vi H^{\text{dde}}_{\vi u_0}$, $\vi H^{\text{dde}}_{\vi u_t}$ and $\vi H^
 By omitting terms corresponding to partial derivatives with respect to $\vi u_0$, we get a similar expression to the linearized BVP for the ODE case ([-@eq-newton-step-bvp]).
 :::
 
-In @Verheyden2005, Verheyden and Lust proposed a method of condensation of parameters for ([-@eq-linearized-dde-periodic-orbit-bvp]), such that it is reduced to the following form
+In @Verheyden2005, Verheyden and Lust proposed a method of condensation of parameters for ([-@eq-linearized-dde-periodic-orbit-bvp]), such that the BVP is reduced to the following form
 $$
 \mtr{
-	\vi \Gamma(1) - \ident & \cdot \\
-	\cdot & \cdot
+	\vi \Gamma(1) - \ident & \ast \\
+	\ast & \ast
 } \mtr{\diff \vi u_0 \\ \diff T} = - \vi R,
 $$ {#eq-dde-condensed-linearized-cycle-bvp}
 where $\vi \Gamma(1)$ is the monodromy matrix, see ([-@eq-monodromy-system-normalized]), which can be obtained from the time-integration matrix $\vi \Gamma_t$ for variational equations^[The variational equations for a given cycle were introduced in @def-variational-equation-about-cycle and correspond to the linearization of the orthogonal collocation BVP.],
@@ -552,7 +552,12 @@ similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The ex
 
 TODO, see @Kuznetsov2023
 
+Let us now explore the *continuation* process itself. 
+
 ### Pseudo-arclength Continuation
+
+
+![Illustration of pseudo-arclength continuation (adapted from @Pribylova2021).](../assets/cont_pa.svg)
 
 TODO
 
@@ -560,10 +565,12 @@ TODO
 
 TODO
 
+![Illustration of Moore-Penrose continuation (adapted from @Pribylova2021).](../assets/cont_mp.svg)
+
 ## Cycle Continuation in Coupled Oscillators
 
 As we have discussed in the @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase-shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
 
-For soundness of the grid-based approach to the computation of phase-shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have just used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable cycle near zero coupling strength, which could be used as the starting point for the continuation.
+For soundness of the grid-based approach to the computation of phase-shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have simply used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable cycle near zero coupling strength, which could be used as the starting point for the continuation.
 
 Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must locally exist a cycle manifold (with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator) near zero coupling between the two oscillators, such that their phases are synchronized. In particular, we shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2024. This will be performed mainly by studying the phase shifts between the two oscillators.

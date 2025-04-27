@@ -586,15 +586,16 @@ In general, scientific computing is often too demanding for a personal computer.
 
 > MetaCentrum is the leading national grid computing infrastructure in the Czech Republic, providing researchers, scientists, and students with advanced computing resources to tackle complex computational challenges.
 
-For illustration purposes, we ran the script generating @fig-checked-shift for 1200-by-1200 grid instead of 75-by-75, see TODO. As we have said, on a regular consumer-grade laptop, such computation would take about 750 minutes. On MetaCentrum, we reserved 20 CPU cores, 36 GiB of RAM and 150 GiB scratch storage with maximal runtime of 16 hours. Using this setup, the computation took TODO.
+For illustration purposes, we ran the script generating @fig-checked-shift for 1200-by-1200 grid instead of 75-by-75, see @fig-metacentrum-shift. As we have said, on a regular consumer-grade laptop, such computation would take at the *very least* 750 minutes simply extrapolating from the 75-by-75 grid computation. On MetaCentrum, we reserved 20 CPU cores, 36 GiB of RAM and 150 GiB scratch storage with maximal runtime of 16 hours. Using this setup, the computation took 82 minutes for the experiment without delays and 443 minutes with delay.
 
-<!-- 
 ::: {#fig-metacentrum-shift layout-ncol="2"}
 ```{julia}
 #| echo: false
 #| label: fig-metacentrum-shift-a
 #| fig-cap: "$\\tau = 0$"
 jldopen("../data/no_delay_computation_metacentrum.jld2", "r") do data
+    CairoMakie.activate!(type="png")
+
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
         xlabel=L"C_2", ylabel=L"\lambda")
@@ -614,6 +615,8 @@ end
 #| label: fig-metacentrum-shift-b
 #| fig-cap: "$\\tau = 0.025$"
 jldopen("../data/delay_computation_metacentrum.jld2", "r") do data
+    CairoMakie.activate!(type="png")
+	
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
         xlabel=L"C_2", ylabel=L"\lambda")
@@ -629,4 +632,4 @@ end
 ```
 
 Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay computed on MetaCentrum grid. Save for grid density, the experiments setup mimics @fig-checked-shift.
-::: -->
+:::
