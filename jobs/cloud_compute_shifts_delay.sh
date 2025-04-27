@@ -13,9 +13,9 @@ echo "$PBS_JOBID is running on node `hostname -f` in a scratch directory $SCRATC
 
 module add julia/1.11.3
 
-export JULIA_PKGDIR=/storage/brno2/home/sceptri/.julia   
-export JULIA_DEPOT_PATH=/storage/brno2/home/sceptri/.julia
-export JULIA_PROJECT=/storage/brno2/home/sceptri/.julia 
+export JULIA_PKGDIR=/storage/praha1/home/sceptri/.julia   
+export JULIA_DEPOT_PATH=/storage/praha1/home/sceptri/.julia
+export JULIA_PROJECT=/storage/praha1/home/sceptri/.julia 
 export JULIA_CPU_THREADS=$PBS_NCPUS   # PBS_NCPUS is number of reserved CPUs
 
 # test if scratch directory is set
