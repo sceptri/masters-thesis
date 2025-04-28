@@ -68,9 +68,8 @@ where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \ome
 
 ## Grid-Based Phase-Shift Computation
 
-<!-- TODO: Use the "GridWalker" package -->
-<!-- TODO: Add reference to NeuronToolbox.jl if applicable -->
 <!-- TODO: Add reference to interneuron discussion and coupling discussions -->
+<!-- TODO: Add stochastic phenomena? Right now, EM method is nowhere used -->
 
 Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators, most often neurons, their synchronized clusters, or neural masses. Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models, see TODO, with delayed gap-junctional coupling, e.g., $\tau = 0.01$, and treat $\omega_2$ as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
 $$

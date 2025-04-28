@@ -46,7 +46,7 @@ As we have mentioned several times before, the fundamental goal of this thesis i
 > We should also disclose that while this chapter is named 'Bifurcation Theory Approach', we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
 
 <!-- TODO: Change the title -->
-## Theory of Localizations
+## Theory of Localizations {#sec-theory-of-localizations}
 
 Although the primary subjects of our study are periodic orbits, we will first delve into the localization of equilibrium. Indeed, one might recall we discussed the relation of equilibria (or fixed points) in discrete dynamical systems and periodic orbits of continuous-time dynamical systems in @sec-poincare-map. This fact alone suggests it is beneficial to first study the simpler case of equilibria localization, building tools to later tackle the periodic case.
 
@@ -550,22 +550,62 @@ similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The ex
 
 ## Continuation {#sec-continuation}
 
-TODO, see @Kuznetsov2023
+Let us now explore the *continuation* process itself (for references, see @Kuznetsov2023 and @Pribylova2021a). In general, a (finite-dimensional) *continuation problem* is the task of finding a curve in $\R^{n+1}$ prescribed by system
+$$
+\vi H(\vi X) = \vi 0, \; \vi H : \R^{n+1} \to \R^n.
+$$ {#eq-continuation-problem}
+As an example, one might consider the *equilibrium curve*, which is given as the $\alpha$-parametrized solution of $\vi f(\vi x, \alpha) = \vi 0$ for a (semi)dynamical system
+$$
+\dvi x = \vi f(\vi x, \alpha).
+$$
+All of the continuation problems we shall be interested in arise from parametrized *localization problems*, see the previous section [-@sec-theory-of-localizations].
 
-Let us now explore the *continuation* process itself. 
+From the *implicit function theorem* follows that the system ([-@eq-continuation-problem]) locally defines a smooth one-dimensional manifold (*curve*) $M$ passing through a point $\vi X^0$, if $\rank \Jacobi_{\vi H} = n$, where $\Jacobi_{\vi H} = \jacobi \vi H(\vi X^0)$. By a numerical solution to ([-@eq-continuation-problem]) is understood a sequence of points $\vi X^0, \vi X^1, \dots$ approximating the curve $M$ with desired accuracy. The continuation algorithms we shall present here will be based on the *prediction--correction* process.
 
-### Pseudo-arclength Continuation
+For the prediction part, we will singularly use the *tangent* prediction
+$$
+\tilde{\vi X}^i_{(0)} = \vi X^i + h \vi v^i,
+$$ {#eq-continuation-tangent-prediction}
+where $\vi v^i \in \R^{n+1}$ is the normalized tangent vector to the curve $M$ at the (regular) point $\vi X^i$ and $h \in \R$ is the stepsize. Using the arclength parametrization of $\vi X(s)$ of the curve near $\vi X^i$ (i.e., $\vi X(0) = \vi X^i$), we can substitute it into ([-@eq-continuation-problem]) and differentiate with respect to $s$, which yields
+$$
+\jacobi \vi H(\vi X^i) \overbrace{\evaluateAt{\dvi X(s)}{s = 0}}^{\vi v^i} = \vi 0.
+$$
+In other words, $\vi v^i$ must lie in the null-space of the matrix of local linearization of $M$ around $\vi X^i$. Moreover, since $\vi X^i$ is presumed to be *regular*, i.e., $\rank \jacobi \vi H(\vi X^i) = n$, then $\vi v^i$ is determined uniquely up-to a constant multiple.
 
+::: {.callout-tip #tip-secant-prediction}
+##### Secant prediction
 
-![Illustration of pseudo-arclength continuation (adapted from @Pribylova2021).](../assets/cont_pa.svg)
+Although we have introduced only the tangent prediction, another popular method is the *secant prediction*. For more information, one can see @Kuznetsov2023.
+:::
 
-TODO
+Currently, we have predicted a point $\tilde{\vi X}^i_{(0)}$ assumed to be close to the curve, which we need to *"correct"* such that it lies on $M$ within a certain specified degree of accuracy. This, in general, requires the use of a Newton-like method, see @sec-newton-method, as ([-@eq-continuation-problem]) might be highly nonlinear. However, a Newton-like methods can only be applied to fully determined systems, i.e., the number of equations must correspond to the number of unknown variables. Therefore, we add an extra scalar (remember $\vi H : \R^{n+1} \to \R^n$) condition
+$$
+g^i(\vi X) = 0
+$$
+to ([-@eq-continuation-problem]), producing
+$$
+\rcases{
+	\vi H(\vi X) &= \vi 0, \\
+	g^i(\vi X) &= 0.
+}
+$$ {#eq-continuation-prediction-system}
+Finally, Newton's method can be used on ([-@eq-continuation-prediction-system]).
 
-### Moore-Penrose Continuation
+One possibility is to select a hyper-plane $P^i$ passing through the point $\tilde{\vi X}^i_{(0)}$, such $\vi v^i$ is its normal vector. Then, we can find the corrected point $\vi X^{i+1}$ as the intersection of $P^i$ and the curve $M$. Further, any point $\vi X$ on $P^i$ must satisfy
+$$
+\overbrace{\scal {\vi X - \tilde{\vi X}^i_{(0)}} {\vi v^i}}^{g^i(\vi X)} = 0,
+$$
+which defines $g^i : \R^{n+1} \to \R$. When combined with the tangent prediction, this method is called the *pseudo-arclength continuation*, see @fig-continuation-methods-a.
 
-TODO
+::: {#fig-continuation-methods layout-ncol=2}
+![Pseudo-arclength continuation](../assets/cont_pa.svg){#fig-continuation-methods-a}
 
-![Illustration of Moore-Penrose continuation (adapted from @Pribylova2021).](../assets/cont_mp.svg)
+![Moore-Penrose continuation](../assets/cont_mp.svg){#fig-continuation-methods-b}
+
+Overview of different prediction--correction methods for continuation (adapted from @Pribylova2021a, courtesy of Assoc. Prof. Přibylová).
+:::
+
+Another possible approach is to adapt $g^i(\vi X)$ throughout the correction process, i.e., in the course of the Newton iterations.
 
 ## Cycle Continuation in Coupled Oscillators
 

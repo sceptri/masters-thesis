@@ -1061,7 +1061,7 @@ for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, 
 $$
 \diff \rW_n \sim \normalD{0, \diff t_n} \quad \& \quad \diff \rW \sim \normalD{0, \diff t}.
 $$
-Thus for equidistant discretization ([-@eq-em-iteration-long]) becomes
+Thus, for equidistant discretization, ([-@eq-em-iteration-long]) becomes
 $$
 \rY_{n+1} = \rY_n + a(t_n, \rY_n) \diff t + b(t_n, \rY_n) \diff \rW,
 $$ {#eq-em-iteration}
