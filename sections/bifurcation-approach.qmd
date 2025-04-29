@@ -520,12 +520,12 @@ $$ {#eq-dde-periodic-orbit-unwrapped-bvp}
 Note that the trajectory $\vi u(s)$ of the periodic orbit for $s \in [-\tau/T, 1]$ may be split into 2 parts, $\vi u_0$ corresponding to the initial point, which captures the delay, and $\vi u_t(s)$ for $s \in [0, 1]$ representing the cycle itself. To solve BVP ([-@eq-dde-periodic-orbit-unwrapped-bvp]), one can again employ the Newton-Raphson method in its residual form, see @sec-newton-method, where its linearization may be written as
 $$
 \rcases{
-	\vi H^{\text{dde}}_{\vi u_0} \diff \vi u_0 + \vi H^{\text{dde}}_{\vi u_t} \diff \vi u_t + \vi H^{\text{dde}}_{T} \diff T &= - \vi H^{\text{dde}}, \\
+	\jacobi_{\vi u_0} \vi H^{\text{dde}} \diff \vi u_0 + \jacobi_{\vi u_t} \vi H^{\text{dde}} \diff \vi u_t + \jacobi_{T} \vi H^{\text{dde}} \diff T &= - \vi H^{\text{dde}}, \\
 	\diff \vi u_0 - \diff \vi u_1 &= - \vi H^{\text{per}}, \\
-	\vi \Phi_0 \diff \vi u_0 + \vi \Phi_t \diff \vi u_t + \vi \Phi_T \diff T &= \vi \Phi,
+	\jacobi_{\vi u_0}\vi \Phi \diff \vi u_0 + \jacobi_{\vi u_t}\vi \Phi \diff \vi u_t + \jacobi_T \vi \Phi \diff T &= \vi \Phi.
 }
 $$ {#eq-linearized-dde-periodic-orbit-bvp}
-where $\vi H^{\text{dde}}_{\vi u_0}$, $\vi H^{\text{dde}}_{\vi u_t}$ and $\vi H^{\text{dde}}_{T}$ denote the partial derivatives of $\vi H^{\text{dde}}$ with respect to $\vi u_0$, $\vi u_t$ and $T$, respectively, and analogously for $\vi \Phi$. All functions and their partial derivatives are assumed to be evaluated for a given $(\vi u, T)$, such that $\diff \vi u_0, \diff \vi u_t, \diff T$ are considered to be correction variables for ([-@eq-linearized-dde-periodic-orbit-bvp]) in the context of the Newton-Raphson method (this notation was introduced in @sec-newton-method).
+All functions and their partial derivatives are assumed to be evaluated for a given $(\vi u, T)$, such that $\diff \vi u_0, \diff \vi u_t, \diff T$ are considered to be correction variables for ([-@eq-linearized-dde-periodic-orbit-bvp]) in the context of the Newton-Raphson method (this notation was introduced in @sec-newton-method).
 
 ::: {.callout-tip #tip-periodic-orbit-dde-to-ode-bvp}
 ##### Similarities with ODEs
@@ -542,7 +542,7 @@ $$
 $$ {#eq-dde-condensed-linearized-cycle-bvp}
 where $\vi \Gamma(1)$ is the monodromy matrix, see ([-@eq-monodromy-system-normalized]), which can be obtained from the time-integration matrix $\vi \Gamma_t$ for variational equations^[The variational equations for a given cycle were introduced in @def-variational-equation-about-cycle and correspond to the linearization of the orthogonal collocation BVP.],
 $$
-\vi \Gamma_t = - \brackets{\vi H^{\text{dde}}_{\vi u_t}}\Inv \vi H^{\text{dde}}_{\vi u_0},
+\vi \Gamma_t = - \brackets{\jacobi_{\vi u_t} \vi H^{\text{dde}}}\Inv \jacobi _{\vi u_0} \vi H^{\text{dde}},
 $$ {#eq-dde-time-integration-matrix}
 similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The exact form of ([-@eq-dde-condensed-linearized-cycle-bvp]) can be found in @Verheyden2005. The Newton-Picard method, see @Lust1998, @Linge2017 or @Hellevik2020, can be used to efficiently solve ([-@eq-dde-condensed-linearized-cycle-bvp]). Afterwards, $\diff \vi u_t$ may be obtained from the first equation of ([-@eq-linearized-dde-periodic-orbit-bvp]). Lastly, Floquet multipliers of the periodic orbit can be computed as the dominant eigenvalues of the discretized monodromy matrix $\vi \Gamma(1)$.
 
@@ -620,3 +620,56 @@ As we have discussed in the @sec-problem-formulation on the problem formulation,
 For soundness of the grid-based approach to the computation of phase-shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have simply used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable cycle near zero coupling strength, which could be used as the starting point for the continuation.
 
 Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must locally exist a cycle manifold (with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator) near zero coupling between the two oscillators, such that their phases are synchronized. In particular, we shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2025. This will be performed mainly by studying the phase shifts between the two oscillators.
+
+Moreover, this methodology enables us to study Arnold tongues corresponding to different shifts separately. This very fact was obscured by the simulation approach. Indeed if two manifolds of cycles overlap when projected onto the parameter space, the simulation approach will highlight only the one closer to the desired shift (if both are stable).
+
+Recall the studied system ([-@eq-general-delayed-coupled-oscillators]),
+$$
+\begin{aligned}
+	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau), \sigma), \\
+	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
+\end{aligned}
+$$
+describing $\lmbd$-weakly coupled oscillators $\vi x_1(t), \vi x_2(t)$. In particular, we shall again concern ourselves with the case of two weakly coupled interneuron models, see TODO.
+
+```{julia}
+#| echo: false
+#| label: fig-bifurcation-shift-ode
+#| fig-cap: Zathurecky2025 ODE
+#| width: 95%
+
+include("../scripts/plot_Zathurecky2025_ode_results.jl")
+render_ode_results()
+```
+
+```{julia}
+#| echo: false
+#| label: fig-bifurcation-shift-dde
+#| fig-cap: Zathurecky2025 DDE
+#| width: 95%
+
+include("../scripts/plot_Zathurecky2025_dde_results.jl")
+render_dde_results()
+```
+
+
+::: {#fig-comparison-bifurcation-simulation-shift layout-ncol="2"}
+```{julia}
+#| echo: false
+#| label: fig-comparison-bifurcation-simulation-shift-a
+#| fig-cap: "$\\tau = 0$"
+
+include("../scripts/compare_bif_sim_ode.jl")
+```
+
+```{julia}
+#| echo: false
+#| label: fig-comparison-bifurcation-simulation-shift-b
+#| fig-cap: "$\\tau = 0.025$"
+
+include("../scripts/compare_bif_sim_dde.jl")
+```
+
+Comparison of results between bifurcation and simulation approaches TODO
+
+:::

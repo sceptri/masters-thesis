@@ -126,8 +126,8 @@ Currently, we require the $\xi^i_j$ to be strictly increasing only one step left
 using LaTeXStrings, Statistics
 
 fig = Figure(size=(450, 250))
-ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)")
-ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"\Delta y(t)")
+ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)", xtickformat=v -> latexstring.(v))
+ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"\Delta y(t)", xtickformat=v -> latexstring.(v))
 
 linkxaxes!(ax1, ax2)
 
@@ -184,8 +184,8 @@ Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal pe
 using Optim, LinearAlgebra
 
 fig = Figure(size=(450, 250))
-ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)")
-ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"f_{\mathbf{\xi}}(T)")
+ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)", xtickformat=v -> latexstring.(v))
+ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"f_{\mathbf{\xi}}(T)", xtickformat=v -> latexstring.(v))
 
 P = (1, 10)
 xlims!(ax2, P)
@@ -260,17 +260,21 @@ CyclicZissou = ColorScheme([ColorSchemes.Zissou1.colors..., reverse(ColorSchemes
 #| label: fig-cold-diff-shift-a
 #| fig-cap: "*Differences* period estimation"
 jldopen("../data/no_delay_cold_diff_no_checker.jld2", "r") do data
-	fig = Figure(size=(600, 400))
-	ax = CairoMakie.Axis(fig[1, 1];
-		xlabel=L"C_2", ylabel=L"\lambda")
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-	hmap = heatmap!(ax,
-		range(data["C₂"]...),
-		range(data["λ"]...),
-		transpose(data["shifts"]), colormap=CyclicZissou)
-	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
-	fig
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
+
+    fig
 end
 ```
 
@@ -279,17 +283,21 @@ end
 #| label: fig-cold-diff-shift-b
 #| fig-cap: "*Optimal* period estimation"
 jldopen("../data/no_delay_cold_optimal_no_checker_among_halves.jld2", "r") do data
-	fig = Figure(size=(600, 400))
-	ax = CairoMakie.Axis(fig[1, 1];
-		xlabel=L"C_2", ylabel=L"\lambda")
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-	hmap = heatmap!(ax,
-		range(data["C₂"]...),
-		range(data["λ"]...),
-		transpose(data["shifts"]), colormap=CyclicZissou)
-	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
-	fig
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
+
+    fig
 end
 ```
 
@@ -303,17 +311,21 @@ Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models 
 #| label: fig-cold-diff-shift-delay-a
 #| fig-cap: "*Differences* period estimation"
 jldopen("../data/delay_cold_diff_no_checker.jld2", "r") do data
-	fig = Figure(size=(600, 400))
-	ax = CairoMakie.Axis(fig[1, 1];
-		xlabel=L"C_2", ylabel=L"\lambda")
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-	hmap = heatmap!(ax,
-		range(data["C₂"]...),
-		range(data["λ"]...),
-		transpose(data["shifts"]), colormap=CyclicZissou)
-	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
-	fig
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
+
+    fig
 end
 ```
 
@@ -322,17 +334,21 @@ end
 #| label: fig-cold-diff-shift-delay-b
 #| fig-cap: "*Optimal* period estimation"
 jldopen("../data/delay_cold_optimal_no_checker_among_halves.jld2", "r") do data
-	fig = Figure(size=(600, 400))
-	ax = CairoMakie.Axis(fig[1, 1];
-		xlabel=L"C_2", ylabel=L"\lambda")
+    fig = Figure(size=(600, 400))
+    ax = CairoMakie.Axis(fig[1, 1];
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-	hmap = heatmap!(ax,
-		range(data["C₂"]...),
-		range(data["λ"]...),
-		transpose(data["shifts"]), colormap=CyclicZissou)
-	Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
-	fig
+    hmap = heatmap!(ax,
+        range(data["C₂"]...),
+        range(data["λ"]...),
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
+
+    fig
 end
 ```
 
@@ -426,37 +442,43 @@ end
 #| echo: false
 #| label: fig-iterators-a
 #| fig-cap: "Line iterator"
-hmap, ax = heatmap(C₂, λ, order_of_iteration(GridWalker.line_enumerator), colormap=:grays)
-ax.xlabel = L"C_2"
-ax.ylabel = L"\lambda"
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel=L"C_2", ylabel=L"\lambda",
+    xtickformat=v -> latexstring.(round.(v, digits=2)),
+    ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-hmap
+heatmap!(ax, C₂, λ, order_of_iteration(GridWalker.line_enumerator), colormap=:grays)
+fig
 ```
 
 ```{julia}
 #| echo: false
 #| label: fig-iterators-b
 #| fig-cap: "Centered spiral iterator"
-hmap, ax = heatmap(C₂, λ, order_of_iteration(GridWalker.spiral_enumerator), colormap=:grays)
-ax.xlabel = L"C_2"
-ax.ylabel = L"\lambda"
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel=L"C_2", ylabel=L"\lambda",
+    xtickformat=v -> latexstring.(round.(v, digits=2)),
+    ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-hmap
+heatmap!(ax, C₂, λ, order_of_iteration(GridWalker.spiral_enumerator), colormap=:grays)
+fig
 ```
 
 ```{julia}
 #| echo: false
 #| label: fig-iterators-c
 #| fig-cap: "Shifted spiral iterator"
-shifted_spiral = (args...) -> GridWalker.spiral_enumerator(args...; 
-	center_function=GridWalker.relative_center,
+shifted_spiral = (args...) -> GridWalker.spiral_enumerator(args...;
+    center_function=GridWalker.relative_center,
     fixed_ratio_center=(0.4, 0.8))
 
-hmap, ax = heatmap(C₂, λ, order_of_iteration(shifted_spiral), colormap=:grays)
-ax.xlabel = L"C_2"
-ax.ylabel = L"\lambda"
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel=L"C_2", ylabel=L"\lambda",
+    xtickformat=v -> latexstring.(round.(v, digits=2)),
+    ytickformat=v -> latexstring.(round.(v, digits=2)))
 
-hmap
+heatmap!(ax, C₂, λ, order_of_iteration(shifted_spiral), colormap=:grays)
+fig
 ```
 
 Heatmaps indicating evaluation order (from black to white) for different kinds of iterators from `GridWalker.jl`.
@@ -476,13 +498,17 @@ All these concepts can now be combined together. In @fig-indexed-shift, one can 
 jldopen("../data/no_delay_spiral_indexed_optimal_no_checker_among_halves.jld2", "r") do data
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end
@@ -495,13 +521,17 @@ end
 jldopen("../data/delay_spiral_indexed_optimal_no_checker_among_halves.jld2", "r") do data
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end
@@ -536,13 +566,17 @@ A careful reader might notice the peak-based periodicity checker closely resembl
 jldopen("../data/no_delay_spiral_indexed_optimal_peak_checker_among_halves.jld2", "r") do data
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end
@@ -555,13 +589,17 @@ end
 jldopen("../data/delay_spiral_indexed_optimal_peak_checker_among_halves.jld2", "r") do data
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end
@@ -580,7 +618,7 @@ However it may be, this is *the* problem of the grid simulations, but also in a 
 
 The Figures [-@fig-cold-diff-shift] - [-@fig-checked-shift] presented so far have all been computed on a Thinkpad T490s with Intel Core i7-8565U CPU and 16 GiB of RAM. We have utilized at most 6 threads and the computations took at most approximately 3 minutes. However, if we were to increase the grid density, the computation time increases quadratically. Indeed, the calculation of 1200-by-1200 grid would take approximately 768 minutes (considering 16 GiB of RAM would be enough, and thus swapping would not be needed, which could cause a significant slow-down).
 
-Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{n_t \cdot k + (l - 1)}} {k = 1} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
+Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{l(k+1) - 1}} {k = 0} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
 
 In general, scientific computing is often too demanding for a personal computer. One possible solution is to offload the computation to grid infrastructure, namely [MetaCentrum](https://metavo.metacentrum.cz/en/). 
 
@@ -598,13 +636,17 @@ jldopen("../data/no_delay_computation_metacentrum.jld2", "r") do data
 
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end
@@ -616,16 +658,20 @@ end
 #| fig-cap: "$\\tau = 0.025$"
 jldopen("../data/delay_computation_metacentrum.jld2", "r") do data
     CairoMakie.activate!(type="png")
-	
+
     fig = Figure(size=(600, 400))
     ax = CairoMakie.Axis(fig[1, 1];
-        xlabel=L"C_2", ylabel=L"\lambda")
+        xlabel=L"C_2", ylabel=L"\lambda",
+        xtickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=2)))
+
+    β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
 
     hmap = heatmap!(ax,
         range(data["C₂"]...),
         range(data["λ"]...),
-        transpose(data["shifts"]), colormap=CyclicZissou)
-    Colorbar(fig[1, 2], hmap; label=L"\beta", width=15, ticksize=15, tickalign=1)
+        transpose(data["shifts"]), colormap=CyclicZissou, colorrange=(0, 1))
+    Colorbar(fig[1, 2], hmap; label=L"\beta", ticks=β_ticks)
 
     fig
 end

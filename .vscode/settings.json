@@ -111,5 +111,11 @@
 	],
 	"cSpell.enabledFileTypes": {
 		"yaml": false
-	}
+	},
+	"unicode-latex.extensions": [
+		"plaintext",
+		"markdown",
+		"coq",
+		"Quarto"
+	]
 }
