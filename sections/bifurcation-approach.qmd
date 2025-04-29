@@ -45,6 +45,8 @@ As we have mentioned several times before, the fundamental goal of this thesis i
 
 > We should also disclose that while this chapter is named 'Bifurcation Theory Approach', we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
 
+<!-- TODO: Current implementation is a big plus (reviewed and all) really these 2 toolboxes - I explain how they work -->
+
 ## Theory of Localizations {#sec-theory-of-localizations}
 
 Although the primary subjects of our study are periodic orbits, we will first delve into the localization of equilibrium. Indeed, one might recall we discussed the relation of equilibria (or fixed points) in discrete dynamical systems and periodic orbits of continuous-time dynamical systems in @sec-poincare-map. This fact alone suggests it is beneficial to first study the simpler case of equilibria localization, building tools to later tackle the periodic case.
@@ -69,7 +71,7 @@ $$
 $$
 by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e., *repelling* from all directions), we can simply reverse time (as we are in the *ODE* case) and repeat the procedure^[Note that this behavior is *local* and global properties are often more complicated, which is even more prevalent in higher dimensions.].
 
-Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{(i)}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
+Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{i}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
 
 Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e., how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
 $$
@@ -466,13 +468,13 @@ When discretized, either of the discussed operators results in some matrix, for 
 
 A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007 and @Sieber2014, and relies on the linear multistep method^[LMS methods are used for numerically integrating ODEs by dependence on previously evaluated points and as such can be paired with method of steps, see @alg-method-of-steps, for DDEs. However, LMS method can also be rewritten for DDEs directly, which gives a much nicer formulation.].
 
-Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x_i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for DDEs with step-length $h$ may be written as
+Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x^i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for DDEs with step-length $h$ may be written as
 $$
-\sum_{i = 0}^k \alpha_i \vi x_i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* \vi x_i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
+\sum_{i = 0}^k \alpha_i \vi x^i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* \vi x^i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
 $$ {#eq-dde-lms}
 where $\alpha_i, \beta_i \in \R$ are parameters and $\tilde{\vi x}(t_i - \tau_j)$ are computed by polynomial interpolation with $s_- \in \N$ and $s_+ \in \N$ points to the left and right, respectively, when $(t_i - \tau_j)$ does not "align" with $t_k$ from the discretization. To be precise, DDE-BIFTOOL uses so-called Nordsieck interpolation, see @Sieber2014.
 
-Clearly, the discretization of the operator $\solOp(h)$ itself is given by the linear map from $[\vi x_l, \dots, \vi x_{k-1}]\Tr$ to $[\vi x_{l+1}, \dots, \vi x_k]\Tr$, where $l = - s_- - \ceil{\tau/h}$ and where the mapping is prescribed by ([-@eq-dde-lms]). This procedure results in a $N \times N$ matrix approximation of the operator $\solOp(h)$, where
+Clearly, the discretization of the operator $\solOp(h)$ itself is given by the linear map from $[\vi x^l, \dots, \vi x^{k-1}]\Tr$ to $[\vi x^{l+1}, \dots, \vi x^k]\Tr$, where $l = - s_- - \ceil{\tau/h}$ and where the mapping is prescribed by ([-@eq-dde-lms]). This procedure results in a $N \times N$ matrix approximation of the operator $\solOp(h)$, where
 $$
 N = n(-l + k) \approx n\tau/h.
 $$ {#eq-dde-lms-dimension}
@@ -593,7 +595,7 @@ Finally, Newton's method can be used on ([-@eq-continuation-prediction-system]).
 One possibility is to select a hyper-plane $P^i$ passing through the point $\tilde{\vi X}^i_{(0)}$, such $\vi v^i$ is its normal vector. Then, we can find the corrected point $\vi X^{i+1}$ as the intersection of $P^i$ and the curve $M$. Further, any point $\vi X$ on $P^i$ must satisfy
 $$
 \overbrace{\scal {\vi X - \tilde{\vi X}^i_{(0)}} {\vi v^i}}^{g^i(\vi X)} = 0,
-$$
+$$ {#eq-continuation-tangent-direction}
 which defines $g^i : \R^{n+1} \to \R$. When combined with the tangent prediction, this method is called the *pseudo-arclength continuation*, see @fig-continuation-methods-a.
 
 ::: {#fig-continuation-methods layout-ncol=2}
@@ -604,9 +606,12 @@ which defines $g^i : \R^{n+1} \to \R$. When combined with the tangent prediction
 Overview of different prediction--correction methods for continuation (adapted from @Pribylova2021a, courtesy of Assoc. Prof. Přibylová).
 :::
 
-Another possible approach is to adapt $g^i(\vi X)$ throughout the correction process, i.e., in the course of the Newton iterations.
+Another possible approach is to adapt $g^i(\vi X)$ throughout the correction process, i.e., in the course of the Newton iterations. This produces a sequence of *scalar continuation constraints* $\Seqnc{g^i_{(k)}} {k = 0} {N_i}$, with $g^i_{(0)} \equiv g^i$, such that after the $k$-th iteration of the Newton's method, producing $\tilde{\vi X}^i_{(k)}$, we update the restricting hyper-plane to $P^i_{(k)}$ defined as
+$$
+g^i_{(k+1)}(\vi X) = \scal {\vi X - \tilde{\vi X}^i_{(k)}} {\tilde{\vi v}^i_{(k)}} = 0,
+$$
+where $\tilde{\vi v}^i_{(k)} \neq \vi 0$ lies in the null-space of $\jacobi \vi H(\tilde{\vi X}^i_{(k)})$, see ([-@eq-continuation-tangent-direction]). This method is commonly referred to as the *Moore-Penrose* continuation method, see @fig-continuation-methods-b for illustration.
 
-<!-- Current implementation is a big plus (reviewed and all) really these 2 toolboxes - I explain how they work -->
 
 ## Cycle Continuation in Coupled Oscillators
 
