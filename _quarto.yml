@@ -27,6 +27,7 @@ book:
     - sections/general-theory.qmd
     - sections/simulation-approach.qmd
     - sections/bifurcation-approach.qmd
+    - sections/conclusion.qmd
     - sections/refs.qmd
   appendices:
     - sections/appendix-algs.qmd
@@ -34,7 +35,7 @@ book:
     style: "docked"
 
   repo-url: https://github.com/sceptri/masters-thesis
-  repo-actions: [edit, source, issue] # TODO: For Codeberg hopefully will be fixed soon (or will probably need to use a custom Quarto with some patch)
+  repo-actions: [edit, source, issue]
 
   license: MIT
   page-footer:
@@ -86,7 +87,7 @@ thesis:
     cz: "partials/prohlaseni.qmd"
     en: "partials/declaration.qmd"
     date: 04.05.2025 # FIXME: Something like `last-modified`
-  assignment: "assets/assignment.pdf" # TODO: Change name
+  assignment: "assets/assignment.pdf"
 
 format:
   munithesis-html:

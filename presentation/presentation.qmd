@@ -6,7 +6,7 @@ author:
     orcid: 0009-0008-7823-6239
     email: stepan@zapadlo.name
     affiliations: Masaryk University
-date: last-modified
+date: last-modifiepd
 
 format:
   clean-revealjs:

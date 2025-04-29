@@ -1,0 +1,12 @@
+:::{.content-visible when-format="pdf"}
+\HeaderUnnumbered
+:::
+
+:::{.hidden}
+{{< include mathematics.qmd >}}
+:::
+
+# Conclusion {#sec-conclusion .unnumbered}
+
+TODO
+<!-- TODO: Add that transient is important for applications, etc. -->

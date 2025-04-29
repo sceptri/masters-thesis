@@ -435,7 +435,6 @@ scatterlines!(ax, integrate([1.5 0.75; -0.75 1.5], x_eq, n), colormap=:Zissou1, 
 
 fig
 ```
-<!-- TODO: Check color direction in caption correct -->
 :::
 
 For completeness sake, we give a classical result from theory of ODEs concerning the existence, uniqueness and smooth dependence on the initial conditions of the solution for a given ODE.
@@ -666,7 +665,6 @@ where $\vi x(t) \in \R^n$, $m_1, \dots, m_k \geq 0$, and $\tau_1(t), \dots, \tau
 
 Let us also note that the argument deviations can, in theory, be dependent on the state, e.g. $\dot{x}(t) = f(t, x(t), x(t - h(t, x(t))))$, but we shall omit them from our considerations.
 
-<!-- TODO: Check that it can really be like this! -->
 ::: {.callout-caution #cau-dde-convention}
 ### Note on naming convention
 
@@ -735,8 +733,6 @@ $$
 $$
 with little to no change.
 :::
-
-<!-- TODO: Write about method of steps in Julia -->
 
 ### Notes on Delay Differential Equations
 
@@ -1083,7 +1079,7 @@ where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega))
 **end**
 :::
 
-Let us note that for implementation, we will predominantly use the `EM` method, from @Rackauckas2017, for Julia and a custom implementation for MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs.
+Let us note that for implementation, we will predominantly use the `EM` method, from @Rackauckas2017, for Julia and a custom implementation for MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
 
 ### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
 
