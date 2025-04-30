@@ -116,7 +116,7 @@ $$
 $$ {#eq-autonomous-ode-period-1}
 which rescales ([-@eq-autonomous-ode-system]) by a time-scaling factor $T$, such that the new time is denoted $s$. Now, if a solution $\vi u(s)$ to ([-@eq-autonomous-ode-period-1]) also satisfies the *periodic boundary conditions*
 $$
-\vi u(0) = \vi u(0),
+\vi u(0) = \vi u(1),
 $$ {#eq-autonomous-ode-1-periodicity-cond}
 then it corresponds to a $T$-periodic solution of ([-@eq-autonomous-ode-system]). However, these two conditions do not prescribe the period orbit of ([-@eq-autonomous-ode-system]) uniquely. Indeed, any time shift of the solution to the BVP ([-@eq-autonomous-ode-period-1]), ([-@eq-autonomous-ode-1-periodicity-cond]) also determines the same periodic orbit.
 
@@ -417,7 +417,7 @@ $$
 $$
 Thus, using $\vi \Gamma(0) = \ident_n$ from ([-@eq-monodromy-system-normalized]), $- \vi P_1\Inv \vi P_0 \approx \vi \Gamma(1) = \vi M(T_0)$ for the monodromy matrix $\vi M(T_0)$ corresponding to the cycle $L_0$ of ([-@eq-autonomous-ode-system]). Computing the eigenvalues of $- \vi P_1\Inv \vi P_0$ then estimates the multipliers of the cycle $L_0$, which determine its stability.
 
-### Semidynamical Systems
+### Semidynamical Systems {#sec-semidynamical-systems-localization}
 
 Now we shall turn our attention to semidynamical systems induced by DDEs. Throughout this section, we will assume the DDE of the form ([-@eq-dde-problem-autonomous]), 
 $$
@@ -630,12 +630,35 @@ $$
 	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
 \end{aligned}
 $$
-describing $\lmbd$-weakly coupled oscillators $\vi x_1(t), \vi x_2(t)$. In particular, we shall again concern ourselves with the case of two weakly coupled interneuron models, see TODO.
+describing $\lmbd$-weakly coupled oscillators $\vi x_1(t), \vi x_2(t)$. In particular, we shall again concern ourselves with the case of two weakly coupled interneuron models, see TODO. 
+
+Let us begin with $\lmbd = 0$, i.e., decoupled oscillators. Then any shift may occur between them (as there is effectively no connection) and from the theoretical contributions of @Zathurecky2025, we know that an Arnold tongue with a stable synchronization structure must exists. Therefore, we choose a fixed discretization $\Lambda = \seqnc \lmbd i 0 {N_{\Lambda}}$ for $\lmbd$.
+
+For each $\lmbd_i \in \Lambda$, we then let the system converge to a stable cycle from a fixed initial condition $\vi \phi$. After successful convergence, we then continue it with respect to $C_2$, which yields a slice of the unknown cycle manifold $M$.
+
+::: {.callout-note #nte-lambda-discretization}
+##### Discretization of $\lmbd$
+
+Note that currently, we have "blindly" discretized $\lmbd$ and then for each element $\lmbd_i \in \Lambda$ of the discretization, we have attempted to converge onto a stable periodic orbit. Only afterwards could we compute the continuation with respect to $C_2$. Another approach would be first to continue the cycle with respect to $\lmbd$, producing a curve $C_{\lmbd}$ in the desired manifold $M$. Then, we could perform the continuation with respect to $C_2$ for each point of $C_{\lmbd}$, which is already discretized due to the nature of numerical continuation.
+:::
+
+Moreover, for each cycle on the $C_2$-continuation curve, we know its corresponding period $T$. This allows us to use shift searching methods, see @sec-shift-searching, with much better accuracy (compared to only estimated period). In particular, we partition the interval $[0,T]$ and for each of disjunct sub-intervals $Q_i \subseteq [0,T]$, we run the shift searching method. Finally, we select the shift with the least error.
+
+<!-- TODO: Why C_1 in the code not C_2??? (and does it even matter for symmetric coupling?) -->
+In addition, when there is no delay in the coupling $\vi K$ (i.e., the ODE case), one can also continue the LPC curves with respect to $\lambda$ and $C_2$. Note that these curves do not always originate from the zero coupling, as can be seen in Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (C) and (D)). Unfortunately, DDE-BIFTOOL does not support continuation of LPC curves. Nevertheless, we may attempt to estimate these curves from the boundaries of stable and unstable limit cycles on the manifold $M$. 
+
+Now, we can show the relation of $\lambda$ and $C_2$ to both period $T$ and shift $\beta$, see Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)). Furthermore, we can project the cycle manifold onto the parameter plane $(C_2, \lmbd)$, where it draws out desired tongues. Let us remark tongues corresponding to different stable sub-manifolds of $M$ can overlap.
+
+Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] show this methodology applied to two weakly coupled interneuron modes, see TODO. The continuation was performed using MatCont, see @Dhooge2003 and @Dhooge2008, in the ODE case and DDE-BIFTOOL, see @Sieber2014, in the DDE case. In particular, we calculated the *optimal shift* in the first coordinate of both oscillators over $3T$-long trajectory. The region around zero-delay is numerically unstable for the continuation, see @sec-semidynamical-systems-localization. For implementation details, see the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025, potentially also Git repository associated with this thesis for specifics of plotting computed data.
+
+<!-- TODO: Run dde-biftool and matcont scripts to get time estimate -->
+<!-- TODO: Mention we do not need to care about threading order, as the individual slices \lmbd_i are not codependent -->
+<!-- TODO: Mention DDEBifurcationKit.jl -->
 
 ```{julia}
 #| echo: false
 #| label: fig-bifurcation-shift-ode
-#| fig-cap: Zathurecky2025 ODE
+#| fig-cap: Numerical continuation of the cycle manifold $M$ of the system TODO without delay for $C_1 = 1$ and free parameter $C_2$ using MatCont is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
 #| width: 95%
 
 include("../scripts/plot_Zathurecky2025_ode_results.jl")
@@ -645,13 +668,14 @@ render_ode_results()
 ```{julia}
 #| echo: false
 #| label: fig-bifurcation-shift-dde
-#| fig-cap: Zathurecky2025 DDE
+#| fig-cap: Numerical continuation of the cycle manifold $M$ of the system TODO with delay $\tau = 0.025$ for $C_1 = 1$ and free parameter $C_2$ using DDE-BIFTOOL is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black estimated LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
 #| width: 95%
 
 include("../scripts/plot_Zathurecky2025_dde_results.jl")
 render_dde_results()
 ```
 
+Finally, @fig-comparison-bifurcation-simulation-shift depicts the comparison of both approaches. Specifically, we plot the heatmaps of shifts $\beta$ computed on MetaCentrum using the simulation-on-grid approach. Moreover, black curves render the boundaries of anti-phase Arnold tongues calculated with the bifurcation-based approach. In total, one can see that *in general* these two methods give comparable results. However, the simulation based approach suffers from a rather high artifact rate even though we used a very dense underlying grid.
 
 ::: {#fig-comparison-bifurcation-simulation-shift layout-ncol="2"}
 ```{julia}
@@ -670,6 +694,5 @@ include("../scripts/compare_bif_sim_ode.jl")
 include("../scripts/compare_bif_sim_dde.jl")
 ```
 
-Comparison of results between bifurcation and simulation approaches TODO
-
+Comparison of heatmaps of phase shifts $\beta$ computed using the simulation-based approach, see @sec-simulation-approach and @fig-metacentrum-shift, and borders of Arnold tongues obtained from the continuation of the cycle manifold $M$, see above.
 :::

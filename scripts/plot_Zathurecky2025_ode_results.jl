@@ -30,45 +30,41 @@ function render_ode_results()
 	in_ω₂ = first(ω₂_lims) .<= LPC_ω₂s .<= last(ω₂_lims)
 	in_T = first(T_lims) .<= LPC_Ts .<= last(T_lims)
 
-	begin
-		ax = Axis3(fig[1,1], 
-			title=L"\text{(A)}", titlealign=:left,
-			azimuth = deg2rad(-12), elevation=deg2rad(15),
-			aspect=:equal, yticks=β_ticks,
-			limits=(λ_lims..., (0, β_offset + 0.001)..., ω₂_lims...),
-			xtickformat=v -> latexstring.(round.(v, digits=2)),
-			ztickformat=v -> latexstring.(round.(v, digits=2)),
-			xlabel=L"\lambda", ylabel=L"\beta", zlabel=L"C_2")
+	ax = Axis3(fig[1,1], 
+		title=L"\text{(A)}", titlealign=:left,
+		azimuth = deg2rad(-12), elevation=deg2rad(15),
+		aspect=:equal, yticks=β_ticks,
+		limits=(λ_lims..., (0, β_offset + 0.001)..., ω₂_lims...),
+		xtickformat=v -> latexstring.(round.(v, digits=2)),
+		ztickformat=v -> latexstring.(round.(v, digits=2)),
+		xlabel=L"\lambda", ylabel=L"\beta", zlabel=L"C_2")
 
-		scatter!(ax, λs[stable], βs[stable], ω₂s[stable], color=first(ColorSchemes.Zissou1), markersize = 1.75)
-		scatter!(ax, λs[.!stable], βs[.!stable], ω₂s[.!stable], color=last(ColorSchemes.Zissou1), markersize = 1.75)
+	scatter!(ax, λs[stable], βs[stable], ω₂s[stable], color=first(ColorSchemes.Zissou1), markersize = 1.75)
+	scatter!(ax, λs[.!stable], βs[.!stable], ω₂s[.!stable], color=last(ColorSchemes.Zissou1), markersize = 1.75)
 
-		for i = 1:maximum(LPC_index)
-			LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_β .&& in_ω₂
-			lines!(ax, LPC_λs[LPCᵢ], 1 .- LPC_βs[LPCᵢ], LPC_ω₂s[LPCᵢ], color=:black)
-			lines!(ax, LPC_λs[LPCᵢ], β_offset .* ones(sum(LPCᵢ)), LPC_ω₂s[LPCᵢ], color=:gray, overdraw = false)
-		end
+	for i = 1:maximum(LPC_index)
+		LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_β .&& in_ω₂
+		lines!(ax, LPC_λs[LPCᵢ], 1 .- LPC_βs[LPCᵢ], LPC_ω₂s[LPCᵢ], color=:black)
+		lines!(ax, LPC_λs[LPCᵢ], β_offset .* ones(sum(LPCᵢ)), LPC_ω₂s[LPCᵢ], color=:gray, overdraw = false)
+	end
 
-		ax = Axis3(fig[1,2:3],
-			title=L"\text{(B)}", titlealign=:left,
-			azimuth=deg2rad(-45), elevation=deg2rad(12),
-			aspect=:equal,
-			limits=(λ_lims..., ω₂_lims...,  (T_offset - 0.001, 3)...),
-			xtickformat=v -> latexstring.(round.(v, digits=2)),
-			ytickformat=v -> latexstring.(round.(v, digits=2)),
-			ztickformat=v -> latexstring.(round.(v, digits=2)),
-			xlabel=L"\lambda", ylabel=L"C_2", zlabel=L"T")
+	ax = Axis3(fig[1,2:3],
+		title=L"\text{(B)}", titlealign=:left,
+		azimuth=deg2rad(-45), elevation=deg2rad(12),
+		aspect=:equal,
+		limits=(λ_lims..., ω₂_lims...,  (T_offset - 0.001, 3)...),
+		xtickformat=v -> latexstring.(round.(v, digits=2)),
+		ytickformat=v -> latexstring.(round.(v, digits=2)),
+		ztickformat=v -> latexstring.(round.(v, digits=2)),
+		xlabel=L"\lambda", ylabel=L"C_2", zlabel=L"T")
 
-		scatter!(ax, λs[stable], ω₂s[stable], Ts[stable], color=first(ColorSchemes.Zissou1), markersize=1.75)
-		scatter!(ax, λs[.!stable], ω₂s[.!stable], Ts[.!stable], color=last(ColorSchemes.Zissou1), markersize=1.75)
+	scatter!(ax, λs[stable], ω₂s[stable], Ts[stable], color=first(ColorSchemes.Zissou1), markersize=1.75)
+	scatter!(ax, λs[.!stable], ω₂s[.!stable], Ts[.!stable], color=last(ColorSchemes.Zissou1), markersize=1.75)
 
-		for i = 1:maximum(LPC_index)
-			LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_ω₂ .&& in_T
-			lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], LPC_Ts[LPCᵢ], color=:black)
-			lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], T_offset .* ones(sum(LPCᵢ)), color=:gray, overdraw=false)
-		end
-
-		fig
+	for i = 1:maximum(LPC_index)
+		LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_ω₂ .&& in_T
+		lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], LPC_Ts[LPCᵢ], color=:black)
+		lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], T_offset .* ones(sum(LPCᵢ)), color=:gray, overdraw=false)
 	end
 
 	data = matread("../data/Zathurecky2025/data_IN2_dense.mat")["data"]
@@ -91,7 +87,7 @@ function render_ode_results()
         title=L"\text{(C)}", titlealign=:left, titlegap=12,
 		limits=(ω₂_lims..., λ_lims...),
         xtickformat=v -> latexstring.(round.(v, digits=2)),
-        ytickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=3)),
         xautolimitmargin=(0, 0), yautolimitmargin=(0, 0))
     scatter!(ax1, ω₂s[inphase], λs[inphase], color=βs[inphase], 
         colormap=CyclicZissou, colorrange=(0, 1),
@@ -111,7 +107,7 @@ function render_ode_results()
         title=L"\text{(D)}", titlealign=:left, titlegap=12,
         limits=(ω₂_lims..., λ_lims...),
         xtickformat=v -> latexstring.(round.(v, digits=2)),
-        ytickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=3)),
         xautolimitmargin=(0, 0), yautolimitmargin=(0, 0))
     sc = scatter!(ax2, ω₂s[antiphase], λs[antiphase], color=βs[antiphase], 
 		colormap=CyclicZissou, colorrange=(0, 1),

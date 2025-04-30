@@ -58,91 +58,87 @@ function render_dde_results()
 	in_ω₂ = first(ω₂_lims) .<= LPC_ω₂s .<= last(ω₂_lims)
 	in_T = first(T_lims) .<= LPC_Ts .<= last(T_lims)
 
-	begin
-		ax = Axis3(fig[1,1], 
-			title=L"\text{(A)}", titlealign=:left,
-			azimuth = deg2rad(-12), elevation=deg2rad(15),
-			aspect=:equal, yticks=β_ticks,
-			limits=(λ_lims..., (0, β_offset + 0.001)..., ω₂_lims...),
-			xtickformat=v -> latexstring.(round.(v, digits=2)),
-			ztickformat=v -> latexstring.(round.(v, digits=2)),
-			xlabel=L"\lambda", ylabel=L"\beta", zlabel=L"C_2")
+	ax = Axis3(fig[1,1], 
+		title=L"\text{(A)}", titlealign=:left,
+		azimuth = deg2rad(-12), elevation=deg2rad(15),
+		aspect=:equal, yticks=β_ticks,
+		limits=(λ_lims..., (0, β_offset + 0.001)..., ω₂_lims...),
+		xtickformat=v -> latexstring.(round.(v, digits=2)),
+		ztickformat=v -> latexstring.(round.(v, digits=2)),
+		xlabel=L"\lambda", ylabel=L"\beta", zlabel=L"C_2")
 
-		for λ in λ_values
-			λᵢ = λs .== λ
+	for λ in λ_values
+		λᵢ = λs .== λ
 
-			λs_short = λs[λᵢ]
-			ω₂s_short = ω₂s[λᵢ]
-			βs_short = βs[λᵢ]
-			Ts_short = Ts[λᵢ]
-			unstable_μs_short = unstable_μs[λᵢ]
+		λs_short = λs[λᵢ]
+		ω₂s_short = ω₂s[λᵢ]
+		βs_short = βs[λᵢ]
+		Ts_short = Ts[λᵢ]
+		unstable_μs_short = unstable_μs[λᵢ]
 
-			Δβs = diff(βs_short)
-			line_segments = diff([[βs[j], ω₂s[j]] for j in eachindex(λs_short)], dims = 1)
+		Δβs = diff(βs_short)
+		line_segments = diff([[βs[j], ω₂s[j]] for j in eachindex(λs_short)], dims = 1)
 
-			for i in eachindex(λs_short)
-				if i == lastindex(λs_short)
-					break
-				end
+		for i in eachindex(λs_short)
+			if i == lastindex(λs_short)
+				break
+			end
 
-				color = unstable_μs_short[i] > 0 ? last(ColorSchemes.Zissou1) : first(ColorSchemes.Zissou1)
+			color = unstable_μs_short[i] > 0 ? last(ColorSchemes.Zissou1) : first(ColorSchemes.Zissou1)
 
-				if abs(Δβs[i]) < shift_x_change && norm(line_segments[i]) < shift_max_line_length
-					lines!(ax, λs_short[i:i+1], βs_short[i:i+1], ω₂s_short[i:i+1], color=color)
-				end
+			if abs(Δβs[i]) < shift_x_change && norm(line_segments[i]) < shift_max_line_length
+				lines!(ax, λs_short[i:i+1], βs_short[i:i+1], ω₂s_short[i:i+1], color=color)
 			end
 		end
+	end
 
-		for i = 1:maximum(LPC_index)
-			LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_β .&& in_ω₂
-			lines!(ax, LPC_λs[LPCᵢ], LPC_βs[LPCᵢ], LPC_ω₂s[LPCᵢ], color=:black)
-			lines!(ax, LPC_λs[LPCᵢ], β_offset .* ones(sum(LPCᵢ)), LPC_ω₂s[LPCᵢ], color=:gray, overdraw=false)
-		end
+	for i = 1:maximum(LPC_index)
+		LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_β .&& in_ω₂
+		lines!(ax, LPC_λs[LPCᵢ], LPC_βs[LPCᵢ], LPC_ω₂s[LPCᵢ], color=:black)
+		lines!(ax, LPC_λs[LPCᵢ], β_offset .* ones(sum(LPCᵢ)), LPC_ω₂s[LPCᵢ], color=:gray, overdraw=false)
+	end
 
-		ax = Axis3(fig[1,2:3],
-			title=L"\text{(B)}", titlealign=:left,
-			azimuth=deg2rad(-45), elevation=deg2rad(12),
-			aspect=:equal,
-			limits=(λ_lims..., ω₂_lims...,  (T_offset - 0.001, 3)...),
-			xtickformat=v -> latexstring.(round.(v, digits=2)),
-			ytickformat=v -> latexstring.(round.(v, digits=2)),
-			ztickformat=v -> latexstring.(round.(v, digits=2)),
-			xlabel=L"\lambda", ylabel=L"C_2", zlabel=L"T")
+	ax = Axis3(fig[1,2:3],
+		title=L"\text{(B)}", titlealign=:left,
+		azimuth=deg2rad(-45), elevation=deg2rad(12),
+		aspect=:equal,
+		limits=(λ_lims..., ω₂_lims...,  (T_offset - 0.001, 3)...),
+		xtickformat=v -> latexstring.(round.(v, digits=2)),
+		ytickformat=v -> latexstring.(round.(v, digits=2)),
+		ztickformat=v -> latexstring.(round.(v, digits=2)),
+		xlabel=L"\lambda", ylabel=L"C_2", zlabel=L"T")
 
-		scatter!(ax, λs[stable], ω₂s[stable], Ts[stable], color=first(ColorSchemes.Zissou1), markersize=1.75)
-		scatter!(ax, λs[.!stable], ω₂s[.!stable], Ts[.!stable], color=last(ColorSchemes.Zissou1), markersize=1.75)
+	scatter!(ax, λs[stable], ω₂s[stable], Ts[stable], color=first(ColorSchemes.Zissou1), markersize=1.75)
+	scatter!(ax, λs[.!stable], ω₂s[.!stable], Ts[.!stable], color=last(ColorSchemes.Zissou1), markersize=1.75)
 
-		for λ in λ_values
-			λᵢ = λs .== λ
+	for λ in λ_values
+		λᵢ = λs .== λ
 
-			λs_short = λs[λᵢ]
-			ω₂s_short = ω₂s[λᵢ]
-			βs_short = βs[λᵢ]
-			Ts_short = Ts[λᵢ]
-			unstable_μs_short = unstable_μs[λᵢ]
+		λs_short = λs[λᵢ]
+		ω₂s_short = ω₂s[λᵢ]
+		βs_short = βs[λᵢ]
+		Ts_short = Ts[λᵢ]
+		unstable_μs_short = unstable_μs[λᵢ]
 
-			Δω₂s = diff(ω₂s_short)
-			line_segments = diff([[ω₂s[j], Ts[j]] for j in eachindex(λs_short)], dims=1)
+		Δω₂s = diff(ω₂s_short)
+		line_segments = diff([[ω₂s[j], Ts[j]] for j in eachindex(λs_short)], dims=1)
 
-			for i in eachindex(λs_short)
-				if i == lastindex(λs_short)
-					break
-				end
+		for i in eachindex(λs_short)
+			if i == lastindex(λs_short)
+				break
+			end
 
-				color = unstable_μs_short[i] > 0 ? last(ColorSchemes.Zissou1) : first(ColorSchemes.Zissou1)
+			color = unstable_μs_short[i] > 0 ? last(ColorSchemes.Zissou1) : first(ColorSchemes.Zissou1)
 
-				if abs(Δω₂s[i]) < period_x_change && norm(line_segments[i]) < period_max_line_length
-					lines!(ax, λs_short[i:i+1], ω₂s_short[i:i+1], Ts_short[i:i+1], color=color)
-				end
+			if abs(Δω₂s[i]) < period_x_change && norm(line_segments[i]) < period_max_line_length
+				lines!(ax, λs_short[i:i+1], ω₂s_short[i:i+1], Ts_short[i:i+1], color=color)
 			end
 		end
-		for i = 1:maximum(LPC_index)
-			LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_ω₂ .&& in_T
-			lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], LPC_Ts[LPCᵢ], color=:black)
-			lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], T_offset .* ones(sum(LPCᵢ)), color=:gray, overdraw=false)
-		end
-
-		fig
+	end
+	for i = 1:maximum(LPC_index)
+		LPCᵢ = (LPC_index .== i) .&& in_λ .&& in_ω₂ .&& in_T
+		lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], LPC_Ts[LPCᵢ], color=:black)
+		lines!(ax, LPC_λs[LPCᵢ], LPC_ω₂s[LPCᵢ], T_offset .* ones(sum(LPCᵢ)), color=:gray, overdraw=false)
 	end
 
 	data = matread("../data/Zathurecky2025/data_Interneuron2_e81c98832bc8e641886a02b8dd4516fa.mat")["data"]
@@ -162,7 +158,7 @@ function render_dde_results()
         title=L"\text{(C)}", titlealign=:left, titlegap=12,
 		limits=(ω₂_lims..., λ_lims...),
         xtickformat=v -> latexstring.(round.(v, digits=2)),
-        ytickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=3)),
         xautolimitmargin=(0, 0), yautolimitmargin=(0, 0))
     scatter!(ax1, ω₂s[inphase], λs[inphase], color=βs[inphase], 
         colormap=CyclicZissou, colorrange=(0, 1),
@@ -181,7 +177,7 @@ function render_dde_results()
         title=L"\text{(D)}", titlealign=:left, titlegap=12,
         limits=(ω₂_lims..., λ_lims...),
         xtickformat=v -> latexstring.(round.(v, digits=2)),
-        ytickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=3)),
         xautolimitmargin=(0, 0), yautolimitmargin=(0, 0))
     sc = scatter!(ax2, ω₂s[antiphase], λs[antiphase], color=βs[antiphase], 
 		colormap=CyclicZissou, colorrange=(0, 1),

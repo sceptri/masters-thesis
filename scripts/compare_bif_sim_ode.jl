@@ -18,7 +18,7 @@ jldopen("../data/no_delay_computation_metacentrum.jld2", "r") do simulation
     ax = Axis(fig[1, 1], xlabel=L"C_2", ylabel=L"\lambda",
         limits=(ω₂_lims..., λ_lims...),
         xtickformat=v -> latexstring.(round.(v, digits=2)),
-        ytickformat=v -> latexstring.(round.(v, digits=2)),
+        ytickformat=v -> latexstring.(round.(v, digits=3)),
         xautolimitmargin=(0, 0), yautolimitmargin=(0, 0))
 
     β_ticks = (0:0.25:1, [L"0", L"\frac{1}{4} T", L"\frac{1}{2} T", L"\frac{3}{4} T", L"T"])
