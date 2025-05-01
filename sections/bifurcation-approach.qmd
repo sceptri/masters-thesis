@@ -45,7 +45,7 @@ As we have mentioned several times before, the fundamental goal of this thesis i
 
 > We should also disclose that while this chapter is named 'Bifurcation Theory Approach', we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
 
-<!-- TODO: Current implementation is a big plus (reviewed and all) really these 2 toolboxes - I explain how they work -->
+Although we mostly use existing implementations (MATCONT, see @Dhooge2003 and @Dhooge2008, for continuation in ODEs and DDE-BIFTOOL, see @Sieber2014, in DDEs), in this chapter we also provide a rather thorough theoretical and numerical overview of the underlying methods and algorithms. Moreover, honoring the saying "do not reinvent the wheel", we can base our conclusions on peer-reviewed and community-tested tools, further strengthening our claims. Lastly, a novel technique along with its implementation for continuation of shift between two oscillators is provided (through a referenced co-authored article).
 
 ## Theory of Localizations {#sec-theory-of-localizations}
 
@@ -427,7 +427,7 @@ together with $0 = \tau_0 < \tau_1 < \dots < \tau_H = \tau$. Although for the pu
 
 #### Equilibrium Localization {#sec-dde-equilibrium-localization}
 
-The techniques of equilibrium localization for DDEs do not differ much from the ODE case. Indeed, assume we are trying to find a stable equilibrium. By time integration, see @sec-method-of-steps and @alg-method-of-steps, we can get to a point $\vi x_t$ in a close neighborhood of the steady state solution. Then, we can apply the Newton-Raphson method, see @sec-newton-method, to the $n$-dimensional system
+The techniques of equilibrium localization for DDEs do not differ much from the ODE case. Indeed, assume we are trying to find a stable equilibrium. By time integration, see @sec-method-of-steps and @sec-integrating-ddes, we can get to a point $\vi x_t$ in a close neighborhood of the steady state solution. Then, we can apply the Newton-Raphson method, see @sec-newton-method, to the $n$-dimensional system
 $$
 \vi f(\vi x^i, \dots, \vi x^i) = \vi 0,
 $$ {#eq-dde-equilibrium-newton}
@@ -466,9 +466,9 @@ Note that some algorithms for computation of stability of an equilibrium use a d
 
 When discretized, either of the discussed operators results in some matrix, for which we need to compute its eigenvalues. Therefore, it is our key concern that this matrix is small or its dominant eigenvalues can be computed efficiently by using an iterative scheme, such as subspace iteration.
 
-A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007 and @Sieber2014, and relies on the linear multistep method^[LMS methods are used for numerically integrating ODEs by dependence on previously evaluated points and as such can be paired with method of steps, see @alg-method-of-steps, for DDEs. However, LMS method can also be rewritten for DDEs directly, which gives a much nicer formulation.].
+A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007 and @Sieber2014, and relies on the linear multistep method, see @sec-integrating-ddes and @alg-dde-explicit-euler.
 
-Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x^i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for DDEs with step-length $h$ may be written as
+Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x^i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for ([-@eq-linearized-dde]) with step-length $h$ may be written as
 $$
 \sum_{i = 0}^k \alpha_i \vi x^i = h \sum_{i = 0}^k \beta_i \cdot \brackets{\jacobi_{\tau_0} \vi f^* \vi x^i + \sum_{j = 1}^H \jacobi_{\tau_i} \vi f^* \tilde{\vi x}(t_i - \tau_j)},
 $$ {#eq-dde-lms}
@@ -651,9 +651,9 @@ Now, we can show the relation of $\lambda$ and $C_2$ to both period $T$ and shif
 
 Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] show this methodology applied to two weakly coupled interneuron modes, see TODO. The continuation was performed using MatCont, see @Dhooge2003 and @Dhooge2008, in the ODE case and DDE-BIFTOOL, see @Sieber2014, in the DDE case. In particular, we calculated the *optimal shift* in the first coordinate of both oscillators over $3T$-long trajectory. The region around zero-delay is numerically unstable for the continuation, see @sec-semidynamical-systems-localization. For implementation details, see the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025, potentially also Git repository associated with this thesis for specifics of plotting computed data.
 
-<!-- TODO: Run dde-biftool and matcont scripts to get time estimate -->
-<!-- TODO: Mention we do not need to care about threading order, as the individual slices \lmbd_i are not codependent -->
-<!-- TODO: Mention DDEBifurcationKit.jl -->
+The runtimes necessary to generate data for Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)) are approximately 43 *seconds* for ODE case and 26 *minutes* for DDE, respectively. Note that although parts (C) and (D) of the same figures require a finer discretization $\Lambda$, in practice one would probably not need to use it. Indeed, there is no inherent increase in error when choosing a sparser discretization, whereas in the simulation-based approach it effected the entire result. As there is no dependence on results from other slices throughout the calculation, the parallelization is much easier and more efficient^[The implementation of the simulation-on-grid relies on using clever iteration order and multithreading locks, which results in delays when a thread is waiting to write to or read from the results matrices.]. The required runtime in MATLAB, see @MATLAB, in the DDE case is heavily dependent on the version of `dde23` solver, as discussed in @imp-dde23-improvements.
+
+While there exists a Julia package DDEBifurcationKit.jl for continuation in DDEs, see @BifurcationKit, it currently does not support computation of Floquet multipliers for periodic orbits, see [this GitHub issue](https://github.com/bifurcationkit/DDEBifurcationKit.jl/issues/16) for more details. For completeness sake, we provide a reference single-threaded unoptimized implementation using this package as well, which can be found in the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025. The data generation process described above takes about 3 minutes for ODE case (on 4 threads).
 
 ```{julia}
 #| echo: false
@@ -694,5 +694,5 @@ include("../scripts/compare_bif_sim_ode.jl")
 include("../scripts/compare_bif_sim_dde.jl")
 ```
 
-Comparison of heatmaps of phase shifts $\beta$ computed using the simulation-based approach, see @sec-simulation-approach and @fig-metacentrum-shift, and borders of Arnold tongues obtained from the continuation of the cycle manifold $M$, see above.
+Comparison of heatmaps of phase shifts $\beta$ computed using the simulation-based approach, see @sec-simulation-approach and @fig-metacentrum-shift, and borders of anti-phase Arnold tongues obtained from the continuation of the cycle manifold $M$, see above.
 :::

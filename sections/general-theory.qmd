@@ -673,7 +673,7 @@ For clarity and brevity, throughout this thesis *RFDEs with (discrete) constant 
 
 ### Method of Steps {#sec-method-of-steps}
 
-All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* -- a way of solving delay differential equations. This subsection is mainly based on @Smith2010.
+All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* -- a way of solving delay differential equations. This subsection is mainly based on @Smith2010 and @Bellen2003.
 
 To begin gently, we will start with a simple case of $x \in \R$. Let us thus consider a nonlinear DDE of form
 $$
@@ -690,10 +690,13 @@ $$
 \dot y(t) = \underbrace{f(t, y(t), \phi(t - r))}_{g(t,y)}, \; y(s) = \phi(s), \; s \leq t \leq s + r.
 $$
 
-From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ and $g_y$, thus existence of an unique local solution is guaranteed by classic results from the ODE theory, see, for example, @Chicone2006. Moreover, if this local solution $x(t)$ exists on the entire interval $s \leq t \leq s + r$, then, together with the history $\phi$, we know the solution $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, s+r]$ and we may repeat the presented argument to extend our solution to the right. Indeed, considering now the interval $s+r \leq s \leq s + 2r$, a solution of $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) must now satisfy the following ODE problem:
+From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ and $g_y$, thus existence of an unique local solution is guaranteed by classic results from the ODE theory, see, for example, @Chicone2006. Moreover, if this local solution $x(t)$ exists on the entire interval $s \leq t \leq s + r$, then, together with the history $\phi$, we know the solution $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, s+r]$ and we may repeat the presented argument to extend our solution to the right. Indeed, considering now the interval $s+r \leq t \leq s + 2r$, a solution of $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) must now satisfy the following ODE problem:
 $$
-\dot y(t) = f(t, y(t), x(t - r)), \; y(s+r) = x(s+r), \; s+r \leq t \leq s+2r.
-$$
+\begin{aligned}
+	\dot y(t) &= f(t, y(t), x(t - r)), && s+r \leq t \leq s+2r, \\
+	y(s+r) &= x(s+r). &&
+\end{aligned}
+$$ {#eq-method-of-steps-second-iter}
 Just as before, from continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
 
 :::{#thm-1d-single-delay-method-of-steps}
@@ -706,7 +709,7 @@ Let $f(t,x,y)$ and $f_x(x,y,t)$ be continuous on $\R^3$, $s \in \R$, and let $\p
 Follows directly from calculations above.
 :::
 
-A careful reader might notice that @thm-1d-single-delay-method-of-steps guarantees only a local solution, but we might want a solution for any $t \geq s$. We will use the notation $[s-r, \sigma\rco$ to denote either the open interval $[s-r, \sigma)$ or the closed on $[s-r, \sigma]$.
+A careful reader might notice that @thm-1d-single-delay-method-of-steps guarantees only a local solution, but we might want a solution for any $t \geq s$. We will use the notation $[s-r, \sigma\rco$ to denote either the right-open interval, $[s-r, \sigma)$, or the right-closed one, $[s-r, \sigma]$.
 
 From the uniqueness follows that for two solutions $x(t)$ on $[s-r, \sigma\rco$ and $\hat x(t)$ on $[s-r, \rho\rco$, the equality $x(t) = \hat x(t)$ must hold for all $t$, such that both sides of the equality are defined. Moreover, if $[s-r, \sigma\rco \subset [s-r, \rho\rco$, then $\hat x$ is called an *extension* of $x$ and we write $x \subset \hat x$.
 
@@ -727,12 +730,81 @@ See @Smith2010, page 26.
 
 ::: {.callout-note #nte-general-dde}
 ##### On multiple delays and $\vi x \in \R^n$
-One can rather easily show that @thm-1d-single-delay-method-of-steps and @thm-dde-finite-time-blow-up extend to the case of $\vi x \in \R^n$ and $\vi f : \R \times \R^n \times \R^n \to \R^n$. Similarly, it can also be generalized to multiple discrete delays $r_1 < \dots < r_H$ where
+One can rather easily show that @thm-1d-single-delay-method-of-steps and @thm-dde-finite-time-blow-up extend to the case of $\vi x(\cdot) \in \R^n$ and $\vi f : \R \times \R^n \times \R^n \to \R^n$. Similarly, it can also be generalized to multiple discrete delays $r_1 < \dots < r_H$ where
 $$
 \vi f = \vi f(t, \vi y(t), \vi y(t - r_1), \dots, \vi y(t - r_H))
 $$
 with little to no change.
 :::
+
+So far, we have presented a method to calculate the solution of the IVP given by ([-@eq-1d-dde]) and ([-@eq-1d-dde-initial-cond]). Per @nte-general-dde, we can slightly generalize the studied equation and consider 
+$$
+\rcases{
+	\dvi x(t) = \vi f(t, \vi x(t), \vi x(t - r)), && t_0 \leq t \leq t_f, \\
+	\vi x(t) = \vi \phi(t), && t \leq t_0,
+}
+$$ {#eq-dde-sol-continuity-problem}
+where $\vi x(\cdot) \in \R^n$ and $\vi f : [t_0, t_f] \times \R^n \times \R^n \to \R^n$. From the discussion above follows that a unique solution exists for continuously differentiable function $\vi f$. Together with ([-@eq-dde-sol-continuity-problem]), we further obtain that $\vi x(\cdot)$ is also differentiable on each interval $(t_0 + kr, t_0 + (k+1)r) \subseteq (t_0, t_f)$ for appropriate $k \in \N_0$. Moreover, $\vi x(\cdot)$ is necessarily continuous on $[t_0, t_f]$ by ([-@eq-method-of-steps-second-iter]) and @thm-1d-single-delay-method-of-steps. 
+
+However, the initial history function $\vi \phi$ might not *link smoothly* to the actual solution $\vi x$, i.e.,
+$$
+\dvi \phi(t_0)^- \neq \dvi x(t_0)^+ = \vi f(t_0, \vi \phi (t_0), \vi \phi(t_0 - r)),
+$$ {#eq-history-nonsmooth-link}
+where $\dvi \phi(\cdot)^-$ denotes the left derivative of $\vi \phi$ with respect to $t$ at $t_0$ and analogously for $\dvi x(t_0)^+$. As such, the discontinuity is then *propagated* to $t_0 + r$, where, if $\vi f$ and $\vi \phi$ are continuous, $\dvi x$ is now *continuous* but not *differentiable*. In general, the number and location of discontinuity points depends, in principle, on the so-called *deviated arguments*,
+$$
+\alpha(t) = t - r(t, \vi x(t)),
+$$ {#eq-general-deviated-argument}
+where we assume a more general version of ([-@eq-dde-sol-continuity-problem]) with $\dvi x(t) = \vi f(t, \vi x(t), \vi x(\alpha(t)))$. For our purposes, we have $\alpha(t) = t - r$ (then $\alpha \in \contf {\R} {\infty}$).
+
+::: {#def-vanishing-delay}
+##### Vanishing delay
+
+Consider the generalized version of ([-@eq-dde-sol-continuity-problem]) with $\dvi x(t) = \vi f(t, \vi x(t), \vi x(\alpha(t)))$. Then we say such system has a *vanishing delay*, if there exists a point $s \in (t_0, t_f)$ such that the delay $\alpha(t)$ *vanishes*, i.e.,
+$$
+\alpha(s) = s.
+$$
+:::
+
+:::{#thm-discontinuities-before-vanishing}
+Suppose $s$ is a vanishing delay point of ([-@eq-dde-sol-continuity-problem]) with $\dvi x(t) = \vi f(t, \vi x(t), \vi x(\alpha(t)))$ and $\alpha$ is continuous. Then, there are infinitely many discontinuity points in any left neighborhood of $s$.
+:::
+
+:::{.proof}
+See @Bellen2003, page 24.
+:::
+
+Should $\vi f$, $\vi \phi$ and $\alpha$ be also differentiable, then $\ddot{\vi x}(t)$ exists for any $t$ except the solutions $s_{1, i} \in (t_0, t_f)$ of
+$$
+\alpha(s_{1,i}) = t_0 \quad \& \quad \dot{\alpha}(s_{1,i}) \neq 0,
+$$ {#eq-first-level-primary-discontinuities}
+i.e., the simple roots of $\alpha(s) - t_0 = 0$. We call $s_{1,i}$ the *first level primary discontinuities* (of $\vi x(\cdot)$). Indeed, for any smooth function $\vi f(t, \vi x, \vi \xi)$ we can formally write (see ([-@eq-dde-sol-continuity-problem]) and ([-@eq-general-deviated-argument]))
+$$
+\begin{aligned}
+	\ddot{\vi x}(t)^{\pm} ={}& \jacobi_t \vi f(t, \vi x(t), \vi x(\alpha(t))) \\
+	&+ \jacobi_{\vi x} \vi f(t, \vi x(t), \vi x(\alpha(t))) \dvi x(t) \\
+	&+ \jacobi_{\vi \xi} \vi f(t, \vi x(t), \vi x(\alpha(t))) \dvi x(\alpha(t))^{\pm} \dot{\alpha}(t),
+\end{aligned}
+$$ {#eq-1-level-primary-discontinuity-dde-a}
+therefore by ([-@eq-first-level-primary-discontinuities])
+$$
+\begin{aligned}
+	\ddot{\vi x}(s_{1,i})^{+} ={}& \jacobi_t \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \\
+	&+ \jacobi_{\vi x} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(s_{1,i}) \\
+	&+ \jacobi_{\vi \xi} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(t_0)^{+} \dot{\alpha}(s_{1,i})
+\end{aligned}
+$$ {#eq-1-level-primary-discontinuity-dde-b}
+and
+$$
+\begin{aligned}
+	\ddot{\vi x}(s_{1,i})^{-} ={}& \jacobi_t \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \\
+	&+ \jacobi_{\vi x} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(s_{1,i}) \\
+	&+ \jacobi_{\vi \xi} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi \phi(t_0)^{-} \dot{\alpha}(s_{1,i}).
+\end{aligned}
+$$ {#eq-1-level-primary-discontinuity-dde-c}
+
+By comparing ([-@eq-1-level-primary-discontinuity-dde-b]) and ([-@eq-1-level-primary-discontinuity-dde-c]) using ([-@eq-history-nonsmooth-link]), we show that $\ddot{\vi x}(s_{1, i})^+ \neq \ddot{\vi x}{s_{1,2}}^-$, i.e., the second derivative of $\vi x(\cdot)$ has a jump discontinuity at $s_{1,i}$ as we claimed. Furthermore, by differentiating ([-@eq-1-level-primary-discontinuity-dde-a]) we obtain that 1-level primary discontinuities propagate to *2-level primary discontinuities* in $\dddot{\vi x}(\cdot)$ at any point $s_{2,j} > s_{1, i}$, such that $s_{2,j}$ is a simple root of $\alpha(s) - s_{1,i} = 0$ for some $i$.
+
+In other words, if $\vi f$ is smooth and $\vi \phi$ is differentiable for ([-@eq-dde-sol-continuity-problem]), then $t_0 + r$ is the only 1-level primary discontinuity, $t_0 + 2r$ is the 2-level primary discontinuity, etc. Therefore, the solution $\vi x(t)$ of ([-@eq-dde-sol-continuity-problem]) is progressively smoother as the primary discontinuity level increases, i.e., as we go forward in time. This phenomenon is often called the *smoothing of the solution* of a DDE.
 
 ### Notes on Delay Differential Equations
 
@@ -929,7 +1001,7 @@ Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-m
 ::: {.callout appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
 **Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$ \
-**Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
+**Output:** Sequence of $N+1$ points $\seqnc{\vi x}{i}{0}{N}$ \
 **begin** \
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
 &emsp;&emsp;&emsp;&emsp;$\vi x_i \gets \vi x_{i - 1} + \vi F(t_{i - 1}, \vi x_{i - 1}) \diff t_i$ \
@@ -940,9 +1012,7 @@ Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-m
 Whilst the Euler method is simple, it does have its drawbacks mainly in the accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
 
 :::{#def-ode-solver-error}
-Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. 
-
-*Local truncation error* (LTE) is defined as
+Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. *Local truncation error* (LTE) is defined as
 $$
 \locTrErr_{k} = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}
 $$ {#eq-loc-tr-err}
@@ -965,7 +1035,7 @@ This can surely be improved by using more terms from the Taylor series expansion
 ::: {.callout appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
 **Input:** ODE in form ([-@eq-ode-problem-to-solve]), stepsizes $\seqnc{\diff t}{i}{1}{N}$, $s \in \N$ (the "number of stages"), real coefficients $a_{21}, a_{31}, a_{32},\dots, a_{s1}, a_{s2}, \dots, a_{s,s-1}$, $b_1, \dots, b_s$, and $c_2, \dots, c_s$\
-**Output:** Sequence of $N$ points $\seqnc{\vi x}{i}{1}{N}$ \
+**Output:** Sequence of $N+1$ points $\seqnc{\vi x}{i}{0}{N}$ \
 **begin** \
 &emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
 &emsp;&emsp;&emsp;&emsp;calculate
@@ -1001,7 +1071,7 @@ $$
 \end{aligned}
 $$ {#eq-runge-kutta-order-condition-4-stage}
 
-In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e., $\locTrErr_i = O(\diff_i t^5)$. Typically, *"the Runge-Kutta"* method is used:
+In other words, if the coefficients of the 4-stage ERK method comply with conditions ([-@eq-runge-kutta-order-condition-4-stage]), the method is of fourth order, i.e., $\locTrErr_i = O(\diff t_i^5)$. Typically, *"the Runge-Kutta"* method is used:
 $$
 \rcases{
 	\vi k_1 &= \vi F\brackets{t_0, \vi x_0} \\
@@ -1011,37 +1081,78 @@ $$
 } \; \vi x_1 = \vi x_0 + \diff t \brackets{\frac 1 6 \vi k_1 + \frac 2 6 \vi k_2 + \frac 2 6 \vi k_3 + \frac 1 6 \vi k_4}.
 $$ {#eq-runge-kutta-classical}
 
-Throughout this thesis, we will use solvers available in DifferentiaEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
+Throughout this thesis, we will use solvers available in DifferentialEquations.jl, see @Rackauckas2017, for Julia programming language, see @Bezanson2017, and `ode45` (or `ode23` for stiff ODEs) for MATLAB, see @MATLAB.
 
-### Solving DDEs with Method of Steps {#sec-integrating-ddes}
+### Numerical Integration of DDEs {#sec-integrating-ddes}
 
-As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
+As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps as an analytical way to solve DDEs. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
 
-::: {.callout appearance="simple" #alg-method-of-steps}
-##### Method of steps
-**Input:** DDE in form ([-@eq-dde-problem-autonomous]), ODE numerical integration method $\mathrm{odeSolver}$, number of extensions $k \in \N$ of interval $[-\tau, 0]$ by $\tau$\
-**Output:** Sequence of $N \letDef k \sum_{i = 1}^H N_i = k \cdot N_{\tau}$ points $\seqnc{\vi x}{i}{1}{N}$ \
-**begin** \
-&emsp;&emsp;set $\vi \xi \gets \vi \phi$ and $s \gets \sigma$; \
-&emsp;&emsp;define $A(u,v) = (u - 1) N_{\tau} + \sum_{b = 1}^{v} N_b$ \
-&emsp;&emsp;**for** $i = 1$ **to** $k$ **do** \
-&emsp;&emsp;&emsp;&emsp;**for** $j = 1$ **to** $H$ **do** \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; define ODE IVP by $\vi y(s) = \vi \xi(s)$ and
+Consider the following DDE IVP^[In general, methods discussed in this subsection allow a time-dependent delay $\tau$, i.e., $\tau(t)$.],
 $$
-\dvi y(t) = \vi f(\vi y(t), \vi \xi(t - \tau_1), \dots, \vi \xi(t - \tau_H));
-$$ {#eq-method-of-steps-intermediate}
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; apply $\mathrm{odeSolver}$ to ([-@eq-method-of-steps-intermediate]) yielding $N_j$ points $\seqnc {\vi x} a {A(i, j - 1)} {A(i,j)}$; \
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; set $s \gets s + \tau_j$ and $\vi \xi(\theta) \gets \lcases{
-	\vi \xi(\tau_j + \theta), & -\tau_j \geq \theta , \\
-	\vi y(s + \theta), & 0 \geq \theta \geq -\tau_j}$ \
-&emsp;&emsp;&emsp;&emsp;**end** \
+\rcases{
+	\dvi x(t) = \vi f(t, \vi x(t), \vi x(t - \tau)), && t_0 \leq t \leq t_f, \\
+	\vi x_{\tau} = \phi, &&
+}
+$$ {#eq-dde-numerical-sol-problem}
+where $\vi x(\cdot) \in \R^n$ and $\vi f: [t_0, t_f] \times \R^n \times \R^n \to \R^n$, and a set of mesh points $\mcal T = \set{t_0, t_1, \dots, t_N = t_f}$, such that either $t_n - \tau < t_0$ or $t_n - \tau \in \mcal T$. Note that the presented methods can be extended to IVPs with multiple delays, e.g., ([-@eq-dde-problem-autonomous]).
+
+Once such method is available, any ODE numerical integrator which operates strictly on the mesh $\mcal T$ may be used --- these are typically called *linear multistep* (LMS) methods. For instance, @alg-dde-explicit-euler shows the explicit (forward) Euler method adapted for ([-@eq-dde-numerical-sol-problem]).
+
+::: {.callout appearance="simple" #alg-dde-explicit-euler}
+##### Euler method (explicit) for DDEs
+**Input:** DDE in form ([-@eq-dde-numerical-sol-problem]), time discretization mesh $\mcal T = \set{t_0, \dots, t_N = t_f}$ \
+**Output**: Sequence of $N+1$ points $\seqnc {\vi x} i 0 N$ \
+**begin** \
+&emsp;&emsp;**for** $i = 1$ **to** $N$ **do** \
+&emsp;&emsp;&emsp;&emsp;$\vi x_i \gets \vi x_{i - 1} + \vi f(t_{i - 1}, \vi x_{i - 1}, \vi x_j) \diff t_i$ \
 &emsp;&emsp;**end** \
 **end**
 :::
 
-For brevity, discussion on convergence and other numerical properties is omitted. In implementations, we will predominantly use DelayDiffEq.jl package by @Widmann2022 in Julia or `dde23` in MATLAB.
+However, this approach puts strict requirements on the mesh $\mcal T$, which renders the method unusable in many cases. For example, for the IVP
+$$
+\begin{aligned}
+	\dot{x}(t) &= x(t/2), && 0 \leq t \leq 1, \\
+	x(0) &= 1, &&
+\end{aligned}
+$$
+no finite mesh $\mcal T$ can be found, as for any $t \in \mcal T$ also $t/2$ must belong to the mesh (thus no initial stepsize exists). Nevertheless, in general, one can construct a suitable finite mesh $\mcal T$ for any bounded interval $[t_0, t_f]$ if there is no vanishing delay point in $[t_0, t_f]$, see @def-vanishing-delay and @thm-discontinuities-before-vanishing. Bellen and Zennaro @Bellen2003, see page 38, outline a possible strategy for doing so, along with its pitfalls. Also note that this approach can be rather easily extended to *Adams-like* methods and even some *Runge-Kutta* formulae (such as the *Heun* method).
 
-### Solving SDEs
+Another possible approach is to replace the strict constraints on the time mesh $\mcal T$ by an interpolation method. Nonetheless, most often the discontinuity points belonging to $[t_0, t_f]$ are included in $\mcal T$, as ODE solvers generally require smoothness of the solution (or at least such property is highly beneficial for accuracy). 
+
+Throughout the years, the theory of *continuous ODE methods*, see @def-continuous-ODE-method, has been developed. Continuous ODE methods build on a very general class of $k$-step numerical ODE integrators for ([-@eq-ode-problem-to-solve]) of form
+$$
+\vi x_{i+1} = \alpha_{i,1} \vi x_n + \dots + \alpha_{i,k} \vi x_{i - k+1} + \diff t_{i+1} \incrementF{\vi x_i, \dots, \vi x_{i - k + 1}; \mcal T_i, \vi F},
+$$ {#eq-k-step-ode-solver}
+$i \geq k - 1$, where $\mcal T_i = \set{t_{i - k + 1}, \dots, t_i, t_{i+1}}$ and where the *increment* function $\incrementFunc$ is globally Lipschitz continuous with respect to $\vi x$ arguments ($\vi F$ is also assumed to be globally Lipschitz continuous in $\vi x$).
+
+:::{#def-continuous-ODE-method}
+##### Continuous ODE method @Bellen2003
+
+We call *continuous extension*, or *interpolant*, of the ODE method ([-@eq-k-step-ode-solver]) the piecewise polynomial function $\vi \eta(t)$ given by the restrictions on each interval $[t_i, t_{i+1}]$ of any interpolant based on values computed in a possibly larger interval $[t_{i - k_i}, t_{i+l_i + 1}]$, $k_i, l_i \geq 0$, of the form
+$$
+\begin{aligned}
+\vi \eta(t_i + \tht \diff t_{i+1}) ={}& \beta_{i,1}(\tht) \vi x_{i + l_i} + \dots + \beta_{i, l_i + k_i + 1}(\tht) \vi x_{i - k_i} \\
+	&+ \diff t_{i+1} \incrementF{\vi x_{i + l_i}, \dots, \vi x_{i - k_i}; \tht, \vi F, \mcal T'_i}, \quad 0 \leq \tht \leq 1,
+\end{aligned}
+$$ {#eq-continuous-ode-interpolant}
+where $\mcal T'_i = \set{t_{i - k_i}, \dots, t_{i + j_i}, t_{i + j_i + 1}}$, satisfying the continuity conditions
+$$
+\vi \eta(t_i) = \vi x_i \quad \& \quad \vi \eta(t_{i+1}) = \vi x_{i+1}.
+$$ {#eq-interpolant-continuity}
+
+If $l_i = k_i = 0$, then the interpolation procedure is based on values belonging to the sole interval $[t_i, t_{i+1}]$ and is referred to as *one-step interpolation*. Otherwise, the interpolation procedure is called *multistep interpolation*. In short, any ODE method ([-@eq-k-step-ode-solver]) endowed with its continuous extension ([-@eq-continuous-ode-interpolant]) will be called a *continuous ODE method*.
+:::
+
+An arbitrary ODE solver can then be used as a *continuous ODE method* (with $j_i = 0$ for computational reasons). Note that even *explicit* ODE methods in general lead to *implicit* continuous ODE methods. For brevity, discussion on convergence and other numerical properties is omitted. In implementations, we will predominantly use DelayDiffEq.jl package by @Widmann2022 in Julia or `dde23` in MATLAB.
+
+::: {.callout-important #imp-dde23-improvements}
+##### Improvements to `dde23`
+
+Throughout the work on this thesis and related publications, we have noticed a significantly worse performance of the `dde23` method compared to equivalent DDE solver in Julia, see [this Git repository](https://gitlab.com/sceptri-university/dde-julia-matlab-comparison). Humusoft, the distributor of MATLAB for the Czech Republic and Slovakia, determined that the issue lies in the code to find appropriate index $i$ such that $t - \tau \in [t_i, t_{i+1}]$ for a given $t$ (necessary for determining, e.g., $\mcal T'_i$). The main inefficiency was caused by searching for $i$ starting from the most distant past, see @Shampine2001 for reference on the implementation. This problem is fixed in MATLAB version R2024b onward.
+:::
+
+### Numerical Integration of SDEs
 
 In @sec-stochastic-dyn-systems, we have presented a framework for dealing with stochastic dynamical systems. These very often arise from noisy measurements of the underlying system. Using discussed concepts, we can represent this as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
 $$
@@ -1079,7 +1190,7 @@ where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega))
 **end**
 :::
 
-Let us note that for implementation, we will predominantly use the `EM` method, from @Rackauckas2017, for Julia and a custom implementation for MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
+Let us note that for implementation, we use the `EM` method from DifferentialEquations.jl by @Rackauckas2017 for Julia and a custom implementation for MATLAB, see @MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
 
 ### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
 

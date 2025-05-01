@@ -5,6 +5,7 @@
 		"arclength",
 		"argmin",
 		"autocovariance",
+		"Bellen",
 		"bicontinuous",
 		"BIFTOOL",
 		"bijective",
@@ -41,6 +42,7 @@
 		"integro",
 		"interneuron",
 		"interneurons",
+		"interpolant",
 		"Izhikevich",
 		"jldopen",
 		"Kochenderfer",
@@ -108,6 +110,7 @@
 		"yticksvisible",
 		"Zathurecky",
 		"Záthurecký",
+		"Zennaro",
 		"Zissou"
 	],
 	"cSpell.enabledFileTypes": {

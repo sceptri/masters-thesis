@@ -39,7 +39,7 @@ CairoMakie.activate!(type = "svg")
 ```
 :::
 
-# Simulation-based Approach {#sec-simulation-approach}
+# Grid Simulation Approach {#sec-simulation-approach}
 
 ## Problem Formulation {#sec-problem-formulation}
 
