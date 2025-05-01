@@ -186,8 +186,7 @@ Stable invariant set is called an *attractor*, whereas if the invariant set is u
 
 #### Topologically Equivalent Dynamical Systems
 
-<!-- TODO: Add refs to section -->
-So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, see TODO, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
+So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, see @sec-neuronal-dynamics, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
 
 :::{#def-topological-equivalence}
 ##### Topological equivalence
@@ -653,7 +652,7 @@ Although, we have so far shown only examples of FEs with *discrete* (or *concent
 
 We can further combine these notions of ordinary differential equations and functional equations, yielding in the process *functional differential equations* (FDEs). FDEs can also contain discrete, continuous or mixed argument deviations. Thus, one can introduce *differential-difference equations*, and *integro-differential equations* in a similar way as seen above.
 
-The aforementioned generalization in its full form leads to *functional differential equations* -- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of form
+The aforementioned generalization in its full form leads to *functional differential equations* --- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of form
 $$
 \vi x^{(m)}(t) = \vi f\brackets{t, \vi x^{(m_1)}(t - \tau_1(t)), \dots, \vi x^{(m_k)}(t - \tau_k(t))},
 $$
@@ -673,7 +672,7 @@ For clarity and brevity, throughout this thesis *RFDEs with (discrete) constant 
 
 ### Method of Steps {#sec-method-of-steps}
 
-All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* -- a way of solving delay differential equations. This subsection is mainly based on @Smith2010 and @Bellen2003.
+All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* --- a way of solving delay differential equations. This subsection is mainly based on @Smith2010 and @Bellen2003.
 
 To begin gently, we will start with a simple case of $x \in \R$. Let us thus consider a nonlinear DDE of form
 $$
@@ -871,7 +870,7 @@ $$
 \obj M = \set{\vi \psi \in \contStateSpace \cap \contf{[-\minOf{\tau, \alpha}, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
 $$
 
-It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ -- steady-state and periodic solutions can be given as examples.
+It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ --- steady-state and periodic solutions can be given as examples.
 
 #### Stability {#sec-dde-stability}
 
@@ -1022,7 +1021,7 @@ $$
 $$ {#eq-glob-err}
 :::
 
-> In general, we seek such method, which fulfills given accuracy while using as few evaluations of $\vi F$ as possible -- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
+> In general, we seek such method, which fulfills given accuracy while using as few evaluations of $\vi F$ as possible --- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
 
 By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for Euler method, we get (recalling the Taylor expansion ([-@eq-euler-method-taylor]))
 $$
@@ -1030,7 +1029,7 @@ $$
 $$
 We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., Euler method is first order.
 
-This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step -- this way, we obtain so called **Runge-Kutta** methods.
+This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so called **Runge-Kutta** methods.
 
 ::: {.callout appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
@@ -1146,7 +1145,7 @@ If $l_i = k_i = 0$, then the interpolation procedure is based on values belongin
 
 An arbitrary ODE solver can then be used as a *continuous ODE method* (with $j_i = 0$ for computational reasons). Note that even *explicit* ODE methods in general lead to *implicit* continuous ODE methods. For brevity, discussion on convergence and other numerical properties is omitted. In implementations, we will predominantly use DelayDiffEq.jl package by @Widmann2022 in Julia or `dde23` in MATLAB.
 
-::: {.callout-important #imp-dde23-improvements}
+::: {.callout-tip #tip-dde23-improvements}
 ##### Improvements to `dde23`
 
 Throughout the work on this thesis and related publications, we have noticed a significantly worse performance of the `dde23` method compared to equivalent DDE solver in Julia, see [this Git repository](https://gitlab.com/sceptri-university/dde-julia-matlab-comparison). Humusoft, the distributor of MATLAB for the Czech Republic and Slovakia, determined that the issue lies in the code to find appropriate index $i$ such that $t - \tau \in [t_i, t_{i+1}]$ for a given $t$ (necessary for determining, e.g., $\mcal T'_i$). The main inefficiency was caused by searching for $i$ starting from the most distant past, see @Shampine2001 for reference on the implementation. This problem is fixed in MATLAB version R2024b onward.
@@ -1422,3 +1421,103 @@ where $\ve_{\text{err}}$ is the given tolerance for the solution error and $\ve_
 ##### Modifications to Newton's method
 Here, we have only discussed the standard Newton's method, but there exists a number of modifications including Newton-chord method, Newton-Broyden method or various quasi-Newton methods.
 :::
+
+## Neuronal Dynamics {#sec-neuronal-dynamics}
+
+Neuron is the fundamental building block of the neural system of many living organisms on Earth. As such, how we understand it directly impacts a significant portion of our (perception of the) world. Naturally, mathematical models and concepts from computational neuroscience play a key role in this understanding. Let us note this section is based on @Keener2009 and @Murray2002, with relevant publications referenced when needed.
+
+### Physiology of a Neuron
+
+Every cell has the *cell membrane* on its boundary, consisting of phospholipid bilayer and irregularly spaced ion channels, which separate the internal structures of the cell from the surrounding external environment. However, from our point view, its most important feature is the *selective permeability*, which allows it to permit the passage of certain chemicals while restricting others. As a simplification, we may assume it lets the potassium cations $\ce{K^+}$ go through freely, but heavily obstructs the passage of sodium cations $\ce{Na^+}$. Thanks to this property, a *membrane potential* emerges for most cells. The potential is induced by the lower concentration of positively charged particles (typically potassium cations $\ce{K^+}$ diffuse outward) inside the cell than outside. By the interplay of diffusion and Coulomb's law acting on particles in and outside of the cell, the *membrane potential* stabilizes on $-70$ mV (typically called the *resting potential*).
+
+Certain cells, among which are neurons, posses the ability to control the permeability of their membrane. A local change of the permeability is called the *action potential*, if the change triggers a characteristic sequence of events resulting in the return to the resting state. On the contrary, a small change is generally compensated by slow regulating mechanisms.
+
+::: {.callout-note #nte-all-or-nothing-law}
+##### All-or-nothing law
+
+The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that neurons send signal if and only it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
+:::
+
+During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by combination of Coulomb's law and diffusion, enter the cell and positively charge it, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential). This, in turn, *hyper-polarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced back by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
+
+Although the *action potential* is fundamentally a local behavior of the neuronal cell membrane, it triggers a chain reaction around the initial point of excitation, which causes neighboring parts of the membrane to undergo the same process. 
+
+### Conductance-based Models {#sec-conductance-based-models}
+
+As can be seen from the previous subsection, a key quantity for a mathematical model of a single isolated neuron is likely to be the *membrane potential*, ideally effected by variables describing permeability of various ion channels. Indeed, conductance-based models, see @Skinner2006, are established on an equivalent circuit representation of a cell membrane, introduced by @Hodgkin1952. Here, ion channels of an excitable cell are modeled as conductances and its lipid bilayer by a capacitor. In its simplest form, a conductance-based model represents a neuron by a single compartment with homogenous potential, disregarding ion movements between subcellular compartments, and captures only ion movements between the inside and outside of the cell.
+
+The original model by Hodgkin and Huxley @Hodgkin1952, constructed based on measurements of the giant axon of a squid, reads as
+$$
+\begin{aligned}
+	I_{\text{ext}} &= C \dot{V} + g_K n^4 (V - V_K) + g_{Na} m^3 h (V - V_{Na}) + g_L(V - V_L), \\
+	\dot n &= \alpha_n (V) (1 - n) - \beta_n(V)n, \\
+	\dot m &= \alpha_m (V) (1 - m) - \beta_m(V)m, \\
+	\dot h &= \alpha_h (V) (1 - h) - \beta_h(V)h, \\
+\end{aligned}
+$$ {#eq-hodgkin-huxley}
+where $I_c = C_m \dot{V}$ describes the current flowing into the lipid bilayer capacitance ($C$ is the capacity of the membrane) and $I_{\text{ion}_i} = g_i (V - V_i)$ current through a given ion channel^[Note that $L$ denotes the abstract *leak* ion channel, which aggregates all the smaller, less-significant ion channels into one.] $i$ as the product of its conductance $g_i$ and the corresponding driving potential $V - V_i$. Here, $V_i$ denotes so-called *reverse potentials*, which capture associated resting potentials. Lastly, $m,n,h$ model the probabilities of respective ion channels being open. The exact formulas for functions $\alpha_i, \beta_i$ with $i = m,n,h$ and parameter values can be found in the original article.
+
+The several conductance-based models, founded on the Hodgkin--Huxley formalism, appeared after the breakthrough publication of Hodgkin and Huxley. Among the most influential is the Morris--Lecar model, see @Morris1981, which they formulated after studying the muscle fiber of a barnacle. Nevertheless, nowadays it is used to model dynamics of human neurons. It reduces the 4-dimensional Hodgkin--Huxley model into 2 dimensions, see @Lecar2007,
+$$
+\begin{aligned}
+	C \dot V &= - g_{Ca} m\inSS(V) (V - V_{Ca}) - g_K w(V - V_K) - g_L(V - V_L) + I_{\text{ext}}, \\
+	\dot w &= \frac {w\inSS(V) - w} {T_w(V)},
+\end{aligned}
+$$ {#eq-morris-lecar}
+where $w$ is the *"recovery variable"* for the $\ce{K^+}$ channel prescribing the probability of the corresponding ion channel being open. Moreover, the open-state probability functions $m\inSS, w\inSS$ are derived from assumptions about the *steady state* and its distribution of open and closed ion channels. Finally, $T_w$ is used to set a correct timescale for $w$. 
+
+The last model we shall consider is the *interneuron* model proposed by White et al., see @White1998. It was used to describe synchronization of oscillations and the loss thereof in a network of inhibitory neurons. Nonetheless, it allows us to fast-spiking neuron cells, which can be found, for instance, in the CA1 hippocampal subfield. The governing equations read as, see @Sevcik2025,
+$$
+\begin{aligned}
+	C \dot V &= I_{\text{ext}} - \overbrace{g_L (V - V_L)}^{I_L} - \overbrace{g_{Na} m^3 h (V - V_{Na})}^{I_{Na}} - \overbrace{g_K n^4 (V - V_K)}^{I_K}, \\
+	\dot h &= \frac {h\inSS(V) - h}{T_h(V)}, \\
+	\dot n &= \frac {n\inSS(V) - n}{T_n(V)},
+\end{aligned}
+$$ {#eq-interneuron-model}
+where $C$ again indicates the capacitance of the neuronal membrane, $I_{\text{ext}}$ is the external stimulus and $I_L, I_{Na}, I_K$ incorporate the relationship between the membrane voltage $V$ (typically in $mV$) and currents through respective channels. Analogously, $g_i$ and $V_i$ act as the maximum conductance and reverse potential, respectively, for an ion channel $i$. Researches noticed that the recovery variable $m$ in ([-@eq-hodgkin-huxley]) almost immediately converges to its corresponding steady state, thus using the *slow-fast* dimensionality reduction method, they replaced it with its asymptotic value,
+$$
+m = m\inSS(V) = \frac 1 {1 + \Exp{-0.08(V + 26)}}.
+$$
+The dynamics of activation variables $h,n$ is further related to their corresponding steady state distributions and correctly scaled in time, i.e.,
+$$
+\begin{aligned}
+h\inSS(V) &= \frac 1 {1 + \Exp{0.13(V + 38)}}, & T_h(V) &= \frac {0.6} {1 + \Exp{-0.12(V + 67)}}, \\
+n\inSS(V) &= \frac 1 {1 + \Exp{-0.045(V + 10)}}, & T_n(V) &= 0.5 + \frac {2} {1 + \Exp{0.045(V - 50)}}.
+\end{aligned}
+$$
+Our choice of parameters is based on @Pribylova2024, 
+$$
+\begin{aligned}
+	C &= 1, & g_L &= 0.1, & g_{Na} &= 30, & g_K &= 20, \\
+	I_{\text{ext}} &= 24, & V_L &= -60, & V_{Na} &= 45, & V_K &= -80.
+\end{aligned}
+$$ {#eq-interneuron-parameters}
+
+### Couplings {#sec-neuronal-couplings}
+
+So far, we have only studied single neurons, but in nature a far more common occurrence is a (large) coupled network of neurons. However, for simplicity, we shall devote our attention only to a case of 2 weakly coupled neurons. For more information, see @Ermentrout2010.
+
+The type of coupling and its properties become crucial for the discussion on the communication between individual neurons. In particular, we are trying to model a situation in which the action potential of given neuron (called the *presynaptic* neuron) travels across its axon where it connects a dendrite of another neuron (the *postsynaptic* neuron). The point where one neuron connects to another is called a *synapse*.
+
+In general, couplings can be either chemical or electrical. In the case of electrical coupling, there is a direct connection from one neuron to another, facilitated via a channel or a gap junction. Although more common is the (slower) chemical synapse (also called the *synaptical coupling*), per @White1998 and @Zathurecky2025, we will consider solely the electrical coupling (our goal is to study high frequency oscillations, which would be inhibited by the use of slow coupling).
+
+We model the gap-junctional coupling effect as external currents directly proportional to the differences between membrane potentials for both coupled neurons. In particular, it yields
+$$
+\begin{aligned}
+	C_i \dot V_i(t) &= I_{\text{ext}} - I^{\text{channels}}_i(t) - \lambda (V_i(t) - V_{\hat i}(t - \tau)), \\
+	&\vdots
+\end{aligned}
+$$ {#eq-coupling}
+where $V_i$ marks the membrane potential of the $i$-th neuron, $C_i$ capacity of its membrane, $\lambda$ is the coupling strength, $\hat{i}$ denotes the "opposite" coupled neuron and $\tau > 0$ a possible delay in the information introduced by the coupling. As such, the system of two $\lmbd$-weakly coupled interneurons, see ([-@eq-interneuron-model]), becomes
+$$
+\rcases{
+	C_1 \dot V_1(t) &= I_{\text{ext}} - g_L (V_1(t) - V_L) - g_{Na} m\inSS^3 h_1(t) (V_1(t) - V_{Na}) \\
+		&\quad {} - g_K n_1^4(t) (V_1(t) - V_K) - \lmbd (V_1(t) - V_2(t - \tau)), \\
+	\dot h_1(t) &= \frac {h\inSS(V_1(t)) - h_1(t)}{T_h(V_1(t))}, \\
+	\dot n_1(t) &= \frac {n\inSS(V_1(t)) - n_1(t)}{T_n(V_1(t))}, \\
+	C_2 \dot V_2(t) &= I_{\text{ext}} - g_L (V_2(t) - V_L) - g_{Na} m\inSS^3 h_2(t) (V_2(t) - V_{Na}) \\
+		&\quad {} - g_K n_2^4(t) (V_2(t) - V_K) - \lmbd (V_2(t) - V_1(t - \tau)), \\
+	\dot h_2(t) &= \frac {h\inSS(V_2(t)) - h_2(t)}{T_h(V_2(t))}, \\
+	\dot n_2(t) &= \frac {n\inSS(V_2(t)) - n_2(t)}{T_n(V_2(t))}.
+}
+$$ {#eq-coupled-interneurons}
