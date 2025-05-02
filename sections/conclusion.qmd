@@ -6,7 +6,7 @@
 {{< include mathematics.qmd >}}
 :::
 
-# Conclusion {#sec-conclusion .unnumbered}
+# Conclusions {#sec-conclusion .unnumbered}
 
 Phase-locked synchronization is of utmost importance for neuroscience. Specifically anti-phase synchronization describes the optimal phase shift with respect to the sum frequency of two weakly coupled oscillators, see @Zathurecky2025. However, the problem of determining suitable parameter values, which would results in synchronization, and the phase shift thereof is a rather complicated task.
 
