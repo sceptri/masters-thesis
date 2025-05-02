@@ -561,17 +561,17 @@ $$
 $$
 All of the continuation problems we shall be interested in arise from parametrized *localization problems*, see the previous section [-@sec-theory-of-localizations].
 
-From the *implicit function theorem* follows that the system ([-@eq-continuation-problem]) locally defines a smooth one-dimensional manifold (*curve*) $M$ passing through a point $\vi X^0$, if $\rank \Jacobi_{\vi H} = n$, where $\Jacobi_{\vi H} = \jacobi \vi H(\vi X^0)$. By a numerical solution to ([-@eq-continuation-problem]) is understood a sequence of points $\vi X^0, \vi X^1, \dots$ approximating the curve $M$ with desired accuracy. The continuation algorithms we shall present here will be based on the *prediction--correction* process.
+From the *implicit function theorem* follows that the system ([-@eq-continuation-problem]) locally defines a smooth one-dimensional manifold (*curve*) $\manifold$ passing through a point $\vi X^0$, if $\rank \Jacobi_{\vi H} = n$, where $\Jacobi_{\vi H} = \jacobi \vi H(\vi X^0)$. By a numerical solution to ([-@eq-continuation-problem]) is understood a sequence of points $\vi X^0, \vi X^1, \dots$ approximating the curve $\manifold$ with desired accuracy. The continuation algorithms we shall present here will be based on the *prediction--correction* process.
 
 For the prediction part, we will singularly use the *tangent* prediction
 $$
 \tilde{\vi X}^i_{(0)} = \vi X^i + h \vi v^i,
 $$ {#eq-continuation-tangent-prediction}
-where $\vi v^i \in \R^{n+1}$ is the normalized tangent vector to the curve $M$ at the (regular) point $\vi X^i$ and $h \in \R$ is the stepsize. Using the arclength parametrization of $\vi X(s)$ of the curve near $\vi X^i$ (i.e., $\vi X(0) = \vi X^i$), we can substitute it into ([-@eq-continuation-problem]) and differentiate with respect to $s$, which yields
+where $\vi v^i \in \R^{n+1}$ is the normalized tangent vector to the curve $\manifold$ at the (regular) point $\vi X^i$ and $h \in \R$ is the stepsize. Using the arclength parametrization of $\vi X(s)$ of the curve near $\vi X^i$ (i.e., $\vi X(0) = \vi X^i$), we can substitute it into ([-@eq-continuation-problem]) and differentiate with respect to $s$, which yields
 $$
 \jacobi \vi H(\vi X^i) \overbrace{\evaluateAt{\dvi X(s)}{s = 0}}^{\vi v^i} = \vi 0.
 $$
-In other words, $\vi v^i$ must lie in the null-space of the matrix of local linearization of $M$ around $\vi X^i$. Moreover, since $\vi X^i$ is presumed to be *regular*, i.e., $\rank \jacobi \vi H(\vi X^i) = n$, then $\vi v^i$ is determined uniquely up-to a constant multiple.
+In other words, $\vi v^i$ must lie in the null-space of the matrix of local linearization of $\manifold$ around $\vi X^i$. Moreover, since $\vi X^i$ is presumed to be *regular*, i.e., $\rank \jacobi \vi H(\vi X^i) = n$, then $\vi v^i$ is determined uniquely up-to a constant multiple.
 
 ::: {.callout-tip #tip-secant-prediction}
 ##### Secant prediction
@@ -579,7 +579,7 @@ In other words, $\vi v^i$ must lie in the null-space of the matrix of local line
 Although we have introduced only the tangent prediction, another popular method is the *secant prediction*. For more information, one can see @Kuznetsov2023.
 :::
 
-Currently, we have predicted a point $\tilde{\vi X}^i_{(0)}$ assumed to be close to the curve, which we need to *"correct"* such that it lies on $M$ within a certain specified degree of accuracy. This, in general, requires the use of a Newton-like method, see @sec-newton-method, as ([-@eq-continuation-problem]) might be highly nonlinear. However, a Newton-like methods can only be applied to fully determined systems, i.e., the number of equations must correspond to the number of unknown variables. Therefore, we add an extra scalar (remember $\vi H : \R^{n+1} \to \R^n$) condition
+Currently, we have predicted a point $\tilde{\vi X}^i_{(0)}$ assumed to be close to the curve, which we need to *"correct"* such that it lies on $\manifold$ within a certain specified degree of accuracy. This, in general, requires the use of a Newton-like method, see @sec-newton-method, as ([-@eq-continuation-problem]) might be highly nonlinear. However, a Newton-like methods can only be applied to fully determined systems, i.e., the number of equations must correspond to the number of unknown variables. Therefore, we add an extra scalar (remember $\vi H : \R^{n+1} \to \R^n$) condition
 $$
 g^i(\vi X) = 0
 $$
@@ -592,7 +592,7 @@ $$
 $$ {#eq-continuation-prediction-system}
 Finally, Newton's method can be used on ([-@eq-continuation-prediction-system]).
 
-One possibility is to select a hyper-plane $P^i$ passing through the point $\tilde{\vi X}^i_{(0)}$, such $\vi v^i$ is its normal vector. Then, we can find the corrected point $\vi X^{i+1}$ as the intersection of $P^i$ and the curve $M$. Further, any point $\vi X$ on $P^i$ must satisfy
+One possibility is to select a hyper-plane $P^i$ passing through the point $\tilde{\vi X}^i_{(0)}$, such $\vi v^i$ is its normal vector. Then, we can find the corrected point $\vi X^{i+1}$ as the intersection of $P^i$ and the curve $\manifold$. Further, any point $\vi X$ on $P^i$ must satisfy
 $$
 \overbrace{\scal {\vi X - \tilde{\vi X}^i_{(0)}} {\vi v^i}}^{g^i(\vi X)} = 0,
 $$ {#eq-continuation-tangent-direction}
@@ -634,20 +634,20 @@ describing $\lmbd$-weakly coupled oscillators $\vi x_1(t), \vi x_2(t)$. In parti
 
 Let us begin with $\lmbd = 0$, i.e., decoupled oscillators. Then any shift may occur between them (as there is effectively no connection) and from the theoretical contributions of @Zathurecky2025, we know that an Arnold tongue with a stable synchronization structure must exists. Therefore, we choose a fixed discretization $\Lambda = \seqnc \lmbd i 0 {N_{\Lambda}}$ for $\lmbd$.
 
-For each $\lmbd_i \in \Lambda$, we then let the system converge to a stable cycle from a fixed initial condition $\vi \phi$. After successful convergence, we then continue it with respect to $C_2$, which yields a slice of the unknown cycle manifold $M$.
+For each $\lmbd_i \in \Lambda$, we then let the system converge to a stable cycle from a fixed initial condition $\vi \phi$. After successful convergence, we then continue it with respect to $C_2$, which yields a slice of the unknown cycle manifold $\manifold$.
 
 ::: {.callout-note #nte-lambda-discretization}
 ##### Discretization of $\lmbd$
 
-Note that currently, we have "blindly" discretized $\lmbd$ and then for each element $\lmbd_i \in \Lambda$ of the discretization, we have attempted to converge onto a stable periodic orbit. Only afterwards could we compute the continuation with respect to $C_2$. Another approach would be first to continue the cycle with respect to $\lmbd$, producing a curve $C_{\lmbd}$ in the desired manifold $M$. Then, we could perform the continuation with respect to $C_2$ for each point of $C_{\lmbd}$, which is already discretized due to the nature of numerical continuation.
+Note that currently, we have "blindly" discretized $\lmbd$ and then for each element $\lmbd_i \in \Lambda$ of the discretization, we have attempted to converge onto a stable periodic orbit. Only afterwards could we compute the continuation with respect to $C_2$. Another approach would be first to continue the cycle with respect to $\lmbd$, producing a curve $C_{\lmbd}$ in the desired manifold $\manifold$. Then, we could perform the continuation with respect to $C_2$ for each point of $C_{\lmbd}$, which is already discretized due to the nature of numerical continuation.
 :::
 
 Moreover, for each cycle on the $C_2$-continuation curve, we know its corresponding period $T$. This allows us to use shift searching methods, see @sec-shift-searching, with much better accuracy (compared to only estimated period). In particular, we partition the interval $[0,T]$ and for each of disjunct sub-intervals $Q_i \subseteq [0,T]$, we run the shift searching method. Finally, we select the shift with the least error.
 
 <!-- TODO: Why C_1 in the code not C_2??? (and does it even matter for symmetric coupling?) -->
-In addition, when there is no delay in the coupling $\vi K$ (i.e., the ODE case), one can also continue the LPC curves with respect to $\lambda$ and $C_2$. Note that these curves do not always originate from the zero coupling, as can be seen in Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (C) and (D)). Unfortunately, DDE-BIFTOOL does not support continuation of LPC curves. Nevertheless, we may attempt to estimate these curves from the boundaries of stable and unstable limit cycles on the manifold $M$. 
+In addition, when there is no delay in the coupling $\vi K$ (i.e., the ODE case), one can also continue the LPC curves with respect to $\lambda$ and $C_2$. Note that these curves do not always originate from the zero coupling, as can be seen in Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (C) and (D)). Unfortunately, DDE-BIFTOOL does not support continuation of LPC curves. Nevertheless, we may attempt to estimate these curves from the boundaries of stable and unstable limit cycles on the manifold $\manifold$. 
 
-Now, we can show the relation of $\lambda$ and $C_2$ to both period $T$ and shift $\beta$, see Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)). Furthermore, we can project the cycle manifold onto the parameter plane $(C_2, \lmbd)$, where it draws out desired tongues. Let us remark tongues corresponding to different stable sub-manifolds of $M$ can overlap.
+Now, we can show the relation of $\lambda$ and $C_2$ to both period $T$ and shift $\beta$, see Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)). Furthermore, we can project the cycle manifold onto the parameter plane $(C_2, \lmbd)$, where it draws out desired tongues. Let us remark tongues corresponding to different stable sub-manifolds of $\manifold$ can overlap.
 
 Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] show this methodology applied to two weakly coupled interneuron modes, see ([-@eq-coupled-interneurons]). The continuation was performed using MatCont, see @Dhooge2003 and @Dhooge2008, in the ODE case and DDE-BIFTOOL, see @Sieber2014, in the DDE case. In particular, we calculated the *optimal shift* in the first coordinate of both oscillators over $3T$-long trajectory. The region around zero-delay is numerically unstable for the continuation, see @sec-semidynamical-systems-localization. For implementation details, see the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025, potentially also Git repository associated with this thesis for specifics of plotting computed data.
 
@@ -658,7 +658,7 @@ While there exists a Julia package DDEBifurcationKit.jl for continuation in DDEs
 ```{julia}
 #| echo: false
 #| label: fig-bifurcation-shift-ode
-#| fig-cap: Numerical continuation of the cycle manifold $M$ of the system ([-@eq-coupled-interneurons]) without delay for $C_1 = 1$ and free parameter $C_2$ using MatCont is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
+#| fig-cap: Numerical continuation of the cycle manifold $\manifold$ of the system ([-@eq-coupled-interneurons]) without delay for $C_1 = 1$ and free parameter $C_2$ using MatCont is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
 #| width: 95%
 
 include("../scripts/plot_Zathurecky2025_ode_results.jl")
@@ -668,7 +668,7 @@ render_ode_results()
 ```{julia}
 #| echo: false
 #| label: fig-bifurcation-shift-dde
-#| fig-cap: Numerical continuation of the cycle manifold $M$ of the system ([-@eq-coupled-interneurons]) with delay $\tau = 0.025$ for $C_1 = 1$ and free parameter $C_2$ using DDE-BIFTOOL is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black estimated LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
+#| fig-cap: Numerical continuation of the cycle manifold $\manifold$ of the system ([-@eq-coupled-interneurons]) with delay $\tau = 0.025$ for $C_1 = 1$ and free parameter $C_2$ using DDE-BIFTOOL is shown in (A); (B) plots period $T$ with respect to $\lmbd$ and $C_2$. The colors of the continued section curves indicate stability (blue) or instability (red) of the limit cycles. The grey curves in panels (A) and (B) represent the projections of the black estimated LPS curves onto $(C_2, \lmbd)$ delineating the Arnold tongues. The heatmaps of (C) the in-phase and (D) the anti-phase Arnold tongues illustrate the corresponding phase shift $\beta$. Adapted from @Zathurecky2025 (redrawn in Julia using data from the article).
 #| width: 95%
 
 include("../scripts/plot_Zathurecky2025_dde_results.jl")
@@ -694,5 +694,5 @@ include("../scripts/compare_bif_sim_ode.jl")
 include("../scripts/compare_bif_sim_dde.jl")
 ```
 
-Comparison of heatmaps of phase shifts $\beta$ computed using the simulation-based approach, see @sec-simulation-approach and @fig-metacentrum-shift, and borders of anti-phase Arnold tongues obtained from the continuation of the cycle manifold $M$, see above.
+Comparison of heatmaps of phase shifts $\beta$ computed using the simulation-based approach, see @sec-simulation-approach and @fig-metacentrum-shift, and borders of anti-phase Arnold tongues obtained from the continuation of the cycle manifold $\manifold$, see above.
 :::

@@ -1,3 +1,17 @@
+---
+engine: julia
+---
+
+:::{.hidden}
+```{julia}
+#| echo: false
+#| output: false
+
+using Pkg
+Pkg.activate(".")
+```
+:::
+
 ::: {.content-visible when-format="html"}
 A thesis submitted for the {{< meta thesis.degree >}} degree at {{< meta thesis.affiliation.university >}}, {{< meta thesis.affiliation.en >}}, {{< meta thesis.affiliation.location >}}.
 
@@ -5,10 +19,15 @@ A thesis submitted for the {{< meta thesis.degree >}} degree at {{< meta thesis.
 
 # Copyright notice {- .content-visible when-format="html"}
 
-```r
+```{julia}
 #| output: asis
-cat("Produced on",format(Sys.Date(), "%e %B %Y.\n\n"))
-cat("© {{< meta author >}} (",format(Sys.Date(), "%Y"),").", sep="")
+#| echo: false
+using Dates
+
+print("""
+Produced on $(Dates.format(today(), "dd.mm.yyyy")) \\
+© {{< meta author >}} ($(year(today()))).
+""")
 ```
 
 # Abstract {-}
@@ -36,8 +55,7 @@ cat("© {{< meta author >}} (",format(Sys.Date(), "%Y"),").", sep="")
 
 #### Reproducibility statement
 
-<!-- TODO: Change this -->
-This thesis is written using Quarto with renv [@renv] and Julia to create a reproducible environment. All materials (including the data sets and source files) required to reproduce this document can be found at the GitLab repository [`gitlab.com/sceptri-university/muni-thesis`](https://gitlab.com/sceptri-university/muni-thesis).
+This thesis is typeset using Quarto  @Quarto and all figures are generated in Julia @Bezanson2017 using the Makie.jl package @MakieJulia. Both HTML and PDF versions are available. All source code for this thesis (and included numerical computations) is included in the [Git repository]({{< meta book.repo-url >}}) (if not stated otherwise).
 
 This work is licensed under a [Creative Commons  Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 

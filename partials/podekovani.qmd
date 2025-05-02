@@ -1,2 +1,3 @@
-Chci poděkovat
-<!-- TODO: Add thank you note to MetaCentrum -->
+V prvé řadě bych chtěl poděkovat mé vedoucí doc. RNDr. Lence Přibylové, Ph.D., za její cenné rady, nadšení, a v neposlední řadě i trpělivost. Navíc bych chtěl můj vděk vyjádřit i celému týmu Nelinearní dynamiky, který velmi významnou v průběhu vypracování této práce. Hlavně bych však chtěl poděkovat své partnerce Veronice za její neutuchající podporu a lásku, kterou mi opakovaně prokazovala spolu s dvěma nejlepšími psími konzultanty, Tuffym a Poincarém (Pockym). \
+
+Tato práce byla podpořena z projektu *GAMU Interdisciplinary \# MUNI/G/1213/2022* a projektu *Mathematical and Statistical Modeling \# MUNI/A/1132/2022*. Výpočetní prostředky byly poskytnuty e-INFRA CZ projektem (ID:90254), podpořeným Ministerstvem školství, mládeže a tělovýchovy České republiky.

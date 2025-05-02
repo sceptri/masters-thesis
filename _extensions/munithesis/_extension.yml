@@ -45,7 +45,6 @@ contributes:
         light: 
           - cerulean
           - thesis.scss
-        dark: darkly
       fontsize: 16px
       code-link: true
       toc-title: "<b>Sections</b>"

@@ -865,9 +865,9 @@ Because $\vi x_{\sigma} = \vi \phi$ must hold as well, due to the initial condit
 $$
 \dvi \phi(0) = \dvi x(\sigma) = \vi f(\sigma, \vi x_{\sigma}) = \vi f(\sigma, \vi \phi),
 $$
-where $\dvi \phi(0)$ denotes the left-hand derivative at $0$. In total, the history function $\vi \phi$ must thus belong to a very limited submanifold $\obj M$ of $\contStateSpace$ where
+where $\dvi \phi(0)$ denotes the left-hand derivative at $0$. In total, the history function $\vi \phi$ must thus belong to a very limited submanifold $\manifold$ of $\contStateSpace$ where
 $$
-\obj M = \set{\vi \psi \in \contStateSpace \cap \contf{[-\minOf{\tau, \alpha}, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
+\manifold = \set{\vi \psi \in \contStateSpace \cap \contf{[-\minOf{\tau, \alpha}, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
 $$
 
 It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ --- steady-state and periodic solutions can be given as examples.
@@ -1511,13 +1511,40 @@ $$ {#eq-coupling}
 where $V_i$ marks the membrane potential of the $i$-th neuron, $C_i$ capacity of its membrane, $\lambda$ is the coupling strength, $\hat{i}$ denotes the "opposite" coupled neuron and $\tau > 0$ a possible delay in the information introduced by the coupling. As such, the system of two $\lmbd$-weakly coupled interneurons, see ([-@eq-interneuron-model]), becomes
 $$
 \rcases{
-	C_1 \dot V_1(t) &= I_{\text{ext}} - g_L (V_1(t) - V_L) - g_{Na} m\inSS^3 h_1(t) (V_1(t) - V_{Na}) \\
+	C_1 \dot V_1(t) &= I_{\text{ext}} - g_L (V_1(t) - V_L) - g_{Na} m\inSS^3(V_1(t)) h_1(t) (V_1(t) - V_{Na}) \\
 		&\quad {} - g_K n_1^4(t) (V_1(t) - V_K) - \lmbd (V_1(t) - V_2(t - \tau)), \\
 	\dot h_1(t) &= \frac {h\inSS(V_1(t)) - h_1(t)}{T_h(V_1(t))}, \\
 	\dot n_1(t) &= \frac {n\inSS(V_1(t)) - n_1(t)}{T_n(V_1(t))}, \\
-	C_2 \dot V_2(t) &= I_{\text{ext}} - g_L (V_2(t) - V_L) - g_{Na} m\inSS^3 h_2(t) (V_2(t) - V_{Na}) \\
+	C_2 \dot V_2(t) &= I_{\text{ext}} - g_L (V_2(t) - V_L) - g_{Na} m\inSS^3(V_2(t)) h_2(t) (V_2(t) - V_{Na}) \\
 		&\quad {} - g_K n_2^4(t) (V_2(t) - V_K) - \lmbd (V_2(t) - V_1(t - \tau)), \\
 	\dot h_2(t) &= \frac {h\inSS(V_2(t)) - h_2(t)}{T_h(V_2(t))}, \\
 	\dot n_2(t) &= \frac {n\inSS(V_2(t)) - n_2(t)}{T_n(V_2(t))}.
 }
 $$ {#eq-coupled-interneurons}
+
+In practice, numerical experiments in neuroscience are often hard to set up due to the complicated nature of formulas of the systems and sheer number of their parameters. As such, throughout the work on this thesis, we developed a Julia package *NeuronToolbox.jl*, see its [Git repository](https://gitlab.com/sceptri-university/gamu/neuron-toolbox), with the aim to aid in this process. We illustrate this on a coupled pair of an interneuron model ([-@eq-interneuron-model]) and a Morris-Lecar model ([-@eq-morris-lecar]). The coupling is facilitated through a gap junction, see ([-@eq-coupling]), with the coupling strength $\lmbd = 0.01$ and corresponding delay $\tau = 0.01$.
+
+```{julia}
+#| output: false
+#| code-fold: show
+#| tags: 
+#|   - show-in-pdf
+using NeuronToolbox, ComponentArrays
+
+IN_params = ComponentVector(C=1, I=24, gL=0.1, EL=-60, 
+	gNa=30, ENa=45, gK=20, EK=-80)
+ML_params = Models.MorrisLecarUtils.example_parameters()
+
+IN = Models.Interneuron(IN_params)
+ML = Models.MorrisLecar(ML_params)
+
+lambda = 0.01
+tau = 0.01
+sync_coupling = Couplings.FirstVarDifference(lambda)
+async_coupling = Couplings.OneStepDelayed(sync_coupling, 
+	partition(2, [3, 2]), tau)
+
+coupled_pair = Networks.CoupledPair(IN, ML, async_coupling)
+```
+
+The resulting network `coupled_pair` can then be used a normal function prescribing a (delay) differential equation with DifferentialEquations.jl. Also note that we provide various different models and network types, e.g., an $m\times m$ adjacency matrix coupling for a system of $m$ models.
