@@ -12,7 +12,7 @@ For easier orientation in the text, we include a basic list of used notation thr
 
 | Symbol | Meaning |
 |-------:|:--------|
-|$\R$ | set of all real numbers |
+|$\R, \R^+$ | set of all real numbers, $\set{x \in \R \divider x > 0}$ |
 |$\N, \N_0$ | set of all natural numbers, $\N \cup \set{0}$ |
 |$\norm{\cdot}_k$ | appropriate (vector, function, etc.) $L^k$-norm |
 |$x,\vi x,\rnd X, \vr X$ | scalar, vector, random scalar, random vector variable, respectively |
