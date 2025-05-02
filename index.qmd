@@ -15,8 +15,6 @@ Pkg.activate(".")
 ::: {.content-visible when-format="html"}
 A thesis submitted for the {{< meta thesis.degree >}} degree at {{< meta thesis.affiliation.university >}}, {{< meta thesis.affiliation.en >}}, {{< meta thesis.affiliation.location >}}.
 
-<!-- TODO: Rework all of this -->
-
 # Copyright notice {- .content-visible when-format="html"}
 
 ```{julia}

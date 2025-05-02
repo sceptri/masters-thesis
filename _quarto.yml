@@ -75,9 +75,9 @@ thesis:
       cz: Modelování a výpočty
       en: Modelling and computations
   keywords:
-    cz: "Práce; Něco; Klíčové slovo" # TODO: Do this
-    en: "Thesis; Keyword; Long word" # TODO: Do this
-  page-count: "xv + 91" # TODO: Try and remove this...
+    cz: "dynamické systémy; kontinuace; výpočetní neurologie; spražené oscilátory; synchronizace"
+    en: "dynamical systems; continuation; computational neuroscience; coupled oscillators; synchronization"
+  page-count: "xiv + 94" # TODO: Check me
   abstract:
     cz: "partials/abstrakt.qmd"
     en: "partials/abstract.qmd"
@@ -87,7 +87,7 @@ thesis:
   declaration: 
     cz: "partials/prohlaseni.qmd"
     en: "partials/declaration.qmd"
-    date: 04.05.2025 # FIXME: Something like `last-modified`
+    date: 05.05.2025
   assignment: "assets/assignment.pdf"
 
 format:
@@ -128,7 +128,6 @@ format:
     number-sections: true
 
     fig-align: center
-    # fig-pos: H
     
     fig-format: png
     mermaid-format: png
