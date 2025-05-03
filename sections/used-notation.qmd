@@ -18,17 +18,25 @@ For easier orientation in the text, we include a basic list of used notation thr
 |$x,\vi x,\rnd X, \vr X$ | scalar, vector, random scalar, random vector variable, respectively |
 |$\scal {\vi u} {\vi v}$ | scalar (dot) product between vectors $\vi u$ and $\vi v$ |
 |$f, \vi f$ | scalar-valued, vector-valued function |
-|$f(x)'$ | derivative of scalar-valued function $f$ with respect to scalar variable $x$ |
-|$\dot{x}(t), \dvi x(t)$ | derivative of scalar, vector variable (dependent on time) with respect to time $t$|
+|$f(x)'$ | first derivative of a scalar-valued function $f$ with respect to scalar variable $x$ |
+|$\dot{x}(t), \dvi x(t)$ | derivative of a scalar, vector variable (dependent on time) with respect to time $t$|
+|$f^{(m)}(\cdot), \vi f^{(m)}(\cdot)$ | $m$-th derivative of a scalar-valued and vector-valued function, respectively |
 |$\jacobi f, \jacobi \vi f, \jacobi_{\vi y} \vi f(\vi x, \vi y)$ | gradient of $f$, Jacobian matrix of $\vi f$, Jacobian matrix of $\vi f$ with respect to the 2nd vector argument $\vi y$ |
 |$\Jacobi$ | Jacobian matrix of a corresponding function $\vi f$ |
+|$\reOf{x}, \imOf{x}$ | real and imaginary part of complex variable $x$, respectively |
+|$\oneToN{n}$ | $\set{i \in \N | i \leq n} = \set{1,2,\dots,n-1, n}$ |
 |$\stateSpace, \contStateSpace$ | state space of a dynamical system, often $\R^n$, state space of a semidynamical system, often $\contf{[-\tau, 0], \stateSpace}{}$ |
 |$\timeSet$ | algebraic structure capturing time for (semi)dynamical system, often $(\R, +)$ |
 |$\vi M$ | monodromy matrix of a cycle |
 |$\vi x_t$ | DDE history segment, $\vi x_t(s) \letDef \vi x(t + s)$, $-\tau \leq s \leq 0$ |
 |$\jacobi_{\tau_i} \vi f$ | Jacobian matrix of $\vi f$ with respect to the state variable corresponding to delay $\tau_i$ |
 |$\incrementFunc$ | increment function associated with a given numerical ODE solver |
+|$\globErr, \locErr, \locTrErr$ | global, local and local truncation error of a numerical integration method, respectively |
 |$\meshGrid, \indicesOf{\meshGrid}$ | discretization of a given section of 2-parameter plane to a grid, its 2D indices
-|$\manifold$ | manifold, typically of a cycle |
+|$\manifold, \curve$ | manifold, typically of a cycle, curve |
+|$(a,b\rco$ | interval from $a$ to $b$ open on the left and open or closed on the right |
 |$\Phi$ | phase condition for a collocation problem |
 |$\solOp, \infGen$ | solution operator, infinitesimal generator of a linearized DDE |
+|$\evolOp$ | evolution operator of a (semi)dynamical system |
+|$\normalD{\mu, \sigma^2}$ | normal distribution with expected value $\mu$ and variance $\sigma^2$ | 
+|$\rW(t)$ | Wiener process |

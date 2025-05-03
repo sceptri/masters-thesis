@@ -1,3 +1,5 @@
+# TODO: Re-run scripts after simplification
+
 project:
   type: book
   # LuaLaTeX fonts are often broken on NixOS

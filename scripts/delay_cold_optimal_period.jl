@@ -37,24 +37,13 @@ args = (
     period_searcher=GridWalker.optimal_period_among,
     partial_trajectory_period=0.2,
     partial_trajectory_shift=0.1,
-    coordinate_distance_weight=0.1,
 
     # Periodicity Checker
     periodicity_checker=GridWalker.NoChecker(),
-    partial_trajectory_check=0.15,
-    divergence_threshold=1,
-    fixed_value_threshold=1e-1,
-    divergence_window=100,
 
     # Starter
     starter=GridWalker.cold_start,
     u0=[31, 0.2, 0.5, -36, 0.16, 0.5],
-    center_function=GridWalker.relative_center,
-    fixed_ratio_center=(0.5, 0.9),
-    starter_loss=GridWalker.additive_loss,
-
-    # Indexer
-    indexer_N=10,
 
     # Iterator
     enumerator=GridWalker.line_enumerator,

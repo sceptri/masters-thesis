@@ -43,30 +43,30 @@ CairoMakie.activate!(type = "svg")
 
 ## Problem Formulation {#sec-problem-formulation}
 
-Neuroscience is among the richest applications of mathematics in the current day and age. In neuronal dynamics, synchronization phenomena occurring in networks of individual neurons is of particular importance. These complex patters have been tied to the very fundamental capabilities of the brain, be it information processing, memory encoding, or the generation of rhythmic brain activity, see @Izhikevich2006, @Song2018. 
+Neuroscience is among the richest applications of mathematics in the current day and age. In neuronal dynamics, synchronization phenomena occurring in networks of individual neurons are of particular importance. These complex patterns have been tied to the very fundamental capabilities of the brain, be it information processing, memory encoding, or the generation of rhythmic brain activity, see @Izhikevich2006, @Song2018. 
 
-Although it is likely safe to assume a certain level of robustness of brain functions in regards to anomalies in the synchronization pattern, significant abnormalities in the rhythmic brain activity can be attributed to neurological disorders. The sheer variety of neurological disorders invalidates any sort of comprehensive study in a mere master's thesis, thus we shall only limit ourselves only to focal epilepsy. Let us note that it is still a vast topic in both neurology and applied mathematics and we will only manage to scratch the surface.
+Although it is likely safe to assume a certain level of robustness of brain functions regarding anomalies in the synchronization pattern, significant abnormalities in the rhythmic brain activity can be attributed to neurological disorders. The sheer variety of neurological disorders invalidates any sort of comprehensive study in a mere master's thesis, thus we shall limit ourselves to focal epilepsy. Let us note that it is still a vast topic in both neurology and applied mathematics and we will only manage to scratch the surface.
 
-From the perspective of neuronal dynamics, these abnormalities (in the case of focal epilepsy) manifest themselves as anomalous synchronization within the neuronal network and can lead to spontaneous seizures, see @Jiruska2013. This type of synchronization is often closely linked to the presence of fast ripples (oscillations in the frequency range 250--600 Hz), very-fast ripples (600 - 1000 Hz), ultra-fast ripples (1000--2000 Hz) and ultra-fast oscillations (UFOs, above 2000 Hz) within depth electroencephalographic (EEG) recordings from patients with focal epilepsy. This possible connection between focal points of drug-resistant epilepsy and high-frequency EEG reading in their vicinity has been the cause of significant research interest due to the potential use as biomarkers for epileptogenic zones, see @Jacobs2008, @Jacobs2012, @Worrell2011, @Staba2011, @Brazdil2017, @Cimbalnik2018, @Cimbalnik2020, and @Brazdil2023. Let us note the exact mechanism governing these high frequency oscillations in EEG signals remains unknown, when physiological limitations of action potential firing rates are taken into account, see @Jiruska2017.
+From the perspective of neuronal dynamics, these abnormalities (in the case of focal epilepsy) manifest themselves as anomalous synchronization within the neuronal network and can lead to spontaneous seizures, see @Jiruska2013. This type of synchronization is often closely linked to the presence of fast ripples (oscillations in the frequency range 250--600 Hz), very-fast ripples (600 - 1000 Hz), ultra-fast ripples (1000--2000 Hz), and ultra-fast oscillations (UFOs, above 2000 Hz) within depth electroencephalographic (EEG) recordings from patients with focal epilepsy. This possible connection between focal points of drug-resistant epilepsy and high-frequency EEG reading in their vicinity has been the cause of significant research interest due to the potential use as biomarkers for epileptogenic zones, see @Jacobs2008, @Jacobs2012, @Worrell2011, @Staba2011, @Brazdil2017, @Cimbalnik2018, @Cimbalnik2020, and @Brazdil2023. Let us note the exact mechanism governing these high-frequency oscillations in EEG signals remains unknown, when physiological limitations of action potential firing rates are taken into account, see @Jiruska2017.
 
 Conducted research sheds light on the role of anti-phase synchronization as a possible mechanism for the emergence of HFOs and VFHOs in epileptic EEG signals, see @Pribylova2024, @Sevcik2025, and @Zathurecky2025. The applied part of this thesis is mainly based on @Zathurecky2025 (the author of this thesis also contributed to the publication), although our focus will be the comparison between bifurcation- and simulation-based approaches to the same problem.
 
-Let us thus consider two weakly coupled oscillators (e.g., neurons, clusters thereof, neural masses, etc.). For illustration, these will be two interneuron models connected by a (possibly delayed) gap-junctional coupling, see @sec-neuronal-dynamics. By phase synchronization we understand two (or more) cyclic signals featuring a consistent relationship between their phases. Note that the amplitudes or even frequencies may differs. Understanding of this phenomenon, often called *phase locking* in the context of bifurcation theory, can be aided by examining corresponding *Arnold tongues*, which are regions where a phase synchronization occurs, see @Wiggins2003, @Kuznetsov2023. 
+Let us thus consider two weakly coupled oscillators (e.g., neurons, clusters thereof, neural masses, etc.). For illustration, these will be two interneuron models connected by a (possibly delayed) gap-junctional coupling, see @sec-neuronal-dynamics. By phase synchronization, we understand two (or more) cyclic signals featuring a consistent relationship between their phases. Note that the amplitudes or even frequencies may differ. Understanding of this phenomenon, often called *phase locking* in the context of bifurcation theory, can be aided by examining corresponding *Arnold tongues*, which are regions where a phase synchronization occurs, see @Wiggins2003, @Kuznetsov2023. 
 
-We shall be primarily interested in a system consisting of 2 weakly coupled oscillators with possible delay in the coupling. In such systems, regions of phase-synchrony between the two oscillators may arise for certain values of the coupling strength and some parameter, which influences the oscillation frequency of one of the oscillators. Then, by the continuous dependence of the solution on parameters and initial values for both the ODEs, see @Chicone2006 (Theorem 1.3), and DDEs, see @Hale1993 (Chapter 2.2), we can explore the phase-shift in the coupled system via small changes in both parameters.
+We shall be primarily interested in a system consisting of 2 weakly coupled oscillators with a possible delay in the coupling. In such systems, regions of phase-synchrony between the two oscillators may arise for certain values of the coupling strength and some parameter, which influences the oscillation frequency of one of the oscillators. Then, by the continuous dependence of the solution on parameters and initial values for both the ODEs, see @Chicone2006 (Theorem 1.3), and DDEs, see @Hale1993 (Chapter 2.2), we can explore the phase-shift in the coupled system via small changes in both parameters.
 
-In general, the system of interest takes the following DDE form
+In general, the system of interest takes the following DDE form,
 $$
 \begin{aligned}
 	\dvi x_1(t) &= \vi f(\vi x_1(t); \omega_1) + \lmbd \vi K(\vi x_1(t), \vi x_2(t - \tau), \sigma), \\
 	\dvi x_2(t) &= \vi f(\vi x_2(t); \omega_2) + \lmbd \vi K(\vi x_1(t - \tau), \vi x_2(t), \sigma),
 \end{aligned}
 $$ {#eq-general-delayed-coupled-oscillators}
-where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function. Note that $\vi x_i$ does not have to represent a single neuron (or model thereof), but even synchronized clusters of neurons or neural masses^[Neural mass models approximate the behavior of large clusters of neurons based on statistically-reasoned simplifications.].
+where $\vi x_1(t), \vi x_2(t) \in \R^n$ are the state variables, $\omega_1, \omega_2 \in \R$ parameters influencing oscillation frequencies of the respective models, $\sigma$ is an arbitrary fixed phase parameter, and $\lmbd \in \R^+_0$ the coupling strength. Lastly, $\vi K$ represents the coupling function. Note that $\vi x_i$ does not have to represent a single neuron (or model thereof), but even synchronized clusters of neurons or neural masses^[Neural mass models approximate the behavior of large clusters of neurons based on statistically reasoned simplifications.].
 
 ## Grid-Based Phase-Shift Computation
 
-Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators, most often neurons, their synchronized clusters, or neural masses. Note that the algorithms and procedures described in this section had been formed and tested gradually throughout the research process and are an original work of the author. This should also explain the lack of references.
+Throughout this section, we shall iteratively develop a framework for computation of the *phase-shift* on the anti-phase tongue for 2 weakly coupled oscillators, most often neurons, their synchronized clusters, or neural masses. Note that the algorithms and procedures described in this section had been formed and tested gradually throughout the research process and are the original work of the author. This should also explain the lack of references.
 
 Thus consider the system ([-@eq-general-delayed-coupled-oscillators]) and choose $\omega_1$ or $\omega_2$ as the free parameter^[This choice is without loss of generality in case $\vi K(\cdot, \cdot)$ is symmetric.]. For illustration purposes, we shall use 2 interneuron models, see ([-@eq-coupled-interneurons]), with delayed gap-junctional coupling, see @sec-neuronal-couplings, e.g., $\tau = 0.01$, and treat $\omega_2$ ($C_2$ for ([-@eq-coupled-interneurons])) as the free parameter. Moreover, assume bounds $\omega_- \leq \omega_2 \leq \omega_+$ and corresponding discretization
 $$
@@ -78,9 +78,9 @@ $$
 $$
 be the set of all possible indices in $\meshGrid$.
 
-The most straightforward way to determine for which pairs $(\omega_2, \lmbd) \in \meshGrid$ the coupled system ([-@eq-general-delayed-coupled-oscillators]) features a *stable*^[Note that this method is effectively unable to compute unstable cycle manifolds due to the methodology itself.] anti-phase cycle is to solve the ([-@eq-general-delayed-coupled-oscillators]) forward in time from a fixed initial condition $\vi \phi \in \contStateSpace$ on a fixed time interval $[0, t_{\mathrm{end}}]$. This is a reasonable methodology if assume the system converges to the synchronized cycle and that we chose long-enough transient, included in the interval $[0, t_{\mathrm{end}}]$, such that we are in an acceptably small neighborhood around the limit cycle.
+The most straightforward way to determine for which pairs $(\omega_2, \lmbd) \in \meshGrid$ the coupled system ([-@eq-general-delayed-coupled-oscillators]) features a *stable*^[Note that this method is effectively unable to compute unstable cycle manifolds due to the methodology itself.] anti-phase cycle is to solve the ([-@eq-general-delayed-coupled-oscillators]) forward in time from a fixed initial condition $\vi \phi \in \contStateSpace$ on a fixed time interval $[0, t_{\mathrm{end}}]$. This is a reasonable methodology if assume the system converges to the synchronized cycle and that we chose a long-enough transient, included in the interval $[0, t_{\mathrm{end}}]$, such that we are in an acceptably small neighborhood around the limit cycle.
 
-In case there is no delay in the coupling, i.e. $\tau = 0$, then we can integrate the system forward in time, see @sec-integrating-odes. Similarly, for delayed coupling one can employ the method of steps, which allows for an analogous forward-in-time integration, see @sec-integrating-ddes. Either way, this results in 2 trajectories, both corresponding to evaluations at times $\Seqnc {t^i} {i = 0} N$, namely $\Seqnc {\vi x_1^i} {i = 0} N$ and $\Seqnc {\vi x_2^i} {i = 0} N$, each for one oscillator. Moreover, denote by
+In case there is no delay in the coupling, i.e. $\tau = 0$, then we can integrate the system forward in time, see @sec-integrating-odes. Similarly, for delayed coupling, one can employ the method of steps, which allows for an analogous forward-in-time integration, see @sec-integrating-ddes. Either way, this results in 2 trajectories, both corresponding to evaluations at times $\Seqnc {t^i} {i = 0} N$, namely $\Seqnc {\vi x_1^i} {i = 0} N$ and $\Seqnc {\vi x_2^i} {i = 0} N$, each for one oscillator. Moreover, denote by
 $$
 \Seqnc {\vi \xi^i} {i = 1} N = \Seqnc {\mtr{\vi x_1^i \\ \vi x_2^i}} {i = 0} N
 $$
@@ -91,12 +91,12 @@ Now, we face 2 main challenges:
 1. How to determine the period $T$ of the coupled system ([-@eq-general-delayed-coupled-oscillators])?
 2. Knowing the period $T$, how to calculate the phase-shift $\beta$ between the oscillators?
 
-Let us note all the following numerical experiments and calculations were done in Julia using a custom-made package [`GridWalker.jl`](https://gitlab.com/sceptri-university/gamu/gridwalker.jl).
+Let us note the following numerical experiments and calculations were accomplished in Julia using a custom-made package [`GridWalker.jl`](https://gitlab.com/sceptri-university/gamu/gridwalker.jl).
 
 ### Period Searching {#sec-period-searching}
 
 <!-- TODO: Change @Pribylova2025 from SSRN to the actual publication -->
-To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. Moreover, we assume the periodic signal of this state variable behaves rather nicely, attaining single (local) minimum and maximum on the repeating section of minimal period. However, in practice we distinguish 2 main types of neuronal signals (behaviors). Neuronal spiking, for which our assumptions hold, is a simple type of neuronal oscillation. It is complemented by a more complex bursting behavior, as is present in pyramidal cells, see @Pribylova2025. In such case, an envelope must be constructed, which then allows us to use our methodology on the envelope itself. Nevertheless, by choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
+To calculate the joint period $T$ of ([-@eq-general-delayed-coupled-oscillators]) from $\Seqnc {\vi \xi^i} {i = 0} N$, we propose two distinct methods. The first method relies on the fact that for capacitance-based models of neurons, there are certain notable components, e.g., the membrane potential, which should predominantly determine the overall behavior of the neuronal model. Moreover, we assume the periodic signal of this state variable behaves rather nicely, attaining a single (local) minimum and maximum on the repeating section of the minimal period. However, in practice, we distinguish 2 main types of neuronal signals (behaviors). Neuronal spiking, for which our assumptions hold, is a simple type of neuronal oscillation. It is complemented by a more complex bursting behavior, as is present in pyramidal cells, see @Pribylova2025. In such a case, an envelope must be constructed, which then allows us to use our methodology on the envelope itself. Nevertheless, by choosing the $j$-th element of the state vector corresponding to the coupled model, we get a 1-dimensional time series $\Seqnc {\xi^i_j} {i = 0} N$. One can then compute first differences $\Seqnc {\diff \xi^i_j} {i = 1} N$, where $\diff \xi^i_j \letDef \xi^i_j - \xi^{i - 1}_j$.
 
 Clearly, (local) extrema of the time series $\Seqnc {\xi^i_j} {i = 0} N$ occur when the differences $\Seqnc {\diff \xi^i_j} {i = 1} N$ change sign^[The order determines whether its a local minimum or maximum.]. In other words, we attempt to detect peaks (which should reflect the true period) as indices satisfying
 $$
@@ -109,7 +109,7 @@ $$
 We shall call $\estim T_{\diff}$ the *differences period estimate*. Note that while this method is rather inexpensive from the computational point of view, it depends on the appropriate choice of $j$ and the necessary assumption that the period of $\xi_j$ accurately reflects the period of the joint oscillation. For an example, see @fig-diff-period.
 
 ::: {.callout-tip #tip-monotony-extension}
-##### On the length of monotony of $\xi^i_j$
+##### On the length of the monotony of $\xi^i_j$
 
 Currently, we require the $\xi^i_j$ to be strictly increasing only one step left of a peak and decreasing also for only one step right of the peak. This can be extended to require $\xi^i_j$ to be increasing for $k_+$ steps on the left and decreasing for $k_-$ steps on the right of a peak. Such modification allows us to detect periods of much more complicated signals.
 :::
@@ -122,8 +122,8 @@ Currently, we require the $\xi^i_j$ to be strictly increasing only one step left
 using LaTeXStrings, Statistics
 
 fig = Figure(size=(450, 250))
-ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)", xtickformat=v -> latexstring.(v))
-ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"\Delta y(t)", xtickformat=v -> latexstring.(v))
+ax1 = Axis(fig[1, 1], ylabel=L"y(t)", xtickformat=v -> latexstring.(v), ytickformat=v -> latexstring.(v))
+ax2 = Axis(fig[2, 1], ylabel=L"\Delta y(t)", xtickformat=v -> latexstring.(v), ytickformat=v -> latexstring.(v))
 
 linkxaxes!(ax1, ax2)
 
@@ -160,7 +160,7 @@ ax2.xlabel = LaTeXString("\$\\hat{T}_{\\Delta} \\approx $T̂\$")
 fig
 ```
 
-The second approach one can use is less heuristic, but potentially more computationally intensive. Naturally, the joint period $T$ should minimize the discrepancy between $t$ and $t + T$ states, i.e.,^[We are interested in the *minimal period*, thus we add $\min$ to select the least of all permissible values in ([-@eq-period-minimization-problem]).]
+The second approach one can use is less heuristic but potentially more computationally intensive. Naturally, the joint period $T$ should minimize the discrepancy between $t$ and $t + T$ states, i.e.,^[We are interested in the *minimal period*, thus we add $\min$ to select the least of all permissible values in ([-@eq-period-minimization-problem]).]
 $$
 T = \minOf{\argmin_{T > 0} \int_a^b \norm{\vi \xi(t) - \vi \xi(t + T)} \dd t}, \quad (a,b) \subset \R.
 $$ {#eq-period-minimization-problem}
@@ -171,7 +171,7 @@ $$
 $$ {#eq-discretized-period-minimization}
 where $P = (p_-, p_+)$, with $p_+ > p_- > 0$, is a chosen interval and $i_{\mathrm{end} - T}$ denotes the maximum index $i$ such that $t^i \leq t_{\mathrm{end}} - T$. The discretized problem ([-@eq-discretized-period-minimization]) can now be solved using discussed optimization methods for one-dimensional optimization, see @sec-1d-optimization, under the assumption of *unimodality*!^[Without unimodality, these methods converge to a local minimum near the starting point.]
 
-Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P_i$ and choose the estimate $\estim T_{\min, P_i}$ with the least error. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for short interval $P$, unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied. In addition, @fig-optim-period provides an illustration of the algorithm.
+Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal period. In practice, we often repeat solving ([-@eq-discretized-period-minimization]) for multiple values of $P_i$ and choose the estimate $\estim T_{\min, P_i}$ with the least error. In particular, we found that using $P_i = \brackets{p_-, \frac {p_+}{2^{i-1}}}$ gives satisfactory results. Moreover, for a short interval $P$, the unimodality of the loss function corresponding to ([-@eq-discretized-period-minimization]) is likely to be satisfied. In addition, @fig-optim-period illustrates the algorithm.
 
 ```{julia}
 #| label: fig-optim-period
@@ -180,8 +180,8 @@ Note that $\estim T_{\min, P}$ is *not* guaranteed to approximate the minimal pe
 using Optim, LinearAlgebra
 
 fig = Figure(size=(450, 250))
-ax1 = Axis(fig[1, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"y(t)", xtickformat=v -> latexstring.(v))
-ax2 = Axis(fig[2, 1], yticksvisible=false, yticklabelsvisible=false, ylabel=L"f_{\mathbf{\xi}}(T)", xtickformat=v -> latexstring.(v))
+ax1 = Axis(fig[1, 1], ylabel=L"y(t)", xtickformat=v -> latexstring.(v), ytickformat=v -> latexstring.(v))
+ax2 = Axis(fig[2, 1], ylabel=L"f_{\mathbf{\xi}}(T)", xtickformat=v -> latexstring.(v), ytickformat=v -> latexstring.(round.(Int, v)))
 
 P = (1, 10)
 xlims!(ax2, P)
@@ -218,7 +218,7 @@ fig
 ::: {.callout-tip #tip-optimal-period-modifications}
 ##### Modifications to the optimal period method
 
-In ([-@eq-discretized-period-minimization]), we have used the full state vector for discrepancy calculation, but similarly as with the computation of $\estim T_{\diff}$, one can choose only a sub-vector as well. Another common modification is to calculate the dissimilarity in ([-@eq-discretized-period-minimization]) after a certain transient has passed (such that we presume we have converged to the cycle after the transient), i.e., on interval with indices from $i_{\mathrm{start}}$ to $i_{\mathrm{end} - T}$.
+In ([-@eq-discretized-period-minimization]), we have used the full state vector for discrepancy calculation, but similarly as with the computation of $\estim T_{\diff}$, one can choose only a sub-vector as well. Another common modification is to calculate the dissimilarity in ([-@eq-discretized-period-minimization]) after a certain transient has passed (such that we presume we have converged to the cycle after the transient), i.e., on the interval with indices from $i_{\mathrm{start}}$ to $i_{\mathrm{end} - T}$.
 :::
 
 ### Shift Searching {#sec-shift-searching}
@@ -233,14 +233,14 @@ Note that we shall primarily focus on calculating a shift $\beta$ between period
 $$
 \estim \beta_{d,j} = \argmin_{\beta \in Q} \sum_{i = i_{\mathrm{start}}}^{i_{\mathrm{end} - \beta}} d\brackets{x_{1,j}^i, x_{2,j}^{i + \floor{\beta/\diff t}}}.
 $$ {#eq-1d-discretized-shift-minimization}
-In total, ([-@eq-discretized-shift-minimization]) and ([-@eq-1d-discretized-shift-minimization]) both lead to an one-dimensional optimization problem on a given interval, and as such can be solved using methods proposed in @sec-1d-optimization. In particular, in the case of shift searching, unimodality of the corresponding loss function seems to be satisfied more generally.
+In total, ([-@eq-discretized-shift-minimization]) and ([-@eq-1d-discretized-shift-minimization]) both lead to a one-dimensional optimization problem on a given interval and as such can be solved using methods proposed in @sec-1d-optimization. In particular, in the case of shift searching, the unimodality of the corresponding loss function seems to be satisfied more generally.
 
-For comparison of computed shifts in regards to period estimation based on differences and optimization, see @fig-cold-diff-shift and @fig-cold-diff-shift-delay. There it is apparent the central Arnold tongue has a rather sharp boundary at some places, which is desired from the theoretical point of view, see @Kuznetsov2023 and @Zathurecky2025, as it is known that Arnold tongues are bordered by limit point of cycle curves, see @nte-arnold-tongues. On the other hand, for both low and high values of $\lambda$, our approximation of the tongue is either smoothed out (likely signalling that our choice of the initial condition was suboptimal) or scattered.
+For a comparison of computed shifts in regards to period estimation based on differences and optimization, see @fig-cold-diff-shift and @fig-cold-diff-shift-delay. There it is apparent the central Arnold tongue has a rather sharp boundary at some places, which is desired from the theoretical point of view, see @Kuznetsov2023 and @Zathurecky2025, as it is known that Arnold tongues are bordered by limit point of cycle curves, see @nte-arnold-tongues. On the other hand, for both low and high values of $\lambda$, our approximation of the tongue is either smoothed out (likely signaling that our choice of the initial condition was suboptimal) or scattered.
 
 ::: {.callout-note #nte-arnold-tongues}
 ##### Arnold tongue
 
-Arnold tongues are, in general, regions (in parameter space) of rational^[By *rational synchrony* we mean phase-locked synchronization in the form $p:q$, $p,q \in \N$ indivisible, i.e., one period consists of $p$ revolutions around the first axis and $q$ revolutions around the second. For two weakly coupled oscillators, this translates to a period of the full system being completed after $p$ periods of the first oscillators and $q$ of the second one.] synchrony near a Neimark-Sacker bifurcation. For a continuous-time dynamical system, this, in essence, means that a given cycle switches stability and a torus with the opposite stability emerges around it (i.e., a stable cycle loses stability when it undergoes the Neimark-Sacker bifurcation while a stable torus appears around the now-unstable cycle). The dynamics on torus then provide the two "directions of oscillation", for which we can study its synchrony. Furthermore, two weakly coupled oscillators themselves are governed by dynamics on a torus, such that influence of coupling strength $\lmbd$ mimics the transition normally originating from the Neimark-Sacker bifurcation.
+Arnold tongues are, in general, regions (in parameter space) of rational^[By *rational synchrony* we mean phase-locked synchronization in the form $p:q$, $p,q \in \N$ indivisible, i.e., one period consists of $p$ revolutions around the first axis and $q$ revolutions around the second. For two weakly coupled oscillators, this translates to a period of the full system being completed after $p$ periods of the first oscillators and $q$ of the second one.] synchrony near a Neimark-Sacker bifurcation. For a continuous-time dynamical system, this, in essence, means that a given cycle switches stability and a torus with the opposite stability emerges around it (i.e., a stable cycle loses stability when it undergoes the supercritical Neimark-Sacker bifurcation while a stable torus appears around the now-unstable cycle). The dynamics on the torus then provide the two "directions of oscillation", for which we can study its synchrony. Furthermore, two weakly coupled oscillators themselves are governed by dynamics on a torus, such that the influence of coupling strength $\lmbd$ mimics the transition generically originating from the Neimark-Sacker bifurcation.
 :::
 
 ```{julia}
@@ -297,7 +297,7 @@ jldopen("../data/no_delay_cold_optimal_no_checker_among_halves.jld2", "r") do da
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ without delay. Grid is determined as 75-points discretizations of intervals of interest for both $C_2$ and $\lambda$. At every point the same initial condition $\vi \phi(\cdot) \equiv \vi u_0$ was used. Left figure presents the shift heatmap using *differences* period, whereas the right figure shows *optimal* period-based shift. Trajectories are computed for 1500 ms, periods are computed on the last 20% and shifts on the last 10% of their lengths. Note that optimal period is calculated by halving the upper constraint up-to 4 times. Shift is estimated based on the first state variable, i.e. $V$, in both interneurons.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ without delay. Grid is determined as 75-point discretizations of intervals of interest for both $C_2$ and $\lambda$. At every point the same initial condition $\vi \phi(\cdot) \equiv \vi u_0$ was used. The left figure presents the shift heatmap based on the *differences* period, whereas the right figure shows the *optimal* period-based shift. Trajectories are computed for 1500 ms, periods are computed on the last 20%, and shifts on the last 10% of their lengths. Note that the optimal period is calculated by halving the upper constraint up to 4 times. The shift is estimated based on the first state variable, i.e. $V$, in both interneurons.
 
 :::
 
@@ -348,17 +348,17 @@ jldopen("../data/delay_cold_optimal_no_checker_among_halves.jld2", "r") do data
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with delay $\tau = 0.05$. Note that except for the time integration (performed by method of steps, see @sec-method-of-steps), the same methods were used as in @fig-cold-diff-shift.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with delay $\tau = 0.05$. Note that except for the time integration (performed by the continuous ODE method, see @sec-integrating-ddes), the same methods were used as in @fig-cold-diff-shift.
 
 :::
 
-### Starters, Iterators and Indexers {#sec-starters-iterators-indexers}
+### Starters, Iterators, and Indexers {#sec-starters-iterators-indexers}
 
 #### Starters
 
-So far, we have utilized a rather naive approach of using always the same predetermined starting condition --- we shall refer to this as a *cold* start^[For reference on the terminology, see the [cold start Wikipedia entry](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).]. Nevertheless, we have no guarantee such choice was optimal for any grid point, much less for the entire grid. 
+So far, we have utilized a rather naive approach of always using the same predetermined starting condition --- we shall refer to this as a *cold* start^[For reference on the terminology, see the [cold start Wikipedia entry](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).]. Nevertheless, we have no guarantee such a choice was optimal for any grid point, much less for the entire grid. 
 
-A natural solution to this problem is to re-use trajectories we have already computed for some other combination of parameters. In general, it is going to be beneficial to use choose as an initial condition the endpoint of the trajectory corresponding to parameter values *close* to our current ones. Moreover, we want to consider only those nearby parameter values such that their trajectories lead to anti-phase synchronization. In total, the optimal reference index $\starter(\vi i) \in \indicesOf{\meshGrid}$, from which to read the new initial condition, for the shift computation at $\vi i$ (using $\vi i \in \indicesOf{\meshGrid}$ to denote the combined index in both axis of the grid $\meshGrid$) is given by the following minimization problem,
+A natural solution to this problem is to reuse trajectories we have already computed for some other combination of parameters. In general, it is going to be beneficial to use choose as an initial condition the endpoint of the trajectory corresponding to parameter values *close* to our current ones. Moreover, we want to consider only those nearby parameter values such that their trajectories lead to anti-phase synchronization. In total, the optimal reference index $\starter(\vi i) \in \indicesOf{\meshGrid}$, from which to read the new initial condition, for the shift computation at $\vi i$ (using $\vi i \in \indicesOf{\meshGrid}$ to denote the combined index in both axis of the grid $\meshGrid$) is given by the following minimization problem,
 $$
 \starter_{\indicesOf{\meshGrid}}(\vi i) = \argmin_{\vi j \in \indicesOf{\meshGrid}} \loss(\vi i, \vi j, \beta_{\vi j}),
 $$ {#eq-mesh-warm-start-minimization}
@@ -366,11 +366,11 @@ where we use either the *multiplicative* loss,
 $$
 \loss_{\mathrm{mult}}(\vi i, \vi j, \beta) = \norm{\vi i - \vi j} \cdot \brackets{\absval{\beta - \frac 1 2} + c},
 $$ {#eq-starter-multiplicative-loss}
-where $c > 0$ is an offset to the discrepancy in shift from anti-phase, or the *additive* loss,
+where $c > 0$ is an offset to the discrepancy in the shift from anti-phase, or the *additive* loss,
 $$
 \loss_{\mathrm{add}}(\vi i, \vi j, \beta) = c_1 \norm{\vi i - \vi j} + c_2 \absval{\beta - \frac 1 2},
 $$ {#eq-starter-additive-loss}
-where $c_1, c_2 > 0$ are chosen weights. Note that we will use additive loss ([-@eq-starter-additive-loss]) if not stated otherwise, as it seemed to perform generally better for our needs.
+where $c_1, c_2 > 0$ are chosen weights, see GridWalker.jl [Git repository](https://gitlab.com/sceptri-university/gamu/gridwalker.jl/-/blob/main/src/WalkerParameters.jl?ref_type=heads#L28-29). Note that we will use additive loss ([-@eq-starter-additive-loss]) if not stated otherwise, as it seemed to perform generally better for our needs. Moreover, we deduced from our experimentation that it was better to prioritize minimizing the loss difference as opposed to distance^[As will be evident later, by using an *indexer* we limit possible discrepancy in indices (i.e., the parametric distance). This effectively supercharges the effect of $c_1$ in ([-@eq-starter-additive-loss]), as it is technically included in the construction of the indexer (thus forcing us to prioritize shift discrepancy).].
 
 While this approach is ideal in theory, in practice we run into two main issues. Firstly, during the computation, some of the indices are not yet evaluated, thus we do not know their respective values of shifts $\beta_{\vi i}$. This can be remedied by defining the set of all *evaluated* indices $\IndicesOf{\meshGrid}{E}$ and restricting ([-@eq-mesh-warm-start-minimization]) to it, yielding
 $$
@@ -385,7 +385,7 @@ $$
 $$ {#eq-indexer-def}
 specifying a permissible neighborhood for every point of the grid. 
 
-Arnold tongues have a distinct shape, see @Sevcik2021, @Kuznetsov2023 or @Zathurecky2025, which we can exploit to restrict the search space of a starter. Indeed, if assume the Arnold tongue with the anti-phase synchrony is present approximately in the middle of our grid $\meshGrid$, then elements closer to the center are more likely to live inside the tongue (and therefore be a good initial guess for anti-phase synchronized trajectories for nearby parameter values). Thus, choosing a starter only among evaluated indices on the diagonal from the current index to the center of $\indicesOf{\meshGrid}$ up-to some distance away, as can be seen on the following illustration, should not worsen our initial guess as compared to the full *warm starter*.
+Arnold tongues have a distinct shape, see @Sevcik2021, @Kuznetsov2023, or @Zathurecky2025, which we can exploit to restrict the search space of a starter. Indeed, if assume the Arnold tongue with the anti-phase synchrony is present approximately in the middle of our grid $\meshGrid$, then elements closer to the center are more likely to live inside the tongue (and therefore be a good initial guess for anti-phase synchronized trajectories for nearby parameter values). Thus, choosing a starter only among evaluated indices on the diagonal from the current index to the center of $\indicesOf{\meshGrid}$ up to some distance away, as can be seen in the following illustration, should not worsen our initial guess as compared to the full *warm starter*.
 $$
 \begin{array}{cccccc}
 	& & & & & \text{center of } \indicesOf{\meshGrid} \\
@@ -481,9 +481,9 @@ Heatmaps indicating evaluation order (from black to white) for different kinds o
 
 :::
 
-From the perspective of stability of tongue detection, a more robust strategy is to start the evaluation order from the (presumed) center of the tongue and spirally iterate outwards. This way, an indexed starter can likely initialize from a parametrically-nearby trajectory in anti-phase synchronization, because suitable candidates are evaluated first, see @fig-iterators-b and @fig-iterators-c.
+From the perspective of stability of tongue detection, a more robust strategy is to start the evaluation order from the (presumed) center of the tongue and spirally iterate outwards. This way, an indexed starter can likely initialize from a parametrically nearby trajectory in anti-phase synchronization because suitable candidates are evaluated first, see @fig-iterators-b and @fig-iterators-c.
 
-All these concepts can now be combined together. In @fig-indexed-shift, one can the same heatmaps corresponding to shift between two weakly coupled interneurons as in @fig-cold-diff-shift and @fig-cold-diff-shift-delay. In particular, an indexed starter $\starter_{\indexer}$ was used with diagonal indexer of length $l_{\indexer} = 10$ on 75-by-75 grid $\meshGrid$. An additive loss ([-@eq-starter-additive-loss]) was used for the starter in conjunction with spiral iterator from the true center. The rest of the experiment setup follows @fig-cold-diff-shift.
+All these concepts can now be combined. In @fig-indexed-shift, one can see the same heatmaps corresponding to the shift between two weakly coupled interneurons as in @fig-cold-diff-shift and @fig-cold-diff-shift-delay. In particular, an indexed starter $\starter_{\indexer}$ was used with diagonal indexer of length $l_{\indexer} = 10$ on a 75-by-75 grid $\meshGrid$. An additive loss ([-@eq-starter-additive-loss]) was used for the starter in conjunction with a spiral iterator from the true center. The rest of the experiment setup follows @fig-cold-diff-shift.
 
 
 ::: {#fig-indexed-shift layout-ncol="2"}
@@ -533,25 +533,25 @@ jldopen("../data/delay_spiral_indexed_optimal_no_checker_among_halves.jld2", "r"
 end
 ```
 
-Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay. The heatmaps are computed by utilizing introduced techniques of starters, indexers and iterators. The rest of the procedure follows @fig-cold-diff-shift and @fig-cold-diff-shift-delay.
+Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models with respect to $C_2$ with and without delay. The heatmaps are computed by utilizing introduced techniques of starters, indexers, and iterators. The rest of the procedure follows @fig-cold-diff-shift and @fig-cold-diff-shift-delay.
 :::
 
 Notice that in @fig-indexed-shift-a, the boundary of the tongue for higher coupling strengths is sharper than in @fig-cold-diff-shift. Also, sub-tongues present in all previous results now appear thinner and more distorted.
 
 ### Periodicity Checkers
 
-In Figures [-@fig-cold-diff-shift] to [-@fig-indexed-shift], we have always computed a trajectory for each parameter combination belonging to a point on the grid $\meshGrid$ and then attempted to find corresponding period and shift. This relied on the assumption that the (joint) trajectory is always periodic, and thus all necessary quantities are well defined and can be computed. In case the assumption does not hold, we will still get an output, but potentially a nonsensical one.
+In Figures [-@fig-cold-diff-shift] to [-@fig-indexed-shift], we have always computed a trajectory for each parameter combination belonging to a point on the grid $\meshGrid$ and then attempted to find the corresponding period and shift. This relied on the assumption that the (joint) trajectory is always periodic, and thus all necessary quantities are well-defined and can be computed. In case the assumption does not hold, we will still get an output, but potentially a nonsensical one.
 
-In other words, one should check for periodicity of the trajectory for each parameter combination. If periodicity is not confirmed, we can skip the rest of the algorithm, saving valuable compute time.
+In other words, one should check the periodicity of the trajectory for each parameter combination. If periodicity is not confirmed, we can skip the rest of the algorithm, saving valuable computing time.
 
 There are several ways one might go about determining periodicity. One possibility is to consider a band around a reference value with respect to $\vi x_{1,i}$, the $i$-th coordinate of the state corresponding to the first oscillator --- local maxima work especially well for this approach. Then we can select indices of all data points lying inside this band and study the distribution of $i$-th coordinate of trajectory points for the 2nd oscillator, i.e., $\vi x_{2,i}$, at these indices. However, this method is very sensitive to the width of the band and the reference value, rendering it almost unusable in practice.
 
-An alternative approach is to detect peaks of $\vi x_{1,i}$, the $i$-th coordinate for trajectory of the 1st oscillator. This again prescribes an index set $i$, which we can apply to $\vi x^I_{2,i}$. Then, we can check whether $\vi x^I_{2,i}$ follow chosen criteria, e.g., stay within a predefined range. If this check is successful, we assume the trajectory as a whole is periodic and execute the rest of the procedure, see @fig-checked-shift.
+An alternative approach is to detect peaks of $\vi x_{1,i}$, the $i$-th coordinate of the trajectory of the 1st oscillator. This again prescribes an index set $I$, which we can apply to $\vi x^I_{2,i}$. Then, we can check whether $\vi x^I_{2,i}$ follow chosen criteria, e.g., stay within a predefined range. If this check is successful, we assume the trajectory as a whole is periodic and execute the rest of the procedure, see @fig-checked-shift.
 
 ::: {.callout-note #nte-peak-periodicity-checker}
 ##### Peak-based periodicity checker
 
-A careful reader might notice the peak-based periodicity checker closely resembles *differences* period searcher, see @sec-period-searching. Indeed, it should be possible to merge these two concepts into a single algorithm. Nevertheless, we decided against it due to code-readability reasons. Moreover, the computational complexity of the peak-based periodicity checker almost negligible when considering the entire run of the algorithm over the whole grid, even more so when taking into account the time saved on shift searching for skipped indices $\vi i \in \indicesOf{\meshGrid}$.
+A careful reader might notice the peak-based periodicity checker closely resembles *differences* period searcher, see @sec-period-searching. Indeed, it should be possible to merge these two concepts into a single algorithm. Nevertheless, we decided against it due to code-readability reasons. Moreover, the computational complexity of the peak-based periodicity checker is almost negligible when considering the entire run of the algorithm over the whole grid, even more so when taking into account the time saved on shift searching for skipped indices $\vi i \in \indicesOf{\meshGrid}$.
 :::
 
 ::: {#fig-checked-shift layout-ncol="2"}
@@ -606,21 +606,21 @@ Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models 
 
 #### Sub-tongues
 
-Throughout this chapter, we have discussed and implemented various measures to ensure optimal estimation of the true shift between the oscillators. However, none of our modifications have removed the sub-tongues, which can be seen in every shift heatmap. By examining the trajectories at their corresponding points, one can verify that both periodicity and computed shift. Their emergence is likely by our choice of the methodology. In particular, they are probably caused by either insufficiently long transient (i.e., the convergence to the attractor is very slow and the oscillators remain near the initial anti-phase), the discretization of the parameter-space to the grid, or even possibly the choice of norms/distances for period and shift searching. Either way, these phenomena could produce a similar fractal structure.
+Throughout this chapter, we have discussed and implemented various measures to ensure optimal estimation of the true shift between the oscillators. However, none of our modifications have removed the sub-tongues, which can be seen in every shift heatmap. By examining the trajectories at their corresponding points, one can verify both periodicity and computed shift. Their emergence is likely due to our choice of the methodology. In particular, they are probably caused by either insufficiently long transient (i.e., the convergence to the attractor is very slow and the oscillators remain near the initial anti-phase), the discretization of the parameter-space to the grid, or even possibly the choice of norms/distances for period and shift searching. Either way, these phenomena could produce a similar fractal structure.
 
 However it may be, this is *the* problem of the grid simulations, but also in a way their strength. Indeed, from what we have computed, we cannot guarantee these sub-tongue regions of anti-phase synchronization actually exist and are not just artifacts from our calculation. Nevertheless, the grid simulation *along with a suitable choice of iterator* might tell us about the behavior of the studied system in nature, because it reflects a continuous change of parameters, which might not always have enough time to converge to the real attractor. Note that the *spiral iterator* is an especially good choice, as it radially propagates the parametric change, avoiding sudden jumps and discontinuities.
 
 ### Multi-threading and Grid Computing
 
-The Figures [-@fig-cold-diff-shift] - [-@fig-checked-shift] presented so far have all been computed on a Thinkpad T490s with Intel Core i7-8565U CPU and 16 GiB of RAM. We have utilized at most 6 threads and the computations took at most approximately 3 minutes. However, if we were to increase the grid density, the computation time increases quadratically. Indeed, the calculation of 1200-by-1200 grid would take approximately 768 minutes (considering 16 GiB of RAM would be enough, and thus swapping would not be needed, which could cause a significant slow-down).
+The Figures [-@fig-cold-diff-shift] - [-@fig-checked-shift] presented so far have all been computed on a Thinkpad T490s with Intel Core i7-8565U CPU and 16 GiB of RAM. We have utilized at most 6 threads and the computations took at most approximately 3 minutes. However, if we were to increase the grid density, the computation time would increase quadratically. Indeed, the calculation of a 1200-by-1200 grid would take at least approximately 768 minutes (considering 16 GiB of RAM would be enough, and thus swapping would not be needed, which could cause a significant slow-down).
 
-Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{l(k+1) - 1}} {k = 0} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
+Note that multi-threading is not trivial to implement for our algorithm. A wrong execution order might entirely defeat the purpose of the chosen iterator. Therefore, we must force each thread to evaluate correct indices, e.g., $l$-th thread might be restricted to $\Seqnc {\vi i_{l(k+1) - 1}} {k = 0} {N_l}$ (for appropriate $N_l < N_{\meshGrid}$).
 
 In general, scientific computing is often too demanding for a personal computer. One possible solution is to offload the computation to grid infrastructure, namely [MetaCentrum](https://metavo.metacentrum.cz/en/). 
 
 > MetaCentrum is the leading national grid computing infrastructure in the Czech Republic, providing researchers, scientists, and students with advanced computing resources to tackle complex computational challenges.
 
-For illustration purposes, we ran the script generating @fig-checked-shift for 1200-by-1200 grid instead of 75-by-75, see @fig-metacentrum-shift. As we have said, on a regular consumer-grade laptop, such computation would take at the *very least* 750 minutes simply extrapolating from the 75-by-75 grid computation. On MetaCentrum, we reserved 20 CPU cores, 36 GiB of RAM and 150 GiB scratch storage with maximal runtime of 16 hours. Using this setup, the computation took 82 minutes for the experiment without delays and 443 minutes with delay.
+For illustration purposes, we ran the script generating @fig-checked-shift for a 1200-by-1200 grid instead of 75-by-75, see @fig-metacentrum-shift. As we have said, on a regular consumer-grade laptop, such computation would take at the *very least* 750 minutes simply extrapolating from the 75-by-75 grid computation. On MetaCentrum, we reserved 20 CPU cores, 36 GiB of RAM, and 150 GiB scratch storage with a maximal runtime of 16 hours. Using this setup, the computation took 82 minutes for the experiment without delays and 443 minutes with delay.
 
 ::: {#fig-metacentrum-shift layout-ncol="2"}
 ```{julia}
@@ -679,5 +679,5 @@ Heatmap of shifts $\beta$ between two $\lmbd$-weakly coupled interneuron models 
 ::: {.callout-caution #cau-stochastic-computation}
 ##### Stochastic simulations
 
-So far, we have only used deterministic simulations for every computation of shifts heatmap. In theory, one could use the Euler-Maruyama method, see @alg-euler-maruyama-method, to generate a stochastic realization of the heatmap. Then, using a sort of Monte-Carlo approach, we could repeat the stochastic grid generation to obtain the distribution of shift for each point of the discretized grid. However, such modification would very drastically increase the computational time simply due to the repeated computations, but also because of the less "efficient" Euler-Maruyama solver (as compared to Runge-Kutta methods or similar).
+So far, we have only used deterministic simulations for every computation of the shifts heatmap. In theory, one could use the Euler-Maruyama method, see @alg-euler-maruyama-method, to generate a stochastic realization of the heatmap. Then, using a sort of Monte Carlo approach, we could repeat the stochastic grid generation to obtain the distribution of shift for each point of the discretized grid. However, such modification would very drastically increase the computational time simply due to the repeated computations, but also because of the less "efficient" Euler-Maruyama solver (as compared to Runge-Kutta methods or similar).
 :::

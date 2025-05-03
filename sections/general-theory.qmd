@@ -389,7 +389,7 @@ Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda
 
 By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e., the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
 
-A fixed point is classified as a *sink*, when both eigenvalues are real and stable. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex. Should one eigenvalue be stable and the other unstable, the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
+A fixed point is classified as a *sink*, when both eigenvalues are real and stable, i.e., real with modulus below 1. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex (complex with modulus less than 1). Should one eigenvalue be stable (modulus below 1) and the other unstable (modulus greater than 1), the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable (modulus above 1) and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
 
 ```{julia}
 #| fig-cap: "Orbits near different equilibria of a linear discrete-time dynamical system (time flows from blue to red)."
@@ -475,7 +475,7 @@ where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a perio
 
 ![Poincaré map corresponding to the system ([-@eq-poincare-map-system]), the cycle $L_0$ and its point $\vi x_0$.](../diagrams/poincare_maps.drawio.svg){#fig-poincare-map .final}
 
-The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of "codimension" one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to the through-going trajectories, thus the trajectories truly intersect the cross-section $\crossSection$.
+The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of codimension one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to a through-going trajectory, thus the trajectory truly intersects the cross-section $\crossSection$.
 
 Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depend smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
 $$
@@ -765,7 +765,7 @@ $$
 :::
 
 :::{#thm-discontinuities-before-vanishing}
-Suppose $s$ is a vanishing delay point of ([-@eq-dde-sol-continuity-problem]) with $\dvi x(t) = \vi f(t, \vi x(t), \vi x(\alpha(t)))$ and $\alpha$ is continuous. Then, there are infinitely many discontinuity points in any left neighborhood of $s$.
+Suppose $s$ is a vanishing delay point of ([-@eq-dde-sol-continuity-problem]) with $\dvi x(t) = \vi f(t, \vi x(t), \vi x(\alpha(t)))$ and $\alpha$ is continuous. Moreover assume ([-@eq-history-nonsmooth-link]) holds, i.e., the history $\vi \phi$ does not link smoothly to the actual solution $\vi x$. Then, there are infinitely many discontinuity points in any left neighborhood of $s$.
 :::
 
 :::{.proof}
@@ -774,14 +774,14 @@ See @Bellen2003, page 24.
 
 Should $\vi f$, $\vi \phi$ and $\alpha$ be also differentiable, then $\ddot{\vi x}(t)$ exists for any $t$ except the solutions $s_{1, i} \in (t_0, t_f)$ of
 $$
-\alpha(s_{1,i}) = t_0 \quad \& \quad \dot{\alpha}(s_{1,i}) \neq 0,
+\alpha(s_{1,i}) = t_0 \quad \& \quad \alpha'(s_{1,i}) \neq 0,
 $$ {#eq-first-level-primary-discontinuities}
 i.e., the simple roots of $\alpha(s) - t_0 = 0$. We call $s_{1,i}$ the *first level primary discontinuities* (of $\vi x(\cdot)$). Indeed, for any smooth function $\vi f(t, \vi x, \vi \xi)$ we can formally write (see ([-@eq-dde-sol-continuity-problem]) and ([-@eq-general-deviated-argument]))
 $$
 \begin{aligned}
 	\ddot{\vi x}(t)^{\pm} ={}& \jacobi_t \vi f(t, \vi x(t), \vi x(\alpha(t))) \\
 	&+ \jacobi_{\vi x} \vi f(t, \vi x(t), \vi x(\alpha(t))) \dvi x(t) \\
-	&+ \jacobi_{\vi \xi} \vi f(t, \vi x(t), \vi x(\alpha(t))) \dvi x(\alpha(t))^{\pm} \dot{\alpha}(t),
+	&+ \jacobi_{\vi \xi} \vi f(t, \vi x(t), \vi x(\alpha(t))) \dvi x(\alpha(t))^{\pm} \alpha'(t),
 \end{aligned}
 $$ {#eq-1-level-primary-discontinuity-dde-a}
 therefore by ([-@eq-first-level-primary-discontinuities])
@@ -789,7 +789,7 @@ $$
 \begin{aligned}
 	\ddot{\vi x}(s_{1,i})^{+} ={}& \jacobi_t \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \\
 	&+ \jacobi_{\vi x} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(s_{1,i}) \\
-	&+ \jacobi_{\vi \xi} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(t_0)^{+} \dot{\alpha}(s_{1,i})
+	&+ \jacobi_{\vi \xi} \vi f(s_{1,i}, \vi x(s_{1,i}), \vi x(t_0)) \dvi x(t_0)^{+} \alpha'(s_{1,i})
 \end{aligned}
 $$ {#eq-1-level-primary-discontinuity-dde-b}
 and
@@ -801,7 +801,7 @@ $$
 \end{aligned}
 $$ {#eq-1-level-primary-discontinuity-dde-c}
 
-By comparing ([-@eq-1-level-primary-discontinuity-dde-b]) and ([-@eq-1-level-primary-discontinuity-dde-c]) using ([-@eq-history-nonsmooth-link]), we show that $\ddot{\vi x}(s_{1, i})^+ \neq \ddot{\vi x}{s_{1,2}}^-$, i.e., the second derivative of $\vi x(\cdot)$ has a jump discontinuity at $s_{1,i}$ as we claimed. Furthermore, by differentiating ([-@eq-1-level-primary-discontinuity-dde-a]) we obtain that 1-level primary discontinuities propagate to *2-level primary discontinuities* in $\dddot{\vi x}(\cdot)$ at any point $s_{2,j} > s_{1, i}$, such that $s_{2,j}$ is a simple root of $\alpha(s) - s_{1,i} = 0$ for some $i$.
+By comparing ([-@eq-1-level-primary-discontinuity-dde-b]) and ([-@eq-1-level-primary-discontinuity-dde-c]) using ([-@eq-history-nonsmooth-link]), we show that $\ddot{\vi x}(s_{1, i})^+ \neq \ddot{\vi x}(s_{1,2})^-$, i.e., the second derivative of $\vi x(\cdot)$ has a jump discontinuity at $s_{1,i}$ as we claimed. Furthermore, by differentiating ([-@eq-1-level-primary-discontinuity-dde-a]) we obtain that 1-level primary discontinuities propagate to *2-level primary discontinuities* in $\dddot{\vi x}(\cdot)$ at any point $s_{2,j} > s_{1, i}$, such that $s_{2,j}$ is a simple root of $\alpha(s) - s_{1,i} = 0$ for some $i$.
 
 In other words, if $\vi f$ is smooth and $\vi \phi$ is differentiable for ([-@eq-dde-sol-continuity-problem]), then $t_0 + r$ is the only 1-level primary discontinuity, $t_0 + 2r$ is the 2-level primary discontinuity, etc. Therefore, the solution $\vi x(t)$ of ([-@eq-dde-sol-continuity-problem]) is progressively smoother as the primary discontinuity level increases, i.e., as we go forward in time. This phenomenon is often called the *smoothing of the solution* of a DDE.
 
@@ -1163,7 +1163,7 @@ For a given discretization $t_0 < t_1 < \dots < t_n = T$ of the time interval $[
 $$
 \rY_{n+1} = \rY_n + a(t_n, \rY_n) (t_{n+1} - t_n) + b(t_n, \rY_n)(\rW(t_{n+1}) - \rW(t_n))
 $$ {#eq-em-iteration-long}
-for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall using equidistant discretization, i.e., $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
+for $n = 0, 1, \dots, N-1$ with initial value $\rY_0 = \rX_0$. For conciseness, we shall denote $\diff t_n = t_{n+1} - t_n$ and call $\delta = \max_n \diff t_n$ the *maximum time step*. Most often, we shall use equidistant discretization, i.e., $t_n = t_0 + n \delta$, and in such case we will use $\diff t = \delta \equiv \diff t_n = (T - t_0) / N$. Similarly, let $\diff \rW_n \letDef \rW(t_{n+1}) - \rW(t_n)$ be the random independent increments of the Wiener process, see @def-wiener-process, corresponding to the discretization. From the definition immediately follows that
 $$
 \diff \rW_n \sim \normalD{0, \diff t_n} \quad \& \quad \diff \rW \sim \normalD{0, \diff t}.
 $$
@@ -1171,7 +1171,7 @@ Thus, for equidistant discretization, ([-@eq-em-iteration-long]) becomes
 $$
 \rY_{n+1} = \rY_n + a(t_n, \rY_n) \diff t + b(t_n, \rY_n) \diff \rW,
 $$ {#eq-em-iteration}
-and as such $\rY$ can be interpreted as a Markov chain. This can be easily extended to a vector-valued SDE,
+and as such $\set{\rY_n}_n$ can be interpreted as a Markov chain. This can be easily extended to a vector-valued SDE,
 $$
 \dd \vr X(t) = \vi a(t, \vr X(t)) \dd t + \vi B(t, \vr X(t)) \dd \vr W(t), \; \vr X(t_0) = \vr X_0,
 $$ {#eq-euler-maruyama-vec-problem}
@@ -1438,6 +1438,7 @@ Certain cells, among which are neurons, posses the ability to control the permea
 The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that neurons send signal if and only it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
 :::
 
+<!-- TODO: Fix per video -->
 During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by combination of Coulomb's law and diffusion, enter the cell and positively charge it causing *depolarization*, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential,called the *repolarization*). This, in turn, *hyperpolarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced back by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
 
 Although the *action potential* is fundamentally a local behavior of the neuronal cell membrane, it triggers a chain reaction around the initial point of excitation, which causes neighboring parts of the membrane to undergo the same process. 
