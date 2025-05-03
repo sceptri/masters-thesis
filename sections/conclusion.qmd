@@ -8,7 +8,7 @@
 
 # Conclusions {#sec-conclusion .unnumbered}
 
-Phase-locked synchronization is of utmost importance for neuroscience. Specifically anti-phase synchronization describes the optimal phase shift with respect to the sum frequency of two weakly coupled oscillators, see @Zathurecky2025. However, the problem of determining suitable parameter values, which would results in synchronization, and the phase shift thereof is a rather complicated task.
+Phase-locked synchronization is of utmost importance for neuroscience. Specifically, anti-phase synchronization refers to the phase relationship between two weakly coupled oscillators that maximizes the frequency of their combined signal. However, the problem of determining suitable parameter values, which would result in synchronization, and the phase shift thereof is a rather complicated task.
 
 After building up the necessary theoretical background in the first chapter, we have delved into phase-shift detection using a grid simulation approach. Iteratively, we built and improved the methodology for the problem at hand, introducing various concepts along the way. Moreover, at each step we applied the algorithm to a system of two weakly coupled interneuron models. Finally, the computation was executed on the MetaCentrum grid infrastructure.
 

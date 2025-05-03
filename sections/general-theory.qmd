@@ -1438,13 +1438,13 @@ Certain cells, among which are neurons, posses the ability to control the permea
 The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that neurons send signal if and only it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
 :::
 
-During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by combination of Coulomb's law and diffusion, enter the cell and positively charge it, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential). This, in turn, *hyper-polarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced back by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
+During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by combination of Coulomb's law and diffusion, enter the cell and positively charge it causing *depolarization*, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential,called the *repolarization*). This, in turn, *hyperpolarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced back by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
 
 Although the *action potential* is fundamentally a local behavior of the neuronal cell membrane, it triggers a chain reaction around the initial point of excitation, which causes neighboring parts of the membrane to undergo the same process. 
 
 ### Conductance-based Models {#sec-conductance-based-models}
 
-As can be seen from the previous subsection, a key quantity for a mathematical model of a single isolated neuron is likely to be the *membrane potential*, ideally effected by variables describing permeability of various ion channels. Indeed, conductance-based models, see @Skinner2006, are established on an equivalent circuit representation of a cell membrane, introduced by @Hodgkin1952. Here, ion channels of an excitable cell are modeled as conductances and its lipid bilayer by a capacitor. In its simplest form, a conductance-based model represents a neuron by a single compartment with homogenous potential, disregarding ion movements between subcellular compartments, and captures only ion movements between the inside and outside of the cell.
+As can be seen from the previous subsection, a key quantity for a mathematical model of a single isolated neuron is likely to be the *membrane potential*, ideally effected by variables describing permeability of various ion channels. Indeed, conductance-based models, see @Skinner2006, are established on an equivalent circuit representation of a cell membrane, introduced by Hodgkin and Huxley @Hodgkin1952. Here, ion channels of an excitable cell are modeled as conductances and its lipid bilayer by a capacitor. In its simplest form, a conductance-based model represents a neuron by a single compartment with homogenous potential, disregarding ion movements between subcellular compartments, and captures only ion movements between the inside and outside of the cell.
 
 The original model by Hodgkin and Huxley @Hodgkin1952, constructed based on measurements of the giant axon of a squid, reads as
 $$
@@ -1466,7 +1466,7 @@ $$
 $$ {#eq-morris-lecar}
 where $w$ is the *"recovery variable"* for the $\ce{K^+}$ channel prescribing the probability of the corresponding ion channel being open. Moreover, the open-state probability functions $m\inSS, w\inSS$ are derived from assumptions about the *steady state* and its distribution of open and closed ion channels. Finally, $T_w$ is used to set a correct timescale for $w$. 
 
-The last model we shall consider is the *interneuron* model proposed by White et al., see @White1998. It was used to describe synchronization of oscillations and the loss thereof in a network of inhibitory neurons. Nonetheless, it allows us to fast-spiking neuron cells, which can be found, for instance, in the CA1 hippocampal subfield. The governing equations read as, see @Sevcik2025,
+The last model we shall consider is the *interneuron* model proposed by White et al., see @White1998. It was used to describe synchronization of oscillations and the loss thereof in a network of inhibitory neurons. Nonetheless, it allows us to fast-spiking neuron cells. The governing equations read as, see @Sevcik2025,
 $$
 \begin{aligned}
 	C \dot V &= I_{\text{ext}} - \overbrace{g_L (V - V_L)}^{I_L} - \overbrace{g_{Na} m^3 h (V - V_{Na})}^{I_{Na}} - \overbrace{g_K n^4 (V - V_K)}^{I_K}, \\
@@ -1474,7 +1474,7 @@ $$
 	\dot n &= \frac {n\inSS(V) - n}{T_n(V)},
 \end{aligned}
 $$ {#eq-interneuron-model}
-where $C$ again indicates the capacitance of the neuronal membrane, $I_{\text{ext}}$ is the external stimulus and $I_L, I_{Na}, I_K$ incorporate the relationship between the membrane voltage $V$ (typically in $mV$) and currents through respective channels. Analogously, $g_i$ and $V_i$ act as the maximum conductance and reverse potential, respectively, for an ion channel $i$. Researches noticed that the recovery variable $m$ in ([-@eq-hodgkin-huxley]) almost immediately converges to its corresponding steady state, thus using the *slow-fast* dimensionality reduction method, they replaced it with its asymptotic value,
+where $C$ again indicates the capacitance of the neuronal membrane, $I_{\text{ext}}$ is the external stimulus and $I_L, I_{Na}, I_K$ incorporate the relationship between the membrane voltage $V$ (typically in $mV$) and currents through respective channels. Analogously, $g_i$ and $V_i$ act as the maximum conductance and reverse potential, respectively, for an ion channel $i$. Researches noticed that the recovery variable $m$ in ([-@eq-hodgkin-huxley]) almost immediately converges to its corresponding steady state, thus using the *slow-fast* dimensionality reduction method, they replaced it with its asymptotic value (so-called *quasi-equilibrium*)^[An attentive reader may notice that a deviation from the quasi-equilibrium is often used for modelling of recovery variables, see, for instance, ([-@eq-morris-lecar]) or ([-@eq-interneuron-model]).],
 $$
 m = m\inSS(V) = \frac 1 {1 + \Exp{-0.08(V + 26)}}.
 $$
@@ -1496,8 +1496,6 @@ $$ {#eq-interneuron-parameters}
 ### Couplings {#sec-neuronal-couplings}
 
 So far, we have only studied single neurons, but in nature a far more common occurrence is a (large) coupled network of neurons. However, for simplicity, we shall devote our attention only to a case of 2 weakly coupled neurons. For more information, see @Ermentrout2010.
-
-The type of coupling and its properties become crucial for the discussion on the communication between individual neurons. In particular, we are trying to model a situation in which the action potential of given neuron (called the *presynaptic* neuron) travels across its axon where it connects a dendrite of another neuron (the *postsynaptic* neuron). The point where one neuron connects to another is called a *synapse*.
 
 In general, couplings can be either chemical or electrical. In the case of electrical coupling, there is a direct connection from one neuron to another, facilitated via a channel or a gap junction. Although more common is the (slower) chemical synapse (also called the *synaptical coupling*), per @White1998 and @Zathurecky2025, we will consider solely the electrical coupling (our goal is to study high frequency oscillations, which would be inhibited by the use of slow coupling).
 
