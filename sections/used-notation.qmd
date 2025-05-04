@@ -20,10 +20,10 @@ For easier orientation in the text, we include a basic list of used notation thr
 |$f, \vi f$ | scalar-valued, vector-valued function |
 |$f(x)'$ | first derivative of a scalar-valued function $f$ with respect to scalar variable $x$ |
 |$\dot{x}(t), \dvi x(t)$ | derivative of a scalar, vector variable (dependent on time) with respect to time $t$|
-|$f^{(m)}(\cdot), \vi f^{(m)}(\cdot)$ | $m$-th derivative of a scalar-valued and vector-valued function, respectively |
+|$f^{(m)}(\cdot), \vi f^{(m)}(\cdot)$ | $m$-th derivatives of a scalar-valued and vector-valued function, respectively |
 |$\jacobi f, \jacobi \vi f, \jacobi_{\vi y} \vi f(\vi x, \vi y)$ | gradient of $f$, Jacobian matrix of $\vi f$, Jacobian matrix of $\vi f$ with respect to the 2nd vector argument $\vi y$ |
 |$\Jacobi$ | Jacobian matrix of a corresponding function $\vi f$ |
-|$\reOf{x}, \imOf{x}$ | real and imaginary part of complex variable $x$, respectively |
+|$\reOf{x}, \imOf{x}$ | real and imaginary parts of complex variable $x$, respectively |
 |$\oneToN{n}$ | $\set{i \in \N | i \leq n} = \set{1,2,\dots,n-1, n}$ |
 |$\stateSpace, \contStateSpace$ | state space of a dynamical system, often $\R^n$, state space of a semidynamical system, often $\contf{[-\tau, 0], \stateSpace}{}$ |
 |$\timeSet$ | algebraic structure capturing time for (semi)dynamical system, often $(\R, +)$ |

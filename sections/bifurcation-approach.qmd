@@ -43,9 +43,9 @@ CairoMakie.activate!()
 
 As we have mentioned several times before, the fundamental goal of this thesis is to study the computational aspects of continuation/detection of stable and unstable manifolds of periodic orbits (and what challenges come with it). As such, we shall properly discuss what a continuation is and how we compute it. We begin with a theoretical treatment of bifurcation theory, focused solely on cycle continuation and stability identification, followed by original results concerning coupled models of neurons. The theoretical introduction is mainly based on @Kuznetsov2023, @Guo2013, and @Smith2010, but many more related articles are cited throughout the discussion.
 
-> We should also disclose that while this chapter is named 'Bifurcation Theory Approach', we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
+> We should also disclose that while this chapter is named "Bifurcation Theory Approach", we will spend relatively little time discussing actual bifurcations. Our main focus lies in the continuation of (un)stable cycles.
 
-Although we mostly use existing implementations (MATCONT, see @Dhooge2003 and @Dhooge2008, for continuation in ODEs and DDE-BIFTOOL, see @Sieber2014, in DDEs), in this chapter we also provide a rather thorough theoretical and numerical overview of the underlying methods and algorithms. Moreover, honoring the saying "do not reinvent the wheel", we can base our conclusions on peer-reviewed and community-tested tools, further strengthening our claims. Lastly, a novel technique along with its implementation for continuation of shift between two oscillators is provided (through a referenced co-authored article).
+Although we mostly use existing implementations (MATCONT, see @Dhooge2003 and @Dhooge2008, for continuation in ODEs and DDE-BIFTOOL, see @Sieber2014, in DDEs), in this chapter we also provide a rather thorough theoretical and numerical overview of the underlying methods and algorithms. Moreover, honoring the saying "do not reinvent the wheel", we can base our conclusions on peer-reviewed and community-tested tools, further strengthening our claims. Lastly, a novel technique along with its implementation for the continuation of shift between two oscillators is provided (through a referenced co-authored article).
 
 ## Theory of Localizations {#sec-theory-of-localizations}
 
@@ -55,7 +55,7 @@ Although the primary subjects of our study are periodic orbits, we will first de
 
 #### Equilibrium Localization
 
-To start relatively simple, consider a continuous-time dynamical system induced by an autonomous ODE of form ([-@eq-autonomous-ode-system]), i.e.,
+To start relatively simply, consider a continuous-time dynamical system induced by an autonomous ODE of the form ([-@eq-autonomous-ode-system]), i.e.,
 $$
 \dvi x = \vi f(\vi x), \; \vi x \in \R^n.
 $$
@@ -71,23 +71,23 @@ $$
 $$
 by @def-invariant-set-stable. Similarly, if $\vi x^*$ is *totally unstable* (i.e., *repelling* from all directions), we can simply reverse time (as we are in the *ODE* case) and repeat the procedure^[Note that this behavior is *local* and global properties are often more complicated, which is even more prevalent in higher dimensions.].
 
-Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{i}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use the Newton's method, see @sec-newton-method, or one of its modifications.
+Nonetheless, in general, this approach will not work, as equilibria are rarely stable. The standard procedure is to start from a point in a small neighborhood around the equilibrium (determined either analytically or via numerical integration) and construct a sequence of point $\Seqnc {\vi x^{i}} {i = 0} \infty$, which converges to $\vi x^*$ under general conditions. For this purpose, we can use Newton's method, see @sec-newton-method, or one of its modifications.
 
-Suppose we have found $\vi x^*$ with desired accuracy. Our next task is then to determine its stability, i.e., how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
+Suppose we have found $\vi x^*$ with the desired accuracy. Our next task is then to determine its stability, i.e., how the phase portrait behaves in its vicinity. By @thm-lyapunov-stability-theorem, @thm-grobman-hartman-cont, and the following discussion, we know that eigenvalues of the Jacobian matrix $\Jacobi^*$ determine the stability of $\vi x^*$. In other words, we need to compute the roots of the *characteristic polynomial*
 $$
 p(\lmbd) = \det (\Jacobi^* - \lmbd \ident).
 $$
-Note that there are other methods of computing stability, which in particular do not require eigenvalues, but only computation of certain determinants of $\Jacobi^*$. We refer the interested reader to @Kuznetsov2023, page 470.
+Note that there are other methods of computing stability, which in particular do not require eigenvalues, but only computation of certain determinants of $\Jacobi^*$. We refer an interested reader to @Kuznetsov2023, page 470.
 
 #### Periodic Orbit Localization {#sec-ode-periodic-orbit-localization}
 
-As we have seen, localization of an equilibrium from sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles the situation is more complicated. For clarity, @Kuznetsov2016 was heavily used as a source material for this section.
+As we have seen, localization of an equilibrium from a sufficiently close initial guess was rather simple both theoretically and computationally. Unfortunately, for limit cycles, the situation is more complicated. For clarity, @Kuznetsov2016 was heavily used as a source material for this section.
 
 Assume again we have a dynamical system prescribed by ([-@eq-autonomous-ode-system]), 
 $$
 \dvi x = \vi f(\vi x), \; \vi x \in \R^n,
 $$
-such that is has an isolated periodic orbit $L_0$. Let $\vi x^0(t + T_0) = \vi x^0(t)$ be the corresponding solution with minimal period $T_0 > 0$. Further assume that the cycle $L_0$ has corresponding multipliers, see @sec-poincare-map and @lem-poincaré-map, 
+such that it has an isolated periodic orbit $L_0$. Let $\vi x^0(t + T_0) = \vi x^0(t)$ be the corresponding solution with minimal period $T_0 > 0$. Further assume that the cycle $L_0$ has corresponding multipliers, see @sec-poincare-map and @lem-poincaré-map, 
 $$
 \mu_1, \dots, \mu_n \in \C,
 $$
@@ -98,17 +98,17 @@ $$
 	\vi M(0) &= \ident_n.
 }
 $$ {#eq-ode-monodromy-system}
-Recall there is always a trivial multiplier $\mu_1 = 1$. Also, if $\absval{\mu_i} < 1$ for all $i \in \oneToN{n}$, then the cycle is stable. In contrast, if there exists $i \in \oneToN{n}$ such that $\absval{\mu_i} > 1$, the cycle is unstable (and if all multipliers have modulus greater than one, the cycle is called *totally unstable* or *repelling*).
+Recall there is always a trivial multiplier $\mu_1 = 1$. Also, if $\absval{\mu_i} < 1$ for all $i \in \oneToN{n}$, then the cycle is stable. In contrast, if there exists $i \in \oneToN{n}$ such that $\absval{\mu_i} > 1$, the cycle is unstable (and if all multipliers have a modulus greater than one, the cycle is called *totally unstable* or *repelling*).
 
 If the system features a stable limit cycle $L_0$, then we can find it again by numerical integration from a point in its basin of attraction. In contrast to the case of equilibria, backward-time numerical integration will not, in general, help us find a repelling periodic orbit. 
 
-Suppose we have a system in *2-dimensional* state space, which possesses a periodic orbit, see @fig-2d-periodic-orbit. From the theory of differential equations, we know that in the case of an autonomous ODE ([-@eq-autonomous-ode-system]) its trajectories do not intersect. Thus a periodic orbit $L_0$ constitutes a Jordan curve^[By ([-@eq-autonomous-ode-system]) and the periodicity constraint, there exists a map $\vi \phi(t) = \evolOp(t, \vi x(t))$ such that it maps the interval $[t_0, t_0 + T_0]$ onto the cycle $L_0$ and is surely continuous by @def-dynamical-system and @def-autonomous-ode-system for sufficiently smooth $\vi f$ (otherwise $\vi f$ would not give rise to a dynamical system in the first place). Moreover, $\vi \phi(t)$ is injective on $[t_0, t_0 + T_0)$ as there can be no intersections. In total, $L_0 = \vi \phi([t_0, t_0 + T_0])$ is a Jordan curve.]. Then by Jordan curve theorem, see @wikiJordanCurve, such orbit partitions the state space into inside and outside of the cycle (and the cycle itself)^[In practice, it suffices to consider a sufficiently large connected region containing the cycle instead of the entire state space]. Thus if $L_0$ is attracting, the trajectories are guaranteed to converge to $L_0$ forward in time, whereas for repelling $L_0$, they will converge backward in time.
+Suppose we have a system in *2-dimensional* state space, which possesses a periodic orbit, see @fig-2d-periodic-orbit. From the theory of differential equations, we know that in the case of an autonomous ODE ([-@eq-autonomous-ode-system]), its trajectories do not intersect. Thus a periodic orbit $L_0$ constitutes a Jordan curve^[By ([-@eq-autonomous-ode-system]) and the periodicity constraint, there exists a map $\vi \phi(t) = \evolOp(t, \vi x(t))$ such that it maps the interval $[t_0, t_0 + T_0]$ onto the cycle $L_0$ and is surely continuous by @def-dynamical-system and @def-autonomous-ode-system for sufficiently smooth $\vi f$ (otherwise $\vi f$ would not give rise to a dynamical system in the first place). Moreover, $\vi \phi(t)$ is injective on $[t_0, t_0 + T_0)$ as there can be no intersections. In total, $L_0 = \vi \phi([t_0, t_0 + T_0])$ is a Jordan curve.]. Then by Jordan curve theorem, see @wikiJordanCurve, such orbit partitions the state space into inside and outside of the cycle (and the cycle itself)^[In practice, it suffices to consider a sufficiently large connected region containing the cycle instead of the entire state space]. Thus if $L_0$ is attracting, the trajectories are guaranteed to converge to $L_0$ forward in time, whereas for repelling $L_0$, they will converge backward in time.
 
 ![Unstable periodic orbit $L_0$ of a 2-dimensional dynamical system.](../diagrams/2D-state-space-periodic-orbit.drawio.svg){#fig-2d-periodic-orbit .final}
 
-On the other hand, for 3- or more dimensional dynamical systems, a periodic orbit does not partition the state space (or any local neighborhood). Then, we cannot guarantee a convergence to the repelling cycle by backward-time integration no matter the initial vicinity. Moreover, it is needless to say the numerical integration localization approach will surely fail if the cycle is not stable nor repelling. In other words, we cannot even *detect* the cycle if it is not attracting. Note that this very fact is the crucial support for bifurcation theory-based approach. If our studied system has a stable cycle for some parameters, then we can continue with respect to a given parameter. Should the periodic orbit become unstable, this approach, as we shall see later, will still allow us to detect and continue the cycle manifold. However, no matter the modifications, this is simply not possible with a simulation-on-grid approach as in @sec-simulation-approach.
+On the other hand, for 3- or more dimensional dynamical systems, a periodic orbit does not partition the state space (or any local neighborhood). Then, we cannot guarantee a convergence to the repelling cycle by backward-time integration no matter the initial vicinity. Moreover, it is needless to say the numerical integration localization approach will surely fail if the cycle is neither stable nor repelling. In other words, we cannot even *detect* the cycle if it is not attracting. Note that this very fact is the crucial support for the bifurcation theory-based approach. If our studied system has a stable cycle for some parameters, then we can continue with respect to a given parameter. Should the periodic orbit become unstable, this approach, as we shall see later, will still allow us to detect and continue the cycle manifold. However, no matter the modifications, this is simply not possible with a simulation-on-grid approach as in @sec-simulation-approach.
 
-From now on, we will assume we know the location of the periodic orbit approximately. A correction method, most often Newton-Raphson, is then applied repeatedly until satisfactory convergence. This is a rather common scenario in practice, where we often know the location of the cycle for a given parameter value and wish to "continue" by varying the parameter and correcting the cycle afterwards. This process is commonly referred to as *continuation*.
+From now on, we will assume we know the location of the periodic orbit approximately. A correction method, most often Newton-Raphson, is then applied repeatedly until satisfactory convergence. This is a rather common scenario in practice, where we often know the location of the cycle for a given parameter value and wish to "continue" by varying the parameter and correcting the cycle afterward. This process is commonly referred to as *continuation*.
 
 Usually, we take the period $T$ of $L_0$ as an unknown and formulate the *boundary-value problem* (BVP) on a fixed interval. In particular, assume $T$ is a parameter and construct a "time-normalized" system
 $$
@@ -168,13 +168,13 @@ In general, any solution $\vi \xi \in \contf {[0,1], \R^n} {1}$ of an inhomogene
 $$
 \dvi \xi - T \jacobi \vi f(\vi u(s)) \vi \xi = \vi b(s),
 $$ 
-where $\vi b \in \contf {\R, \R^n} {0}$, can be written as (by ([-@eq-monodromy-psi-phi]))^[In other words, $\vi \Gamma(s)$ is a *fundamental matrix* of ([-@eq-monodromy-system-normalized]). Moreover, this viewpoint explains ([-@eq-monodromy-variation-of-const]) as a corollary of method of variation of constants.]
+where $\vi b \in \contf {\R, \R^n} {0}$, can be written as (by ([-@eq-monodromy-psi-phi]))^[In other words, $\vi \Gamma(s)$ is a *fundamental matrix* of ([-@eq-monodromy-system-normalized]). Moreover, this viewpoint explains ([-@eq-monodromy-variation-of-const]) as a corollary of the method of variation of constants.]
 $$
 \vi \xi(s) = \vi \Gamma(s) \brackets{\vi \xi(0) + \int_0^{s} \vi \Gamma\Inv(\sigma) \vi b(\sigma) \dd \sigma} = \vi \Gamma(s) \brackets{\vi \xi(0) + \int_0^s \vi \Psi\Tr(\sigma) \vi b(\sigma) \dd \sigma}.
 $$ {#eq-monodromy-variation-of-const}
 
 :::{#def-simple-cycle}
-A cycle $L$ is called **simple** if the trivial multiplier $\mu_1 = 1$ has algebraic multiplicity^[Recall the algebraic multiplicity of an eigenvalue $\lmbd$ of a matrix $\vi A$ is its multiplicity as a root of characteristic polynomial. Furthermore, geometric multiplicity of $\lmbd$ is defined as $\dim \ker (\vi A - \lmbd \ident)$. The algebraic multiplicity is always greater than or equal to the geometric multiplicity for any given eigenvalue $\lmbd$ of $\vi A$.] 1.
+A cycle $L$ is called **simple** if the trivial multiplier $\mu_1 = 1$ has algebraic multiplicity^[Recall the algebraic multiplicity of an eigenvalue $\lmbd$ of a matrix $\vi A$ is its multiplicity as a root of the characteristic polynomial. Furthermore, geometric multiplicity of $\lmbd$ is defined as $\dim \ker (\vi A - \lmbd \ident)$. The algebraic multiplicity is always greater than or equal to the geometric multiplicity for any given eigenvalue $\lmbd$ of $\vi A$.] 1.
 :::
 
 Let $\vi q_0, \vi p_0 \in \R^n$ be the left and right eigenvectors of the monodromy matrix corresponding to the trivial multiplier $\mu_1$,
@@ -203,7 +203,7 @@ $$
 	\int_0^1 \scal {\dvi v(\sigma)} {\vi w(\sigma)} \dd \sigma &= - \int_0^1 \scal {\dvi v(\sigma)} {\vi u(\sigma)} \dd \sigma.
 }
 $$ {#eq-newton-step-bvp}
-The left-hand side of ([-@eq-newton-step-bvp]) can be expressed as a matrix operator of form
+The left-hand side of ([-@eq-newton-step-bvp]) can be expressed as a matrix operator of the form
 $$
 \underbrace{\bmtr{
 	\oper{\jacobi} - T \jacobi \vi f(\vi u) & -\vi f(\vi u) \\
@@ -218,7 +218,7 @@ $$
 \testInt{\dvi v} \vi w = \int_0^1 \scal{\dvi v(\sigma)} {\vi w(\sigma)} \dd \sigma.
 $$
 
-By taking $\vi v = \vi u$, where $\vi u$ is a solution of ([-@eq-ode-cycle-bvp]), we get $\dvi v = \dvi u = T \vi f(\vi u)$. Moreover, for the purposes of the following theorem, one might choose $\vi v$ sufficiently close to such $\vi u$ (most importantly when $\vi v$ is a reference period-1 function, for example the solution in the previous step of continuation). Lastly, replacement of $T \vi f(\vi u)$ by $\vi f(\vi u)$ does not change the fundamental properties of the operator $\oper{L}_{\vi u, T}$.
+By taking $\vi v = \vi u$, where $\vi u$ is a solution of ([-@eq-ode-cycle-bvp]), we get $\dvi v = \dvi u = T \vi f(\vi u)$. Moreover, for the following theorem, one might choose $\vi v$ sufficiently close to such $\vi u$ (most importantly when $\vi v$ is a reference period-1 function, for example, the solution in the previous step of continuation). Lastly, the replacement of $T \vi f(\vi u)$ by $\vi f(\vi u)$ does not change the fundamental properties of the operator $\oper{L}_{\vi u, T}$.
 
 :::{#thm-ode-correction-operator-bijection}
 If $(\vi u(\cdot), T)$ corresponds to a simple cycle, then the operator
@@ -240,7 +240,7 @@ By @thm-ode-correction-operator-bijection we know ([-@eq-newton-step-bvp]) can b
 $$
 \oper{L}_{\vi u, T} \mtr{\vi w \\ S} = \vi A_{\vi u, T},
 $$ {#eq-newton-correction-infinite-dim}
-where $\vi A_{\vi u, T}$ captures the right-hand side of ([-@eq-newton-step-bvp]), and that $\oper{L}_{\vi u, T}$ is regular. Thus, an appropriate correction $(\vi w, S)$ can indeed be found by Newton's method, see @sec-newton-method (assuming we can find a suitable discretization, as ([-@eq-newton-correction-infinite-dim]) is in fact infinite-dimensional).
+where $\vi A_{\vi u, T}$ captures the right-hand side of ([-@eq-newton-step-bvp]), and that $\oper{L}_{\vi u, T}$ is regular. Thus, an appropriate correction $(\vi w, S)$ can indeed be found by Newton's method, see @sec-newton-method (assuming we can find a suitable discretization, as ([-@eq-newton-correction-infinite-dim]) is infinite-dimensional).
 
 This approach can be extended to the **continuation** of a **limit cycle branch** of a system
 $$
@@ -262,9 +262,9 @@ $$
 	\testInt{\dvi u_{\text{old}}} & 0 & 0
 },
 $$ {#eq-ode-continuation-operator}
-which then has a one-dimensional null-space for a simple cycle $\vi u$.
+which then has a one-dimensional null space for a simple cycle $\vi u$.
 
-To solve ([-@eq-ode-cycle-bvp]) (or ([-@eq-ode-continuation-bvp])) numerically, we have to reduce it to a finite-dimensional problem (as opposed to searching in the infinite-dimensional space of periodic functions $\vi u$), that is, we need to choose a *discretization*. Although shooting, multiple shooting and finite differences are sometimes used, most common and most capable is the method of *orthogonal collocation*.
+To solve ([-@eq-ode-cycle-bvp]) (or ([-@eq-ode-continuation-bvp])) numerically, we have to reduce it to a finite-dimensional problem (as opposed to searching in the infinite-dimensional space of periodic functions $\vi u$), that is, we need to choose a *discretization*. Although shooting, multiple shooting, and finite differences are sometimes used, the most common and most capable is the method of *orthogonal collocation*.
 
 Consider for simplicity the BVP ([-@eq-ode-cycle-bvp]). We shall introduce a partitioning of the interval $[0,1]$ by $N - 1$ mesh points, i.e.,
 $$
@@ -321,15 +321,15 @@ $$
 $$ {#eq-ode-discretized-bvp}
 The resulting finite-dimensional system ([-@eq-ode-discretized-bvp]) is nonlinear, thus we solve it by Newton's method (or some modification exploiting the block structure of Jacobian, which we will discuss later) --- this problem is well-posed by @thm-ode-correction-operator-bijection and the discussion afterward.
 
-So far, we have translated ([-@eq-ode-cycle-bvp]) into a finite dimensional problem, but we have neglected a discussion of a crucial choice of the collocation points $\set{\zeta_{j,i}}$. The distribution of collocation points affects the approximation, so a natural goal is to minimize it. It can be shown that the optimal choice is position them at so-called *Gauss points*, which are the roots of $m$-th degree *Legendre polynomial* corresponding to the subinterval $[s_j, s_{j+1}]$. For more information, we refer the reader to @Brin2020. These roots originally belong to the interval $[-1, 1]$, but can be easily transformed to each $[s_j, s_{j+1}]$. Furthermore, the Legendre polynomials form an orthogonal system on the interval $[-1, 1]$ (or its transformation), which lends the name to the orthogonal collocation method.
+So far, we have translated ([-@eq-ode-cycle-bvp]) into a finite-dimensional problem, but we have neglected a discussion of a crucial choice of the collocation points $\set{\zeta_{j,i}}$. The distribution of collocation points affects the approximation, so a natural goal is to minimize it. It can be shown that the optimal choice is to position them at so-called *Gauss points*, which are the roots of $m$-th degree *Legendre polynomial* corresponding to the subinterval $[s_j, s_{j+1}]$. For more information, we refer the reader to @Brin2020. These roots originally belong to the interval $[-1, 1]$, but can be easily transformed to each $[s_j, s_{j+1}]$. Furthermore, the Legendre polynomials form an orthogonal system on the interval $[-1, 1]$ (or its transformation), which lends the name to the orthogonal collocation method.
 
-Let us note the collocation at Gauss points leads to very highly accurate approximation of a smooth solution of ([-@eq-ode-cycle-bvp]) by ([-@eq-ode-discretized-bvp]) at *mesh* points, namely
+Let us note the collocation at Gauss points leads to a very highly accurate approximation of a smooth solution of ([-@eq-ode-cycle-bvp]) by ([-@eq-ode-discretized-bvp]) at *mesh* points, namely
 $$
 \norm{\vi u(s_j) - \vi u^{j, 0}} = O(h^{2m}),
 $$
 where $h = \max_{0 \leq j \leq N-1} (s_{j+1} - s_j)$.
 
-Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e., the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which have not yet discussed (and therefore, we assume, it can, in theory, depend on all variables).]
+Let us turn our attention back to the discretized BVP system ([-@eq-ode-discretized-bvp]) and consider its continuation variant (i.e., the discretization of ([-@eq-ode-continuation-bvp])), which can be written as $\vi H(\vi X) = \vi 0$ for appropriate $\vi H$ and $\vi X = \brackets{\set{\vi u^{j,k}}, T, \alpha} \in \R^{mnN + n + 2}$ corresponding to discretized $\vi u$, period $T$ and the continuation parameter $\alpha$. Its Jacobian matrix $\jacobi \vi H$ reads (for $n = 2$, $N = 3$, and $m = 2$)^[The last row of $\jacobi \vi H$ represents the continuation equation, which we have not yet discussed (and therefore, we assume, it can, in theory, depend on all variables).]
 $$
 {\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
@@ -353,7 +353,7 @@ $$
 $$ {#eq-ode-collocation-jacobian}
 where $\nonzeroEl$ denotes a generally non-zero element. Thus $\jacobi \vi H$ is sparse, and because it corresponds to the linear operator ([-@eq-ode-continuation-operator]) it also has a one-dimensional null-space satisfying $\vi H(\vi X) = \vi 0$ (at generic points). Let us note that by later also adding a constraint equation stemming from the chosen *continuation* method, see @sec-continuation, we will get a fully determined system. 
 
-The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e., $\vi u^{j, k}$ for $k = 1, \dots, m-1$) by means of Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
+The Jacobian matrix $\jacobi \vi H$ is crucial for Newton's method, and its properties deeply affect the computation. Indeed, assuming the residual formulation of Newton's method ([-@eq-newton-residual]), we need to be able to effectively solve the system $\jacobi \vi H \cdot \vi X = \vi R$. Fortunately, in the ODE case, we can perform so-called *condensation of parameters*, see @Govaerts2005 and @Doedel1991, eliminating the dependence on *intermediate variables* (i.e., $\vi u^{j, k}$ for $k = 1, \dots, m-1$) utilizing Gaussian elimination performed on rows. This yields ($\zeroEl$'s mark eliminated elements)
 $$
 {\scriptsize \mtr{
 	\vi u^{0,0} & & \vi u^{0,1} & & \vi u^{1,0} & & \vi u^{1,1} & & \vi u^{2,0} & & \vi u^{2,1} & & \vi u^{3, 0} & & T & \alpha \\
@@ -433,7 +433,7 @@ $$
 $$ {#eq-dde-equilibrium-newton}
 where we use $\vi x^0 = \vi x_t(0)$ as the initial approximation. The iterations of the Newton-Raphson method $\vi x^i$ converge to the steady state $\vi x^*$ for $\vi x^0$ sufficiently close to $\vi x^*$. Naturally, this process can be performed with free parameter $\alpha$ to obtain the continuation curve of the equilibrium by considering ([-@eq-dde-equilibrium-newton]) along with a constraint given by the continuation method, see @sec-continuation.
 
-Suppose again we have found $\vi x^*$ with desired accuracy and that our goal is now to determine its stability. It can be shown that stability of $\vi x^*$ follows stability of (the zero solutions of) the linearized equation, see ([-@eq-dde-linearization]),
+Suppose again we have found $\vi x^*$ with the desired accuracy and that our goal is now to determine its stability. It can be shown that the stability of $\vi x^*$ follows the stability of (the zero solutions of) the linearized equation, see ([-@eq-dde-linearization]),
 $$
 \dvi x(t) = \sum_{i = 0}^H \jacobi_{\tau_i} \vi f^* \vi x(t - \tau_i),
 $$ {#eq-linearized-dde}
@@ -441,11 +441,11 @@ where $\jacobi_{\tau_i} \vi f^* = \jacobi_{\tau_i} \vi f(\vi x^*, \dots, \vi x^*
 $$
 \det\brackets{\lmbd \ident - \jacobi_{\tau_0} \vi f^* - \sum_{i = 1}^H \jacobi_{\tau_i} \vi f^*} = 0
 $$ {#eq-linearized-dde-character-eq}
-lie in the open left half-plane, i.e., $\ReOf{\lmbd} < 0$, see @Hale1993. Unfortunately, the equation ([-@eq-linearized-dde-character-eq]) has *infinitely many* roots. However, only *finitely many* roots have a real part larger than a give threshold. Thus, to study the stability of $\vi x^*$ it suffices to calculate only *stability-determining* roots $\lmbd \in \C$, which are roots satisfying $\ReOf{\lmbd} \geq r$ for a given threshold $r < 0$ close to zero.
+lie in the open left half-plane, i.e., $\ReOf{\lmbd} < 0$, see @Hale1993. Unfortunately, the equation ([-@eq-linearized-dde-character-eq]) has *infinitely many* roots. However, only *finitely many* roots have a real part larger than a given threshold. Thus, to study the stability of $\vi x^*$ it suffices to calculate only *stability-determining* roots $\lmbd \in \C$, which are roots satisfying $\ReOf{\lmbd} \geq r$ for a given threshold $r < 0$ close to zero.
 
-Although analytical conditions for the stability do exist (and are derived by techniques from complex analysis), we shall omit their theoretical derivation to maintain a focused and concise scope. Recently, there have been a development in numerical methods to approximate the stability-determining (i.e., right-most) characteristic roots of ([-@eq-linearized-dde-character-eq]) using either a discretized *solution* operator $\solOp(t)$ of ([-@eq-linearized-dde]), see @sec-dde-stability and @def-dde-solution-oper, or a discretized *infinitesimal* generator $\infGen$ of the semigroup of the solution operator of ([-@eq-linearized-dde]), see @nte-infinitesimal-generator.
+Although analytical conditions for stability do exist (and are derived by techniques from complex analysis), we shall omit their theoretical derivation to maintain a focused and concise scope. Recently, there has been a development in numerical methods to approximate the stability-determining (i.e., right-most) characteristic roots of ([-@eq-linearized-dde-character-eq]) using either a discretized *solution* operator $\solOp(t)$ of ([-@eq-linearized-dde]), see @sec-dde-stability and @def-dde-solution-oper, or a discretized *infinitesimal* generator $\infGen$ of the semigroup of the solution operator of ([-@eq-linearized-dde]), see @nte-infinitesimal-generator.
 
-The solution operator $\solOp(t)$ has eigenvalues $\mu(t)$, which are related to the roots of the characteristic equation by $\mu(t) = e^{\lmbd t}$, see @Roose2007. Obviously, to determine the stability of $\vi x^*$, we are interested in the dominant eigenvalues. Moreover, it follows that for $t$ large, the eigenvalues $\mu(t)$ are well separated, which we can exploit in the computation. Below, we describe an algorithm to compute the dominant eigenvalues of $\solOp(\diff t)$, where $\diff t$ is the time-step of a linear multistep (LMS) method.
+The solution operator $\solOp(t)$ has eigenvalues $\mu(t)$, which are related to the roots of the characteristic equation by $\mu(t) = e^{\lmbd t}$, see @Roose2007. Clearly, to determine the stability of $\vi x^*$, we need to look at its dominant eigenvalues. Moreover, it follows that for $t$ large, the eigenvalues $\mu(t)$ are well separated, which we can exploit in the computation. Below, we describe an algorithm to compute the dominant eigenvalues of $\solOp(\diff t)$, where $\diff t$ is the time-step of a linear multistep (LMS) method.
 
 ::: {.callout-note #nte-infinitesimal-generator}
 ##### Infinitesimal generator
@@ -461,12 +461,12 @@ $$
 	\vi x \in \domain \infGen \letDef \set{\vi x \in \contStateSpace \divider \dvi x \in \contStateSpace \; \& \; \dvi x(0) = \sum_{i = 0}^H \jacobi_{\tau_i} \vi f^* \vi x(-\tau_i)}.
 \end{gathered}
 $$
-Note that some algorithms for computation of stability of an equilibrium use a discretized infinitesimal generator instead of the solution operator.
+Note that some algorithms for the computation of the stability of an equilibrium use a discretized infinitesimal generator instead of the solution operator.
 :::
 
 When discretized, either of the discussed operators results in some matrix, for which we need to compute its eigenvalues. Therefore, it is our key concern that this matrix is small or its dominant eigenvalues can be computed efficiently by using an iterative scheme, such as subspace iteration.
 
-A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007 and @Sieber2014, and relies on the linear multistep method, see @sec-integrating-ddes and @alg-dde-explicit-euler.
+A straightforward way to approximate the solution operator is to consider the matrix form of the numerical integration of the linearized equation. Such an approach has been developed by Engelborghs et al., see @Engelborghs2002a, @Roose2007, and @Sieber2014, and relies on the linear multistep method, see @sec-integrating-ddes and @alg-dde-explicit-euler.
 
 Let us discretize the delay interval $[-\tau, 0]$ (typically extended slightly to both the left and right, as we shall discuss below) by an equidistant mesh of constant step-length $h$ to approximate the solution operator $\solOp(h)$. Then, the solution $\vi x$ can be represented by a finite discrete set of points $\vi x^i \letDef \vi x(t_i)$ with $t_i = ih$. A $k$-step LMS method for ([-@eq-linearized-dde]) with step-length $h$ may be written as
 $$
@@ -483,20 +483,20 @@ Unfortunately, due to our choice of approximation and discretization of the solu
 ::: {.callout-note #nte-runge-kutta-discretization}
 ##### Runge-Kutta discretization
 
-Let us note a discretization induced by Runge-Kutta numerical integrator can also be used, albeit it is less frequent in practice. We refer the interested reader to @Breda2006a.
+Let us note a discretization induced by the Runge-Kutta numerical integrator can also be used, albeit it is less frequent in practice. We refer the interested reader to @Breda2006a.
 :::
 
 #### Periodic Orbit Localization {#sec-dde-periodic-orbit-localization}
 
-The localization of periodic orbits in DDEs proceeds similarly to the ODE case, see @sec-ode-periodic-orbit-localization. Indeed, main differences lie in the discretization and normalization to unit period. Let us remark this subsection is based on @Verheyden2005, @Sieber2014 and @Roose2007, but also @Engelborghs2001, @Fairgrieve1991 and @Breda2006.
+The localization of periodic orbits in DDEs proceeds similarly to the ODE case, see @sec-ode-periodic-orbit-localization. Indeed, the main differences lie in the discretization and normalization to unit period. Let us remark this subsection is based on @Verheyden2005, @Sieber2014 and @Roose2007, but also @Engelborghs2001, @Fairgrieve1991 and @Breda2006.
 
 So far, our discretization scheme, prescribed by *representation* points,
 $$
 0 = s_0 = s_{0,0} < s_{0,1} < \dots < s_{0, m-1} < s_{0,m} = s_{1} = s_{1,0} < \dots < s_N = T,
 $$
-has been designed for a single period interval $[0,T]$ (or $[0,1]$ after period-1 normalization). As such, we can periodically extent it to cover the interval $[-\tau, T]$. There are now two possible, yet fundamentally different approaches.
+has been designed for a single period interval $[0,T]$ (or $[0,1]$ after period-1 normalization). As such, we can periodically extend it to cover the interval $[-\tau, T]$. There are now two possible, yet fundamentally different approaches.
 
-The first approach, used in DDE-BIFTOOL, see @Sieber2014 or @Roose2007, normalize the system in time to a unit period for the given cycle (analogously as we did for ODEs). Afterwards, we can wrap-around the delays into interval $[0,1]$, which yields the following BVP^[The notation $t \mod [0,1]$ refers to $t - \max{k \in \Z \divider k \leq t}$.]
+The first approach, used in DDE-BIFTOOL, see @Sieber2014 or @Roose2007, normalize the system in time to a unit period for the given cycle (analogously as we did for ODEs). Afterward, we can wrap around the delays into interval $[0,1]$, which yields the following BVP^[The notation $t \Mod [0,1]$ refers to $t - \max{k \in \Z \divider k \leq t}$.]
 $$
 \rcases{
 	\dvi u (\zeta_{j,i}) - T \vi f\brackets{\vi u(\zeta_{j,i}), \vi u \brackets{\brackets{\zeta_{j,i} - \frac {\tau_1} T} \Mod [0,1]}, \dots, \vi u \brackets{\brackets{\zeta_{j,i} - \frac {\tau_H} T} \Mod [0,1]}} &= \vi 0, \\
@@ -505,7 +505,7 @@ $$
 	\int_0^1 \scal {\vi u(\sigma)} {\dvi u_{\text{old}}(\sigma)} \dd \sigma &= 0,
 }
 $$ {#eq-dde-periodic-orbit-normalized-bvp}
-where $\zeta_{j,i}$ are again the *collocation* points, and $\vi u_0$ and $\vi u_1$ are solution segments on $[-\tau, 0]$ and $[1 - \linefrac{\tau} T, 1]$, respectively. The period $T$ is unknown variable. Unfortunately, the resulting linearized system for the BVP ([-@eq-dde-periodic-orbit-normalized-bvp]) has banded structure, which cannot be easily exploited to aid used linear solver. Moreover, the transformation via the modulo operator complicates the computation of Floquet multipliers, because it distorts the included matrix corresponding to the discretized time-integration operator.
+where $\zeta_{j,i}$ are again the *collocation* points, and $\vi u_0$ and $\vi u_1$ are solution segments on $[-\tau, 0]$ and $[1 - \linefrac{\tau} T, 1]$, respectively. The period $T$ is an unknown variable. Unfortunately, the resulting linearized system for the BVP ([-@eq-dde-periodic-orbit-normalized-bvp]) has a banded structure, which cannot be easily exploited to aid the used linear solver. Moreover, the transformation via the modulo operator complicates the computation of Floquet multipliers, because it distorts the included matrix corresponding to the discretized time-integration operator.
 
 The alternative method, see @Verheyden2005 and @Roose2007, relies on the construction of the orthogonal collocation BVP *without* subsequent wrapping of the delays. This produces a larger BVP, as collocation of the delayed segment is also required, 
 $$
@@ -544,10 +544,7 @@ where $\vi \Gamma(1)$ is the monodromy matrix, see ([-@eq-monodromy-system-norma
 $$
 \vi \Gamma_t = - \brackets{\jacobi_{\vi u_t} \vi H^{\text{dde}}}\Inv \jacobi _{\vi u_0} \vi H^{\text{dde}},
 $$ {#eq-dde-time-integration-matrix}
-similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The exact form of ([-@eq-dde-condensed-linearized-cycle-bvp]) can be found in @Verheyden2005. The Newton-Picard method, see @Lust1998, @Linge2017 or @Hellevik2020, can be used to efficiently solve ([-@eq-dde-condensed-linearized-cycle-bvp]). Afterwards, $\diff \vi u_t$ may be obtained from the first equation of ([-@eq-linearized-dde-periodic-orbit-bvp]). Lastly, Floquet multipliers of the periodic orbit can be computed as the dominant eigenvalues of the discretized monodromy matrix $\vi \Gamma(1)$.
-
-<!-- We can augment ([-@eq-ode-continuation-bvp]) by continuation method equation (Moore-Penrose or pseudo-arc-length) to get a fully-determined system -->
-
+similarly to the ODE case, see ([-@eq-ode-collocation-monodromy-approx]). The exact form of ([-@eq-dde-condensed-linearized-cycle-bvp]) can be found in @Verheyden2005. The Newton-Picard method, see @Lust1998, @Linge2017 or @Hellevik2020, can be used to efficiently solve ([-@eq-dde-condensed-linearized-cycle-bvp]). Afterward, $\diff \vi u_t$ may be obtained from the first equation of ([-@eq-linearized-dde-periodic-orbit-bvp]). Lastly, Floquet multipliers of the periodic orbit can be computed as the dominant eigenvalues of the discretized monodromy matrix $\vi \Gamma(1)$.
 
 ## Continuation {#sec-continuation}
 
@@ -561,7 +558,7 @@ $$
 $$
 All of the continuation problems we shall be interested in arise from parametrized *localization problems*, see the previous section [-@sec-theory-of-localizations].
 
-From the *implicit function theorem* follows that the system ([-@eq-continuation-problem]) locally defines a smooth one-dimensional manifold (*curve*) $\manifold$ passing through a point $\vi X^0$, if $\rank \Jacobi_{\vi H} = n$, where $\Jacobi_{\vi H} = \jacobi \vi H(\vi X^0)$. By a numerical solution to ([-@eq-continuation-problem]) is understood a sequence of points $\vi X^0, \vi X^1, \dots$ approximating the curve $\manifold$ with desired accuracy. The continuation algorithms we shall present here will be based on the *prediction--correction* process.
+From the *implicit function theorem* follows that the system ([-@eq-continuation-problem]) locally defines a smooth one-dimensional manifold (*curve*) $\manifold$ passing through a point $\vi X^0$, if $\rank \Jacobi_{\vi H} = n$, where $\Jacobi_{\vi H} = \jacobi \vi H(\vi X^0)$. By a numerical solution to ([-@eq-continuation-problem]) is understood a sequence of points $\vi X^0, \vi X^1, \dots$ approximating the curve $\manifold$ with the desired accuracy. The continuation algorithms we shall present here will be based on the *prediction--correction* process.
 
 For the prediction part, we will singularly use the *tangent* prediction
 $$
@@ -571,7 +568,7 @@ where $\vi v^i \in \R^{n+1}$ is the normalized tangent vector to the curve $\man
 $$
 \jacobi \vi H(\vi X^i) \overbrace{\evaluateAt{\dvi X(s)}{s = 0}}^{\vi v^i} = \vi 0.
 $$
-In other words, $\vi v^i$ must lie in the null-space of the matrix of local linearization of $\manifold$ around $\vi X^i$. Moreover, since $\vi X^i$ is presumed to be *regular*, i.e., $\rank \jacobi \vi H(\vi X^i) = n$, then $\vi v^i$ is determined uniquely up-to a constant multiple.
+In other words, $\vi v^i$ must lie in the null space of the matrix of local linearization of $\manifold$ around $\vi X^i$. Moreover, since $\vi X^i$ is presumed to be *regular*, i.e., $\rank \jacobi \vi H(\vi X^i) = n$, then $\vi v^i$ is determined uniquely up to a constant multiple.
 
 ::: {.callout-tip #tip-secant-prediction}
 ##### Secant prediction
@@ -579,7 +576,7 @@ In other words, $\vi v^i$ must lie in the null-space of the matrix of local line
 Although we have introduced only the tangent prediction, another popular method is the *secant prediction*. For more information, one can see @Kuznetsov2023.
 :::
 
-Currently, we have predicted a point $\tilde{\vi X}^i_{(0)}$ assumed to be close to the curve, which we need to *"correct"* such that it lies on $\manifold$ within a certain specified degree of accuracy. This, in general, requires the use of a Newton-like method, see @sec-newton-method, as ([-@eq-continuation-problem]) might be highly nonlinear. However, a Newton-like methods can only be applied to fully determined systems, i.e., the number of equations must correspond to the number of unknown variables. Therefore, we add an extra scalar (remember $\vi H : \R^{n+1} \to \R^n$) condition
+Currently, we have predicted a point $\tilde{\vi X}^i_{(0)}$ assumed to be close to the curve, which we need to *"correct"* such that it lies on $\manifold$ within a certain specified degree of accuracy. This, in general, requires the use of a Newton-like method, see @sec-newton-method, as ([-@eq-continuation-problem]) might be highly nonlinear. However, Newton-like methods can only be applied to fully determined systems, i.e., the number of equations must correspond to the number of unknown variables. Therefore, we add an extra scalar (remember $\vi H : \R^{n+1} \to \R^n$) condition
 $$
 g^i(\vi X) = 0
 $$
@@ -615,11 +612,11 @@ where $\tilde{\vi v}^i_{(k)} \neq \vi 0$ lies in the null-space of $\jacobi \vi 
 
 ## Cycle Continuation in Coupled Oscillators
 
-As we have discussed in the @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase-shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
+As we have discussed in the @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
 
-For soundness of the grid-based approach to the computation of phase-shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have simply used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable (stable) cycle, which could be used for continuation at an arbitrary coupling strength $\lmbd > 0$.
+For the soundness of the grid-based approach to the computation of phase shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have simply used the continuous dependence on parameters and initial conditions. Sadly, this argument is not enough for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable (stable) cycle, which could be used for continuation at an arbitrary coupling strength $\lmbd > 0$.
 
-Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must locally exist a cycle manifold $\manifold$ (with respect to coupling strength and an arbitrary parameter effecting the frequency of one oscillator) near zero coupling between the two nearly identical oscillators. In particular, we shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2025. This will be performed mainly by studying the phase shifts between the two oscillators.
+Notably, Záthurecký et al. [-@Zathurecky2025] have shown that there must locally exist a cycle manifold $\manifold$ (with respect to coupling strength and an arbitrary parameter affecting the frequency of one oscillator) near zero coupling between the two nearly identical oscillators. In particular, we shall focus primarily on the anti-phase synchronization, which may be used to explain the emergence of frequencies higher than physiological, see @Pribylova2024 and @Sevcik2025. This will be performed mainly by studying the phase shifts between the two oscillators.
 
 Recall the studied system ([-@eq-general-delayed-coupled-oscillators]),
 $$
@@ -639,21 +636,21 @@ For each $\lmbd_i \in \Lambda$, we then let the system converge to a stable cycl
 ::: {.callout-note #nte-lambda-discretization}
 ##### Discretization of $\lmbd$
 
-Note that currently, we have "blindly" discretized $\lmbd$ and then for each element $\lmbd_i \in \Lambda$ of the discretization, we have attempted to converge onto a stable periodic orbit. Only afterwards could we compute the continuation with respect to $C_2$. Another approach would be first to continue the cycle with respect to $\lmbd$, producing a curve $\curve_{\lmbd}$ in the desired manifold $\manifold$. Then, we could perform the continuation with respect to $C_2$ for each point of $\curve_{\lmbd}$, which is already discretized due to the nature of numerical continuation.
+Note that currently, we have "blindly" discretized $\lmbd$, and then for each element $\lmbd_i \in \Lambda$ of the discretization, we have attempted to converge onto a stable periodic orbit. Only afterward could we compute the continuation with respect to $C_2$. Another approach would be first to continue the cycle with respect to $\lmbd$, producing a curve $\curve_{\lmbd}$ in the desired manifold $\manifold$. Then, we could perform the continuation with respect to $C_2$ for each point of $\curve_{\lmbd}$, which is already discretized due to the nature of numerical continuation.
 :::
 
-Moreover, for each cycle on the $C_2$-continuation curve, we know its corresponding period $T$. This allows us to use shift searching methods, see @sec-shift-searching, with much better accuracy (compared to only estimated period). In particular, we partition the interval $[0,T]$ and for each of disjunct sub-intervals $Q_i \subseteq [0,T]$, we run the shift searching method. Finally, we select the shift with the least error.
+Moreover, for each cycle on the $C_2$-continuation curve, we know its corresponding period $T$. This allows us to use shift searching methods, see @sec-shift-searching, with much better accuracy (compared to only estimated period). In particular, we partition the interval $[0,T]$, and for each of the disjunct sub-intervals $Q_i \subseteq [0,T]$, we run the shift searching method. Finally, we select the shift with the least error.
 
 <!-- TODO: Why C_1 in the code not C_2??? (and does it even matter for symmetric coupling?) -->
-In addition, when there is no delay in the coupling $\vi K$ (i.e., the ODE case), one can also continue the LPC curves with respect to $\lambda$ and $C_2$. Note that these curves do not always originate from the zero coupling, as can be seen in Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (C) and (D)). Unfortunately, DDE-BIFTOOL does not support continuation of LPC curves. Nevertheless, we may attempt to estimate these curves from the boundaries of stable and unstable limit cycles on the manifold $\manifold$. 
+In addition, when there is no delay in the coupling $\vi K$ (i.e., the ODE case), one can also continue the LPC curves with respect to $\lambda$ and $C_2$. Note that these curves do not always originate from the zero coupling, as can be seen in Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (C) and (D)). Unfortunately, DDE-BIFTOOL does not support the continuation of LPC curves. Nevertheless, we may attempt to estimate these curves from the boundaries of stable and unstable limit cycles on the manifold $\manifold$. 
 
 Now, we can show the relation of $\lambda$ and $C_2$ to both period $T$ and shift $\beta$, see Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)). Furthermore, we can project the cycle manifold onto the parameter plane $(C_2, \lmbd)$, where it draws out desired tongues. Let us remark tongues corresponding to different stable sub-manifolds of $\manifold$ can overlap.
 
-Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] show this methodology applied to two weakly coupled interneuron models, see ([-@eq-coupled-interneurons]). The continuation was performed using MatCont, see @Dhooge2003 and @Dhooge2008, in the ODE case and DDE-BIFTOOL, see @Sieber2014, in the DDE case. In particular, we calculated the *optimal shift* in the first coordinate of both oscillators over $3T$-long trajectory. The region around zero-delay is numerically unstable for the continuation, see @sec-semidynamical-systems-localization --- for very small delay (notice that the delay affects only the coupling term), the DDE system approaches the behavior of an ODE, resulting in a bad condition of the Jacobian matrix for the orthogonal collocation/continuation. For implementation details, see the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025, potentially also Git repository associated with this thesis for specifics of plotting computed data.
+Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] show this methodology applied to two weakly coupled interneuron models, see ([-@eq-coupled-interneurons]). The continuation was performed using MatCont, see @Dhooge2003 and @Dhooge2008, in the ODE case and DDE-BIFTOOL, see @Sieber2014, in the DDE case. In particular, we calculated the *optimal shift* in the first coordinate of both oscillators over a $3T$-long trajectory. The region around zero-delay is numerically unstable for the continuation, see @sec-semidynamical-systems-localization --- for very small delay (notice that the delay affects only the coupling term), the DDE system approaches the behavior of an ODE, resulting in a bad condition of the Jacobian matrix for the orthogonal collocation/continuation. For implementation details, see the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025, potentially also the Git repository associated with this thesis for specifics of plotting computed data.
 
-The runtimes necessary to generate data for Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)) are approximately 43 *seconds* for ODE case and 26 *minutes* for DDE, respectively. Note that although parts (C) and (D) of the same figures require a finer discretization $\Lambda$, in practice one would probably not need to use it. Indeed, there is no inherent increase in error when choosing a sparser discretization, whereas in the simulation-based approach it effected the entire result. As there is no dependence on results from other slices throughout the calculation, the parallelization is much easier and more efficient^[The implementation of the simulation-on-grid relies on using clever iteration order and multithreading locks, which results in delays when a thread is waiting to write to or read from the results matrices.]. The required runtime in MATLAB, see @MATLAB, in the DDE case is heavily dependent on the version of `dde23` solver, as discussed in @tip-dde23-improvements.
+The runtimes necessary to generate data for Figures [-@fig-bifurcation-shift-ode] and [-@fig-bifurcation-shift-dde] (parts (A) and (B)) are approximately 43 *seconds* for ODE case and 26 *minutes* for DDE, respectively. Note that although parts (C) and (D) of the same figures require a finer discretization $\Lambda$, in practice one would probably not need to use it. Indeed, there is no inherent increase in error when choosing a sparser discretization, whereas, in the simulation-based approach, it would affect the entire result. As there is no dependence on results from other slices throughout the calculation, the parallelization is much easier and more efficient^[The implementation of the simulation-on-grid relies on using clever iteration order and multithreading locks, which results in delays when a thread is waiting to write to or read from the results matrices.]. The required runtime in MATLAB, see @MATLAB, in the DDE case, is heavily dependent on the version of the `dde23` solver, as discussed in @tip-dde23-improvements.
 
-While there exists a Julia package DDEBifurcationKit.jl for continuation in DDEs, see @BifurcationKit, it currently does not support computation of Floquet multipliers for periodic orbits, see [this GitHub issue](https://github.com/bifurcationkit/DDEBifurcationKit.jl/issues/16) for more details. For completeness sake, we provide a reference single-threaded unoptimized implementation using this package as well, which can be found in the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025. The data generation process described above takes about 3 minutes for ODE case (on 4 threads).
+While there exists a Julia package DDEBifurcationKit.jl for continuation in DDEs, see @BifurcationKit, it currently does not support computation of Floquet multipliers for periodic orbits, see [this GitHub issue](https://github.com/bifurcationkit/DDEBifurcationKit.jl/issues/16) for more details. For completeness sake, we provide a reference single-threaded unoptimized implementation using this package as well, which can be found in the [Git repository](https://gitlab.ics.muni.cz/ndteam/gamu/shift-continuation) for @Zathurecky2025. The data generation process described above takes about 3 minutes for an ODE case (on 4 threads).
 
 ```{julia}
 #| echo: false
@@ -675,7 +672,7 @@ include("../scripts/plot_Zathurecky2025_dde_results.jl")
 render_dde_results()
 ```
 
-Finally, @fig-comparison-bifurcation-simulation-shift depicts the comparison of both approaches. Specifically, we plot the heatmaps of shifts $\beta$ computed on MetaCentrum using the simulation-on-grid approach. Moreover, black curves render the boundaries of anti-phase Arnold tongues calculated with the bifurcation-based approach. In total, one can see that *in general* these two methods give comparable results. However, the simulation based approach suffers from a rather high artifact rate even though we used a very dense underlying grid.
+Finally, @fig-comparison-bifurcation-simulation-shift depicts the comparison of both approaches. Specifically, we plot the heatmaps of shifts $\beta$ computed on MetaCentrum using the simulation-on-grid approach. Moreover, black curves render the boundaries of anti-phase Arnold tongues calculated with the bifurcation-based approach. In total, one can see that *in general* these two methods give comparable results. However, the simulation-based approach suffers from a rather high artifact rate even though we used a very dense underlying grid.
 
 ::: {#fig-comparison-bifurcation-simulation-shift layout-ncol="2"}
 ```{julia}

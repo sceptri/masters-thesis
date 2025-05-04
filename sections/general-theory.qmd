@@ -41,13 +41,13 @@ CairoMakie.activate!()
 
 # Mathematics Behind Dynamics {#sec-general-theory}
 
-We have motivated the entire thesis with the usefulness of the knowledge and of the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real networks of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g., coupled neurons.
+We have motivated the entire thesis with the usefulness of the knowledge and the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real networks of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g., coupled neurons.
 
 This abstraction is typically called a (mathematical) model. The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g., a model of a neuron starts spiking when evolving in time, with dependence solely on the current state, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal with respect to only the current state due to the dependence on the history of the system, the arising dynamical system becomes infinite dimensional (and thus harder to work with). For better "mathematical ergonomics" we will define a *semidynamical system* to deal with delayed dependencies.
 
 ## A Primer on Dynamical Systems {#sec-dynamical-systems}
 
-First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021 in terms of the content. It should be noted the notation follows @Teschl2012, @Guo2013, @Saperstone1981 or @Smith2010 for better compatibility with semidynamical systems. Also, @Sevcik2021 was used as a valuable inspiration for the structure of this section.
+First and foremost, we will formally introduce the notion of a *dynamical system*, along with its properties. This section is mostly based on @Kuznetsov2023 and @Pribylova2021 in terms of content. It should be noted the notation follows @Teschl2012, @Guo2013, @Saperstone1981, or @Smith2010 for better compatibility with semidynamical systems. Also, @Sevcik2021 was used as a valuable inspiration for the structure of this section.
 
 :::{#def-dynamical-system}
 **Dynamical system** (more precisely *deterministic dynamical system*) is a triple $(\timeSet, \stateSpace, \evolOp)$, where $(\timeSet, +, \leq)$, $\timeSet \subseteq \R$, is an ordered commutative semigroup with identity element $0$, $\stateSpace$ (called *state space*) is a metric space, and $\evolOp$ is a continuous^[The evolution map $\evolOp$ is continuous, if $t,s \in \timeSet$, $x \in \stateSpace$ and if $\set{(t_n, s_n)}_n$ is a sequence in $\timeSet \times \timeSet$ and $\Seqnc {x_n} n {}$ is a sequence in $\stateSpace$ such that $(t_n, s_n) \to (t,s)$ and $x_n \to x$, then $\evolOp(t_n, s_n, x_n) \to \evolOp(t,s,x)$.] evolution map
@@ -89,7 +89,7 @@ In the @def-dynamical-system, the time set $\timeSet$ can take on various forms.
 
 On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ or $\R^+$ as we are concerned with even the shortest time intervals and associated changes --- corresponding systems are called **continuous** or **continuous-time** dynamical systems. Similarly, the exact choice of the state space $\stateSpace$ is dependent on the system in question, but typically we use $\R^n$, although we will also encounter infinite-dimensional state space.
 
-The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such system *stochastic*, see @sec-stochastic-dyn-systems. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
+The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such a system *stochastic*, see @sec-stochastic-dyn-systems. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on the past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
 
 Most often, a dynamical system is given implicitly by a *differential* or *difference* equation. For example, in population dynamics, one of the earliest models, the *Verhulst model of population*[^verhulst], can prescribed by an ordinary differential equation (ODE)
 $$
@@ -104,7 +104,7 @@ $$ {#eq-difference-verhulst}
 
 ### Basic Concepts {#sec-basic-concepts}
 
-In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment beside the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002 or @Kuznetsov2023.
+In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment besides the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002, or @Kuznetsov2023.
 
 :::{#def-orbit}
 ##### Orbit
@@ -114,7 +114,7 @@ $$
 \Orbit{x_0} = \set{x \in \stateSpace \divider x = \evolOp(t, x_0), \forall t \in \timeSet \text{ such that } \evolOp(t, x_0) \text{ is defined}}
 $$
 
-In the case of a continuous dynamical system, the orbits are *oriented curves* in the state space. For a discrete dynamical systems, they become sequences of points in $\stateSpace$.
+In the case of a continuous dynamical system, the orbits are *oriented curves* in the state space. For a discrete dynamical system, they become sequences of points in $\stateSpace$.
 :::
 
 :::{#def-phase-portrait}
@@ -174,15 +174,15 @@ Equivalently to @def-limit-cycle, one can define a *limit cycle* as a cycle, whi
 
 :::{#def-invariant-set-stable}
 
-An invariant set $S_0$ is called 
+An invariant set $S_0$ is called:
 
 1. **Lyapunov stable** if for any sufficiently small neighborhood $U \supset S_0$ there exists a neighborhood $V \supset S_0$ such that $\evolOp(t, x) \in U$ for all $x \in V$ and all $t > 0$;
-2. **asymptotically stable** there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp(t, x) \to S_0$ for all $x \in U_0$, as $t \to +\infty$;
+2. **asymptotically stable** if there exists a neighborhood $U_0 \supset S_0$ such that $\evolOp(t, x) \to S_0$ for all $x \in U_0$, as $t \to +\infty$;
 3. **stable** if it is both *Lyapunov* and *asymptotically stable*;
 4. **unstable** if it is not *stable*.
 :::
 
-Stable invariant set is called an *attractor*, whereas if the invariant set is unstable it is called a *repeller*.
+A stable invariant set is called an *attractor*, whereas if the invariant set is unstable it is called a *repeller*.
 
 #### Topologically Equivalent Dynamical Systems
 
@@ -191,7 +191,7 @@ So far, we have described dynamical systems mainly in general terms. Later, we w
 :::{#def-topological-equivalence}
 ##### Topological equivalence
 
-A dynamical system $\obj D_1 = (\timeSet, \R^n, \evolOp)$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = (\timeSet, \R^n, \oper{\psi})$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such case, their phase portraits are called *(topologically) equivalent*.
+A dynamical system $\obj D_1 = (\timeSet, \R^n, \evolOp)$ is said to be *topologically equivalent* to a dynamical system $\obj D_2 = (\timeSet, \R^n, \oper{\psi})$, if there exists a *homeomorphism*[^homeomorphism] $\vi h: \R^n \to \R^n$, which maps orbits of system $\obj D_1$ to orbits of system $\obj D_2$, such that their orientation is kept. In such a case, their phase portraits are called *(topologically) equivalent*.
 :::
 
 [^homeomorphism]: In the context of topology, a *homeomorphism* (also called a *bicontinuous function*) is a bijective and continuous function, such that its inverse is also continuous.
@@ -222,11 +222,11 @@ In ([-@eq-autonomous-ode-system]), we have given the ODE in explicit form, but, 
 $$
 \vi F(\vi x, \dvi x, \ddot{\vi x}, \dots, \vi x^{(k)}) = \vi 0.
 $$ {#eq-implicit-ode-system}
-Such system can always be translated into a first-order system of equations
+Such a system can always be translated into a first-order system of equations
 $$
 \vi G(\vi y, \dvi y) = \vi 0
 $$
-and, if $\vi F$ (or $\vi G$ respectively) allows it, even to the explicit form ([-@eq-autonomous-ode-system]).
+and, if $\vi F$ (or $\vi G$, respectively) allows it, even to the explicit form ([-@eq-autonomous-ode-system]).
 
 ::: {.callout-tip #tip-ode-vector-field}
 ##### Vector field
@@ -267,7 +267,7 @@ See @Chicone2006, page 160, or @Perko2001, page 185.
 :::{#def-hyperbolic-equilibrium-cont}
 ##### Hyperbolic equilibrium
 
-An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic*, if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
+An equilibrium $\vi x^*$ of the system ([-@eq-autonomous-ode-system]) is called *hyperbolic* if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ lies on the imaginary axis.
 :::
 
 :::{#thm-grobman-hartman-cont}
@@ -287,7 +287,7 @@ This theorem is very prominently used in conjunction with *linear* continuous-ti
 $$
 \dvi y = \vi A \vi y,
 $$
-where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi y^*$. Thus, we can partition the state-space into disjoint linear (vector) subspaces:
+where $\vi y \in \R^n$ and $\vi A \in \R^{n\times n}$, with an equilibrium $\vi y^*$. Thus, we can partition the state space into disjoint linear (vector) subspaces:
 
 - *stable subspace* $\obj{E}^s = \Span{\vi v^1, \dots, \vi v^{n_{-}}}$ of dimension $n_{-}$, where $\vi v^1, \dots, \vi v^{n_{-}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *negative* real parts;
 - *unstable subspace* $\obj{E}^u = \Span{\vi u^1, \dots, \vi u^{n_{+}}}$ of dimension $n_{+}$, where $\vi u^1, \dots, \vi u^{n_{+}}$ are the eigenvectors of $\vi A$ corresponding to eigenvalues with *positive* real parts;
@@ -358,7 +358,7 @@ See @Elaydi2005, page 222.
 :::{#def-hyperbolic-equilibrium-discrete}
 ##### Hyperbolic fixed point
 
-A fixed point $\vi x^*$ of the system ([-@eq-autonomous-difference-sys]) is called **hyperbolic**, if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ has unit magnitude.
+A fixed point $\vi x^*$ of the system ([-@eq-autonomous-difference-sys]) is called **hyperbolic** if none of the eigenvalues corresponding to the Jacobian matrix $\Jacobi^* = \jacobi \vi f(\vi x^*)$ has unit magnitude.
 :::
 
 :::{#thm-grobman-hartman-discrete}
@@ -389,7 +389,7 @@ Here, $I_2$ corresponds to a 2-by-2 identity matrix, $\trace \Jacobi^* = \lambda
 
 By @thm-grobman-hartman-discrete, we know that the system ([-@eq-2d-discrete-dyn-sys]) is locally topologically equivalent to its linearization in a neighborhood of its hyperbolic fixed point $\vi x^*$. Interestingly, we can classify the said fixed point based on the number of stable (and unstable) eigenvectors of the corresponding $\Jacobi^*$, i.e., the classification is based on the dimensions of $\obj E^s$, $\obj E^u$ and $\obj E^c$ of the partitioning of the state-space per linearization.
 
-A fixed point is classified as a *sink*, when both eigenvalues are real and stable, i.e., real with modulus below 1. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex (complex with modulus less than 1). Should one eigenvalue be stable (modulus below 1) and the other unstable (modulus greater than 1), the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable (modulus above 1) and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
+A fixed point is classified as a *sink*, when both eigenvalues are real and stable, i.e., real with a modulus below 1. Similarly, it is called a *spiral sink* if both eigenvalues are stable and complex (complex with modulus less than 1). Should one eigenvalue be stable (modulus below 1) and the other unstable (modulus greater than 1), the resulting fixed point is a *saddle*. Finally, an equilibrium is a *source*, resp. *spiral source*, when both eigenvalues are unstable (modulus above 1) and *real*, resp. *complex*. For an overview, see @fig-2d-discrete-dynamical-system.
 
 ```{julia}
 #| fig-cap: "Orbits near different equilibria of a linear discrete-time dynamical system (time flows from blue to red)."
@@ -436,10 +436,10 @@ fig
 ```
 :::
 
-For completeness sake, we give a classical result from theory of ODEs concerning the existence, uniqueness and smooth dependence on the initial conditions of the solution for a given ODE.
+For completeness sake, we give a classical result from the theory of ODEs concerning the existence, uniqueness, and smooth dependence on the initial conditions of the solution for a given ODE.
 
 :::{#thm-exists-unique-smooth-ode-solution}
-##### Existence, uniqueness and smooth dependence
+##### Existence, uniqueness, and smooth dependence
 
 Consider a system of ordinary differential equations
 $$
@@ -477,7 +477,7 @@ where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a perio
 
 The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of codimension one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to a through-going trajectory, thus the trajectory truly intersects the cross-section $\crossSection$.
 
-Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depend smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
+Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depends smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
 $$
 \vi x \mapsto \tilde{\vi x} = \vi P(\vi x).
 $$
@@ -497,7 +497,7 @@ In other words, the Poincaré map $\vi P$ prescribes a *discrete-time dynamical 
 $$
 \Jacobi_{\vi P} = \jacobi_{\vi \xi} \vi P(\vi \xi_0),
 $$
-are located inside the unit circle $\norm{\vi \mu} = 1$. The Poincaré map will throughout this thesis paint itself a powerful tool in the bifurcation analysis of dynamical systems, and the following lemma hints at its usefulness.
+are located inside the unit circle $\norm{\vi \mu} = 1$. The Poincaré map will throughout this thesis paint itself as a powerful tool in the bifurcation analysis of dynamical systems, and the following lemma hints at its usefulness.
 
 :::{#lem-poincaré-map}
 The multipliers $\mu_1, \dots, \mu_{n - 1}$ of the Jacobian matrix $\Jacobi_{\vi P}$ of the Poincaré map $\vi P$ associated with a cycle $L_0$ are independent of the point $\vi x_0$ on $L_0$, the cross-section $\crossSection$, and local coordinates on it.
@@ -555,7 +555,7 @@ See @Kuznetsov2023, page 30, for a sketch of the proof.
 
 So far, we have only considered deterministic dynamical systems. Their defining feature was the absence of abrupt changes, i.e., the total lack of randomness. Contrastingly, in practice one has to constantly deal with noise in measurements of the studied system. This effectively results in a stochastic dynamical system induced by the stochastic random process arising from the measurements. Let us note this section is primarily based on @Kloeden1992.
 
-Let us first introduce necessary theory of stochastic analysis.
+Let us first introduce the necessary theory of stochastic analysis.
 
 :::{#def-stochastic-process}
 ##### Stochastic process
@@ -608,7 +608,7 @@ Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it
 See @Kloeden1992, page 28.
 :::
 
-In other words, in @def-stochastic-process we have constructed process which selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process which is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
+In other words, in the @def-stochastic-process we have constructed a process that selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process that is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
 
 Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential formulation)
 $$
@@ -632,7 +632,7 @@ which can be understood as *distributional derivative*. Now let us return to the
 $$
 \dd \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
 $$
-which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. This rather simple SDE prescribes so called *geometric Brownian motion*. In general, a random process $\rX(t)$ is called **Itô process**, if it is a solution to
+which we are tasked with solving for a random process $\rX(t)$, $t \geq 0$, that satisfies this SDE. This rather simple SDE prescribes so-called *geometric Brownian motion*. In general, a random process $\rX(t)$ is called **Itô process**, if it is a solution to
 $$
 \dd \rX(t) = \rnd U(t) \dd t + \rnd V(t) \dd \rW(t), \; \rX(0) = \rX_0,
 $$
@@ -646,13 +646,13 @@ To understand how delays influence dynamical systems and define a *semidynamical
 
 So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, see ([-@eq-autonomous-ode-system]) and ([-@eq-implicit-ode-system]), e.g. $F(t, x, \dot{x}, \ddot{x}) = 0$.
 
-In contrast, a *functional equation* (FE) is an equation connecting outputs of an unknown function evaluated at different argument values. As an example, $x(-t) + 3x(2t) = 0$, $x(x(t)) = x(t) + 2$, and $x(t) = tx(t+1) - \brackets{x(t-2)}^3$ are all examples of functional equations. The differences between the argument values of an unknown function and $t$ (its "default" argument) in a FE are called *argument deviations*. If all argument deviations are constant (like in the last example shown above), then the FE is called a *difference-functional equation*.
+In contrast, a *functional equation* (FE) is an equation connecting outputs of an unknown function evaluated at different argument values. As an example, $x(-t) + 3x(2t) = 0$, $x(x(t)) = x(t) + 2$, and $x(t) = tx(t+1) - \brackets{x(t-2)}^3$ are all examples of functional equations. The differences between the argument values of an unknown function and $t$ (its "default" argument) in an FE are called *argument deviations*. If all argument deviations are constant (like in the last example shown above), then the FE is called a *difference-functional equation*.
 
-Although, we have so far shown only examples of FEs with *discrete* (or *concentrated*) argument deviations, another possibility are FEs with *continuous* and *mixed* (both continuous and discrete) *argument deviations*. They are called *integral* and *integral-functional* (or *integral-difference*) equations.
+Although we have so far shown only examples of FEs with *discrete* (or *concentrated*) argument deviations, another possibility is FEs with *continuous* and *mixed* (both continuous and discrete) *argument deviations*. They are called *integral* and *integral-functional* (or *integral-difference*) equations.
 
-We can further combine these notions of ordinary differential equations and functional equations, yielding in the process *functional differential equations* (FDEs). FDEs can also contain discrete, continuous or mixed argument deviations. Thus, one can introduce *differential-difference equations*, and *integro-differential equations* in a similar way as seen above.
+We can further combine these notions of ordinary differential equations and functional equations, yielding in the process *functional differential equations* (FDEs). FDEs can also contain discrete, continuous, or mixed argument deviations. Thus, one can introduce *differential-difference equations*, and *integro-differential equations* in a similar way as seen above.
 
-The aforementioned generalization in its full form leads to *functional differential equations* --- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of form
+The aforementioned generalization in its full form leads to *functional differential equations* --- equations describing the relation between the unknown function and some of its derivatives for, in general, different argument values. Our main subject of study will be a subclass of *differential-difference equations* called the *functional differential equations with aftereffects*, which are of the form
 $$
 \vi x^{(m)}(t) = \vi f\brackets{t, \vi x^{(m_1)}(t - \tau_1(t)), \dots, \vi x^{(m_k)}(t - \tau_k(t))},
 $$
@@ -689,14 +689,14 @@ $$
 \dot y(t) = \underbrace{f(t, y(t), \phi(t - r))}_{g(t,y)}, \; y(s) = \phi(s), \; s \leq t \leq s + r.
 $$
 
-From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ and $g_y$, thus existence of an unique local solution is guaranteed by classic results from the ODE theory, see, for example, @Chicone2006. Moreover, if this local solution $x(t)$ exists on the entire interval $s \leq t \leq s + r$, then, together with the history $\phi$, we know the solution $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, s+r]$ and we may repeat the presented argument to extend our solution to the right. Indeed, considering now the interval $s+r \leq t \leq s + 2r$, a solution of $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) must now satisfy the following ODE problem:
+From the continuity of $f$ and $f_x$ immediately follows the continuity of $g$ and $g_y$, thus the existence of a unique local solution is guaranteed by classic results from the ODE theory, see, for example, @Chicone2006. Moreover, if this local solution $x(t)$ exists on the entire interval $s \leq t \leq s + r$, then, together with the history $\phi$, we know the solution $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) on $[s-r, s+r]$ and we may repeat the presented argument to extend our solution to the right. Indeed, considering now the interval $s+r \leq t \leq s + 2r$, a solution of $x(t)$ of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]) must now satisfy the following ODE problem:
 $$
 \begin{aligned}
 	\dot y(t) &= f(t, y(t), x(t - r)), && s+r \leq t \leq s+2r, \\
 	y(s+r) &= x(s+r). &&
 \end{aligned}
 $$ {#eq-method-of-steps-second-iter}
-Just as before, from continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
+Just as before, from the continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
 
 :::{#thm-1d-single-delay-method-of-steps}
 ##### Single-delay method of steps on $\R$
@@ -705,14 +705,14 @@ Let $f(t,x,y)$ and $f_x(x,y,t)$ be continuous on $\R^3$, $s \in \R$, and let $\p
 :::
 
 :::{.proof}
-Follows directly from calculations above.
+Follows directly from the calculations above.
 :::
 
 A careful reader might notice that @thm-1d-single-delay-method-of-steps guarantees only a local solution, but we might want a solution for any $t \geq s$. We will use the notation $[s-r, \sigma\rco$ to denote either the right-open interval, $[s-r, \sigma)$, or the right-closed one, $[s-r, \sigma]$.
 
 From the uniqueness follows that for two solutions $x(t)$ on $[s-r, \sigma\rco$ and $\hat x(t)$ on $[s-r, \rho\rco$, the equality $x(t) = \hat x(t)$ must hold for all $t$, such that both sides of the equality are defined. Moreover, if $[s-r, \sigma\rco \subset [s-r, \rho\rco$, then $\hat x$ is called an *extension* of $x$ and we write $x \subset \hat x$.
 
-One can prove there exists a *unique* maximally defined solution, i.e., one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it could be extended to a larger interval, which contradicts non-extendability of $x$.
+One can prove there exists a *unique* maximally defined solution, i.e., one for which there are no extensions, $x : [s-r, \sigma) \to \R$, similarly as for ODEs, for $\sigma \in \R \cup \set{\infty}$. Such a solution is called *non-extendable* and is necessarily defined on a right-open interval $[s-r, \sigma)$. Indeed, if $\sigma < \infty$ and $x$ were a solution on $[s-r, \sigma]$, then, by @thm-1d-single-delay-method-of-steps, it could be extended to a larger interval, which contradicts non-extendability of $x$.
 
 :::{#thm-dde-finite-time-blow-up}
 ##### Finite-time blow-up
@@ -815,7 +815,7 @@ with $0 = \tau_0 < \tau_1 < \dots < \tau_H$. For brevity, we will denote $\tau :
 $$
 \vi x_t(s) := \vi x(t+s), \; -\tau \leq s \leq 0,
 $$
-which, informally, prescribes the value of solution $\vi x$ up to time $t$ delayed by $s$. In other words, we can view the trajectory of our solution as the curve $t \to \vi x_t$ in the state space $\contStateSpace = \contf{[-\tau, 0], \R^n}{}$ with supremum norm
+which, informally, prescribes the value of solution $\vi x$ up to time $t$ delayed by $s$. In other words, we can view the trajectory of our solution as the curve $t \to \vi x_t$ in the state space $\contStateSpace = \contf{[-\tau, 0], \R^n}{}$ with the supremum norm
 $$
 \norm{\vi \phi} = \sup_{-\tau \leq s \leq 0} \norm{\vi \phi(s)},
 $$
@@ -835,7 +835,7 @@ $$
 	\vi x_{\sigma} &= \vi \phi,
 \end{aligned}
 $$ {#eq-dde-problem-autonomous}
-where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e., the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness sake, we also add that general RFDE initial-value problem reads as follows
+where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e., the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness's sake, we also add that general the RFDE initial-value problem reads as follows
 $$
 \begin{aligned}
 	\dvi x(t) &= \vi F(t, \vi x_t), \\
@@ -855,13 +855,13 @@ which follows from the Taylor expansion of $\vi f$.
 
 #### Backward Extension {#sec-backward-extension-dde}
 
-Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backwards in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should be evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
+Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backward in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should be evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
 
 Per @Smith2010 and @Hale1993, we say that $\vi x : [\sigma - \tau - \alpha, \sigma] \to \R^n$ for $\alpha > 0$ is a (backward) solution of the initial-value problem given by ([-@eq-rfde-problem]) if $\vi x$ is continuous, $\vi x$ satisfies the initial condition and
 $$
 \dvi x(t) = \vi F(t, \vi x_t), \; t \in [\sigma - \alpha, \sigma].
 $$
-Because $\vi x_{\sigma} = \vi \phi$ must hold as well, due to the initial condition, we get that $\vi x(t) = \vi \phi(t - \sigma)$ must be continuously differentiable for $t \in [\sigma - \alpha, \sigma]$. As $\vi \phi \in \contStateSpace$, we can equivalently say that $\vi \phi$ must be continuously differentiable on $[-\minOf{\alpha, \tau}, 0]$. This significantly constraints the space of all admissible elements in $\contStateSpace$. Furthermore, because the equality must hold at $t = \sigma$, we get
+Because $\vi x_{\sigma} = \vi \phi$ must hold as well, due to the initial condition, we get that $\vi x(t) = \vi \phi(t - \sigma)$ must be continuously differentiable for $t \in [\sigma - \alpha, \sigma]$. As $\vi \phi \in \contStateSpace$, we can equivalently say that $\vi \phi$ must be continuously differentiable on $[-\minOf{\alpha, \tau}, 0]$. This significantly constrains the space of all admissible elements in $\contStateSpace$. Furthermore, because the equality must hold at $t = \sigma$, we get
 $$
 \dvi \phi(0) = \dvi x(\sigma) = \vi f(\sigma, \vi x_{\sigma}) = \vi f(\sigma, \vi \phi),
 $$
@@ -870,7 +870,7 @@ $$
 \manifold = \set{\vi \psi \in \contStateSpace \cap \contf{[-\minOf{\tau, \alpha}, 0], \R^n}{1} : \dvi \psi(0) = \vi f(\sigma, \vi \psi)}.
 $$
 
-It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ --- steady-state and periodic solutions can be given as examples.
+It is reasonable to assume that for a typical history function $\vi \phi \in \contStateSpace$, these conditions will not be met, and therefore backward extension will not be possible. However, if $\vi x: [\sigma - \tau, \sigma + A)$, $A > 0$ is a (forward) solution of ([-@eq-rfde-problem]) and if $\sigma_1 \in (\sigma, \sigma + A)$, then the initial-value problem corresponding to this intermezzo initial condition $(\sigma_1, \vi \psi)$, where $\vi \psi = \vi x_{\sigma_1}$, has a backward solution $\vi x$. It can be shown that many (but not all) solutions of autonomous systems ([-@eq-dde-problem-autonomous]) extend to all $t \in \R$ --- steady-state and periodic solutions can be given as examples.
 
 #### Stability {#sec-dde-stability}
 
@@ -896,7 +896,7 @@ $$
 $$
 which yields that $\vi z$ is a solution to ([-@eq-non-zero-stability]), which was to be shown.
 
-Moreover, we shall also define a *solution operator* (or *solution map*) for autonomous RFDEs. This will become useful later when discussing stability of equilibria in the case of DDEs from the perspective of their linearization, see @sec-dde-equilibrium-localization.
+Moreover, we shall also define a *solution operator* (or *solution map*) for autonomous RFDEs. This will become useful later when discussing the stability of equilibria in the case of DDEs from the perspective of their linearization, see @sec-dde-equilibrium-localization.
 
 :::{#def-dde-solution-oper}
 Consider the autonomous DDE problem ([-@eq-dde-problem-autonomous]). The *solution operator* $\solOp(t, \sigma) : \contStateSpace \to \contStateSpace$ from time $\sigma$ to $t$, such that $t \geq \sigma$, is defined as
@@ -937,7 +937,7 @@ $$
 $\contStateSpace$ is a metric space and $\evolOp : \widetilde{\timeSet} \times \contStateSpace \to \contStateSpace$ is continuous map, which satisfies the *deterministic* and *composition* properties from @def-dynamical-system.
 :::
 
-The difference between @def-dynamical-system and @def-semidynamical-system is rather subtle. It lies in the restriction to $\widetilde{\timeSet}$, which permits only projection forward in time. Indeed, by using $\widetilde{\timeSet} = \timeSet \times \timeSet$, we get the usual dynamical system. Note, that autonomous semidynamical system is defined analogously as in @def-autonomous-dynamical-system. Also, basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
+The difference between @def-dynamical-system and @def-semidynamical-system is rather subtle. It lies in the restriction to $\widetilde{\timeSet}$, which permits only projection forward in time. Indeed, by using $\widetilde{\timeSet} = \timeSet \times \timeSet$, we get the usual dynamical system. Note, that an autonomous semidynamical system is defined analogously as in @def-autonomous-dynamical-system. Also, basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
 
 :::{#lem-autonomous-semidynamical-system}
 Semidynamical system $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$ is autonomous if and only if whenever $\vi x(t)$ is a solution defined on subset $I \subseteq \timeSet$ and $\tau \in \timeSet_G$, then $\vi x(t + \tau)$ is a solution on $I - \tau$, where $I - \tau = \set{t - \tau \divider t \in I}$.
@@ -957,7 +957,7 @@ $$
 $$
 then it prescribes a **non**-autonomous semidynamical system. Analogously to the dynamical system case, the evolution operator $\evolOp$ of an autonomous semidynamical system is called a *semiflow*.
 
-For compatibility with the source material, see @Smith2010, we will now consider an initial-value problem ([-@eq-rfde-problem]) for a RFDE, though for our purposes a DDE would suffice,
+For compatibility with the source material, see @Smith2010, we will now consider an initial-value problem ([-@eq-rfde-problem]) for an RFDE, though for our purposes a DDE would suffice,
 $$
 \dvi x(t) = \vi F(t, \vi x_t), \; \vi x_\sigma = \vi \phi,
 $$
@@ -976,11 +976,11 @@ See @Smith2010, page 65.
 
 ## Numerical Methods
 
-As the title may suggest, computational aspects of ODEs, DDEs and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, Newton-Raphson method will be discussed.
+As the title may suggest, computational aspects of ODEs, DDEs, and other mathematical problems will play a key role in this thesis. For completeness' sake, a brief overview of numerical integrators (also called *solvers*) for ODEs, DDEs, and stochastic differential equations (SDEs) will be given, as well as basic methods of one-dimensional optimization. Lastly, the Newton-Raphson method will be discussed.
 
 ### Numerical integration of ODEs {#sec-integrating-odes}
 
-Solving, or numerically integrating, ordinary differential equations can be seen as a backbone of this thesis. As such, we will introduce two approaches, Euler method and Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
+Solving, or numerically integrating, ordinary differential equations can be seen as the backbone of this thesis. As such, we will introduce two approaches, the Euler method and the Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
 
 Consider an ODE of form
 $$
@@ -995,7 +995,7 @@ $$
 \vi x(t_0 + \diff t_1) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t_1  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t_1.
 $$
 
-Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
+Repeating this process on the entire interval $[t_0, t_N]$ gives us the @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
 ::: {.callout appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
@@ -1008,7 +1008,7 @@ Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-m
 **end**
 :::
 
-Whilst the Euler method is simple, it does have its drawbacks mainly in the accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
+Whilst the Euler method is simple, it does have its drawbacks mainly in its accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
 
 :::{#def-ode-solver-error}
 Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. *Local truncation error* (LTE) is defined as
@@ -1021,15 +1021,15 @@ $$
 $$ {#eq-glob-err}
 :::
 
-> In general, we seek such method, which fulfills given accuracy while using as few evaluations of $\vi F$ as possible --- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
+> In general, we seek such a method, which fulfills given accuracy while using as few evaluations of $\vi F$ as possible --- the assumption is that the evaluation of $\vi F$ is so costly the remaining operations are almost negligible.
 
-By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for Euler method, we get (recalling the Taylor expansion ([-@eq-euler-method-taylor]))
+By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for the Euler method, we get (recalling the Taylor expansion ([-@eq-euler-method-taylor]))
 $$
 \locTrErr_k = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \vi F(t_k, \vi x(t_k)) \implies \locTrErr_k = O(\diff t_{k+1}^2).
 $$
-We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., Euler method is first order.
+We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., the Euler method is first order.
 
-This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of next value to be dependent on multiple previous values, leading to multistep methods. Last option --- and the one we shall use --- is to modify a one-step method to produce a intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so called **Runge-Kutta** methods.
+This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of the next value to be dependent on multiple previous values, leading to multistep methods. The last option --- and the one we shall use --- is to modify a one-step method to produce intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so-called **Runge-Kutta** methods.
 
 ::: {.callout appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
@@ -1054,7 +1054,7 @@ Usually, we constrain the coefficients to fulfill
 $$
 c_m = \sum_{n = 1}^{m - 1} a_{mn},
 $$ {#eq-runge-kutta-eval-cond}
-which represents the assumption that all points, where $\vi F$ is evaluated, are first order approximations to the solution. It can be shown that ([-@eq-runge-kutta-eval-cond]) significantly simplifies the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, it is not necessary.
+which represents the assumption that all points, where $\vi F$ is evaluated, are first-order approximations of the solution. It can be shown that ([-@eq-runge-kutta-eval-cond]) significantly simplifies the derivation of order conditions ([-@eq-runge-kutta-order-condition-4-stage]), but for low order, it is not necessary.
 
 Our task is now to choose the coefficients in @alg-runge-kutta-explicit so that the order of the method is maximized. This corresponds to computing the Taylor series expansion for each $\vi k_j$ in the state variable of $\vi F$. By combining these results, we can compare them with the Taylor expansion of $\vi x_i$. Hence, we obtain the following conditions (given for a 4-stage method), using $c_1 = 0$:
 $$
@@ -1084,7 +1084,7 @@ Throughout this thesis, we will use solvers available in DifferentialEquations.j
 
 ### Numerical Integration of DDEs {#sec-integrating-ddes}
 
-As invested reader can surely recall, we have already discussed method of steps in @sec-method-of-steps as an analytical way to solve DDEs. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
+As invested readers can surely recall, we have already discussed the method of steps in @sec-method-of-steps as an analytical way to solve DDEs. There, we reformulated the problem of integrating a DDE forward in time as a sequence of ODE initial-value problems, which needed to be integrated on smaller intervals. A detailed treatment of the numerical integration of DDEs can be found in @Bellen2003.
 
 Consider the following DDE IVP^[In general, methods discussed in this subsection allow a time-dependent delay $\tau$, i.e., $\tau(t)$.],
 $$
@@ -1095,7 +1095,7 @@ $$
 $$ {#eq-dde-numerical-sol-problem}
 where $\vi x(\cdot) \in \R^n$ and $\vi f: [t_0, t_f] \times \R^n \times \R^n \to \R^n$, and a set of mesh points $\mcal T = \set{t_0, t_1, \dots, t_N = t_f}$, such that either $t_n - \tau < t_0$ or $t_n - \tau \in \mcal T$. Note that the presented methods can be extended to IVPs with multiple delays, e.g., ([-@eq-dde-problem-autonomous]).
 
-Once such method is available, any ODE numerical integrator which operates strictly on the mesh $\mcal T$ may be used --- these are typically called *linear multistep* (LMS) methods. For instance, @alg-dde-explicit-euler shows the explicit (forward) Euler method adapted for ([-@eq-dde-numerical-sol-problem]).
+Once such a method is available, any ODE numerical integrator that operates strictly on the mesh $\mcal T$ may be used --- these are typically called *linear multistep* (LMS) methods. For instance, @alg-dde-explicit-euler shows the explicit (forward) Euler method adapted for ([-@eq-dde-numerical-sol-problem]).
 
 ::: {.callout appearance="simple" #alg-dde-explicit-euler}
 ##### Euler method (explicit) for DDEs
@@ -1115,7 +1115,7 @@ $$
 	x(0) &= 1, &&
 \end{aligned}
 $$
-no finite mesh $\mcal T$ can be found, as for any $t \in \mcal T$ also $t/2$ must belong to the mesh (thus no initial stepsize exists). Nevertheless, in general, one can construct a suitable finite mesh $\mcal T$ for any bounded interval $[t_0, t_f]$ if there is no vanishing delay point in $[t_0, t_f]$, see @def-vanishing-delay and @thm-discontinuities-before-vanishing. Bellen and Zennaro @Bellen2003, see page 38, outline a possible strategy for doing so, along with its pitfalls. Also note that this approach can be rather easily extended to *Adams-like* methods and even some *Runge-Kutta* formulae (such as the *Heun* method).
+no finite mesh $\mcal T$ can be found, as for any $t \in \mcal T$ also $t/2$ must belong to the mesh (thus no initial stepsize exists). Nevertheless, in general, one can construct a suitable finite mesh $\mcal T$ for any bounded interval $[t_0, t_f]$ if there is no vanishing delay point in $[t_0, t_f]$, see @def-vanishing-delay and @thm-discontinuities-before-vanishing. Bellen and Zennaro @Bellen2003, see page 38, outline a possible strategy for doing so, along with its pitfalls. Also, note that this approach can be rather easily extended to *Adams-like* methods and even some *Runge-Kutta* formulae (such as the *Heun* method).
 
 Another possible approach is to replace the strict constraints on the time mesh $\mcal T$ by an interpolation method. Nonetheless, most often the discontinuity points belonging to $[t_0, t_f]$ are included in $\mcal T$, as ODE solvers generally require smoothness of the solution (or at least such property is highly beneficial for accuracy). 
 
@@ -1148,12 +1148,12 @@ An arbitrary ODE solver can then be used as a *continuous ODE method* (with $j_i
 ::: {.callout-tip #tip-dde23-improvements}
 ##### Improvements to `dde23`
 
-Throughout the work on this thesis and related publications, we have noticed a significantly worse performance of the `dde23` method compared to equivalent DDE solver in Julia, see [this Git repository](https://gitlab.com/sceptri-university/dde-julia-matlab-comparison). Humusoft, the distributor of MATLAB for the Czech Republic and Slovakia, determined that the issue lies in the code to find appropriate index $i$ such that $t - \tau \in [t_i, t_{i+1}]$ for a given $t$ (necessary for determining, e.g., $\mcal T'_i$). The main inefficiency was caused by searching for $i$ starting from the most distant past, see @Shampine2001 for reference on the implementation. This problem is fixed in MATLAB version R2024b onward.
+Throughout the work on this thesis and related publications, we have noticed a significantly worse performance of the `dde23` method compared to the equivalent DDE solver in Julia, see [this Git repository](https://gitlab.com/sceptri-university/dde-julia-matlab-comparison). Humusoft, the distributor of MATLAB for the Czech Republic and Slovakia, determined that the issue lies in the code to find appropriate index $i$ such that $t - \tau \in [t_i, t_{i+1}]$ for a given $t$ (necessary for determining, e.g., $\mcal T'_i$). The main inefficiency was caused by searching for $i$ starting from the most distant past, see @Shampine2001 for reference on the implementation. This problem is fixed in MATLAB version R2024b onward.
 :::
 
 ### Numerical Integration of SDEs
 
-In @sec-stochastic-dyn-systems, we have presented a framework for dealing with stochastic dynamical systems. These very often arise from noisy measurements of the underlying system. Using discussed concepts, we can represent this as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
+In @sec-stochastic-dyn-systems, we have presented a framework for dealing with stochastic dynamical systems. These very often arise from noisy measurements of the underlying system. Using the discussed concepts, we can represent this as a discrete-time approximation of an Itô process. In particular, we will use the **Euler-Maruyama** approximation. Consider an Itô process $\rX = \set{\rX(t) \divider t_0 \leq t \leq T}$ satisfying the scalar SDE
 $$
 \dd \rX(t) = a(t, \rX(t)) \dd t + b(t, \rX(t)) \dd \rW(t), \; \rX(t_0) = \rX_0
 $$ {#eq-euler-maruyama-sde}
@@ -1175,7 +1175,7 @@ and as such $\set{\rY_n}_n$ can be interpreted as a Markov chain. This can be ea
 $$
 \dd \vr X(t) = \vi a(t, \vr X(t)) \dd t + \vi B(t, \vr X(t)) \dd \vr W(t), \; \vr X(t_0) = \vr X_0,
 $$ {#eq-euler-maruyama-vec-problem}
-where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in @alg-euler-maruyama-method.
+where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in the @alg-euler-maruyama-method.
 
 ::: {.callout appearance="simple" #alg-euler-maruyama-method}
 ##### Euler-Maruyama method
@@ -1189,18 +1189,18 @@ where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega))
 **end**
 :::
 
-Let us note that for implementation, we use the `EM` method from DifferentialEquations.jl by @Rackauckas2017 for Julia and a custom implementation for MATLAB, see @MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To interested reader, we recommend @Scheutzow2018 for general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
+Let us note that for implementation, we use the `EM` method from DifferentialEquations.jl by @Rackauckas2017 for Julia and a custom implementation for MATLAB, see @MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To an interested reader, we recommend @Scheutzow2018 for a general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of the Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
 
 ### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
 
 Optimization is almost ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is fortunately the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
 
-The methods we will present can be collectively called *bracketing*, as they rely on iteratively shrinking an interval inside which a local minimum lies. Furthermore, a single-minimum requirement shall be placed on functions to be optimized. For functions on $\R$, this translates to so called *unimodality*.
+The methods we will present can be collectively called *bracketing*, as they rely on iteratively shrinking an interval inside which a local minimum lies. Furthermore, a single-minimum requirement shall be placed on functions to be optimized. For functions on $\R$, this translates to so-called *unimodality*.
 
 :::{#def-unimodal-function}
 ##### Unimodal function
 
-Let $I \subset \R$ be a interval and $f: I \to \R$ a function. We say $f$ is **unimodal** if there exists $x^* \in I$ such that
+Let $I \subset \R$ be an interval and $f: I \to \R$ a function. We say $f$ is **unimodal** if there exists $x^* \in I$ such that
 
 - $f(x_1) > f(x_2)$ for arbitrary $x_1, x_2 \in I$ satisfying $x_1 < x_2 < x^*$;
 - $f(x_1) < f(x_2)$ for arbitrary $x_1, x_2 \in I$ satisfying $x^* < x_1 < x_2$.
@@ -1209,7 +1209,7 @@ Let $I \subset \R$ be a interval and $f: I \to \R$ a function. We say $f$ is **u
 ::: {.callout-note #nte-unimodality}
 ##### Unimodality
 
-As a careful reader might notice, unimodal function is necessarily *monotone decreasing* on $(-\infty, x^*) \cap I$ and *monotone increasing* on $I \cap (x^*, \infty)$. Moreover, unimodality implies only *quasi-convexity*^[A function $f: S \to \R$, where $S$ is a real vector space, is *convex* on $S$ if for all $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ holds $f(\lmbd \vi x + (1 - \lmbd) \vi) \leq \lmbd f(\vi x) + (1 - \lmbd) f(\vi y)$ and *strictly convex* if the inequality is strict. Furthermore, we call it *quasi-convex* on $S$ if for any $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ we have $f(\lmbd \vi x + (1 - \lmbd) \vi y) \leq \minOf{f(\vi x), f(\vi y)}$.] and, on the other hand, only *strict convexity* implies unimodality of a function on $f: I \to \R$.
+As a careful reader might notice, a unimodal function is necessarily *monotone decreasing* on $(-\infty, x^*) \cap I$ and *monotone increasing* on $I \cap (x^*, \infty)$. Moreover, unimodality implies only *quasi-convexity*^[A function $f: S \to \R$, where $S$ is a real vector space, is *convex* on $S$ if for all $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ holds $f(\lmbd \vi x + (1 - \lmbd) \vi) \leq \lmbd f(\vi x) + (1 - \lmbd) f(\vi y)$ and *strictly convex* if the inequality is strict. Furthermore, we call it *quasi-convex* on $S$ if for any $\vi x, \vi y \in S$ and $\lmbd \in [0,1]$ we have $f(\lmbd \vi x + (1 - \lmbd) \vi y) \leq \minOf{f(\vi x), f(\vi y)}$.] and, on the other hand, only *strict convexity* implies unimodality of a function on $f: I \to \R$.
 :::
 
 :::{#lem-unimodality}
@@ -1227,7 +1227,7 @@ Consider now the following optimization problem
 $$
 \min_{x \in I} f(x), \quad \text{resp.} \quad \argmin_{x \in I} f(x),
 $$ {#eq-unimodal-optim-problem}
-for an **unimodal** function $f: I \to \R$, $I = [a,b]$. Furthermore, let $N$ denote the *allowed number of evaluations* of $f$ and assume the accuracy of presented methods is $\absval{\bar x  - x^*}$, where $x^*$ is the exact solution of ([-@eq-unimodal-optim-problem]) and $\bar x$ its approximation found by used method. Using @lem-unimodality, one can easily find the initial bracket to be successively shrunk if it is not provided in the definition of the optimization problem ([-@eq-unimodal-optim-problem]).
+for an **unimodal** function $f: I \to \R$, $I = [a,b]$. Furthermore, let $N$ denote the *allowed number of evaluations* of $f$ and assume the accuracy of presented methods is $\absval{\bar x  - x^*}$, where $x^*$ is the exact solution of ([-@eq-unimodal-optim-problem]) and $\bar x$ its approximation found by the used method. Using @lem-unimodality, one can easily find the initial bracket to be successively shrunk if it is not provided in the definition of the optimization problem ([-@eq-unimodal-optim-problem]).
 
 #### Bisection Method
 
@@ -1235,7 +1235,7 @@ Consider now $N = 2k$, $k \in \N$, choose $\delta \in (0, \frac{b - a} 2]$ suffi
 $$
 x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta \; \& \; x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta
 $$ {#eq-bisection-points}
-for $i = 1, \dots, k$. Now we can examine in which "half" of interval (including the offset $\delta$) the minimum lies, i.e., we evaluate $f(x_i^-), f(x_i^+)$ and adjust the bracket accordingly (by @lem-unimodality)
+for $i = 1, \dots, k$. Now we can examine in which "half" of the interval (including the offset $\delta$) the minimum lies, i.e., we evaluate $f(x_i^-), f(x_i^+)$ and adjust the bracket accordingly (by @lem-unimodality)
 
 - $f(x_i^-) < f(x_i^+) \implies [a_i, b_i] = [a_{i - 1}, x_i^+]$;
 - $f(x_i^-) > f(x_i^+) \implies [a_i, b_i] = [x_i^-, b_{i - 1}]$.
@@ -1284,7 +1284,7 @@ $$ {#eq-golden-ratio-frac}
 for $a > b > 0$ which satisfy the above equality.
 :::
 
-Consider an unimodal function $f: I \to \R$ on the interval $I = [a,b]$ subject to optimization problem ([-@eq-unimodal-optim-problem]) and evaluation-count restriction $N \geq 2$ (or desired accuracy $\ve$). Let us relax the bisection method such that
+Consider a unimodal function $f: I \to \R$ on the interval $I = [a,b]$ subject to an optimization problem ([-@eq-unimodal-optim-problem]) and evaluation-count restriction $N \geq 2$ (or desired accuracy $\ve$). Let us relax the bisection method such that
 $$
 x_i^- = a_{i-1} + \delta_- (b_{i-1} - a_{i-1}), \; x_i^+ = a_{i-1} + \delta_+ (b_{i-1} - a_{i-1})
 $$ {#eq-relaxed-bisection}
@@ -1340,13 +1340,13 @@ $$
 	&= \frac {x_{i-1}^+ - a_i + x_{i-1}^- - a_i} {x_{i+1}^+ - a_i}
 \end{aligned}
 $$ 
-gives us the relation ([-@eq-golden-ratio-frac]) defining the golden ratio, i.e., $\goldRatio = \frac 1 \delta$. In fact, the method bears its name due to this fact. Lastly, see @alg-golden-section-method for implementation.
+gives us the relation ([-@eq-golden-ratio-frac]) defining the golden ratio, i.e., $\goldRatio = \frac 1 \delta$. The method bears its name due to this fact. Lastly, see @alg-golden-section-method for implementation.
 
 #### Fibonacci method
 
 Let us now approach the problem from a different direction. Given the minimization problem ([-@eq-unimodal-optim-problem]) and maximum evaluations $N$, we want to shrink the initial bracket as much as possible.
 
-Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to a half of the original interval (i.e., shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
+Suppose only 2 evaluations are allowed. Then one possibility is to query $f$ at thirds of the initial interval. The final bracket will have a two-thirds length of the initial interval, but it can be improved. Consider the distance between the evaluations $\ve$, then the final bracket is guaranteed to shrink to half of the original interval (i.e., shrinkage by a factor of 2) as $\ve \to 0$ in the limit sense, see @fig-2-eval-fibonacci.
 
 ![Shrinkage by $\ve$-distance between the only two allowed evaluations.](../diagrams/2-eval_fibonacci_method.drawio.svg){#fig-2-eval-fibonacci .final}
 
@@ -1378,7 +1378,7 @@ where $s = \frac {1 - \sqrt{5}} {1 + \sqrt{5}}$. The algorithm of the Fibonacci 
 
 ### Newton's Method {#sec-newton-method}
 
-Last, but not least, we shall discuss the Newton's, or Newton-Raphson, method for finding roots of a given equation (or a system thereof). The treatment provided here follows @Lacerda2010. Suppose we are given a system of equations
+Last, but not least, we shall discuss Newton's, or Newton-Raphson, method for finding the roots of a given equation (or a system thereof). The treatment provided here follows @Lacerda2010. Suppose we are given a system of equations
 $$
 \begin{aligned}
 f_1(x_1, \dots, x_n) &= 0 \\
@@ -1388,7 +1388,7 @@ f_n(x_1, \dots, x_n) &= 0
 \end{aligned} \iff \vi F(\vi x) = \vi 0.
 $$ {#eq-newton-method-system}
 
-Let $\vi x^i \in \R^n$ be known and fixed, for example a previous iteration, then ([-@eq-newton-method-system]) can be approximated using Taylor's series in the neighborhood of $\vi x^i$. Corresponding first-order Taylor expansion is
+Let $\vi x^i \in \R^n$ be known and fixed, for example, a previous iteration, then ([-@eq-newton-method-system]) can be approximated using Taylor's series in the neighborhood of $\vi x^i$. Corresponding first-order Taylor expansion is
 $$
 f_k(\vi x) \approx f_k(\vi x^i) + \sum_{j = 1}^n \pDeriv {f_k(\vi x^i)}{x_j} (x_j - x^i_j).
 $$
@@ -1397,7 +1397,7 @@ Using vector notation, we can collectively approximate ([-@eq-newton-method-syst
 $$
 \vi F(\vi x^i) + \Jacobi_i (\vi x - \vi x^i) = \vi 0,
 $$ {#eq-newton-method-approx}
-where $\Jacobi_i = \jacobi_{\vi x} \vi F(\vi x^i)$, i.e., $(\Jacobi_i)_{k,j} = \pDeriv {f_k(\vi x^i)}{x_j}$. Certainly a solution to ([-@eq-newton-method-approx]) approximates the true solution to ([-@eq-newton-method-system]). Then, by sequentially approximating the true solution from points getting closer, the approximations also get more accurate. In other words, we can write the following iterative process to finding the true solution (to an arbitrary accuracy)
+where $\Jacobi_i = \jacobi_{\vi x} \vi F(\vi x^i)$, i.e., $(\Jacobi_i)_{k,j} = \pDeriv {f_k(\vi x^i)}{x_j}$. Certainly a solution to ([-@eq-newton-method-approx]) approximates the true solution to ([-@eq-newton-method-system]). Then, by sequentially approximating the true solution from points getting closer, the approximations also get more accurate. In other words, we can write the following iterative process to find the true solution (to an arbitrary accuracy)
 $$
 \vi x^{i+1} = \vi x^i - \Jacobi_i\Inv \vi F(\vi x^i).
 $$ {#eq-newton-iter}
@@ -1406,7 +1406,7 @@ While this formula for Newton's method is very common, we shall also present the
 $$
 \Jacobi_i \cdot \diff \vi x^{i+1} = \vi R(\vi x^i),
 $$ {#eq-newton-residual}
-where $\vi R(\vi x) = - \vi F(\vi x)$ is the *residual*, and $\diff \vi x^{i+1} = \vi x^{i+1} - \vi x^i$ is the *displacement*, which play the role of unknowns in ([-@eq-newton-residual]). As a careful reader might notice, instead of requiring an inverse of the Jacobian matrix $\Jacobi_i$, we have translated into a linear system of equations. If $\Jacobi_i\Inv$ exists and is numerically stable^[In such case we can calculate it straight or implicitly via so-called *left division*, which in Julia relies on pivoted QR decomposition.], then we can use it to solve ([-@eq-newton-residual]). On the other hand, if $\Jacobi_i$ is badly conditioned (or singular), so $\Jacobi_i\Inv$ cannot be reliably found, then one can use iterative methods to find an approximate solution. Assuming $\diff \vi x^{i+1}$ is the solution to ([-@eq-newton-residual]), next iteration for ([-@eq-newton-iter]) is computed as
+where $\vi R(\vi x) = - \vi F(\vi x)$ is the *residual*, and $\diff \vi x^{i+1} = \vi x^{i+1} - \vi x^i$ is the *displacement*, which play the role of unknowns in ([-@eq-newton-residual]). As a careful reader might notice, instead of requiring an inverse of the Jacobian matrix $\Jacobi_i$, we have translated it into a linear system of equations. If $\Jacobi_i\Inv$ exists and is numerically stable^[In such case we can calculate it straight or implicitly via so-called *left division*, which in Julia relies on pivoted QR decomposition.], then we can use it to solve ([-@eq-newton-residual]). On the other hand, if $\Jacobi_i$ is badly conditioned (or singular), so $\Jacobi_i\Inv$ cannot be reliably found, then one can use iterative methods to find an approximate solution. Assuming $\diff \vi x^{i+1}$ is the solution to ([-@eq-newton-residual]), next iteration for ([-@eq-newton-iter]) is computed as
 $$
 \vi x^{i+1} = \vi x^i + \diff \vi x^{i+1}.
 $$
@@ -1419,7 +1419,7 @@ where $\ve_{\text{err}}$ is the given tolerance for the solution error and $\ve_
 
 ::: {.callout-note #nte-newton-method-modifications}
 ##### Modifications to Newton's method
-Here, we have only discussed the standard Newton's method, but there exists a number of modifications including Newton-chord method, Newton-Broyden method or various quasi-Newton methods.
+Here, we have only discussed the standard Newton's method, but there exist several modifications including the Newton-chord method, Newton-Broyden method, and various quasi-Newton methods.
 :::
 
 ## Neuronal Dynamics {#sec-neuronal-dynamics}
@@ -1428,24 +1428,24 @@ Neuron is the fundamental building block of the neural system of many living org
 
 ### Physiology of a Neuron
 
-Every cell has the *cell membrane* on its boundary, consisting of phospholipid bilayer and irregularly spaced ion channels, which separate the internal structures of the cell from the surrounding external environment. However, from our point view, its most important feature is the *selective permeability*, which allows it to permit the passage of certain chemicals while restricting others. As a simplification, we may assume it lets the potassium cations $\ce{K^+}$ go through freely, but heavily obstructs the passage of sodium cations $\ce{Na^+}$. Thanks to this property, a *membrane potential* emerges for most cells. The potential is induced by the lower concentration of positively charged particles (typically potassium cations $\ce{K^+}$ diffuse outward) inside the cell than outside. By the interplay of diffusion and Coulomb's law acting on particles in and outside of the cell, the *membrane potential* stabilizes on $-70$ mV (typically called the *resting potential*).
+Every cell has the *cell membrane* on its boundary, consisting of a phospholipid bilayer and irregularly spaced ion channels, which separate the internal structures of the cell from the surrounding external environment. However, from our point of view, its most important feature is the *selective permeability*, which allows it to permit the passage of certain chemicals while restricting others. As a simplification, we may assume it lets the potassium cations $\ce{K^+}$ go through freely but heavily obstructs the passage of sodium cations $\ce{Na^+}$. Thanks to this property, a *membrane potential* emerges for most cells. The potential is induced by the lower concentration of positively charged particles (typically potassium cations $\ce{K^+}$ diffuse outward) inside the cell than outside. By the interplay of diffusion and Coulomb's law acting on particles in and outside of the cell, the *membrane potential* stabilizes on $-70$ mV (typically called the *resting potential*).
 
-Certain cells, among which are neurons, posses the ability to control the permeability of their membrane. A local change of the permeability is called the *action potential*, if the change triggers a characteristic sequence of events resulting in the return to the resting state. On the contrary, a small change is generally compensated by slow regulating mechanisms.
+Certain cells, among which are neurons, possess the ability to control the permeability of their membrane. A local change of the permeability is called the *action potential* if the change triggers a characteristic sequence of events resulting in the return to the resting state. On the contrary, a small change is generally compensated by slow regulating mechanisms.
 
 ::: {.callout-note #nte-all-or-nothing-law}
 ##### All-or-nothing law
 
-The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that neurons send signal if and only it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
+The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that a neuron sends a signal if and only if it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
 :::
 
 <!-- TODO: Fix per video -->
-During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by combination of Coulomb's law and diffusion, enter the cell and positively charge it causing *depolarization*, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential,called the *repolarization*). This, in turn, *hyperpolarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced back by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
+During the action potential, the corresponding part of the cell membrane opens its $\ce{Na^+}$-permissible ion channels. These, by a combination of Coulomb's law and diffusion, enter the cell and positively charge it causing *depolarization*, which forces out cations of potassium $\ce{K^+}$ (drastically increasing the membrane potential, called the *repolarization*). This, in turn, *hyperpolarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
 
 Although the *action potential* is fundamentally a local behavior of the neuronal cell membrane, it triggers a chain reaction around the initial point of excitation, which causes neighboring parts of the membrane to undergo the same process. 
 
 ### Conductance-based Models {#sec-conductance-based-models}
 
-As can be seen from the previous subsection, a key quantity for a mathematical model of a single isolated neuron is likely to be the *membrane potential*, ideally effected by variables describing permeability of various ion channels. Indeed, conductance-based models, see @Skinner2006, are established on an equivalent circuit representation of a cell membrane, introduced by Hodgkin and Huxley @Hodgkin1952. Here, ion channels of an excitable cell are modeled as conductances and its lipid bilayer by a capacitor. In its simplest form, a conductance-based model represents a neuron by a single compartment with homogenous potential, disregarding ion movements between subcellular compartments, and captures only ion movements between the inside and outside of the cell.
+As can be seen from the previous subsection, a key quantity for a mathematical model of a single isolated neuron is likely to be the *membrane potential*, ideally affected by variables describing the permeability of various ion channels. Indeed, conductance-based models, see @Skinner2006, are established on an equivalent circuit representation of a cell membrane, introduced by Hodgkin and Huxley @Hodgkin1952. Here, ion channels of an excitable cell are modeled as conductances and its lipid bilayer by a capacitor. In its simplest form, a conductance-based model represents a neuron by a single compartment with homogenous potential, disregarding ion movements between subcellular compartments, and captures only ion movements between the inside and outside of the cell.
 
 The original model by Hodgkin and Huxley @Hodgkin1952, constructed based on measurements of the giant axon of a squid, reads as
 $$
@@ -1456,18 +1456,18 @@ $$
 	\dot h &= \alpha_h (V) (1 - h) - \beta_h(V)h, \\
 \end{aligned}
 $$ {#eq-hodgkin-huxley}
-where $I_c = C_m \dot{V}$ describes the current flowing into the lipid bilayer capacitance ($C$ is the capacity of the membrane) and $I_{\text{ion}_i} = g_i (V - V_i)$ current through a given ion channel^[Note that $L$ denotes the abstract *leak* ion channel, which aggregates all the smaller, less-significant ion channels into one.] $i$ as the product of its conductance $g_i$ and the corresponding driving potential $V - V_i$. Here, $V_i$ denotes so-called *reverse potentials*, which capture associated resting potentials. Lastly, $m,n,h$ model the probabilities of respective ion channels being open. The exact formulas for functions $\alpha_i, \beta_i$ with $i = m,n,h$ and parameter values can be found in the original article.
+where $I_c = C_m \dot{V}$ describes the current flowing into the lipid bilayer capacitance ($C$ is the capacity of the membrane) and $I_{\text{ion}_i} = g_i (V - V_i)$ current through a given ion channel^[Note that $L$ denotes the abstract *leak* ion channel, which aggregates all the smaller, less-significant ion channels into one.] $i$ as the product of its conductance $g_i$ and the corresponding driving potential $V - V_i$. Here, $V_i$ denotes so-called *reverse potentials*, which capture associated resting potentials. Lastly, $m,n,h$ model the probabilities of respective ion channels being open. The exact formulas for functions $\alpha_i, \beta_i$ with $i = m,n,h$, and parameter values can be found in the original article.
 
-The several conductance-based models, founded on the Hodgkin--Huxley formalism, appeared after the breakthrough publication of Hodgkin and Huxley. Among the most influential is the Morris--Lecar model, see @Morris1981, which they formulated after studying the muscle fiber of a barnacle. Nevertheless, nowadays it is used to model dynamics of human neurons. It reduces the 4-dimensional Hodgkin--Huxley model into 2 dimensions, see @Lecar2007,
+The several conductance-based models, founded on the Hodgkin--Huxley formalism, appeared after the breakthrough publication of Hodgkin and Huxley. Among the most influential is the Morris--Lecar model, see @Morris1981, which they formulated after studying the muscle fiber of a barnacle. Nevertheless, nowadays it is used to model the dynamics of human neurons. It reduces the 4-dimensional Hodgkin--Huxley model into 2 dimensions, see @Lecar2007,
 $$
 \begin{aligned}
 	C \dot V &= - g_{Ca} m\inSS(V) (V - V_{Ca}) - g_K w(V - V_K) - g_L(V - V_L) + I_{\text{ext}}, \\
 	\dot w &= \frac {w\inSS(V) - w} {T_w(V)},
 \end{aligned}
 $$ {#eq-morris-lecar}
-where $w$ is the *"recovery variable"* for the $\ce{K^+}$ channel prescribing the probability of the corresponding ion channel being open. Moreover, the open-state probability functions $m\inSS, w\inSS$ are derived from assumptions about the *steady state* and its distribution of open and closed ion channels. Finally, $T_w$ is used to set a correct timescale for $w$. 
+where $w$ is the *"recovery variable"* for the $\ce{K^+}$ channel prescribing the probability of the corresponding ion channel being open. Moreover, the open-state probability functions $m\inSS, w\inSS$ are derived from assumptions about the *steady-state* and its distribution of open and closed ion channels. Finally, $T_w$ is used to set a correct timescale for $w$. 
 
-The last model we shall consider is the *interneuron* model proposed by White et al., see @White1998. It was used to describe synchronization of oscillations and the loss thereof in a network of inhibitory neurons. Nonetheless, it allows us to fast-spiking neuron cells. The governing equations read as, see @Sevcik2025,
+The last model we shall consider is the *interneuron* model proposed by White et al., see @White1998. It was used to describe the synchronization of oscillations and the loss thereof in a network of inhibitory neurons. Nonetheless, it allows us to fast-spiking neuron cells. The governing equations read as, see @Sevcik2025,
 $$
 \begin{aligned}
 	C \dot V &= I_{\text{ext}} - \overbrace{g_L (V - V_L)}^{I_L} - \overbrace{g_{Na} m^3 h (V - V_{Na})}^{I_{Na}} - \overbrace{g_K n^4 (V - V_K)}^{I_K}, \\
@@ -1475,11 +1475,11 @@ $$
 	\dot n &= \frac {n\inSS(V) - n}{T_n(V)},
 \end{aligned}
 $$ {#eq-interneuron-model}
-where $C$ again indicates the capacitance of the neuronal membrane, $I_{\text{ext}}$ is the external stimulus and $I_L, I_{Na}, I_K$ incorporate the relationship between the membrane voltage $V$ (typically in $mV$) and currents through respective channels. Analogously, $g_i$ and $V_i$ act as the maximum conductance and reverse potential, respectively, for an ion channel $i$. Researches noticed that the recovery variable $m$ in ([-@eq-hodgkin-huxley]) almost immediately converges to its corresponding steady state, thus using the *slow-fast* dimensionality reduction method, they replaced it with its asymptotic value (so-called *quasi-equilibrium*)^[An attentive reader may notice that a deviation from the quasi-equilibrium is often used for modelling of recovery variables, see, for instance, ([-@eq-morris-lecar]) or ([-@eq-interneuron-model]).],
+where $C$ again indicates the capacitance of the neuronal membrane, $I_{\text{ext}}$ is the external stimulus and $I_L, I_{Na}, I_K$ incorporate the relationship between the membrane voltage $V$ (typically in $mV$) and currents through respective channels. Analogously, $g_i$ and $V_i$ act as the maximum conductance and reverse potential, respectively, for an ion channel $i$. Researchers noticed that the recovery variable $m$ in ([-@eq-hodgkin-huxley]) almost immediately converges to its corresponding steady state, thus using the *slow-fast* dimensionality reduction method, they replaced it with its asymptotic value (so-called *quasi-equilibrium*)^[An attentive reader may notice that a deviation from the quasi-equilibrium is often used for modelling of recovery variables, see, for instance, ([-@eq-morris-lecar]) or ([-@eq-interneuron-model]).],
 $$
 m = m\inSS(V) = \frac 1 {1 + \Exp{-0.08(V + 26)}}.
 $$
-The dynamics of activation variables $h,n$ is further related to their corresponding steady state distributions and correctly scaled in time, i.e.,
+The dynamics of activation variables $h,n$ are further related to their corresponding steady-state distributions and correctly scaled in time, i.e.,
 $$
 \begin{aligned}
 h\inSS(V) &= \frac 1 {1 + \Exp{0.13(V + 38)}}, & T_h(V) &= \frac {0.6} {1 + \Exp{-0.12(V + 67)}}, \\
@@ -1496,9 +1496,9 @@ $$ {#eq-interneuron-parameters}
 
 ### Couplings {#sec-neuronal-couplings}
 
-So far, we have only studied single neurons, but in nature a far more common occurrence is a (large) coupled network of neurons. However, for simplicity, we shall devote our attention only to a case of 2 weakly coupled neurons. For more information, see @Ermentrout2010.
+So far, we have only studied single neurons, but in nature, a far more common occurrence is a (large) coupled network of neurons. However, for simplicity, we shall devote our attention only to a case of 2 weakly coupled neurons. For more information, see @Ermentrout2010.
 
-In general, couplings can be either chemical or electrical. In the case of electrical coupling, there is a direct connection from one neuron to another, facilitated via a channel or a gap junction. Although more common is the (slower) chemical synapse (also called the *synaptical coupling*), per @White1998 and @Zathurecky2025, we will consider solely the electrical coupling (our goal is to study high frequency oscillations, which would be inhibited by the use of slow coupling).
+In general, couplings can be either chemical or electrical. In the case of electrical coupling, there is a direct connection from one neuron to another, facilitated via a channel or a gap junction. Although more common is the (slower) chemical synapse (also called the *synaptic coupling*), per @White1998 and @Zathurecky2025, we will consider solely the electrical coupling (our goal is to study high-frequency oscillations, which would be inhibited by the use of slow coupling).
 
 We model the gap-junctional coupling effect as external currents directly proportional to the differences between membrane potentials for both coupled neurons. In particular, it yields
 $$
@@ -1507,7 +1507,7 @@ $$
 	&\vdots
 \end{aligned}
 $$ {#eq-coupling}
-where $V_i$ marks the membrane potential of the $i$-th neuron, $C_i$ capacity of its membrane, $\lambda$ is the coupling strength, $\hat{i}$ denotes the "opposite" coupled neuron and $\tau > 0$ a possible delay in the information introduced by the coupling. As such, the system of two $\lmbd$-weakly coupled interneurons, see ([-@eq-interneuron-model]), becomes
+where $V_i$ marks the membrane potential of the $i$-th neuron, $C_i$ capacity of its membrane, $\lambda$ is the coupling strength, $\hat{i}$ denotes the "opposite" coupled neuron, and $\tau > 0$ a possible delay in the information introduced by the coupling. As such, the system of two $\lmbd$-weakly coupled interneurons, see ([-@eq-interneuron-model]), becomes
 $$
 \rcases{
 	C_1 \dot V_1(t) &= I_{\text{ext}} - g_L (V_1(t) - V_L) - g_{Na} m\inSS^3(V_1(t)) h_1(t) (V_1(t) - V_{Na}) \\
@@ -1521,7 +1521,7 @@ $$
 }
 $$ {#eq-coupled-interneurons}
 
-In practice, numerical experiments in neuroscience are often hard to set up due to the complicated nature of formulas of the systems and sheer number of their parameters. As such, throughout the work on this thesis, we developed a Julia package *NeuronToolbox.jl*, see its [Git repository](https://gitlab.com/sceptri-university/gamu/neuron-toolbox), with the aim to aid in this process. We illustrate this on a coupled pair of an interneuron model ([-@eq-interneuron-model]) and a Morris-Lecar model ([-@eq-morris-lecar]). The coupling is facilitated through a gap junction, see ([-@eq-coupling]), with the coupling strength $\lmbd = 0.01$ and corresponding delay $\tau = 0.01$.
+In practice, numerical experiments in neuroscience are often hard to set up due to the complicated nature of the formulas of the systems and sheer number of their parameters. As such, throughout the work on this thesis, we developed a Julia package *NeuronToolbox.jl*, see its [Git repository](https://gitlab.com/sceptri-university/gamu/neuron-toolbox), to aid in this process. We illustrate this on a coupled pair of an interneuron model ([-@eq-interneuron-model]) and a Morris-Lecar model ([-@eq-morris-lecar]). The coupling is facilitated through a gap junction, see ([-@eq-coupling]), with the coupling strength $\lmbd = 0.01$ and corresponding delay $\tau = 0.01$.
 
 ```{julia}
 #| output: false
@@ -1546,4 +1546,4 @@ async_coupling = Couplings.OneStepDelayed(sync_coupling,
 coupled_pair = Networks.CoupledPair(IN, ML, async_coupling)
 ```
 
-The resulting network `coupled_pair` can then be used a normal function prescribing a (delay) differential equation with DifferentialEquations.jl. Also note that we provide various different models and network types, e.g., an $m\times m$ adjacency matrix coupling for a system of $m$ models.
+The resulting network `coupled_pair` can then be used as a normal function prescribing a (delay) differential equation with DifferentialEquations.jl. Also note that we provide various different models and network types, e.g., an $m\times m$ adjacency matrix coupling for a system of $m$ models.
