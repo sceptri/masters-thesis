@@ -43,7 +43,7 @@ CairoMakie.activate!()
 
 We have motivated the entire thesis with the usefulness of the knowledge and the understanding of synchronization in neuroscience. However, we will not describe any experiments performed on real networks of neurons in a lab. Instead, we shall deal with the mathematical abstraction for the studied object, e.g., coupled neurons.
 
-This abstraction is typically called a (mathematical) model. The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model causally evolves in time, e.g., a model of a neuron starts spiking when evolving in time, with dependence solely on the current state, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal with respect to only the current state due to the dependence on the history of the system, the arising dynamical system becomes infinite dimensional (and thus harder to work with). For better "mathematical ergonomics" we will define a *semidynamical system* to deal with delayed dependencies.
+This abstraction is typically called a (mathematical) model. The model should, in theory, capture all the important characteristics of the underlying reality. If the state of the model evolves causally in time, e.g., a model of a neuron starts spiking when evolving in time, with dependence solely on the current state, we often use a *dynamical system* as the model. On the other hand, if the governing rules are noncausal with respect to only the current state due to the dependence on the history of the system, the arising dynamical system becomes infinite dimensional (and thus harder to work with). For better "mathematical ergonomics" we will define a *semidynamical system* to deal with delayed dependencies.
 
 ## A Primer on Dynamical Systems {#sec-dynamical-systems}
 
@@ -62,7 +62,7 @@ projecting a state $x$ from time $s$ to time $t$, which satisfies
 1. (*deterministic property*): $\evolOp(s,s, x) = x$ for each $x \in \stateSpace$ and $s \in \timeSet$,
 2. (*composition property*): $\evolOp(t,s,x) = \evolOp(t,r,\evolOp(r,s,x))$ for each $x \in \stateSpace$ and $t,r,s \in \timeSet$.
 
-If $(\timeSet, +)$ is a group, we will speak of an **invertible dynamical system**.
+If $(\timeSet, +)$ forms a group, we shall speak of an **invertible dynamical system**.
 :::
 
 For simplicity, we shall assume the commutative monoid $(\timeSet, +)$ is *cancellative*, i.e., $a + c = b + c \implies a = b$ for each $a,b,c \in \timeSet$. Then it can be embedded in a Grothendieck group $\timeSet_G$, see @WikiGrothendieckGroup.
@@ -85,11 +85,11 @@ $$
 i.e., the map $\evolOp$ is a (left) monoid action of $(\timeSet, +)$ on $\stateSpace$. The operator $\evolOp$ is typically called *flow* of the dynamical system.
 :::
 
-In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly interval between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
+In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly intervals between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
 
 On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ or $\R^+$ as we are concerned with even the shortest time intervals and associated changes --- corresponding systems are called **continuous** or **continuous-time** dynamical systems. Similarly, the exact choice of the state space $\stateSpace$ is dependent on the system in question, but typically we use $\R^n$, although we will also encounter infinite-dimensional state space.
 
-The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such a system *stochastic*, see @sec-stochastic-dyn-systems. Moreover, a common assumption that the "laws of nature" do not change in time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on the past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
+The *deterministic* property in @def-dynamical-system guarantees the system does not abruptly change state. Should this condition be broken, we would call such a system *stochastic*, see @sec-stochastic-dyn-systems. Moreover, a common assumption that the "laws of nature" do not change over time restricts us to autonomous dynamical systems, which will be exclusively used in this thesis, where it is captured by the *semigroup* (or *autonomous*) property. In particular, dependence on the past is permitted, but requires special attention, as we shall see in @sec-dynamical-systems-delays. If the system is *invertible*, the *(semi)group property* implies that the solution can be found both forward and backward in time.
 
 Most often, a dynamical system is given implicitly by a *differential* or *difference* equation. For example, in population dynamics, one of the earliest models, the *Verhulst model of population*[^verhulst], can prescribed by an ordinary differential equation (ODE)
 $$
@@ -104,7 +104,7 @@ $$ {#eq-difference-verhulst}
 
 ### Basic Concepts {#sec-basic-concepts}
 
-In this section, we shall introduce basic concepts regarding dynamical systems including, but not limited to, notions of certain special solutions and their stability. Little comment besides the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002, or @Kuznetsov2023.
+In this section, we shall introduce basic concepts regarding dynamical systems, including, but not limited to, notions of certain special solutions and their stability. Little comment besides the definitions themselves will be provided, as an interested reader can find much more in @Pribylova2021, @Hartman2002, or @Kuznetsov2023.
 
 :::{#def-orbit}
 ##### Orbit
@@ -157,7 +157,7 @@ $$
 
 A set $\obj \Omega(\Orbit{x_0})$ of all $\omega$-limit points of the orbit $\Orbit{x_0}$, see @def-limit-point, is called an $\omega$-limit set. Similarly, a set $\obj A(\Orbit{x_0})$ of all $\alpha$-limit points of the orbit $\Orbit{x_0}$ is called an $\alpha$-limit set.
 
-Lastly, a set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Orbit{x_0})$ of all limit points of the orbit $\Orbit{x_0}$ is called its *limit set*.
+The set $\limitSet(\Orbit{x_0}) = \obj \Omega(\Orbit{x_0}) \cup \obj A(\Orbit{x_0})$ of all limit points of the orbit $\Orbit{x_0}$ is called its *limit set*.
 :::
 
 :::{#def-limit-cycle}
@@ -186,7 +186,7 @@ A stable invariant set is called an *attractor*, whereas if the invariant set is
 
 #### Topologically Equivalent Dynamical Systems
 
-So far, we have described dynamical systems mainly in general terms. Later, we will get to concrete examples of dynamical systems, primarily from the neuroscience field, see @sec-neuronal-dynamics, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
+So far, we have described dynamical systems mainly in general terms. Later, we will present concrete examples of dynamical systems, primarily from the neuroscience field, see @sec-neuronal-dynamics, which will be too complex to apply certain techniques from bifurcation theory directly. Hence, we introduce the notion of (local) topological equivalence to remedy this issue.
 
 :::{#def-topological-equivalence}
 ##### Topological equivalence
@@ -209,7 +209,7 @@ A dynamical system $\obj D_1 = (\timeSet, \R^n, \evolOp)$ is said to be *locally
 ### Continuous-time Autonomous Systems
 
 :::{#def-autonomous-ode-system}
-An *autonomous system of (ordinary) differential equations* is a system of form
+An *autonomous system of (ordinary) differential equations* is a system of the form
 $$
 \dvi x = \vi f(\vi x),
 $$ {#eq-autonomous-ode-system}
@@ -336,7 +336,7 @@ See @Chicone2006, page 24.
 
 :::{#def-autonomous-difference-system}
 
-An *autonomous system of difference equations* is a system of form
+An *autonomous system of difference equations* is a system of the form
 $$
 \vi x \mapsto \vi f(\vi x) \quad \iff \quad \vi x_{m+1} = \vi f(\vi x_m),
 $$ {#eq-autonomous-difference-sys}
@@ -465,7 +465,7 @@ See @Hartman2002, page 94.
 
 ### Poincaré Map {#sec-poincare-map}
 
-The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems, be it via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
+The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems. One possible route is via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
 
 Consider a continuous-time dynamical system of the form
 $$
@@ -477,7 +477,7 @@ where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a perio
 
 The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of codimension one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to a through-going trajectory, thus the trajectory truly intersects the cross-section $\crossSection$.
 
-Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees the solution of ([-@eq-poincare-map-system]) depends smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
+Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees, the solution of ([-@eq-poincare-map-system]) depends smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
 $$
 \vi x \mapsto \tilde{\vi x} = \vi P(\vi x).
 $$
@@ -521,13 +521,13 @@ Omitting $O(\norm{\vi u(t)}^2)$ terms gives us a linear $T_0$-periodic system
 $$
 \dvi u = \Jacobi(t) \vi u, \quad \vi u \in \R^n,
 $$ {#eq-variational-about-cycle}
-where $\Jacobi(t) = \jacobi_{\vi x} \vi f(\vi x^0(t))$, and $\Jacobi(t + T_0) = \Jacobi(t)$.
+where $\Jacobi(t) = \jacobi_{\vi x} \vi f(\vi x^0(t))$ and $\Jacobi(t + T_0) = \Jacobi(t)$.
 
 :::{#def-variational-equation-about-cycle}
 System ([-@eq-variational-about-cycle]) is called the *variational equation* about the cycle $L_0$.
 :::
 
-As the variational equation describes the evolution of perturbations in the proximity of the cycle $L_0$, naturally its stability depends on the properties of the variational equation.
+As the variational equation describes the evolution of perturbations in the proximity of the cycle $L_0$, its stability naturally depends on the properties of the variational equation.
 
 :::{#def-monodromy-matrix}
 The time-dependent matrix $\vi M(t)$ is called the *fundamental matrix solution* of ([-@eq-poincare-map-system]) if it satisfies
@@ -544,7 +544,7 @@ The monodromy matrix $\vi M(T_0)$ has eigenvalues (called *Floquet exponents* or
 $$
 1, \mu_1, \dots, \mu_{n - 1},
 $$
-where $\mu_i$ are the multiplier of the Poincaré map $\vi P$ associated with the cycle $L_0$, see @lem-poincaré-map.
+where $\mu_i$ are the multipliers of the Poincaré map $\vi P$ associated with the cycle $L_0$, see @lem-poincaré-map.
 :::
 
 :::{.proof}
@@ -608,7 +608,7 @@ Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it
 See @Kloeden1992, page 28.
 :::
 
-In other words, in the @def-stochastic-process we have constructed a process that selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process that is almost always continuous everywhere but differential nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
+In other words, in the @def-stochastic-process we have constructed a process that selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process that is almost always continuous everywhere but differentiable nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
 
 Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential formulation)
 $$
@@ -674,7 +674,7 @@ For clarity and brevity, throughout this thesis *RFDEs with (discrete) constant 
 
 All throughout this work, we shall see many parallels between ODEs and DDEs. While their connection is intricate and would require a more thorough discussion, one way it can be partly understood is via the *method of steps* --- a way of solving delay differential equations. This subsection is mainly based on @Smith2010 and @Bellen2003.
 
-To begin gently, we will start with a simple case of $x \in \R$. Let us thus consider a nonlinear DDE of form
+To begin gently, we will start with a simple case of $x \in \R$. Let us thus consider a nonlinear DDE of the form
 $$
 \dot x(t) = f(t, x(t), x(t - r))
 $$ {#eq-1d-dde}
@@ -696,7 +696,7 @@ $$
 	y(s+r) &= x(s+r). &&
 \end{aligned}
 $$ {#eq-method-of-steps-second-iter}
-Just as before, from the continuity of $f$ and $f_x$ yields a local unique solution, by abuse of notation called again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
+Just as before, the continuity of $f$ and $f_x$ yields a locally unique solution called, by abuse of notation, again $x(t)$, defined on some subinterval $[s+r, \sigma) \subset [s+r, s + 2r]$ or, possibly, the entire interval. Naturally, $x(t)$, now existing on $[s-r, \sigma)$ where $\sigma > s + r$, is again a solution of ([-@eq-1d-dde])-([-@eq-1d-dde-initial-cond]). Finally, if the solution exists on the entire interval $[s+r, s+2r]$ we can perform another *step*, i.e., repeat this procedure, to extend $x(t)$ further to the right to $[s+2r, s+3r]$ or some subinterval. 
 
 :::{#thm-1d-single-delay-method-of-steps}
 ##### Single-delay method of steps on $\R$
@@ -807,7 +807,7 @@ In other words, if $\vi f$ is smooth and $\vi \phi$ is differentiable for ([-@eq
 
 ### Notes on Delay Differential Equations
 
-Consider a DDE of form
+Consider a DDE of the form
 $$
 \dvi x(t) = \vi f(t, \vi x(t), \vi x(t - \tau_1), \dots, \vi x(t - \tau_H)),
 $$ {#eq-dde-general}
@@ -923,11 +923,11 @@ thus $\set{\solOp(t)}$, $t \geq 0$, is a *strongly continuous semigroup of trans
 
 ### Semidynamical Systems Induced by Delay Differential Equations {#sec-semidyn-sys-induced-by-dde}
 
-So far, we have only seen examples of *continuous-time* dynamical systems, which have inherently been symmetric in time, i.e., *invertible*. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced continuous-time dynamical system,
+So far, we have only seen examples of *continuous-time* dynamical systems, which have inherently been symmetric in time, i.e., *invertible*. In other words, these systems did not distinguish between the future and the past. As an example, consider the following ODE and its induced continuous-time dynamical system
 $$
 \dvi x(t) = \vi f(t, \vi x), \; \vi x(s) = \vi x_0.
 $$
-When solving such ODE, it is only our choice to integrate forward in time, but backward integration is just as possible. On the other hand, as we have seen in @sec-backward-extension-dde, delay differential equations are not always solvable backward in time. 
+When solving such ODE, it is entirely up to us to integrate forward in time, but backward integration is equally possible. On the other hand, as we have seen in @sec-backward-extension-dde, delay differential equations are not always solvable backward in time. 
 
 :::{#def-semidynamical-system}
 **Semidynamical system** is a triple^[For semidynamical systems, we will use $\contStateSpace$ instead of $\stateSpace$ to emphasize that $\vi x \in \contStateSpace$ will typically be some (vector-valued) history function.] $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$, where
@@ -937,7 +937,7 @@ $$
 $\contStateSpace$ is a metric space and $\evolOp : \widetilde{\timeSet} \times \contStateSpace \to \contStateSpace$ is continuous map, which satisfies the *deterministic* and *composition* properties from @def-dynamical-system.
 :::
 
-The difference between @def-dynamical-system and @def-semidynamical-system is rather subtle. It lies in the restriction to $\widetilde{\timeSet}$, which permits only projection forward in time. Indeed, by using $\widetilde{\timeSet} = \timeSet \times \timeSet$, we get the usual dynamical system. Note, that an autonomous semidynamical system is defined analogously as in @def-autonomous-dynamical-system. Also, basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
+The difference between @def-dynamical-system and @def-semidynamical-system is rather subtle. It lies in the restriction to $\widetilde{\timeSet}$, which permits only projection forward in time. Indeed, by using $\widetilde{\timeSet} = \timeSet \times \timeSet$, we get the usual dynamical system. Note that an autonomous semidynamical system is defined analogously as in @def-autonomous-dynamical-system. Also, basic concepts defined for dynamical systems, see @sec-basic-concepts, mostly extend to semidynamical systems (for example, we only consider $\omega$-limit point and set).
 
 :::{#lem-autonomous-semidynamical-system}
 Semidynamical system $(\widetilde{\timeSet}, \contStateSpace, \evolOp)$ is autonomous if and only if whenever $\vi x(t)$ is a solution defined on subset $I \subseteq \timeSet$ and $\tau \in \timeSet_G$, then $\vi x(t + \tau)$ is a solution on $I - \tau$, where $I - \tau = \set{t - \tau \divider t \in I}$.
@@ -982,7 +982,7 @@ As the title may suggest, computational aspects of ODEs, DDEs, and other mathema
 
 Solving, or numerically integrating, ordinary differential equations can be seen as the backbone of this thesis. As such, we will introduce two approaches, the Euler method and the Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
 
-Consider an ODE of form
+Consider an ODE of the form
 $$
 \dvi x(t) = \vi F(t, \vi x(t)), \; \vi x(t_0) = \vi x_0,
 $$ {#eq-ode-problem-to-solve}
@@ -1011,7 +1011,7 @@ Repeating this process on the entire interval $[t_0, t_N]$ gives us the @alg-eul
 Whilst the Euler method is simple, it does have its drawbacks mainly in its accuracy. For quantification of this issue, we shall define several notions of errors of a numerical integration method.
 
 :::{#def-ode-solver-error}
-Let us consider an ODE problem of form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. *Local truncation error* (LTE) is defined as
+Let us consider an ODE problem of the form ([-@eq-ode-problem-to-solve]) and the solution $\vi x(t)$ to the initial-value problem. Assume $\vi x_k$ is an approximate solution at time $t_k$ and that $\vi x_{k+1}$ is given by $\vi x_{k+1} = \vi x_k + \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}$, where $\incrementFunc$ is the *increment* function^[In general, the increment function $\incrementFunc$ at the $k+1$-st step may depend on $t_0, \dots, t_k$, $\vi x_0, \dots, \vi x_k$, and $\diff t_1, \dots, \diff t_{k + 1}$.], which propagates the solution from $t_k$ to $t_{k+1}$ and represents the chosen method. *Local truncation error* (LTE) is defined as
 $$
 \locTrErr_{k} = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \incrementF{t_k, \vi x (t_k), \diff t_{k+1}, \vi F}
 $$ {#eq-loc-tr-err}
@@ -1029,7 +1029,7 @@ $$
 $$
 We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., the Euler method is first order.
 
-This can surely be improved by using more terms from the Taylor series expansions, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow to computation of the next value to be dependent on multiple previous values, leading to multistep methods. The last option --- and the one we shall use --- is to modify a one-step method to produce intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so-called **Runge-Kutta** methods.
+This can surely be improved by using more terms of the Taylor series expansion, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow the computation of the next value to be dependent on multiple previous values, leading to multistep methods, see @sec-integrating-ddes. The last option --- and the one we shall use --- is to modify a one-step method to produce intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so-called **Runge-Kutta** methods.
 
 ::: {.callout appearance="simple" #alg-runge-kutta-explicit}
 ##### $s$-stage explicit Runge-Kutta (ERK) method
@@ -1119,7 +1119,7 @@ no finite mesh $\mcal T$ can be found, as for any $t \in \mcal T$ also $t/2$ mus
 
 Another possible approach is to replace the strict constraints on the time mesh $\mcal T$ by an interpolation method. Nonetheless, most often the discontinuity points belonging to $[t_0, t_f]$ are included in $\mcal T$, as ODE solvers generally require smoothness of the solution (or at least such property is highly beneficial for accuracy). 
 
-Throughout the years, the theory of *continuous ODE methods*, see @def-continuous-ODE-method, has been developed. Continuous ODE methods build on a very general class of $k$-step numerical ODE integrators for ([-@eq-ode-problem-to-solve]) of form
+Throughout the years, the theory of *continuous ODE methods*, see @def-continuous-ODE-method, has been developed. Continuous ODE methods build on a very general class of $k$-step numerical ODE integrators for ([-@eq-ode-problem-to-solve]) of the form
 $$
 \vi x_{i+1} = \alpha_{i,1} \vi x_n + \dots + \alpha_{i,k} \vi x_{i - k+1} + \diff t_{i+1} \incrementF{\vi x_i, \dots, \vi x_{i - k + 1}; \mcal T_i, \vi F},
 $$ {#eq-k-step-ode-solver}
@@ -1193,7 +1193,7 @@ Let us note that for implementation, we use the `EM` method from DifferentialEqu
 
 ### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
 
-Optimization is almost ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is fortunately the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
+Optimization is nigh ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is, fortunately, the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
 
 The methods we will present can be collectively called *bracketing*, as they rely on iteratively shrinking an interval inside which a local minimum lies. Furthermore, a single-minimum requirement shall be placed on functions to be optimized. For functions on $\R$, this translates to so-called *unimodality*.
 
@@ -1231,7 +1231,7 @@ for an **unimodal** function $f: I \to \R$, $I = [a,b]$. Furthermore, let $N$ de
 
 #### Bisection Method
 
-Consider now $N = 2k$, $k \in \N$, choose $\delta \in (0, \frac{b - a} 2]$ sufficiently small and let $a_0 \letDef a, b_0 \letDef b$ set the initial bracket $[a_0, b_0]$. We then define
+Consider now $N = 2k$, $k \in \N$, choose $\delta \in \left(0, \frac{b - a} 2\right]$ sufficiently small and let $a_0 \letDef a, b_0 \letDef b$ set the initial bracket $[a_0, b_0]$. We then define
 $$
 x_i^- \letDef \frac {a_{i - 1} + b_{i - 1}} 2 - \delta \; \& \; x_i^+ \letDef \frac {a_{i - 1} + b_{i - 1}} 2 + \delta
 $$ {#eq-bisection-points}
@@ -1248,7 +1248,7 @@ denotes the length of the $k$-th bracket. It can be seen that $l_k \to 2 \delta$
 
 ::: {.callout appearance="simple" #alg-bisection-method}
 ##### Bisection method
-**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, $\delta \in (0, \frac {b - a} 2]$, number of steps $k \in \N$ \
+**Input:** Optimization problem ([-@eq-unimodal-optim-problem]), initial interval $I = [a,b]$, $\delta \in \left(0, \frac {b - a} 2\right]$, number of steps $k \in \N$ \
 **Output:** Approximation of minimum $\bar{x}_k$ \
 **begin** \
 &emsp;&emsp;set $a_0 \gets a, b_0 \gets b$ \
@@ -1393,7 +1393,7 @@ $$
 f_k(\vi x) \approx f_k(\vi x^i) + \sum_{j = 1}^n \pDeriv {f_k(\vi x^i)}{x_j} (x_j - x^i_j).
 $$
 
-Using vector notation, we can collectively approximate ([-@eq-newton-method-system]) as
+Using the vector notation, we can collectively approximate ([-@eq-newton-method-system]) as
 $$
 \vi F(\vi x^i) + \Jacobi_i (\vi x - \vi x^i) = \vi 0,
 $$ {#eq-newton-method-approx}
@@ -1429,7 +1429,7 @@ Neuron is the fundamental building block of the neural system of many living org
 
 ### Physiology of a Neuron
 
-Every cell has the *cell membrane* on its boundary, consisting of a phospholipid bilayer and irregularly spaced ion channels, which separate the internal structures of the cell from the surrounding external environment. However, from our point of view, its most important feature is the *selective permeability*, which allows it to permit the passage of certain chemicals while restricting others. As a simplification, we may assume it lets the potassium cations $\ce{K^+}$ go through freely but heavily obstructs the passage of sodium cations $\ce{Na^+}$. Thanks to this property, a *membrane potential* emerges for most cells. The potential is induced by the lower concentration of positively charged particles (typically potassium cations $\ce{K^+}$ diffuse outward) inside the cell than outside. By the interplay of diffusion and Coulomb's law acting on particles in and outside of the cell, the *membrane potential* stabilizes on $-70$ mV (typically called the *resting potential*).
+Every cell has a *cell membrane* on its boundary, consisting of a phospholipid bilayer and irregularly spaced ion channels, which separate the internal structures of the cell from the surrounding external environment. However, from our point of view, its most important feature is the *selective permeability*, which allows it to permit the passage of certain chemicals while restricting others. As a simplification, we may assume it lets the potassium cations $\ce{K^+}$ go through freely but heavily obstructs the passage of sodium cations $\ce{Na^+}$. Thanks to this property, a *membrane potential* emerges for most cells. The potential is induced by the lower concentration of positively charged particles (typically potassium cations $\ce{K^+}$ diffuse outward) inside the cell than outside. By the interplay of diffusion and Coulomb's law acting on particles in and outside of the cell, the *membrane potential* stabilizes at $-70$ mV (typically called the *resting potential*).
 
 Certain cells, among which are neurons, possess the ability to control the permeability of their membrane. A local change of the permeability is called the *action potential* if the change triggers a characteristic sequence of events resulting in the return to the resting state. On the contrary, a small change is generally compensated by slow regulating mechanisms.
 
