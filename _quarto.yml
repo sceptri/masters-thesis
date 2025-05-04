@@ -6,7 +6,6 @@ project:
   pre-render: luaotfload-tool --cache=erase --flush-lookups --force
   post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
 
-# TODO: Fix too small Algorithm offset
 # Possibly by a custom Quarto build
 crossref: 
   custom: 
