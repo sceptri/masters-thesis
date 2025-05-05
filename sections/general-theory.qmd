@@ -436,7 +436,7 @@ fig
 ```
 :::
 
-For completeness's sake, we give a classical result from the theory of ODEs concerning the existence, uniqueness, and smooth dependence on the initial conditions of the solution for a given ODE.
+For completeness' sake, we give a classical result from the theory of ODEs concerning the existence, uniqueness, and smooth dependence on the initial conditions of the solution for a given ODE.
 
 :::{#thm-exists-unique-smooth-ode-solution}
 ##### Existence, uniqueness, and smooth dependence
@@ -835,7 +835,7 @@ $$
 	\vi x_{\sigma} &= \vi \phi,
 \end{aligned}
 $$ {#eq-dde-problem-autonomous}
-where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e., the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness's sake, we also add that general the RFDE initial-value problem reads as follows
+where $\sigma \in \R$ is the initial time and $\vi \phi \in \contStateSpace$ is the state of system at time $\sigma$, i.e., the $\tau$-long history function corresponding to the interval $[\sigma - \tau, \sigma]$. For completeness' sake, we also add that general the RFDE initial-value problem reads as follows
 $$
 \begin{aligned}
 	\dvi x(t) &= \vi F(t, \vi x_t), \\
@@ -855,7 +855,7 @@ which follows from the Taylor expansion of $\vi f$.
 
 #### Backward Extension {#sec-backward-extension-dde}
 
-Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backward in time for $t < \sigma$, i.e. perform a *backward extension* of the initial history $\phi$. Importantly, it should be evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
+Let us for a moment return to ([-@eq-rfde-problem]). So far, we have discussed its solution for $t > \sigma$, but, sometimes, we may solve it backward in time for $t < \sigma$, i.e., perform a *backward extension* of the initial history $\phi$. Importantly, it should be evident there is a fundamental asymmetry between the past and the future for DDEs (recall they are only a special case of RFDEs), which is non-existent in the case of ODEs. Indeed, as one can see from, for example, @Chicone2006, there is no fundamental distinction between solving forward or backward in time.
 
 Per @Smith2010 and @Hale1993, we say that $\vi x : [\sigma - \tau - \alpha, \sigma] \to \R^n$ for $\alpha > 0$ is a (backward) solution of the initial-value problem given by ([-@eq-rfde-problem]) if $\vi x$ is continuous, $\vi x$ satisfies the initial condition and
 $$
@@ -1277,7 +1277,7 @@ Before delving into the technical details, let us note in this subsection $\gold
 $$
 \goldRatio^2 - \goldRatio - 1 = 0,
 $$ {#eq-golden-ratio-quad}
-i.e. $\frac 1 \goldRatio \approx 0.618$, and is generally referred to as the *golden ratio*. Equivalently, it is also given as
+i.e., $\frac 1 \goldRatio \approx 0.618$, and is generally referred to as the *golden ratio*. Equivalently, it is also given as
 $$
 \frac {a + b} a  = \frac a b = \goldRatio
 $$ {#eq-golden-ratio-frac}
