@@ -980,7 +980,7 @@ As the title may suggest, computational aspects of ODEs, DDEs, and other mathema
 
 ### Numerical integration of ODEs {#sec-integrating-odes}
 
-Solving, or numerically integrating, ordinary differential equations can be seen as the backbone of this thesis. As such, we will introduce two approaches, the Euler method and the Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008 and @Trefethen1994.
+Solving, or numerically integrating, ordinary differential equations can be seen as the backbone of this thesis. As such, we will introduce two approaches, the Euler method and the Runge-Kutta method. This subsection is mostly based on @Butcher2016, @Hairer2008, and @Trefethen1994.
 
 Consider an ODE of the form
 $$
@@ -995,7 +995,7 @@ $$
 \vi x(t_0 + \diff t_1) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t_1  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t_1.
 $$
 
-Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g., $\diff t_k = \diff t = \frac {t_N - t_0} N$.
+Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method called the *explicit Euler method*. Let us note that often an equidistant stepsize is used, e.g., $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
 ::: {.callout appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
@@ -1027,7 +1027,7 @@ By using ([-@eq-loc-tr-err]) on @alg-euler-method to obtain LTE for the Euler me
 $$
 \locTrErr_k = \vi x(t_{k+1}) - \vi x(t_k) - \diff t_{k+1} \cdot \vi F(t_k, \vi x(t_k)) \implies \locTrErr_k = O(\diff t_{k+1}^2).
 $$
-We say that a method is of order $p$ if $\locTrErr_k = O(\diff t^{p+1})$, i.e., the Euler method is first order.
+We say that a method is of order $p$ if $\locTrErr = O(\diff t^{p+1})$, i.e., the Euler method is of first order.
 
 This can surely be improved by using more terms of the Taylor series expansion, see ([-@eq-euler-method-taylor]), but the necessity of computing the derivatives of $\vi F$ is a major drawback, often outweighing any potential benefits. Another possibility would be to allow the computation of the next value to be dependent on multiple previous values, leading to multistep methods, see @sec-integrating-ddes. The last option --- and the one we shall use --- is to modify a one-step method to produce intermediate estimates of the solution at multiple different points (called *stages*), which are then combined into the final approximation of the solution at the next step --- this way, we obtain so-called **Runge-Kutta** methods.
 
@@ -1424,7 +1424,6 @@ Here, we have only discussed the standard Newton's method, but there exist sever
 
 ## Neuronal Dynamics {#sec-neuronal-dynamics}
 
-<!-- TODO: Finish -->
 Neuron is the fundamental building block of the neural system of many living organisms on Earth. As such, how we understand it directly impacts a significant portion of our (perception of the) world. Naturally, mathematical models and concepts from computational neuroscience play a key role in this understanding. Let us note this section is based on @Keener2009 and @Murray2002, with relevant publications referenced when needed.
 
 ### Physiology of a Neuron
@@ -1439,7 +1438,6 @@ Certain cells, among which are neurons, possess the ability to control the perme
 The threshold for activation of the action potential and its constant characteristic behavior induce the so-called *all-or-nothing law*, which says that a neuron sends a signal if and only if it receives a strong enough impulse and that the signal is *de facto* the same every time, see @Jekl2018.
 :::
 
-<!-- TODO: Fix per video -->
 During the action potential, the corresponding part of the cell membrane opens its ion channels permeable to $\ce{Na^+}$. Driven by the electrochemical gradient, these ions enter the cell, making the membrane potential more positive, a process known as depolarization. This change triggers the opening of voltage-gated potassium ($\ce{K^+}$) channels, allowing $\ce{K^+}$ ions to flow out of the cell, thereby restoring the membrane potential in a process called repolarization. This, in turn, *hyperpolarizes* the cell membrane (the membrane potential is even lower than the resting value at this point). The entire process is then slowly reversed as sodium cations exit the cell and are replaced by potassium cations. Note that the overpopulation of $\ce{Na^+}$ inside the cell restricts its ability to undergo the *action potential* until it sufficiently lowers, limiting the possible spiking frequency of an individual neuron.
 
 Although the *action potential* is fundamentally a local behavior of the neuronal cell membrane, it triggers a chain reaction around the initial point of excitation, which causes neighboring parts of the membrane to undergo the same process. 

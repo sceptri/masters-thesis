@@ -6,6 +6,9 @@ This repository holds sources and materials for Master's thesis named 'Computati
 
 ![A heatmap of shifts between two weakly coupled interneuron models without delay in the coupling produced by the simulation-based method. Black curves represent borders of the Arnold tongue obtained with the continuation-based method.](assets/showcase_heatmap.png)
 
+> [!important]
+> Note that tag *"v1.0 (submission)"* marks the state of the thesis (and the entire repository) as of submission on 05.05.2025. Any succeeding git commits constitute a form of errata and should be treated as such regarding the official thesis examination.
+
 ## Structure
 
 This repository contains following folders:
