@@ -1,12 +1,9 @@
-# TODO: Re-run scripts after simplification
-
 project:
   type: book
   # LuaLaTeX fonts are often broken on NixOS
   pre-render: luaotfload-tool --cache=erase --flush-lookups --force
   post-render: rm -f SCI_(black).pdf MUNI_(black).pdf sci.muni.thesis.sty fonts.html thesis.scss
 
-# Possibly by a custom Quarto build
 crossref: 
   custom: 
     - kind: float
@@ -93,7 +90,7 @@ thesis:
 
 format:
   munithesis-html:
-    mainfont: Merriweather # Use et-book instead: https://github.com/edwardtufte/et-book
+    mainfont: Merriweather
 
     toc: true
     toc-expand: 3
@@ -107,9 +104,9 @@ format:
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   munithesis-pdf:
-    mainfont: "KpRoman" # or GaramondLibre
+    mainfont: "KpRoman"
     mathfont: "KpMath"
-    monofont: "KpMono" # or Latin Modern Mono
+    monofont: "KpMono"
 
     keep-tex: false
     hyperrefoptions:

@@ -20,7 +20,7 @@ For easier orientation in the text, we include a basic list of used notation thr
 |$f, \vi f$ | scalar-valued, vector-valued function |
 |$f(x)'$ | first derivative of a scalar-valued function $f$ with respect to scalar variable $x$ |
 |$\dot{x}(t), \dvi x(t)$ | derivative of a scalar, vector variable (dependent on time) with respect to time $t$|
-|$f^{(m)}(\cdot), \vi f^{(m)}(\cdot)$ | $m$-th derivatives of a scalar-valued and vector-valued function, respectively |
+|$f^{(m)}(x), \vi f^{(m)}(x)$ | $m$-th derivatives of a scalar-valued and vector-valued function with respect to a scalar variable $x$, respectively |
 |$\jacobi f, \jacobi \vi f, \jacobi_{\vi y} \vi f(\vi x, \vi y)$ | gradient of $f$, Jacobian matrix of $\vi f$, Jacobian matrix of $\vi f$ with respect to the 2nd vector argument $\vi y$ |
 |$\Jacobi$ | Jacobian matrix of a corresponding function $\vi f$ |
 |$\reOf{x}, \imOf{x}$ | real and imaginary parts of complex variable $x$, respectively |
@@ -40,3 +40,4 @@ For easier orientation in the text, we include a basic list of used notation thr
 |$\evolOp$ | evolution operator of a (semi)dynamical system |
 |$\normalD{\mu, \sigma^2}$ | normal distribution with expected value $\mu$ and variance $\sigma^2$ | 
 |$\rW(t)$ | Wiener process |
+|$\borelAlgebra$ | Borel $\sigma$-algebra |

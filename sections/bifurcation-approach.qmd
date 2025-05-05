@@ -612,7 +612,7 @@ where $\tilde{\vi v}^i_{(k)} \neq \vi 0$ lies in the null-space of $\jacobi \vi 
 
 ## Cycle Continuation in Coupled Oscillators
 
-As we have discussed in the @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
+As we have discussed in @sec-problem-formulation on the problem formulation, we shall again consider the problem of computing phase shifts between 2 weakly coupled oscillators with possible delay in the coupling. Let us disclose this section is heavily based on the article by Záthurecký et al. [-@Zathurecky2025].
 
 For the soundness of the grid-based approach to the computation of phase shift between the oscillators of ([-@eq-general-delayed-coupled-oscillators]), we have simply used the continuous dependence on parameters and initial conditions. Unfortunately, this argument is insufficient for the cycle-continuation-based approach, as nothing a priori guarantees the (local) existence of a suitable (stable) cycle, which could be used for continuation at an arbitrary coupling strength $\lmbd > 0$.
 

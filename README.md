@@ -1,6 +1,6 @@
 # Computational analysis in neuroscience
 
-This repository holds sources and materials for Masters' thesis named 'Computational analysis in neuroscience' by Štěpán Zapadlo under the supervision of doc. RNDr. Lenka Přibylová, Ph.D., at the Department of Mathematics and Statistic, Faculty of Science, Masaryk University, Brno.
+This repository holds sources and materials for Master's thesis named 'Computational analysis in neuroscience' by Štěpán Zapadlo under the supervision of doc. RNDr. Lenka Přibylová, Ph.D., at the Department of Mathematics and Statistic, Faculty of Science, Masaryk University, Brno.
 
 ::include{file=partials/abstract.qmd}
 
@@ -27,6 +27,7 @@ This repository contains following folders:
 
 Also:
 - `julia_env`: Necessary Julia packages required to start the Quarto Julia engine, i.e., QuartoNotebookRunner.jl
+- `assets`: Various other files necessary at some point (logos, assignment, etc.)
 - `_freeze`: Contains cached results of computations
 - `_book`: Rendered project, rendered PDF and HTML can be found here
 

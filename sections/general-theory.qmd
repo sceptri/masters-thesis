@@ -85,7 +85,7 @@ $$
 i.e., the map $\evolOp$ is a (left) monoid action of $(\timeSet, +)$ on $\stateSpace$. The operator $\evolOp$ is typically called *flow* of the dynamical system.
 :::
 
-In the @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly intervals between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
+In @def-dynamical-system, the time set $\timeSet$ can take on various forms. In ecology, we often see a discrete $\timeSet = \Z$ or $\N_0$ representing a yearly intervals between measurements of our system --- given this choice of $\timeSet$, we call the dynamical system **discrete**. 
 
 On the other hand, in physics (and neuroscience) we typically employ $\timeSet = \R$ or $\R^+$ as we are concerned with even the shortest time intervals and associated changes --- corresponding systems are called **continuous** or **continuous-time** dynamical systems. Similarly, the exact choice of the state space $\stateSpace$ is dependent on the system in question, but typically we use $\R^n$, although we will also encounter infinite-dimensional state space.
 
@@ -465,7 +465,7 @@ See @Hartman2002, page 94.
 
 ### Poincaré Map {#sec-poincare-map}
 
-The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems. One possible route is via sampling the continuous orbit at discrete times, e.g. separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
+The study of continuous-time dynamical systems naturally leads to discrete-time dynamical systems. One possible route is via sampling the continuous orbit at discrete times, e.g., separated by $\Delta t$ which induces a *time-shift map*. Another way to obtain a discrete-time dynamical system from a continuous-time one is through a so-called *Poincaré map*.
 
 Consider a continuous-time dynamical system of the form
 $$
@@ -477,7 +477,7 @@ where $\vi f$ is smooth and assume that ([-@eq-poincare-map-system]) has a perio
 
 The cross-section $\crossSection$ is a smooth hypersurface of dimension $n-1$ (thus we say $\codim \crossSection = 1$, i.e., the cross-section hypersurface $\crossSection$ is of codimension one), which intersects $L_0$ at a nonzero angle. The nonzero angle requirement is called the *transversality* condition, which effectively dictates that the hypersurface is not parallel to a through-going trajectory, thus the trajectory truly intersects the cross-section $\crossSection$.
 
-Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As the @thm-exists-unique-smooth-ode-solution guarantees, the solution of ([-@eq-poincare-map-system]) depends smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
+Consider now orbits of ([-@eq-poincare-map-system]) near the cycle $L_0$ and recall that the cycle $L_0$ itself is an orbit which starts at point $\vi x_0$ on $\crossSection$ and returns to the same point on $\crossSection$. As @thm-exists-unique-smooth-ode-solution guarantees, the solution of ([-@eq-poincare-map-system]) depends smoothly on its initial condition, an orbit starting at $\vi x \in \crossSection$ sufficiently close to $\vi x_0$ will transversally intersect the hypersurface $\crossSection$ at some other point $\tilde{\vi x}$ near $\vi x_0$. Therefore, this induces a map $\vi P: \crossSection \to \crossSection$,
 $$
 \vi x \mapsto \tilde{\vi x} = \vi P(\vi x).
 $$
@@ -564,7 +564,7 @@ Let $(\eventSet, \sAlgebra, P)$ be a **probability space** and $\timeSet \subset
 $$
 \rX : \timeSet \times \eventSet \to \R,
 $$
-which is $\sAlgebra$-measurable, i.e.,
+which is $\sAlgebra$-measurable, i.e.,^[We denote $\borelAlgebra$ the set of all Borel sets, i.e., Borel $\sigma$-algebra.]
 $$
 \forall t \in \timeSet, \; \forall B \in \borelAlgebra: \; \set{\omega \in \eventSet : \; \rX(t, \omega) \in B} \in \sAlgebra.
 $$
@@ -608,13 +608,13 @@ Let $\set{\rW(t);\; t \geq 0}$ be Wiener process. Then, for all $t,s \geq 0$, it
 See @Kloeden1992, page 28.
 :::
 
-In other words, in the @def-stochastic-process we have constructed a process that selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process that is almost always continuous everywhere but differentiable nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
+In other words, in @def-stochastic-process, we have constructed a process that selects a random trajectory with each sample. Moreover, we have defined in @def-wiener-process a special process that is almost always continuous everywhere but differentiable nowhere (not unlike the Weierstrass function) with **stochastically independent** increments on disjunct intervals!
 
 Our goal in this endeavour is to construct a sensible calculus on stochastic processes, which we could then use to understand deterministic dynamical systems perturbed by (small) stochastic noise. Let us consider a (trivial) differential equation (mainly focus on the differential formulation)
 $$
 \deriv {x(t)} t = a x(t) \iff \d x(t) = a x(t) \dd t,
 $$
-which has the solution $x(t) = e^{at}$, where $x(t)$ often represents size of some population. Taking $a = r + \sigma \rve(t, \omega)$, where $\rve(t, \omega)$ is a random process, the population size now becomes a random variable
+which has the solution $x(t) = e^{at}$, where $x(t)$ often represents size of some population. Taking $a = r + \sigma \rve(t, \omega)$, where $\rve(t, \omega)$ is a random process, the population size now becomes a random variable,
 $$
 \d \rX(t,\omega) = \brackets{r + \sigma \rve(t, \omega)} \rX(t, \omega) \dd t,
 $$
@@ -628,7 +628,7 @@ What is the form of the random process $\rZ(t)$, such that $\diff \rZ(t) = \rve(
 $$
 \d \rW(t) = \rve(t) \dd t,
 $$
-which can be understood as *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
+which can be understood as a *distributional derivative*. Now let us return to the original stochastic differential equation, that now becomes
 $$
 \dd \rX(t,\omega) = r  \rX(t, \omega) \dd t + \sigma  \rX(t, \omega) \overbrace{\rve(t, \omega) \dd t}^{\d \rW(t)},
 $$
@@ -644,7 +644,7 @@ To understand how delays influence dynamical systems and define a *semidynamical
 
 ### Functional Differential Equations
 
-So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, see ([-@eq-autonomous-ode-system]) and ([-@eq-implicit-ode-system]), e.g. $F(t, x, \dot{x}, \ddot{x}) = 0$.
+So far, we have mainly discussed *ordinary differential equations*, which are equations relating the values of an unknown function and some of its derivatives at a single and the same argument value, see ([-@eq-autonomous-ode-system]) and ([-@eq-implicit-ode-system]), e.g., $F(t, x, \dot{x}, \ddot{x}) = 0$.
 
 In contrast, a *functional equation* (FE) is an equation connecting outputs of an unknown function evaluated at different argument values. As an example, $x(-t) + 3x(2t) = 0$, $x(x(t)) = x(t) + 2$, and $x(t) = tx(t+1) - \brackets{x(t-2)}^3$ are all examples of functional equations. The differences between the argument values of an unknown function and $t$ (its "default" argument) in an FE are called *argument deviations*. If all argument deviations are constant (like in the last example shown above), then the FE is called a *difference-functional equation*.
 
@@ -662,7 +662,7 @@ where $\vi x(t) \in \R^n$, $m_1, \dots, m_k \geq 0$, and $\tau_1(t), \dots, \tau
 - *neutral FDEs* (NFDEs), if $\max \set{m_1, \dots, m_k} = m$;
 - *advanced FDEs* (AFDEs), if $\max \set{m_1, \dots, m_k} > m$.
 
-Let us also note that the argument deviations can, in theory, be dependent on the state, e.g. $\dot{x}(t) = f(t, x(t), x(t - h(t, x(t))))$, but we shall omit them from our considerations.
+Let us also note that the argument deviations can, in theory, be dependent on the state, e.g., $\dot{x}(t) = f(t, x(t), x(t - h(t, x(t))))$, but we shall omit them from our considerations.
 
 ::: {.callout-caution #cau-dde-convention}
 ### Note on naming convention
@@ -682,7 +682,7 @@ with a single delay $r > 0$. Assume that $f(t,x,y)$ and $f_x(t,x,y)$ are continu
 $$
 x(t) = \phi(t), \; s-r \leq t \leq s
 $$ {#eq-1d-dde-initial-cond}
-and satisfying ([-@eq-1d-dde]) on $s \leq t \leq s + \sigma$ for some $\sigma > 0$. As a careful reader might notice, we must interpret $\dot x(s)$ as a *right-hand* derivative at $s$.
+and satisfying ([-@eq-1d-dde]) on $s \leq t \leq s + \sigma$ for some $\sigma > 0$. As a careful reader might notice, we must interpret $\dot x(s)$ as a *right-hand* derivative at $s$, i.e., $\dot x(s)^+$.
 
 The system of equations ([-@eq-1d-dde]) and ([-@eq-1d-dde-initial-cond]) can now be solved with the so-called *method of steps* as follows. For $s \leq t \leq s + r$, $x(t)$ must satisfy the initial-value problem (IVP) for the following ODE:
 $$
@@ -995,7 +995,7 @@ $$
 \vi x(t_0 + \diff t_1) \approx \vi x(t_0) + \dvi x(t_0) (t_0 + \diff t_1  - t_0) = \vi x(t_0) + \vi F(t_0, \vi x(t_0)) \diff t_1.
 $$
 
-Repeating this process on the entire interval $[t_0, t_N]$ gives us the @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g. $\diff t_k = \diff t = \frac {t_N - t_0} N$.
+Repeating this process on the entire interval $[t_0, t_N]$ gives us @alg-euler-method. Let us note that often an equidistant stepsize is used, e.g., $\diff t_k = \diff t = \frac {t_N - t_0} N$.
 
 ::: {.callout appearance="simple" #alg-euler-method}
 ##### Euler method (explicit)
@@ -1175,7 +1175,7 @@ and as such $\set{\rY_n}_n$ can be interpreted as a Markov chain. This can be ea
 $$
 \dd \vr X(t) = \vi a(t, \vr X(t)) \dd t + \vi B(t, \vr X(t)) \dd \vr W(t), \; \vr X(t_0) = \vr X_0,
 $$ {#eq-euler-maruyama-vec-problem}
-where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in the @alg-euler-maruyama-method.
+where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega)) \in \R^n$, $\vi B(t, \vr X(t, \omega)) \in \R^{n \times n}$, and $\dd \vr W(t)$ is a differential corresponding to a vector of Wiener processes with prescribed correlation (and hence $\diff \vr W_n \in \R^{n \times n}$ has a matrix structure relating to the underlying correlation). Finally, this is captured in @alg-euler-maruyama-method.
 
 ::: {.callout appearance="simple" #alg-euler-maruyama-method}
 ##### Euler-Maruyama method
@@ -1191,7 +1191,7 @@ where, assuming $\vr X(t, \omega) \in \R^n$, we have $\vi a(t, \vr X(t, \omega))
 
 Let us note that for implementation, we use the `EM` method from DifferentialEquations.jl by @Rackauckas2017 for Julia and a custom implementation for MATLAB, see @MATLAB. Furthermore, the relevant theory of stochastic functional differential equations (SFDEs) will not be covered in this document to ensure a focused and concise scope. To an interested reader, we recommend @Scheutzow2018 for a general overview and @Mohammed1986 for more details on linear and affine SFDEs. As an example of actual use, in @Pribylova2025, we have employed the Euler-Maruyama method to compare stochastic and deterministic simulations of the Pinsky-Rinzel model, see @Pinsky1994 and @Atherton2016, for specific values of parameters, deduced from preceding bifurcation analysis, producing notable signal patterns comparable with those measured experimentally.
 
-### Optimization in $\mathbb{R}$ {#sec-1d-optimization}
+### One-Dimensional Optimization {#sec-1d-optimization}
 
 Optimization is nigh ubiquitous in both nature and mathematics. For us, it will prove most fruitful to study optimization in one dimension, where the situation is, fortunately, the easiest. Most of the material is taken from @Kochenderfer2019 and @Zemanek2021.
 
