@@ -73,9 +73,9 @@ thesis:
       cz: Modelování a výpočty
       en: Modelling and computations
   keywords:
-    cz: "dynamické systémy; kontinuace; výpočetní neurologie; spražené oscilátory; synchronizace"
+    cz: "dynamické systémy; kontinuace; výpočetní neurologie; spřažené oscilátory; synchronizace"
     en: "dynamical systems; continuation; computational neuroscience; coupled oscillators; synchronization"
-  page-count: "xiv + 94" # TODO: Check me
+  page-count: "xiv + 94"
   abstract:
     cz: "partials/abstrakt.qmd"
     en: "partials/abstract.qmd"
