@@ -30,10 +30,11 @@ Produced on $(Dates.format(today(), "dd.mm.yyyy")) \\
 
 # Abstract {-}
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 ## English
 
 {{< meta thesis.abstract.en >}}
+
 ## Czech
 
 {{< meta thesis.abstract.cz >}}
@@ -41,10 +42,11 @@ Produced on $(Dates.format(today(), "dd.mm.yyyy")) \\
 
 # Declaration {-}
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 ## English
 
 {{< meta thesis.declaration.en >}}
+
 ## Czech
 
 {{< meta thesis.declaration.cz >}}
@@ -60,10 +62,11 @@ This work is licensed under a [Creative Commons  Attribution-NonCommercial-Share
 
 # Acknowledgements {-}
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 ## English
 
 {{< meta thesis.acknowledgement.en >}}
+
 ## Czech
 
 {{< meta thesis.acknowledgement.cz >}}
